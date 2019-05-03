@@ -1,0 +1,20 @@
+{
+  "name": "1tuner.com",
+  "short_name": "1tuner",
+  "description": "1 web app to listen to online radio",
+  "start_url": "/?utm_source=web_app_manifest",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ebebeb",
+  "theme_color": "#111111",
+  "icons": [{
+    "src": "/assets/icons/android-chrome-192x192.png",
+    "type": "image/png",
+    "sizes": "192x192"
+  },
+  {
+    "src": "/assets/icons/android-chrome-512x512.png",
+    "type": "image/png",
+    "sizes": "512x512"
+  }]
+}

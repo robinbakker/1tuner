@@ -1,0 +1,25 @@
+.planning {
+  padding: 0rem 1.5rem 10rem 1.5rem;
+}
+.editplanningform {
+  margin-top: 1.5rem;
+}
+.item-list, .item-list__item {
+  list-style: none;
+  margin: 0;
+  padding:0;
+}
+.item-list__item {
+  display: block;
+  padding: .4rem .8rem;
+  margin: .6rem 0 0 0;
+}
+.item-list__item--break {
+  background-color:rgba(0,0,0,.05);
+  border-top:1px dashed rgba(0,0,0,.1);
+}
+.error-message {
+  background:#d00000;
+  color:#fff;
+  padding: .4rem .8rem;
+}

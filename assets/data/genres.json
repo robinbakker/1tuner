@@ -1,0 +1,71 @@
+{
+  "alternative" : {
+    "name" : "Alternative"
+  },
+  "blues" : {
+    "name" : "Blues"
+  },
+  "classical" : {
+    "name" : "Classical"
+  },
+  "country" : {
+    "name" : "Country"
+  },
+  "dance" : {
+    "name" : "Dance"
+  },
+  "disco" : {
+    "name" : "Disco"
+  },
+  "electronic" : {
+    "name" : "Electronic"
+  },
+  "folk" : {
+    "name" : "Folk"
+  },
+  "funk" : {
+    "name" : "Funk"
+  },
+  "hiphop" : {
+    "name" : "Hip hop"
+  },
+  "jazz" : {
+    "name" : "Jazz"
+  },
+  "latin" : {
+    "name" : "Latin"
+  },
+  "local" : {
+    "name" : "Local"
+  },
+  "news" : {
+    "name" : "News"
+  },
+  "nonstop" : {
+    "name" : "Non-stop"
+  },
+  "oldies" : {
+    "name" : "Oldies"
+  },
+  "pop" : {
+    "name" : "Pop"
+  },
+  "rap" : {
+    "name" : "Rap"
+  },
+  "rnb" : {
+    "name" : "R&B"
+  },
+  "rock" : {
+    "name" : "Rock"
+  },
+  "soul" : {
+    "name" : "Soul"
+  },
+  "talk" : {
+    "name" : "Talk"
+  },
+  "reggae" : {
+    "name" : "Reggae"
+  }
+}

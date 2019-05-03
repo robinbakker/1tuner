@@ -1,0 +1,1504 @@
+{
+  "538": {
+    "displayorder": 1,
+    "genres": {
+      "dance": true,
+      "hiphop": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "https://pbs.twimg.com/profile_images/765892986496507904/E6Ccx8p4_400x400.jpg",
+    "name": "Radio 538",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO538.mp3"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://18973.live.streamtheworld.com/RADIO538.mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO538AAC.aac"
+      }
+    ],
+    "website": "https://www.538.nl/"
+  },
+  "3fm": {
+    "displayorder": 3,
+    "genres": {
+      "dance": true,
+      "hiphop": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "//www.npo3fm.nl/templates/npo3fm/images/logo-npo3fm.png",
+    "name": "NPO 3FM",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "https://icecast.omroep.nl/3fm-bb-mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://icecast.omroep.nl/3fm-bb-aac"
+      }
+    ],
+    "website": "https://www.npo3fm.nl"
+  },
+  "3fmalternative": {
+    "displayorder": 38,
+    "genres": {
+      "alternative": true,
+      "hiphop": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "//www.npo3fm.nl/templates/npo3fm/images/logo-npo3fm.png",
+    "name": "NPO 3FM Alternative",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "https://icecast.omroep.nl/3fm-alternative-mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://icecast.omroep.nl/3fm-alternative-aac"
+      }
+    ],
+    "website": "https://www.npo3fm.nl"
+  },
+  "antennebayern": {
+    "displayorder": 27,
+    "genres": {
+      "local": true,
+      "news": true,
+      "pop": true
+    },
+    "language": "de",
+    "logosource": "https://www.antenne.de/assets/templates/antenne-de/img/logo-antenne-de-header-2.svg",
+    "name": "Antenne Bayern",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://mp3channels.webradio.de/antenne"
+      }
+    ],
+    "website": "https://www.antenne.de"
+  },
+  "banditrock": {
+    "displayorder": 64,
+    "genres": {
+      "pop": true,
+      "rock": true
+    },
+    "language": "sv-SE",
+    "logosource": "https://pbs.twimg.com/profile_images/765851461095976960/8xGAdp6l_400x400.jpg",
+    "name": "Bandit Rock",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://fm02-ice.stream.mtgr.se/fm02_mp3?platform=web"
+      }
+    ],
+    "website": "https://www.ilikeradio.se/banditrock"
+  },
+  "bayern1": {
+    "displayorder": 26,
+    "genres": {
+      "local": true,
+      "news": true,
+      "pop": true
+    },
+    "language": "de",
+    "logosource": "https://pbs.twimg.com/profile_images/989427326407626752/_MvPZ9TG_400x400.jpg",
+    "name": "Bayern 1",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://br-br1-obb.sslcast.addradio.de/br/br1/obb/mp3/128/stream.mp3"
+      }
+    ],
+    "website": "https://www.br.de/radio/bayern1"
+  },
+  "bbcradio1": {
+    "displayorder": 18,
+    "genres": {
+      "dance": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "en-UK",
+    "logosource": "https://rmp.files.bbci.co.uk/rmp-shared-assets/0.2.6/img/network-logos/national/bbc_radio_one_colour.svg",
+    "name": "BBC Radio 1",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p"
+      }
+    ],
+    "website": "https://www.bbc.co.uk/radio1"
+  },
+  "bbcradio2": {
+    "displayorder": 2,
+    "genres": {
+      "oldies": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "en-UK",
+    "logosource": "https://static.bbci.co.uk/radio/109/1.96.20171025155453/img/logos/v2/bbc_radio_two_alt_colour.svg",
+    "name": "BBC Radio 2",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio2_mf_p"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_med/llnw/bbc_radio_two.m3u8"
+      }
+    ],
+    "website": "https://www.bbc.co.uk/radio2"
+  },
+  "bbcradio4": {
+    "displayorder": 4,
+    "genres": {
+      "oldies": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "en-UK",
+    "logosource": "https://static.bbci.co.uk/radio/109/1.96.20171025155453/img/logos/v2/bbc_radio_fourfm_alt_colour.svg",
+    "name": "BBC Radio 4",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_p"
+      },
+      {
+        "mimetype": "application/vnd.apple.mpegurl",
+        "url": "http://open.live.bbc.co.uk/mediaselector/5/select/version/2.0/mediaset/apple-ipad-hls/vpid/bbc_radio_fourfm/format/pls.pls"
+      }
+    ],
+    "website": "https://www.bbc.co.uk/radio4"
+  },
+  "bbcradio5live": {
+    "displayorder": 21,
+    "genres": {
+      "news": true,
+      "talk": true
+    },
+    "language": "en-UK",
+    "logosource": "https://rmp.files.bbci.co.uk/rmp-shared-assets/0.2.6/img/network-logos/national/bbc_radio_five_live_colour.svg",
+    "name": "BBC Radio 5 live",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio5live_mf_p"
+      }
+    ],
+    "website": "https://www.bbc.co.uk/5live"
+  },
+  "bigfmindia": {
+    "displayorder": 59,
+    "genres": {
+      "folk": true,
+      "pop": true
+    },
+    "language": "hi",
+    "logosource": "https://avatars.io/twitter/927bigfm",
+    "name": "Big FM",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://prclive1.listenon.in:9960/;"
+      }
+    ],
+    "website": "http://927bigfm.com"
+  },
+  "bnr": {
+    "displayorder": 12,
+    "genres": {
+      "news": true,
+      "talk": true
+    },
+    "language": "nl",
+    "logosource": "https://static.bnr.nl/assets/343/img/bnr/static/logo.png",
+    "name": "BNR Nieuwsradio",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://icecast-bnr-cdp.triple-it.nl/bnr_mp3_128_03"
+      }
+    ],
+    "website": "https://www.bnr.nl/"
+  },
+  "cadena100": {
+    "displayorder": 30,
+    "genres": {
+      "dance": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "es",
+    "logosource": "https://avatars.io/twitter/CADENA100",
+    "name": "CADENA 100",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://195.55.74.212/cope/cadena100.mp3"
+      }
+    ],
+    "website": "http://www.cadena100.es"
+  },
+  "chantefrance": {
+    "displayorder": 43,
+    "genres": {
+      "folk": true,
+      "pop": true
+    },
+    "language": "fr",
+    "logosource": "https://www.chantefrance.com/public/img/logo.png",
+    "name": "Chante France",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://stream1.chantefrance.com/Chante_France"
+      }
+    ],
+    "website": "https://www.chantefrance.com"
+  },
+  "cheriefm": {
+    "displayorder": 48,
+    "genres": {
+      "pop": true
+    },
+    "language": "fr",
+    "logosource": "https://avatars.io/twitter/radiocheriefm",
+    "name": "Chérie FM",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://cdn.nrjaudio.fm/audio1/fr/30201/mp3_128.mp3"
+      }
+    ],
+    "website": "https://www.cheriefm.fr"
+  },
+  "classicfm": {
+    "displayorder": 19,
+    "genres": {
+      "classical": true
+    },
+    "language": "en-UK",
+    "logosource": "https://static.classicfm.com/assets_v4r/dist/combined/img/classic-logo_mobile.svg",
+    "name": "Classic FM",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "http://media-ice.musicradio.com/ClassicFMMP3.m3u"
+      }
+    ],
+    "website": "https://www.classicfm.com"
+  },
+  "francemusique": {
+    "displayorder": 47,
+    "genres": {
+      "classical": true,
+      "jazz": true
+    },
+    "language": "fr",
+    "logosource": "https://pbs.twimg.com/profile_images/756125080481071104/rGvb5a-Z_400x400.jpg",
+    "name": "France Musique",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://direct.francemusique.fr/live/francemusique-midfi.mp3"
+      }
+    ],
+    "website": "https://www.francemusique.fr"
+  },
+  "funradio": {
+    "displayorder": 45,
+    "genres": {
+      "dance": true,
+      "hiphop": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "fr",
+    "logosource": "https://avatars.io/twitter/funradio_fr",
+    "name": "Fun Radio",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://ais.rtl.fr/fun-1-44-128"
+      }
+    ],
+    "website": "https://www.funradio.fr"
+  },
+  "funx": {
+    "displayorder": 13,
+    "genres": {
+      "hiphop": true,
+      "pop": true,
+      "rnb": true
+    },
+    "language": "nl",
+    "logosource": "https://www.funx.nl/templates/funx/img/funx_logo.png",
+    "name": "FunX",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://icecast.omroep.nl/funx-bb-mp3"
+      }
+    ],
+    "website": "https://www.funx.nl"
+  },
+  "hot108jamz": {
+    "displayorder": 55,
+    "genres": {
+      "hiphop": true,
+      "pop": true,
+      "rnb": true
+    },
+    "language": "en-US",
+    "logosource": "https://pbs.twimg.com/profile_images/522589267365621760/uZosb_Kb_400x400.jpeg",
+    "name": "Hot 108 JAMZ",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "http://hot108jamz.hot108.com:4040/;stream.nsv"
+      }
+    ],
+    "website": "http://hot108.com"
+  },
+  "indiexl": {
+    "displayorder": 69,
+    "genres": {
+      "alternative": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "https://www.indiexl.nl/wp-content/themes/indiexl.nl/includes/img/logo-trans.png",
+    "name": "IndieXL",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://server-23.stream-server.nl:8438/;listen.pls_"
+      }
+    ],
+    "website": "https://www.indiexl.nl"
+  },
+  "kcrwmusic": {
+    "displayorder": 56,
+    "genres": {
+      "alternative": true,
+      "pop": true,
+      "rock": true,
+      "talk": true
+    },
+    "language": "en-US",
+    "logosource": "https://pbs.twimg.com/profile_images/793550877357252608/mpVvA_u8_400x400.jpg",
+    "name": "KCRW Music",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://kcrw.streamguys1.com/kcrw_192k_mp3_on_air"
+      }
+    ],
+    "website": "https://www.kcrw.com"
+  },
+  "kexp": {
+    "displayorder": 36,
+    "genres": {
+      "alternative": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "en-US",
+    "logosource": "https://kexp.org/static/assets/img/logo-black.svg",
+    "name": "KEXP",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://kexp-mp3-128.streamguys1.com/kexp128.mp3"
+      }
+    ],
+    "website": "https://kexp.org"
+  },
+  "kfogradio": {
+    "displayorder": 54,
+    "genres": {
+      "alternative": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "en-US",
+    "logosource": "https://avatars.io/twitter/KFOGradio",
+    "name": "KFOG",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://19473.live.streamtheworld.com/KFOGFMAAC.aac"
+      }
+    ],
+    "website": "http://www.kfog.com"
+  },
+  "kiisfmla": {
+    "displayorder": 35,
+    "genres": {
+      "pop": true
+    },
+    "language": "en-US",
+    "logosource": "https://avatars.io/twitter/1027KIISFM",
+    "name": "KIIS-FM",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "http://c2icyelb.prod.playlists.ihrhls.com/185_icy"
+      }
+    ],
+    "website": "https://kiisfm.iheart.com"
+  },
+  "kissfmuk": {
+    "displayorder": 20,
+    "genres": {
+      "dance": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "en-UK",
+    "logosource": "https://avatars.io/twitter/kissfmuk/large",
+    "name": "KISS",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://icy-e-ba-01-gos.sharp-stream.com/kissnational.mp3"
+      }
+    ],
+    "website": "https://planetradio.co.uk/kiss"
+  },
+  "kxclassic": {
+    "displayorder": 7,
+    "genres": {
+      "oldies": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "https://pbs.twimg.com/profile_images/877115595132719105/YnUY1w_9_400x400.jpg",
+    "name": "KX Classics",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "http://streams.robstenders.nl:8063/kxclassics_mp3"
+      }
+    ],
+    "website": "http://www.kxclassics.nl"
+  },
+  "kxclassicsedge": {
+    "displayorder": 8,
+    "genres": {
+      "alternative": true,
+      "oldies": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "https://pbs.twimg.com/profile_images/967826410088927233/4AIGMdx__400x400.jpg",
+    "name": "KX Classics - The Edge",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "http://streams.robstenders.nl:8063/edgeclassics_mp3"
+      }
+    ],
+    "website": "http://www.robstenders.nl"
+  },
+  "los40": {
+    "displayorder": 29,
+    "genres": {
+      "dance": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "es",
+    "logosource": "https://avatars.io/twitter/los40",
+    "name": "LOS40",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://19993.live.streamtheworld.com/LOS40.mp3"
+      }
+    ],
+    "website": "http://los40.com"
+  },
+  "lugnafavoriter": {
+    "displayorder": 65,
+    "genres": {
+      "pop": true
+    },
+    "language": "sv-SE",
+    "logosource": "https://pbs.twimg.com/profile_images/813525827577114629/tFC1f7yS_400x400.jpg",
+    "name": "Lugna Favoriter",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://fm03-ice.stream.mtgr.se/fm03_mp3?platform=web"
+      }
+    ],
+    "website": "https://www.ilikeradio.se/lugnafavoriter"
+  },
+  "mnm": {
+    "displayorder": 34,
+    "genres": {
+      "pop": true
+    },
+    "language": "nl-BE",
+    "logosource": "https://pbs.twimg.com/profile_images/1003250095083741185/E6KDAehu_400x400.jpg",
+    "name": "MNM",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://live-radio.lwc.vrtcdn.be/groupa/live/68dc3b80-040e-4a75-a394-72f3bb7aff9a/live.isml/.m3u8"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://icecast.vrtcdn.be/mnm-high.mp3"
+      }
+    ],
+    "website": "https://mnm.be"
+  },
+  "mouv": {
+    "displayorder": 42,
+    "genres": {
+      "dance": true,
+      "hiphop": true,
+      "pop": true
+    },
+    "language": "fr",
+    "logosource": "https://pbs.twimg.com/profile_images/755711567233179648/2boyIwP4_400x400.jpg",
+    "name": "Mouv'",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://direct.mouv.fr/live/mouv-midfi.mp3"
+      }
+    ],
+    "website": "http://www.mouv.fr"
+  },
+  "myfmindia": {
+    "displayorder": 58,
+    "genres": {
+      "pop": true
+    },
+    "language": "hi",
+    "logosource": "https://pbs.twimg.com/profile_images/936826776289812480/Ai4QQeu2_400x400.jpg",
+    "name": "My FM India",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://astro1.rastream.com/myfm"
+      }
+    ],
+    "website": "http://myfmindia.com"
+  },
+  "nostalgieeu": {
+    "displayorder": 40,
+    "genres": {
+      "oldies": true,
+      "pop": true
+    },
+    "language": "nl-BE",
+    "logosource": "https://avatars.io/twitter/NostalgieEU",
+    "name": "Nostalgie",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://nostalgiewhatafeeling.ice.infomaniak.ch/nostalgiewhatafeeling-128.mp3"
+      }
+    ],
+    "website": "http://www.nostalgie.eu"
+  },
+  "nostalgiefr": {
+    "displayorder": 41,
+    "genres": {
+      "oldies": true,
+      "pop": true
+    },
+    "language": "fr",
+    "logosource": "https://avatars.io/twitter/nostalgiefm",
+    "name": "Nostalgie",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://cdn.nrjaudio.fm/audio1/fr/30601/mp3_128.mp3"
+      }
+    ],
+    "website": "http://www.nostalgie.fr"
+  },
+  "nrjfr": {
+    "displayorder": 44,
+    "genres": {
+      "dance": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "fr",
+    "logosource": "https://www.nrj.fr/img/logo-nrj.svg",
+    "name": "NRJ",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://185.52.127.173/fr/30001/aac_64.mp3"
+      }
+    ],
+    "website": "https://www.nrj.fr"
+  },
+  "p1se": {
+    "displayorder": 60,
+    "genres": {
+      "news": true,
+      "talk": true
+    },
+    "language": "sv-SE",
+    "logosource": "https://static-cdn.sr.se/sida/images/3632/3147207_2048_1152.jpg?preset=768x432",
+    "name": "P1",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://http-live.sr.se/p1-mp3-192"
+      }
+    ],
+    "website": "https://sverigesradio.se/p1"
+  },
+  "p2se": {
+    "displayorder": 61,
+    "genres": {
+      "classical": true
+    },
+    "language": "sv-SE",
+    "logosource": "https://static-cdn.sr.se/sida/images/3633/3147213_2048_1152.jpg?preset=768x432",
+    "name": "P2",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://http-live.sr.se/p2-mp3-192"
+      }
+    ],
+    "website": "https://sverigesradio.se/p2"
+  },
+  "p3se": {
+    "displayorder": 62,
+    "genres": {
+      "dance": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "sv-SE",
+    "logosource": "https://static-cdn.sr.se/sida/images/3634/3147199_2048_1152.jpg?preset=768x432",
+    "name": "P3",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://http-live.sr.se/p3-mp3-192"
+      }
+    ],
+    "website": "https://sverigesradio.se/p3"
+  },
+  "pinguinradio": {
+    "displayorder": 9,
+    "genres": {
+      "alternative": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "https://pinguinradio.com/dist/images/squarePinguin.svg",
+    "name": "Pinguin Radio",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "http://178.18.137.245/;stream.mp3"
+      }
+    ],
+    "website": "https://pinguinradio.com"
+  },
+  "powerhitradio": {
+    "displayorder": 66,
+    "genres": {
+      "dance": true,
+      "pop": true
+    },
+    "language": "sv-SE",
+    "logosource": "https://pbs.twimg.com/profile_images/725631955266637824/MisBluuI_400x400.jpg",
+    "name": "Power Hit Radio",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://fm04-ice.stream.mtgr.se/fm04_mp3?platform=web"
+      }
+    ],
+    "website": "https://www.ilikeradio.se/powerhitradio"
+  },
+  "qmusic": {
+    "displayorder": 4,
+    "genres": {
+      "pop": true
+    },
+    "language": "nl",
+    "logosource": "https://pbs.twimg.com/profile_images/767629863981346816/MnREbzP0_400x400.jpg",
+    "name": "Qmusic",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://icecast-qmusic.cdp.triple-it.nl/Qmusic_nl_live_96.mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "http://icecast-qmusic.cdp.triple-it.nl/Qmusic_nl_live_32.aac"
+      },
+      {
+        "mimetype": "audio/ogg",
+        "url": "http://icecast-qmusic.cdp.triple-it.nl/Qmusic_nl_live_64.ogg"
+      }
+    ],
+    "website": "https://qmusic.nl"
+  },
+  "qmusicbe": {
+    "displayorder": 33,
+    "genres": {
+      "pop": true
+    },
+    "language": "nl-BE",
+    "logosource": "https://pbs.twimg.com/profile_images/767629863981346816/MnREbzP0_400x400.jpg",
+    "name": "Qmusic",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://icecast-qmusic.cdp.triple-it.nl/Qmusic_be_live_96.mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "http://icecast-qmusic.cdp.triple-it.nl/Qmusic_be_live_32.aac"
+      },
+      {
+        "mimetype": "audio/ogg",
+        "url": "http://icecast-qmusic.cdp.triple-it.nl/Qmusic_be_live_64.ogg"
+      }
+    ],
+    "website": "https://qmusic.be"
+  },
+  "radio1": {
+    "displayorder": 5,
+    "genres": {
+      "news": true,
+      "talk": true
+    },
+    "language": "nl",
+    "logosource": "//www.nporadio1.nl/templates/perfecttemplate/images/logo-npo-radio1.png",
+    "name": "NPO Radio 1",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://icecast.omroep.nl/radio1-bb-mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://icecast.omroep.nl/radio1-bb-aac"
+      }
+    ],
+    "website": "http://www.nporadio1.nl/"
+  },
+  "radio10": {
+    "displayorder": 10,
+    "genres": {
+      "oldies": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "https://avatars.io/twitter/radio10nl",
+    "name": "Radio 10",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO10.mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO10AAC.aac"
+      }
+    ],
+    "website": "https://www.radio10.nl"
+  },
+  "radio100pnl": {
+    "displayorder": 15,
+    "genres": {
+      "folk": true,
+      "pop": true
+    },
+    "language": "nl",
+    "logosource": "https://avatars.io/twitter/100pnl",
+    "name": "100% NL",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/100PNL_MP3.mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/100PNL_AAC.aac"
+      }
+    ],
+    "website": "https://www.100p.nl/"
+  },
+  "radio2": {
+    "displayorder": 2,
+    "genres": {
+      "oldies": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "//www.nporadio2.nl/templates/nporadio2/assets/images/logo-radio2.svg",
+    "name": "NPO Radio 2",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "https://icecast.omroep.nl/radio2-bb-mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://icecast.omroep.nl/radio2-bb-aac"
+      }
+    ],
+    "website": "http://www.nporadio2.nl/"
+  },
+  "radio4": {
+    "displayorder": 16,
+    "genres": {
+      "classical": true
+    },
+    "language": "nl",
+    "logosource": "https://www.nporadio4.nl/templates/nporadio4default/images/logo-radio4.png",
+    "name": "NPO Radio 4",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://icecast.omroep.nl/radio4-bb-mp3"
+      }
+    ],
+    "website": "https://www.nporadio4.nl/"
+  },
+  "radio5": {
+    "displayorder": 14,
+    "genres": {
+      "oldies": true
+    },
+    "language": "nl",
+    "logosource": "https://www.nporadio5.nl/templates/radio5/images/logo-radio5.svg",
+    "name": "NPO Radio 5",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://icecast.omroep.nl/radio5-bb-mp3"
+      }
+    ],
+    "website": "https://www.nporadio5.nl/"
+  },
+  "radiomirchi": {
+    "displayorder": 57,
+    "genres": {
+      "folk": true,
+      "pop": true
+    },
+    "language": "hi",
+    "logosource": "https://pbs.twimg.com/profile_images/771532225875578880/tZ4jJH1s_400x400.jpg",
+    "name": "Radio Mirchi",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://peridot.streamguys.com:7150/Mirchi"
+      }
+    ],
+    "website": "http://www.radiomirchi.com"
+  },
+  "radionrw": {
+    "displayorder": 25,
+    "genres": {
+      "dance": true,
+      "local": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "de",
+    "logosource": "https://radionrw.de/images/iface/rnrw_logo.png",
+    "name": "radio NRW",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "https://nrw.stream.laut.fm/nrw"
+      }
+    ],
+    "website": "https://radionrw.de"
+  },
+  "radiowadwojka": {
+    "displayorder": 52,
+    "genres": {
+      "classical": true
+    },
+    "language": "pl",
+    "logosource": "https://pbs.twimg.com/profile_images/877860095551574017/SB_nuYVr_400x400.jpg",
+    "name": "Dwójka",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://stream3.polskieradio.pl:8902/;"
+      }
+    ],
+    "website": "https://dwojka.polskieradio.pl"
+  },
+  "radiowajedynka": {
+    "displayorder": 51,
+    "genres": {
+      "news": true,
+      "talk": true
+    },
+    "language": "pl",
+    "logosource": "https://pbs.twimg.com/profile_images/915224827778273280/8_gdvase_400x400.jpg",
+    "name": "Jedynka",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://stream3.polskieradio.pl:8900/;"
+      }
+    ],
+    "website": "https://jedynka.polskieradio.pl"
+  },
+  "radiowatrojka": {
+    "displayorder": 53,
+    "genres": {
+      "pop": true,
+      "rock": true
+    },
+    "language": "pl",
+    "logosource": "https://pbs.twimg.com/profile_images/877842207201480705/a2qd6JNl_400x400.jpg",
+    "name": "Trójka",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://stream3.polskieradio.pl:8904/;"
+      }
+    ],
+    "website": "https://trojka.polskieradio.pl"
+  },
+  "radiozet": {
+    "displayorder": 50,
+    "genres": {
+      "pop": true
+    },
+    "language": "pl",
+    "logosource": "https://avatars.io/twitter/Radio_ZET",
+    "name": "Radio ZET",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://n-4-14.dcs.redcdn.pl/sc/o2/Eurozet/live/audio.livx"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://radiozetmp3-07.eurozet.pl:8400/listen.pls"
+      }
+    ],
+    "website": "https://www.radiozet.pl"
+  },
+  "rixfm": {
+    "displayorder": 63,
+    "genres": {
+      "dance": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "sv-SE",
+    "logosource": "https://avatars.io/twitter/RIXFM",
+    "name": "RIX FM",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://fm01-ice.stream.mtgr.se/fm01_mp3?platform=web"
+      }
+    ],
+    "website": "https://www.ilikeradio.se/rixfm"
+  },
+  "rmffm": {
+    "displayorder": 49,
+    "genres": {
+      "pop": true
+    },
+    "language": "pl",
+    "logosource": "https://www.rmf.fm/2018/img/logo-x2.png",
+    "name": "RMF FM",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://195.150.20.7:8000/rmf_fm"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://31.192.216.8:8000/rmf_fm"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://217.74.72.11:8000/rmf_fm"
+      }
+    ],
+    "website": "https://www.rmf.fm"
+  },
+  "rtl2fr": {
+    "displayorder": 28,
+    "genres": {
+      "pop": true,
+      "rock": true
+    },
+    "language": "fr",
+    "logosource": "https://lh3.googleusercontent.com/qgcBv_gC5JRokY5sSpyHV0Ct5WyiVpbW-KX8V-yhYVIStx8u8C0ScYPJ5HGV02_p_BE2Or7Q6eI4qw=s250-rw-no",
+    "name": "RTL2",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://streaming.radio.rtl.fr/rtl2-1-44-128"
+      }
+    ],
+    "website": "https://www.rtl2.fr"
+  },
+  "rtlfr": {
+    "displayorder": 27,
+    "genres": {
+      "news": true,
+      "pop": true
+    },
+    "language": "fr",
+    "logosource": "https://pbs.twimg.com/profile_images/937955064680996864/IMyed9Eu_400x400.jpg",
+    "name": "RTL",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://streaming.radio.rtl.fr/rtl-1-44-128"
+      }
+    ],
+    "website": "https://www.rtl.fr"
+  },
+  "skyradio": {
+    "displayorder": 11,
+    "genres": {
+      "nonstop": true,
+      "pop": true
+    },
+    "language": "nl",
+    "logosource": "https://www.skyradio.nl/static/media/logo_skyradio.0a6171df.svg",
+    "name": "Sky Radio",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SKYRADIO.mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SKYRADIOAAC.aac"
+      }
+    ],
+    "website": "https://www.skyradio.nl/"
+  },
+  "skyrock": {
+    "displayorder": 46,
+    "genres": {
+      "hiphop": true,
+      "pop": true,
+      "rap": true,
+      "rnb": true
+    },
+    "language": "fr",
+    "logosource": "https://pbs.twimg.com/profile_images/827107627024908288/YUG0FMdc_400x400.jpg",
+    "name": "Skyrock",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://icecast.skyrock.net/s/natio_aac_64k"
+      }
+    ],
+    "website": "https://skyrock.fm"
+  },
+  "slamfm": {
+    "displayorder": 17,
+    "genres": {
+      "dance": true,
+      "electronic": true,
+      "pop": true
+    },
+    "language": "nl",
+    "logosource": "https://avatars.io/twitter/slamofficial",
+    "name": "SLAM!",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SLAM_MP3.mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SLAM_AAC.aac"
+      }
+    ],
+    "website": "https://www.slam.nl/"
+  },
+  "srw3": {
+    "displayorder": 26,
+    "genres": {
+      "local": true,
+      "news": true,
+      "pop": true
+    },
+    "language": "de",
+    "logosource": "https://avatars.io/twitter/swr3",
+    "name": "SRW3",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://swr-swr3-live.sslcast.addradio.de/swr/swr3/live/mp3/128/stream.mp3"
+      }
+    ],
+    "website": "https://www.swr3.de"
+  },
+  "sublimefm": {
+    "displayorder": 67,
+    "genres": {
+      "funk": true,
+      "jazz": true,
+      "soul": true
+    },
+    "language": "nl",
+    "logosource": "https://pbs.twimg.com/profile_images/966638814881107968/0N8JEdaq_400x400.jpg",
+    "name": "Sublime FM",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://stream01.sublimefm.nl/SublimeFM_mp3"
+      }
+    ],
+    "website": "https://sublimefm.nl"
+  },
+  "trafficradio": {
+    "displayorder": 37,
+    "genres": {
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "https://pbs.twimg.com/profile_images/378800000024542057/4835b06d0aafe103798f53f254e72bb6_400x400.jpeg",
+    "name": "Traffic Radio",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://2.trafficstream.nl/traffic_main.mp3"
+      }
+    ],
+    "website": "http://www.trafficradio.nl"
+  },
+  "veronica": {
+    "displayorder": 6,
+    "genres": {
+      "oldies": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "https://www.radioveronica.nl/images/logo_radio-veronica.svg",
+    "name": "Radio Veronica",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/VERONICA.mp3"
+      },
+      {
+        "mimetype": "audio/asx",
+        "url": "https://www.radioveronica.nl/radioveronicaplayer/radioveronica.asx"
+      }
+    ],
+    "website": "http://www.radioveronica.nl"
+  },
+  "vrtradio1": {
+    "displayorder": 31,
+    "genres": {
+      "news": true,
+      "pop": true
+    },
+    "language": "nl-BE",
+    "logosource": "https://pbs.twimg.com/profile_images/985820089982349312/d8GAdxVZ_400x400.jpg",
+    "name": "Radio 1",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://live-radio.lwc.vrtcdn.be/groupb/live/47303075-8243-434b-8199-2e62cf4dd97a/live.isml/.m3u8"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://icecast.vrtcdn.be/radio1-high.mp3"
+      }
+    ],
+    "website": "https://radio1.be"
+  },
+  "vrtstubru": {
+    "displayorder": 32,
+    "genres": {
+      "alternative": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl-BE",
+    "logosource": "https://pbs.twimg.com/profile_images/879298480669372417/hGbeQX92_400x400.jpg",
+    "name": "Studio Brussel",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://live-radio.lwc.vrtcdn.be/groupc/live/f404f0f3-3917-40fd-80b6-a152761072fe/live.isml/.m3u8"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://icecast.vrtcdn.be/stubru-high.mp3"
+      }
+    ],
+    "website": "https://stubru.be"
+  },
+  "wdr1live": {
+    "displayorder": 23,
+    "genres": {
+      "dance": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "de",
+    "logosource": "https://www1.wdr.de/resources/img/wdr/logo/epgmodule/1live_logo_claim.svg",
+    "name": "1LIVE",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://www.listenlive.eu/streams/germany/de_wdr1live_128.m3u"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://1liveuni-lh.akamaihd.net/i/1LIVE_HDS@179577/index_1_a-p.m3u8"
+      }
+    ],
+    "website": "https://www1.wdr.de/radio/1live"
+  },
+  "wdr2": {
+    "displayorder": 24,
+    "genres": {
+      "pop": true,
+      "rock": true
+    },
+    "language": "de",
+    "logosource": "https://www1.wdr.de/resources/img/wdr/logo/epgmodule/wdr2_logo_claim.svg",
+    "name": "WDR 2",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://wdr2-lh.akamaihd.net/i/wdr2_rheinland@349349/index_3_a-p.m3u8"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://www.listenlive.eu/streams/germany/de_wdr2rheinland_128.m3u"
+      }
+    ],
+    "website": "https://www1.wdr.de/radio/wdr2"
+  },
+  "xxlbonanza": {
+    "displayorder": 68,
+    "genres": {
+      "oldies": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "https://avatars.io/twitter/XXL_Bonanza",
+    "name": "XXL Bonanza",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://streams.robstenders.nl:8063/bonanza_mp3"
+      }
+    ],
+    "website": "http://www.robstenders.nl"
+  },
+  "z100ny": {
+    "displayorder": 39,
+    "genres": {
+      "dance": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "en-US",
+    "logosource": "https://avatars.io/twitter/Z100NewYork",
+    "name": "Z100 New York",
+    "streams": [
+      {
+        "mimetype": "audio/aacp",
+        "url": "ttp://c5icyelb.prod.playlists.ihrhls.com/1469_icy"
+      }
+    ],
+    "website": "https://z100.iheart.com"
+  },
+  "xxlblokhuis": {
+    "displayorder": 70,
+    "genres": {
+      "alternative": true,
+      "pop": true,
+      "rock": true,
+      "soul": true,
+      "jazz": true
+    },
+    "language": "nl",
+    "logosource": "https://pbs.twimg.com/media/DppohaXW0AAC69v.jpg",
+    "name": "XXL Blokhuis",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://178.19.116.251:8000/blokhuis_mp3"
+      }
+    ],
+    "website": "http://www.robstenders.nl"
+  },
+  "jointradioreggae": {
+    "displayorder": 71,
+    "genres": {
+      "alternative": true,
+      "reggae": true
+    },
+    "language": "he-IL",
+    "name": "Joint Radio Reggae",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://star.jointil.net/proxy/jrn_reggae?mp=/stream"
+      }
+    ],
+    "website": "http://www.jointil.com"
+  },
+  "jointradiobeat": {
+    "displayorder": 72,
+    "genres": {
+      "dance": true,
+      "trance": true
+    },
+    "language": "he-IL",
+    "name": "Joint Radio Beat",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://star.jointil.net/proxy/jrn_beat?mp=/stream"
+      }
+    ],
+    "website": "http://www.jointil.com"
+  },
+  "jointradioblues": {
+    "displayorder": 73,
+    "genres": {
+      "blues": true
+    },
+    "language": "he-IL",
+    "name": "Joint Radio Blues",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://star.jointil.net/proxy/jrn_blues?mp=/stream"
+      }
+    ],
+    "website": "http://www.jointil.com"
+  },
+  "kink": {
+    "displayorder": 74,
+    "genres": {
+      "alternative": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "https://avatars.io/twitter/kinkpuntnl",
+    "name": "KINK",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINKAAC.aac"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINK.mp3"
+      }
+    ],
+    "website": "https://kink.nl"
+  },
+  "arrow": {
+    "displayorder": 75,
+    "genres": {
+      "oldies": true,
+      "pop": true,
+      "rock": true
+    },
+    "language": "nl",
+    "logosource": "https://avatars.io/twitter/arrowCLrock",
+    "name": "Arrow Classic Rock",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://stream.gal.io/arrow"
+      }
+    ],
+    "website": "https://www.arrow.nl"
+  },
+  "hotdanceradio": {
+    "displayorder": 76,
+    "genres": {
+      "dance": true,
+      "pop": true
+    },
+    "language": "nl",
+    "logosource": "https://avatars.io/twitter/hotdanceradio",
+    "name": "Hot Dance Radio",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "http://listen.hotdanceradio.com"
+      }
+    ],
+    "website": "https://www.hotdanceradio.com"
+  },
+  "kinkdna": {
+    "displayorder": 77,
+    "genres": {
+      "alternative": true,
+      "pop": true,
+      "rock": true,
+      "oldies":true
+    },
+    "language": "nl",
+    "logosource": "https://avatars.io/twitter/kinkpuntnl",
+    "name": "KINK DNA",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINK_DNAAAC.aac"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINK_DNA.mp3"
+      }     
+    ],
+    "website": "https://kink.nl"
+  }
+}

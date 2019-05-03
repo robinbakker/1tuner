@@ -1,0 +1,9 @@
+.firebase
+.firebaserc
+.vscode
+.well-known
+node_modules
+/build
+/*.log
+*.lock
+/firebase.json

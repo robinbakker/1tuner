@@ -1,0 +1,17 @@
+.errormsg{
+	position: absolute;
+	color:#fff;
+}
+.esi-container {
+	border:none;
+	padding:0;
+	margin:0;
+}
+.esi-container label {
+	display: inline-block;
+	height:auto;
+	margin: 0 .4rem 0 0;
+}
+.esi-container .esi-textfield {
+	margin: 0 .4rem 0 0;
+}

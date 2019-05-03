@@ -1,0 +1,10 @@
+.dd-container {
+	margin:0 .4rem;
+	padding:0;
+}
+.dd-label-text {
+	flex:1;
+}
+.dd-select{
+	margin:0;
+}
