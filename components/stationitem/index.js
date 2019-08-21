@@ -24,7 +24,7 @@ export default class StationItem extends Component {
 			return (
 				<div class={'preset-list__item-content preset-list__item-content--station'}>
 					<button data-station={this.props.stationItem.id} onClick={this.setStation} title={this.props.stationItem.name} class={'preset-list__button'  + (this.props.small ? ' preset-list__button--small' : '') + (this.props.stationItem.logosource ? '' : ' icon--station')} style={(this.props.stationItem.logosource ? '' : this.getStyleString(this.props.stationItem.id))}>
-						{this.props.stationItem.logosource ? <img class="button__image" alt={this.props.stationItem.name} src={this.props.stationItem.logosource} /> : null}
+						{this.props.stationItem.logosource ? <img class="button__image" alt={this.props.stationItem.name} loading={'lazy'} src={this.props.stationItem.logosource} /> : null}
 						<span class={'button__text' + (this.props.stationItem.logosource ? '' : ' button__text--inverted')}>{this.props.stationItem.name}</span>
 					</button>
 					<Link href={'/radio-station/'+this.props.stationItem.id} class={'preset-list__link'}>{this.props.stationItem.name}</Link>

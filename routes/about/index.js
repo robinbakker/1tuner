@@ -31,7 +31,7 @@ export default class About extends Component {
 					</ul>
 					
 					<h2 class={style['content-title']}>Who?</h2>
-					<p>This is a little side project from <a href="https://twitter.com/robinbakker" target="_blank" rel="noopener">Robin Bakker</a> (See also <a href="https://medium.com/@robinbakker/creating-a-web-app-as-side-project-2b8f96a44893" rel="noopener" target="_blank">Creating a web app as side project</a>).<br />Do you miss a feature? Spotted a bug? Oh no! Please let me know: <a href="https://twitter.com/1tuner" rel="noopener me" target="_blank">@1tuner</a>.</p>
+					<p>This is a little side project from <a href="https://twitter.com/robinbakker" target="_blank" rel="noopener">Robin Bakker</a>. Read more: <a href="https://medium.com/@robinbakker/creating-a-web-app-as-side-project-2b8f96a44893" rel="noopener" target="_blank">Creating a web app as side project</a>. You can find 1tuner at <a href="https://github.com/robinbakker/1tuner" rel="noopener" target="_blank">GitHub</a> as well.<br />Do you miss a feature? Spotted a bug? Oh no! Please let me know: <a href="https://twitter.com/1tuner" rel="noopener me" target="_blank">@1tuner</a>.</p>
 					<p>Or <a href="https://paypal.me/RobinBakker" target="_blank" rel="noopener">buy me a ☕ + 🍪</a>!</p>
 
 					<p class={style.smallish}>v {this.props.version}</p>
