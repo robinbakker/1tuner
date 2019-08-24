@@ -11,7 +11,8 @@ export default class AudioPlayer extends Component {
       station: '',
       errorMessage: null,
       srcItems:[],
-      callbackId: -1
+      callbackId: -1,
+      reconnectTimeout: null
     };
   }
 
@@ -162,8 +163,27 @@ export default class AudioPlayer extends Component {
   // }
   
   checkAudio = (AIsPlaying, AStationPlaying) => {
+    console.log('checkAudio');
     let stationPlaying = !AStationPlaying ? this.props.station : AStationPlaying;
-    if (this.state.isPlaying==AIsPlaying && this.state.station==stationPlaying && (!this.state.errorMessage || (this.state.errorMessage && this.errorMessage.code!=1000))) {
+    if (this.state.isPlaying == AIsPlaying && this.state.station == stationPlaying && !this.state.errorMessage) {
+      return; // Nothing changed
+    }
+    var self = this;
+    let isOffline = ('onLine' in navigator && !navigator.onLine);
+    if (isOffline) {
+      // Makes no sense to checkAudio/reconnect now... Try again later
+      console.log('checkAudio: offline, try again later');
+      clearTimeout(this.state.reconnectTimeout);
+      let newReconnectTimeout = setTimeout(function() { self.checkAudio(true); }, 1000);
+      this.setState({
+        errorMessage: {
+          code: 1000,
+          message: 'Offline',
+          source: ''
+        },
+        reconnectTimeout: newReconnectTimeout
+      });
+      this.props.hasError(this.state.errorMessage);
       return;
     }
     this.setState({
@@ -171,54 +191,40 @@ export default class AudioPlayer extends Component {
       station: stationPlaying,
     });
     var audioPL = document.getElementById('audioPlay');
-    
-    if (typeof audioPL !== 'undefined' && audioPL != null) {
-      let isOffline = ('onLine' in navigator && !navigator.onLine);
-      if (isOffline) {
-        this.setState({
-          errorMessage: {
-          code: 1000,
-          message: 'Offline',
-          source: ''
-          }
-        });
-        this.props.hasError(this.state.errorMessage);
-        return; // Makes no sense to reconnect now...
-      }
-      if (!AIsPlaying || this.state.station!=this.props.station || this.state.errorMessage!=null) {
-        if (!audioPL.paused) {
-          audioPL.pause();
-        }        
-        audioPL.removeAttribute('src');
-        audioPL.load();
-        this.setState({
-          errorMessage: null
-        });
-        if(!AIsPlaying) return;
-      }
+    if (typeof audioPL === 'undefined' || audioPL == null) {
+      return;
+    }    
+    if (!AIsPlaying || this.state.station!=this.props.station || this.state.errorMessage!=null) {
+      if (!audioPL.paused) {
+        audioPL.pause();
+      }        
       audioPL.removeAttribute('src');
       audioPL.load();
-      var self = this;
-      var playPromise = audioPL.play();
-  if (playPromise !== undefined) {
-    playPromise.then(_ => {
-      // Automatic playback started!
-      // Show playing UI.
-      self.setState({
-        isPlaying: true,
-        promiseIsPlaying: true,
+      this.setState({
+        errorMessage: null
       });
-    }).catch(error => {
-      // Auto-play was prevented
-      // Show paused UI.
-      self.setState({
-        isPlaying: false,
-        promiseIsPlaying:false,
-      });
-    });
-  }
-      this.startMediaSession();
+      this.props.hasError();
+      if(!AIsPlaying) return;
     }
+    audioPL.removeAttribute('src');
+    audioPL.load();
+    var playPromise = audioPL.play();
+    if (playPromise !== undefined) {
+      playPromise.then(_ => {
+        // Automatic playback started! // Show playing UI.
+        self.setState({
+          isPlaying: true,
+          promiseIsPlaying: true,
+        });
+      }).catch(() => {
+        // Auto-play was prevented // Show paused UI.
+        self.setState({
+          isPlaying: false,
+          promiseIsPlaying:false,
+        });
+      });
+    }
+    this.startMediaSession();    
   }
 
   startMediaSession = () =>  {
@@ -247,27 +253,40 @@ export default class AudioPlayer extends Component {
       let self = this;
       navigator.mediaSession.setActionHandler('play', _ => self.mediaSessionPlay());
       navigator.mediaSession.setActionHandler('pause', _ => self.mediaSessionPause());
+      //navigator.mediaSession.setActionHandler('stop', _ => self.mediaSessionStop());
+      //navigator.mediaSession.setActionHandler('previoustrack', function() {console.log('prev');});
+      //navigator.mediaSession.setActionHandler('nexttrack', function() {console.log('next');});
     }
   }
 
   mediaSessionPlay = () => {
     this.props.handleMediaSessionEvent('play');
-    navigator.mediaSession.playbackState = "playing";
+    navigator.mediaSession.playbackState = 'playing';
   }
   mediaSessionPause = () => {
     this.props.handleMediaSessionEvent('pause');
-    navigator.mediaSession.playbackState = "paused";
+    navigator.mediaSession.playbackState = 'paused';
+  }
+  mediaSessionStop = () => {
+    this.props.handleMediaSessionEvent('stop');
+    navigator.mediaSession.playbackState = 'none';
   }
 
   handleAudioError = (e) => {
     let Error = null;
+    let newReconnectTimeout = this.state.reconnectTimeout;
+    clearTimeout(this.state.reconnectTimeout);
+    var self = this;
     if (!e || !e.target || typeof e.target.error === 'undefined' || typeof e.target.error.code === 'undefined') {
       if ('onLine' in navigator && !navigator.onLine) {
         Error = {
           code: 1000,
           message: 'Offline',
           source: ''
-          };
+        };
+        // Makes no sense to reconnect now... Try again later
+        newReconnectTimeout = setTimeout(function() { self.checkAudio(true); }, 1000);
+        console.log('handleAudioError: offline, try again later');        
       } else {
         Error = {
           code: 0,
@@ -290,8 +309,8 @@ export default class AudioPlayer extends Component {
             message:'A network error caused the audio download to fail.',
             source: '' //this.props.source 
           };
-          var self = this;
-          setTimeout(3000, function() { self.checkAudio(true); });
+          newReconnectTimeout = setTimeout(function() { self.checkAudio(true); }, 1000);
+          console.log('handleAudioError: network error, try again later');
           break;
         case e.target.error.MEDIA_ERR_DECODE:
         case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
@@ -313,7 +332,8 @@ export default class AudioPlayer extends Component {
     if (Error != null) {
       this.setState({
         isPlaying: false,
-        errorMessage: Error
+        errorMessage: Error,
+        reconnectTimeout: newReconnectTimeout
       });
       this.props.hasError(Error);
     }
