@@ -117,6 +117,7 @@ export default class App extends Component {
 				lsArray.splice(lsIndex, 1);
 				lsArray.unshift(stationItem);
 				this.setState({lastStationList:lsArray});
+				this.saveLocal();
 				return;
 			}
 			if (this.state.stationList) {
@@ -130,6 +131,7 @@ export default class App extends Component {
 					lsArray.splice(lsIndex, 1);
 					lsArray.unshift(stationItem);
 					this.setState({lastStationList:lsArray});
+					this.saveLocal();
 				}
 			} 
 		}		

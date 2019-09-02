@@ -11,10 +11,10 @@ export default class Home extends Component {
 		document.title = '1tuner | listen to radio online';
 	}
 	changeStation = (AStation) => {
-		this.props.changeStation(AStation)
+		this.props.changeStation(AStation);
 	}
 	changePlanning = (APlanning) => {
-		this.props.changePlanning(APlanning)
+		this.props.changePlanning(APlanning);
 	}
 	
 	render() {

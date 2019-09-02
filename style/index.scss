@@ -411,7 +411,9 @@ a.preset-list__link {
 	transform: translate3d(3000%,0,0);
 }
 .button__image {
-	max-width: 4rem;
+	width: 4rem;
+	height: auto;
+	min-height: 1rem;
   max-height: 4rem;
   margin-top: -1rem;
 }

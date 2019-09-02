@@ -211,7 +211,7 @@
       "pop": true
     },
     "language": "hi",
-    "logosource": "https://avatars.io/twitter/927bigfm",
+    "logosource": "https://avatars.io/twitter/bigfmindia",
     "name": "Big FM",
     "streams": [
       {
@@ -219,7 +219,7 @@
         "url": "http://prclive1.listenon.in:9960/;"
       }
     ],
-    "website": "http://927bigfm.com"
+    "website": "https://www.bigfmindia.com"
   },
   "bnr": {
     "displayorder": 12,
@@ -651,7 +651,7 @@
       "rock": true
     },
     "language": "fr",
-    "logosource": "https://www.nrj.fr/img/logo-nrj.svg",
+    "logosource": "https://avatars.io/twitter/nrjhitmusiconly",
     "name": "NRJ",
     "streams": [
       {
@@ -920,7 +920,7 @@
       "pop": true
     },
     "language": "hi",
-    "logosource": "https://pbs.twimg.com/profile_images/771532225875578880/tZ4jJH1s_400x400.jpg",
+    "logosource": "https://avatars.io/twitter/radiomirchi",
     "name": "Radio Mirchi",
     "streams": [
       {
@@ -1239,7 +1239,7 @@
       "pop": true
     },
     "language": "nl-BE",
-    "logosource": "https://pbs.twimg.com/profile_images/985820089982349312/d8GAdxVZ_400x400.jpg",
+    "logosource": "https://avatars.io/twitter/radio1be",
     "name": "Radio 1",
     "streams": [
       {
@@ -1261,7 +1261,7 @@
       "rock": true
     },
     "language": "nl-BE",
-    "logosource": "https://pbs.twimg.com/profile_images/879298480669372417/hGbeQX92_400x400.jpg",
+    "logosource": "https://avatars.io/twitter/stubru",
     "name": "Studio Brussel",
     "streams": [
       {

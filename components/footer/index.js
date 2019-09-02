@@ -19,7 +19,6 @@ export default class Footer extends Component {
       planning: {
         name:'',
         href:'',
-        intervalTimer: null,
         schedule:[],
       },
       station: {},
@@ -67,9 +66,6 @@ export default class Footer extends Component {
     }
     let thisTimerWorker = this.state.timerWorker;
     if (this.props.listeningMode==LM_None) {
-      if (this.state.planning && this.state.planning.intervalTimer!=null) {
-        clearInterval(this.state.planning.intervalTimer);
-      }
       if (thisTimerWorker!=null) {
         thisTimerWorker.terminate();
       }
@@ -79,7 +75,6 @@ export default class Footer extends Component {
         planning: {
           href:'',
           name:'',
-          intervalTimer: null,
           schedule:[],
         },
         station: {},        
@@ -101,7 +96,6 @@ export default class Footer extends Component {
           planning: {
             href:'',
             name:'',
-            intervalTimer: null,
             schedule:[],
           },
           station: currentStation,
@@ -119,9 +113,6 @@ export default class Footer extends Component {
           prog.active = false;
           prog.stationData = self.getStation(prog.station);
         });
-        if (currentPlanning.intervalTimer != null) {
-          clearInterval(currentPlanning.intervalTimer);
-        }
         if (window.Worker && thisTimerWorker==null) {
           thisTimerWorker = new Worker('/assets/workers/timer.js');
           thisTimerWorker.postMessage(5000);
