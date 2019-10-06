@@ -155,6 +155,30 @@ a:hover {
 	border-top:.35rem solid transparent;
 	border-bottom:.35rem solid transparent;
 }
+.btn--search {
+	padding-left: 2rem;
+	position: relative;
+}
+.btn--search:before, .btn--search:after {
+	content: '\20';	
+	position: absolute;
+}
+.btn--search:before {
+	left: .8rem;
+	top: .5rem;
+	border-radius: 50%;
+  height: .5rem;
+  width: .5rem;
+  border: .15rem solid #fff;
+}
+.btn--search:after {    
+	height: .15rem;
+	width: .5rem;
+	background: #fff;
+	top: 1.2rem;
+	left: .6rem;
+	transform: rotate(-45deg);
+}
 .btn--create {
 	padding-left: 1.5rem;
 	position: relative;
@@ -366,7 +390,9 @@ a.preset-list__link {
 	background-color: #fff;
 	border: none;
 	font-size: 1rem;
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 7rem;
 	height: 7rem;	
 	border-radius: .2rem;
@@ -380,7 +406,12 @@ a.preset-list__link {
 	overflow: hidden;
 	outline-color: $text-color;
 	color: $text-color;
+	font-family: inherit;
 	cursor: pointer;
+}
+.preset-list__button:focus {
+	outline: -webkit-focus-ring-color auto 1px;
+	outline-color: $text-color;
 }
 .preset-list__item:hover .preset-list__button,
 .preset-list__item:focus .preset-list__button,
@@ -415,7 +446,7 @@ a.preset-list__link {
 	height: auto;
 	min-height: 1rem;
   max-height: 4rem;
-  margin-top: -1rem;
+	margin-top: -1rem;
 }
 .button__text {
 	position: absolute;

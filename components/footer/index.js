@@ -2,10 +2,25 @@ import { h, Component } from 'preact';
 import style from './style';
 import AudioPlayer from '../audioplayer';
 import { Link } from 'preact-router/match';
+import { getTime, getTimeFromSeconds } from '../../utils/misc';
 
 const LM_None = 0;
 const LM_Station = 1;
 const LM_Planning = 2;
+const LM_Podcast = 3;
+
+const MEDIA_EMPTY = {
+  name: '',
+  link: '',
+  logoUrl: '',
+  programInfo:'',
+  nextProgram:''
+};
+const PLANNING_EMPTY = {
+  href:'',
+  name:'',
+  schedule:[],
+};
 
 export default class Footer extends Component {
 	constructor(props) {
@@ -16,17 +31,17 @@ export default class Footer extends Component {
       listeningMode: LM_None,
       isPlaying: false,
       isLoading: true,
-      planning: {
-        name:'',
-        href:'',
-        schedule:[],
-      },
+      loadDataActive: false,
+      planning: PLANNING_EMPTY,
       station: {},
-      stationPlaying:'', 
+      mediaPlayingID:'', 
       audioSources: [],
       stationList: [],
-      timerWorker:null,
-      audioError:null,
+      media: MEDIA_EMPTY,
+      timerWorker: null,
+      audioError: null,
+      elapsedtime: 0,
+      progressvalue: 0,
       hasRemoteDeviceSupport: false,
       connectedToRemote: false
     };
@@ -41,7 +56,7 @@ export default class Footer extends Component {
     this.props.onRef(null);
   }
   
-  forcePlay(APlayAudio) {
+  forcePlay = (APlayAudio) => {
     if (APlayAudio) {
       this.setState({
         isPlaying:true
@@ -50,61 +65,98 @@ export default class Footer extends Component {
     }
   }
 
-	loadData = () => {
+  loadData = () => {
+    this.setState({loadDataActive:true});
     let self = this;
     let wasPlaying = this.state.isPlaying; 
-    if (this.state.isPlaying) {
-      this.playAudio(true);
-    }
-    if ((!this.state.stationList || !this.state.stationList.length)) {
-      if (this.props.stationList && this.props.stationList.length) {
-        this.setState({stationList:this.props.stationList});
-      } else {
-        // Load stations?
-        return;
+    if (this.props.listeningMode == LM_Station || this.props.listeningMode == LM_Planning) {
+      if ((!this.state.stationList || !this.state.stationList.length)) {
+        if (this.props.stationList && this.props.stationList.length) {
+          this.setState({stationList:this.props.stationList});
+        } else {
+          // Load stations?
+          this.setState({loadDataActive:false});
+          return;
+        }
       }
     }
     let thisTimerWorker = this.state.timerWorker;
+    if (this.props.listeningMode!=LM_Planning && thisTimerWorker!=null) {
+      thisTimerWorker.terminate();
+    }
     if (this.props.listeningMode==LM_None) {
-      if (thisTimerWorker!=null) {
-        thisTimerWorker.terminate();
-      }
-      this.setState({
-        listeningMode: LM_None,
-        isPlaying: false,
-        planning: {
-          href:'',
-          name:'',
-          schedule:[],
-        },
-        station: {},        
-        stationPlaying:'', 
-        audioSources: [],
-        timerWorker: null
-      });
+      this.setDataNone(); 
     } else if (this.props.listeningMode == LM_Station && this.props.station != null && this.props.station != '') {
-      if (thisTimerWorker!=null) {
-        thisTimerWorker.terminate();
-      }
-      this.setState({timerWorker: null});
       let currentStation = this.getStation(this.props.station);
-      if (currentStation!=null) {
+      if (currentStation == null) {
+        // Station was not found... Display error?
+        this.setDataNone();
+      } else {
         let asrcs = self.getAudioSources(currentStation);
         this.setState({
           listeningMode: LM_Station,
           isPlaying: wasPlaying,
-          planning: {
-            href:'',
-            name:'',
-            schedule:[],
+          planning: PLANNING_EMPTY,
+          media: {
+            name: currentStation.name,
+            link: '/radio-station/' + this.props.station,
+            logoUrl: currentStation.logosource,
+            programInfo: '',
+            nextProgram: ''
           },
+          podcast: null,
           station: currentStation,
-          stationPlaying:'', 
+          mediaPlayingID: '', 
           audioSources: asrcs,
+          timerWorker: null,
+          loadDataActive:false
+        });
+        if(wasPlaying) {
+          this.playAudio(false, this);
+        }
+      }     
+    } else if (this.props.listeningMode == LM_Podcast && this.props.podcast && this.props.podcast.episodes && this.props.podcast.episodes.length) {
+      let currentPodcast = this.props.podcast;
+      let currentEpisode = this.getCurrentEpisode(currentPodcast.episodes);
+      if (!currentEpisode) {
+        // Podcast episode was not found... Display error?
+        console.log('Current podcast episode was not found...');
+        this.setDataNone();
+        return;
+      }
+      let epAudioSource = [{ url:currentEpisode.url, mimetype:currentEpisode.type }];
+      if (!this.state.audioSources || (this.state.audioSources.length && this.state.audioSources[0].url != epAudioSource.url)) {
+        this.setState({
+          listeningMode: LM_Podcast,
+          isPlaying: wasPlaying,
+          planning: PLANNING_EMPTY,
+          media: {
+            name: currentPodcast.name,
+            link: `/podcast/${currentPodcast.name}/?feedurl=${currentPodcast.feedUrl}`,
+            logoUrl: currentPodcast.artworkUrl,
+            programInfo: currentEpisode.title,
+            nextProgram:''
+          },
+          podcast: currentPodcast,
+          station: null,
+          mediaPlayingID:'', 
+          audioSources: epAudioSource,
+          timerWorker: null,
+          loadDataActive:false
+        });
+      } else {
+        // is the episode already playing?
+        console.log('Podcast episode audioSource loaded already, looks the same?');
+        this.setState({
+          listeningMode: LM_Podcast,
+          timerWorker: null,
+          planning: PLANNING_EMPTY,
+          station: null,
+          loadDataActive: false
         });
       }
-      if(wasPlaying) {
-        this.playAudio();
+      if (wasPlaying) {
+        this.playAudio(false, this);
       }
     } else if (this.props.listeningMode==LM_Planning && this.props.planning && this.props.planning.href) {
       let currentPlanning = this.props.planning;
@@ -123,16 +175,60 @@ export default class Footer extends Component {
           listeningMode: LM_Planning,
           planning: currentPlanning,
           station: {},
-          stationPlaying:'',
+          media: {
+            name: currentPlanning.name,
+            link: currentPlanning.href,
+            logoUrl: '',
+            programInfo: '',
+            nextProgram: ''
+          },
+          podcast:null,
+          mediaPlayingID:'',
           audioSources: [],
-          timerWorker:thisTimerWorker
+          timerWorker:thisTimerWorker,
+          loadDataActive:false
         });
         self.setActiveStation(self);
         if (wasPlaying) {
-          this.playAudio();
+          this.playAudio(false, self);
         }
+      } else {
+        // Planning not found in props, show error?
+        console.log('Planning not found in props...');
+        this.setDataNone();
+      }
+    } else {
+      this.setDataNone(); 
+    }
+  }
+
+  setDataNone = () => {
+    if (this.state.isPlaying && this.child) {
+      // Stop playing, child! :P
+      this.child.method(false, null, '');    
+    }
+    this.setState({
+      listeningMode: LM_None,
+      isPlaying: false,
+      planning: PLANNING_EMPTY,
+      media: MEDIA_EMPTY,
+      station: {},        
+      mediaPlayingID:'', 
+      audioSources: [],
+      timerWorker: null
+    });
+  }
+
+  getCurrentEpisode = (AEpisodeList) => {
+    if(!AEpisodeList || !AEpisodeList.length) {
+      return null;
+    }
+    for(let i=0;i<AEpisodeList.length; i++) {
+      if(AEpisodeList[i].isPlaying) {
+        return AEpisodeList[i];
       }
     }
+    return null;
   }
 
   handleMessageFromWorker = (AMessage, ASelfRef) => {
@@ -177,7 +273,7 @@ export default class Footer extends Component {
             prevItem.active = true;
             self.setActiveSchedule(prevItem, i==1, currentMinute);
             if (hasChanged && self.state.isPlaying) {
-              self.playAudio();
+              self.playAudio(false, self);
             }
             return true;
           } else {
@@ -192,12 +288,12 @@ export default class Footer extends Component {
           prevItem.active = true;
           self.setActiveSchedule(prevItem, false);
           if (hasChanged && self.state.isPlaying) {
-            self.playAudio();
+            self.playAudio(false, self);
           }
           return true;
         } else {
           prevItem.active=false;
-          self.playAudio(); 
+          self.playAudio(false, self); 
         }
       }
       self.setState({
@@ -221,8 +317,18 @@ export default class Footer extends Component {
       if (!loadedStation) return;
       loadedStation.id = ASchedule.station;
       let asrcs = this.getAudioSources(loadedStation);
+      let nextProgram = '';
+      let nextProgramItem = this.getNextScheduleItem();
+      if (nextProgramItem) {
+        let nextStation = this.getStation(nextProgramItem.station);
+        nextProgram = getTime(nextProgramItem.startHour) + ' ' + nextStation.name;
+      }
+      let currentMedia = this.state.media;
+      currentMedia.programInfo = loadedStation.name;
+      currentMedia.nextProgram = nextProgram;
       this.setState({
         isPlaying: isPlaying,
+        media: currentMedia,
         station: loadedStation,
         audioSources: asrcs,
       });
@@ -252,25 +358,48 @@ export default class Footer extends Component {
         this.loadData();
         return false;
       }
-      if (!this.state.station) {
+      if (this.state.listeningMode == LM_None) {
+        // Strange to get here with LM_None, maybe the prop wasn't reset yet?
+        setTimeout(this.loadData, 200);
+        return false;
+      }
+      if (this.state.listeningMode == LM_Podcast) {
+        let currentPodcast = this.props.podcast;
+        let currentEpisode = this.getCurrentEpisode(currentPodcast.episodes);
+        if (this.state.podcast && this.state.mediaPlayingID != currentEpisode.url) {
+          this.props.setPodcastEpisodeTimeElapsed(this.state.podcast.feedUrl, this.state.mediaPlayingID, this.state.elapsedtime);
+        }
+        let playingOutcome = this.state.isPlaying || this.state.mediaPlayingID != currentEpisode.url;
+        this.setState({
+          podcast: currentPodcast,
+          audioSources: [{ url:currentEpisode.url, mimetype:currentEpisode.type }],
+          mediaPlayingID: currentEpisode.url,
+          elapsedtime: currentEpisode.secondsElapsed || 0,
+          progressvalue: 0,
+          media: {
+            name: currentPodcast.name,
+            link: `/podcast/${currentPodcast.name}/?feedurl=${currentPodcast.feedUrl}`,
+            logoUrl: currentPodcast.artworkUrl,
+            programInfo: currentEpisode.title,
+            nextProgram:''
+          },
+        });
+        return playingOutcome;
+      } 
+      if (!this.state.station || !this.state.station.id) {
         this.setState({
           isPlaying: false
         });
-        // Stop audio?
         return false;
       }
       if (!this.state.isPlaying) {
         return false;
       } 
       var self = this;
-      var stationid = null;
-      if (typeof this.state.station.id !== 'undefined') {
-        stationid = this.state.station.id;
-      }
-      if (stationid == null) return false;
-      if (self.state.stationPlaying == stationid) return true;
+      var stationid = this.state.station.id;
+      if (self.state.mediaPlayingID == stationid) return true;
       self.setState({
-        stationPlaying: stationid
+        mediaPlayingID: stationid
       });
       if (typeof this.state.station.streams === 'undefined') {
         let CurrentStation = self.getStation(stationid);
@@ -307,21 +436,24 @@ export default class Footer extends Component {
       return asrcs;
     }
 
-    playAudio = (AUserEvent) => {
-      let asrcs = null;
+    playAudio = (AUserEvent, ASelfRef) => {
+      let self = ASelfRef || this;
       if (AUserEvent) {
-        let isPlaying = this.state.isPlaying;
-        this.setState({
+        let isPlaying = self.state.isPlaying;
+        if (isPlaying && self.state.listeningMode==LM_Podcast && self.state.podcast) {
+          this.props.setPodcastEpisodeTimeElapsed(self.state.podcast.feedUrl, self.state.mediaPlayingID, self.state.elapsedtime);
+        }
+        self.setState({
           isPlaying: !isPlaying
         });
       }
-      asrcs = this.state.audioSources;
-      if (this.child) {
-        let isPlayingOutcome = this.changeAudio();
-        if (isPlayingOutcome) {
-          this.setState({isLoading:true});
+      if (self.child) {
+        let wasPlaying = self.state.isPlaying;
+        let isPlayingOutcome = self.changeAudio();
+        if (isPlayingOutcome && !wasPlaying) {
+          self.setState({isLoading:true});        
         }
-        this.child.method(isPlayingOutcome, asrcs, this.state.stationPlaying);
+        self.child.method(isPlayingOutcome, self.state.audioSources, self.state.mediaPlayingID, self.state.listeningMode==LM_Podcast, self.state.elapsedtime);
       }
     }
 
@@ -332,19 +464,19 @@ export default class Footer extends Component {
     }
 
     handleMediaSessionEvent = (AEvent) => {
-      this.playAudio(AEvent);
+      this.playAudio(AEvent, this);
+    }
+
+    rewind = () => {
+      this.child.seekAudio(-10);
+    }
+
+    fastForward = () => {
+      this.child.seekAudio(30);
     }
 
     closeFooter = () => {
       this.props.closeFooter();
-    }
-
-    getTime = (ANumber) => {
-      if(ANumber<10) {
-        return '0' + ANumber + ':00';
-      } else {
-        return ANumber + ':00';
-      }
     }
 
     dataLoaded = () => {
@@ -366,41 +498,63 @@ export default class Footer extends Component {
       });
     }
 
+    timeUpdate = (APlayer) => {
+      if (this.state.listeningMode != LM_Podcast) {
+        if (this.state.progressvalue) {
+          this.setState({ 
+            progressvalue: 0, 
+            elapsedtime: null 
+          });
+        }
+        return;
+      }
+      this.setState({ 
+        isLoading: false,
+        isPlaying: !APlayer.paused,
+        progressvalue: APlayer.currentTime / APlayer.duration, 
+        elapsedtime: APlayer.currentTime 
+      });
+    }
+
+    anotherPodcastEpisodeIsRequested = (APodcast) => {
+      if(!APodcast || !APodcast.episodes) {
+        return false;
+      }
+      let ep = this.getCurrentEpisode(APodcast.episodes);
+      if (!ep) {
+        return false;
+      }
+      return this.state.mediaPlayingID != ep.url;
+    }
+
 	render() {
-    if ((this.props.listeningMode != this.state.listeningMode) || 
+    if (!this.state.loadDataActive && (this.props.listeningMode != this.state.listeningMode || 
         (this.props.listeningMode == LM_Station && this.props.station != this.state.station.id) || 
-        (this.props.listeningMode == LM_Planning && this.props.planning.href != this.state.planning.href)) {
+        (this.props.listeningMode == LM_Podcast && (!this.state.podcast || this.anotherPodcastEpisodeIsRequested(this.props.podcast))) || 
+        (this.props.listeningMode == LM_Planning && this.props.planning.href != this.state.planning.href))) {
       this.loadData();
     }
-    let programInfo = '';
-    let nextProgram = '';
-    let programLogo = this.state.station.logosource ? this.state.station.logosource : null;
-    let mediaName = this.state.listeningMode == LM_Station ? this.state.station.name : this.state.planning.name;
-    if (this.state.listeningMode == LM_Station) {
-      mediaName = <Link href={'/radio-station/'+this.props.station} class={style['footer__link'] + ' icon--info'}>{mediaName}</Link>;
-    } else if (this.state.listeningMode == LM_Planning && this.state.planning && this.state.planning.href) {
-      mediaName = <Link href={this.props.planning.href} class={style['footer__link'] + ' icon--info'}>{mediaName}</Link>;
-      programInfo = this.state.station.name;
-      let nextProgramItem = this.getNextScheduleItem();
-      if(nextProgramItem) {
-        let nextStation = this.getStation(nextProgramItem.station);
-        nextProgram = this.getTime(nextProgramItem.startHour) + ' ' + nextStation.name;
-      }
-    }
     return (
-			<footer class={style['footer'] + ' ' + (this.state.listeningMode==LM_None ? style['footer--hidden'] : style['footer--visible'])} style={programLogo ? 'background-image:url(' + programLogo + ')':null}>
+			<footer class={style['footer'] + ' ' + style['footer--mode'+this.state.listeningMode] + ' ' + (this.state.listeningMode==LM_None || !this.state.mediaPlayingID ? style['footer--hidden'] : style['footer--visible'])} style={this.state.media.logoUrl ? 'background-image:url(' + this.state.media.logoUrl + ')':null}>
 				<div class={style['footer__item'] + ' ' + style['footer__item--audio']}>
-          <button className={style['play-button'] + ' ' + (this.state.isPlaying ? style['play-button--stop'] : style['play-button--play']) + ' ' + (this.state.isPlaying && this.state.isLoading ? style['play-button--loading'] : '')} onClick={this.playAudio} data-isplaying={this.state.isPlaying} id="icoAudioControl">{this.state.isPlaying ? 'Stop' : 'Play'}</button>
-          <AudioPlayer onRef={ref => (this.child = ref)} isPlaying={this.state.isPlaying} dataLoaded={this.dataLoaded} setRemoteDeviceSupport={this.setRemoteDeviceSupport} setConnectedToRemote={this.setConnectedToRemote} handleMediaSessionEvent={this.handleMediaSessionEvent} mediatitle={this.state.planning.name} mediaartist={programInfo} medialogo={programLogo} hasError={this.audioError} station={this.state.stationPlaying} sources={this.state.audioSources} />
+          <button className={style['rew-button'] + ' ' + style['rew-button--mode'+this.state.listeningMode]} aria-label={'Rewind 10 seconds'} onClick={this.rewind.bind(this)} disabled={!this.state.isPlaying}>10s</button>
+          <button className={style['play-button'] + ' ' + style['play-button--mode'+this.state.listeningMode] + ' ' + (this.state.isPlaying ? style['play-button--stop'] : style['play-button--play']) + ' ' + (this.state.isPlaying && this.state.isLoading ? style['play-button--loading'] : '')} onClick={this.playAudio.bind(this)} data-isplaying={this.state.isPlaying} id="icoAudioControl">{this.state.isPlaying ? 'Stop' : 'Play'}</button>
+          <button className={style['ffw-button'] + ' ' + style['ffw-button--mode'+this.state.listeningMode]} aria-label={'Fast forward 30 seconds'} onClick={this.fastForward.bind(this)} disabled={!this.state.isPlaying}>30s</button>
+          <AudioPlayer onRef={ref => (this.child = ref)} isPlaying={this.state.isPlaying} timeUpdate={this.timeUpdate} dataLoaded={this.dataLoaded} setRemoteDeviceSupport={this.setRemoteDeviceSupport} setConnectedToRemote={this.setConnectedToRemote} handleMediaSessionEvent={this.handleMediaSessionEvent} mediatitle={this.state.media.name} mediaartist={this.state.media.programInfo} medialogo={this.state.media.logoUrl} hasError={this.audioError} mediaid={this.state.mediaPlayingID} sources={this.state.audioSources} />
           { this.state.hasRemoteDeviceSupport ? 
             <button class={'cast-button' + (this.state.connectedToRemote ? ' is-active' : '' )} onClick={this.promptForRemoteDevice}>Cast...</button>
             : null
           }
+          <progress id="audioProgress" class={style['audio-progress']} value={this.state.progressvalue} max="1"></progress>
+          {this.state.listeningMode==LM_Podcast ? <div class={style.elapsed}>{getTimeFromSeconds(this.state.elapsedtime)}</div> : null}
           <span class={style['audio-error'] + (this.state.audioError && this.state.audioError.message ? ' ' + style['audio-error--active'] : '')}>{(this.state.audioError && this.state.audioError.message ? this.state.audioError.message : '')}</span>
         </div>
         <div class={style['footer__item']}>
-          <h3>{mediaName}</h3>
-          {programInfo ? <p>{programInfo} <span class={style['footer__next-program']}>{nextProgram}</span></p> : null}          
+          <h3><Link href={this.state.media.link} class={style['footer__link'] + ' icon--info'}>{this.state.media.name}</Link></h3>
+          <p>
+            {this.state.media.programInfo}
+            {this.state.media.nextProgram ? <span class={style['footer__next-program']}>{this.state.media.nextProgram}</span> : null}
+          </p> 
         </div>
         <div class={style['footer__item'] + ' ' + style['footer__item--close']}>
           <button className={style['close-button']} title="Close" onClick={this.closeFooter}>Close</button>

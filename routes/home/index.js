@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import style from './style';
 import StationList from '../../components/stationlist';
 import StationItem from '../../components/stationitem';
+import PodcastList from '../../components/podcastlist';
 import PlanningList from '../../components/planninglist';
 import Loader from '../../components/loader';
 import { Link } from 'preact-router/match';
@@ -11,10 +12,10 @@ export default class Home extends Component {
 		document.title = '1tuner | listen to radio online';
 	}
 	changeStation = (AStation) => {
-		this.props.changeStation(AStation);
+		this.props.changeStation(AStation, true);
 	}
 	changePlanning = (APlanning) => {
-		this.props.changePlanning(APlanning);
+		this.props.changePlanning(APlanning, true);
 	}
 	
 	render() {
@@ -32,6 +33,18 @@ export default class Home extends Component {
 						<Link href="/radio-stations" native class="btn btn--below btn--float-right">More radio stations</Link>
 					</footer>
 				</section>
+				{this.props.podcastList ? 
+				<section class={'content__section content__section--podcasts'}>
+					<h3 class={'section-title'}>Podcasts</h3>
+					<div class={'section-main'}>
+						<PodcastList podcastList={this.props.podcastList} limitCount={5} horizontal={true} small={true} />
+					</div>
+					<footer class={'section-footer'}>
+						<Link href="/podcasts" native class="btn btn--below btn--float-right">Find more podcasts</Link>
+					</footer>
+				</section>
+				: null
+				}
 				<section class={'content__section content__section--planner'}>
 					<h3 class={'section-title'}>Radio Planner</h3>
 					<div class={'section-main'}>
@@ -45,7 +58,7 @@ export default class Home extends Component {
 				<section class={'content__section content__section--featured'}>
 					<h3 class={'section-title'}>Featured</h3>
 					<div class={'section-featured'}>
-						<StationItem stationItem={this.props.featured.stationItem} small={true} changeStation={this.changeStation.bind(this)} />
+						<StationItem stationItem={this.props.featured.stationItem} changeStation={this.changeStation.bind(this)} />
 						{this.props.featured.description ? 
 						<div class={style['featured-info']}>
 						<h4 class={style['featured-title']}>{this.props.featured.stationItem.name}</h4>

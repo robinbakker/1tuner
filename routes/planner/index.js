@@ -11,7 +11,7 @@ export default class Planner extends Component {
 	}
 
 	changePlanning = (APlanning) => {
-		this.props.changePlanning(APlanning);
+		this.props.changePlanning(APlanning, true);
 	}
 
 	render() {

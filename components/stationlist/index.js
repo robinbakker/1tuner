@@ -134,7 +134,7 @@ export default class StationList extends Component {
          <ul class={'preset-list' + (this.props.horizontal ? ' preset-list--horizontal' : ' preset-list--page')}>
           {this.state.items.map(stationItem => (
             <li class={'preset-list__item'}>
-							<StationItem stationItem={stationItem} small={this.props.small} changeStation={this.changeStation.bind(this)} />
+							<StationItem stationItem={stationItem} useLinksOnly={this.props.useLinksOnly} small={this.props.small} changeStation={this.changeStation.bind(this)} />
             </li>
           ))}
 				</ul>

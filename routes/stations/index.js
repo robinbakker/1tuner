@@ -41,6 +41,12 @@ export default class Stations extends Component {
 			document.body.classList.add('search-focus');
 		}
 	}
+	onKeyDown = (e) => {
+		if(e.keyCode===13) {
+			e.preventDefault();
+		}
+		return false;
+	}
 
 	render() {
 		if (!this.props.stationList) {			
@@ -62,11 +68,11 @@ export default class Stations extends Component {
 					<h1 class={'main-title'}>Radio Stations
 					<small class={'main-subtitle'}>Listen to the radio 📻</small></h1>
 					<form class={style['form-search']}>
-						<input type="text" placeholder="Find..." maxlength="100" required pattern="[a-zA-Z0-9\s]+" class={'textfield ' + style['textfield--search']} onFocus={this.setSearchInputFocus.bind(this)} onBlur={this.setSearchInputBlur.bind(this)} onInput={this.setSearchQuery.bind(this)} />
+						<input type="text" placeholder="Find..." maxlength="100" required pattern="[a-zA-Z0-9\s]+" class={'textfield ' + style['textfield--search']} onFocus={this.setSearchInputFocus.bind(this)} onBlur={this.setSearchInputBlur.bind(this)} onKeyDown={this.onKeyDown} onInput={this.setSearchQuery.bind(this)} />
 						<button class={style['btn-search-reset']} onClick={this.resetSearchQuery.bind(this)} type="reset">Reset</button>
 					</form>
 					<button class={'btn ' + style['btn--toggle-filter']} onClick={this.toggleFilterPanel.bind(this)}>Filter</button>
-					<StationList languageList={this.props.languageList} stationList={this.props.stationList} stationSearchQuery={this.state.searchQuery} changeStation={this.changeStation.bind(this)} limitCount={100} />
+					<StationList languageList={this.props.languageList} useLinksOnly={false} stationList={this.props.stationList} stationSearchQuery={this.state.searchQuery} changeStation={this.changeStation.bind(this)} limitCount={100} />
 				</main>
 				</div>
 			);

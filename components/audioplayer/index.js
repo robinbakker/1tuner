@@ -11,57 +11,70 @@ export default class AudioPlayer extends Component {
     this.state = {
       isPlaying: false,
       promiseIsPlaying:false,
-      station: '',
+      mediaid: '',
       errorMessage: null,
       srcItems:[],
       callbackId: -1,
       reconnectTimerWorker: null,
-      reconnectTriesCount:0
+      reconnectTriesCount:0,
+      usePause: false
     };
   }
 
   componentWillUnmount() {
     this.props.onRef(null);
   }
-  method(AIsPlaying, ASrcs, AStationPlaying) {
-    let stationPlaying = this.props.station;
-    if (AIsPlaying) {
+
+  method(AIsPlaying, ASrcs, AMediaIDPlaying, AUsePause, ASecondsElapsed) {
+    let mediaPlaying = this.props.mediaid;
+    let resumeAtSeconds = 0;
+    if (AIsPlaying && (mediaPlaying!=AMediaIDPlaying || !this.state.srcItems.length)) {
       let srcItems = [];
       if(ASrcs && ASrcs.length) {
-        stationPlaying = AStationPlaying;
+        mediaPlaying = AMediaIDPlaying;
         ASrcs.forEach((source) => {
-          srcItems.push(<AudioPlayerSource isPlaying={AIsPlaying} source={source} />);
+          srcItems.push(<AudioPlayerSource isPlaying={AIsPlaying} usePause={AUsePause} source={source} />);
         });
       } else {
         this.props.sources.forEach((source) => {
-          srcItems.push(<AudioPlayerSource isPlaying={AIsPlaying} source={source} />);
+          srcItems.push(<AudioPlayerSource isPlaying={AIsPlaying} usePause={AUsePause} source={source} />);
         });
       }
       this.setState({
         srcItems:srcItems,
-        errorMessage:null
+        errorMessage:null,
+        usePause: AUsePause
       });
       this.props.hasError(null);
+      if (AUsePause && ASecondsElapsed) resumeAtSeconds = ASecondsElapsed;
+    } else {
+      if (this.state.usePause != AUsePause) {
+        this.setState({usePause: AUsePause});
+      }
     }
-    this.checkAudio(AIsPlaying, stationPlaying);
+    this.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds); 
   }
 
-  // promptForRemoteDevice = () => {
-  //   let self = this;
-  //   let audioElement = document.getElementById('audioPlay');
-  //   if (audioElement.remote) {
-  //     audioElement.remote.prompt()
-  //     .then(x => {
-  //       self.props.setConnectedToRemote(true);
-  //     })
-  //     .catch(error => {
-  //        console.log('Argh! ' + error);
-  //        self.props.setRemoteDeviceSupport(false);
-  //     });
-  //   } else if (audioElement.webkitShowPlaybackTargetPicker) {
-  //     audioElement.webkitShowPlaybackTargetPicker();
-  //   }
-  // }
+  seekAudio = (ASeconds) => {
+    if(!ASeconds) {
+      return;
+    }
+    var audioPL = document.getElementById('audioPlay');
+    if (ASeconds<0) {
+      ASeconds = Math.abs(ASeconds);
+      if(audioPL.currentTime<=ASeconds) {
+        audioPL.currentTime = 0;
+      } else {
+        audioPL.currentTime -= ASeconds;
+      }
+    } else {
+      if(audioPL.currentTime >= audioPL.duration - ASeconds) {
+        audioPL.currentTime = audioPL.duration-.1;
+      } else {
+        audioPL.currentTime += ASeconds;
+      }
+    }
+  }
   
   componentDidMount() {	
     this.props.onRef(this);	
@@ -69,102 +82,7 @@ export default class AudioPlayer extends Component {
     if (typeof window !== 'undefined') {
       window.addEventListener('offline', function() { self.handleAudioError(); });
     }
-    if (typeof document !== 'undefined') {
-      let audioElement = document.getElementById('audioPlay');
-      
-      /*if (audioElement.remote) {
-        this.props.setRemoteDeviceSupport(true);
-        this.updateRemoteState(audioElement);
-        audioElement.remote.addEventListener('connect', function(event) {
-          // Connected means that the transition from local to remote playback
-          // has finished and all media commands now take effect on the remote
-          // playback state.
-          console.log('Connected to the remote device.');
-          self.props.setConnectedToRemote(true);
-          self.updateRemoteState(audioElement);
-        });
-        audioElement.remote.addEventListener('connecting', function(event) {
-          // Connecting means that the user agent is attempting to initiate
-          // remote playback with the selected remote playback device. The
-          // local playback of the media element continues in this state and
-          // media commands still take effect on the local playback state.
-          console.log('Connecting to the remote device...');
-          self.updateRemoteState(audioElement);
-        });
-        audioElement.remote.addEventListener('disconnect', function(event) {
-          // Disconnected means that the remote playback has not been
-          // initiated, has failed to initiate or has been stopped. All media
-          // commands will take effect on the local playback state.
-          console.log('Disconnected from the remote device.');
-          self.props.setConnectedToRemote(false);
-          self.updateRemoteState(audioElement);
-        });
-      } else if (audioElement.webkitShowPlaybackTargetPicker) {
-        this.updateRemoteStateWebKit(audioElement);
-	      audioElement.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', function(e) {
-          self.updateRemoteStateWebKit(audioElement);
-        });
-      }*/
-    }
   }
-
-  // updateRemoteState = (AMediaElement) => {
-  //   var self = this;
-  //   //debugger;
-  //   if (AMediaElement.remote.state == 'disconnected') {
-  //     // Let's watch remote device availability when there's no connected
-  //     // remote device.
-  //     console.log('Starting watching remote device availability...');
-  //     AMediaElement.remote.watchAvailability(self.handleAvailabilityChange)
-  //     .then(id => {
-  //       console.log('> Started watching remote device availability: ' + id);
-  //       self.setState({ callbackId: id });
-  //     })
-  //     .catch(error => {
-  //       debugger;
-  //       console.log('> Argh! ' + error);
-  //       self.handleAvailabilityChange(true); /* availability */
-  //     });
-  //   } else if (this.state.callbackId != -1) {
-  //     // If remote device is connecting or connected, we should stop
-  //     // watching remote device availability to save power.
-  //     console.log('Stopping watching remote device availability...');
-  //     AMediaElement.remote.cancelWatchAvailability(this.state.callbackId)
-  //     .then(_ => {
-  //       console.log('Stopped watching remote device availability');
-  //       self.setState({ callbackId: -1 });
-  //     })
-  //     .catch(error => {
-  //       debugger;
-  //       console.log('> Argh! ' + error);
-  //     });
-  //   }
-  // };
-
-  // updateRemoteStateWebKit = (AMediaElement) => {
-  //   console.log('webkitCurrentPlaybackTargetIsWireless = ' + AMediaElement.webkitCurrentPlaybackTargetIsWireless);
-  //   if (!AMediaElement.webkitCurrentPlaybackTargetIsWireless) {
-  //     // Let's watch remote device availability when there's no connected
-  //     // remote device.
-  //     console.log('Starting watching remote device availability...');
-  //     AMediaElement.addEventListener('webkitplaybacktargetavailabilitychanged', onWebKitPlaybackTargetAvailabilityChanged);
-  //   } else {
-  //     // If remote device is connecting or connected, we should stop
-  //     // watching remote device availability to save power.
-  //     console.log('Stopping watching remote device availability...');
-  //     AMediaElement.removeEventListener('webkitplaybacktargetavailabilitychanged', onWebKitPlaybackTargetAvailabilityChanged);
-  //   }
-  // }
-
-  // onWebKitPlaybackTargetAvailabilityChanged = (AEvent) => {
-  //   console.log('Remote device ' + AEvent.availability);
-  //   //this.props.setRemoteDeviceSupport(AEvent.availability=='available');
-  // };
-
-  // handleAvailabilityChange = (AAvailability) => {
-  //   console.log('Remote device ' + (AAvailability ? 'available' : 'not available'));
-  //   //this.props.setRemoteDeviceSupport(AAvailability);
-  // }
 
   setReconnectTimer = () => {
     let thisTimerWorker = this.state.reconnectTimerWorker;
@@ -173,7 +91,7 @@ export default class AudioPlayer extends Component {
     }
     let self= this;
     if (window.Worker && thisTimerWorker==null) {
-      console.log('starting reconnect timer');
+      //console.log('starting reconnect timer');
       try {
         thisTimerWorker = new Worker('/assets/workers/timer.js');
         thisTimerWorker.postMessage(RECONNECT_TIMEOUT);
@@ -207,21 +125,21 @@ export default class AudioPlayer extends Component {
   }
 
   killReconnectTimer = () => {
-    console.log('killing reconnect timer');
+    //console.log('killing reconnect timer');
     let thisTimerWorker = this.state.reconnectTimerWorker;
     if (thisTimerWorker != null) {
       thisTimerWorker.terminate();
-    }
-    this.setState({
-      reconnectTimerWorker: null,
-      reconnectTriesCount: 0
-    });
+      this.setState({
+        reconnectTimerWorker: null,
+        reconnectTriesCount: 0
+      });
+    }    
   }
   
-  checkAudio = (AIsPlaying, AStationPlaying) => {
-    //console.log('checkAudio');
-    let stationPlaying = !AStationPlaying ? this.props.station : AStationPlaying;
-    if (this.state.isPlaying == AIsPlaying && this.state.station == stationPlaying && !this.state.errorMessage) {
+  checkAudio = (AIsPlaying, AMediaPlayingID, AResumeAtSeconds) => {
+    let mediaPlayingID = AMediaPlayingID ? AMediaPlayingID : this.props.mediaid;
+    let isSameMedia = this.state.mediaid == mediaPlayingID;
+    if (this.state.isPlaying == AIsPlaying && isSameMedia && !this.state.errorMessage) {
       return; // Nothing changed
     }
     var self = this;
@@ -243,26 +161,33 @@ export default class AudioPlayer extends Component {
     this.killReconnectTimer();
     this.setState({
       isPlaying: AIsPlaying,
-      station: stationPlaying,
+      mediaid: mediaPlayingID,
     });
     var audioPL = document.getElementById('audioPlay');
     if (typeof audioPL === 'undefined' || audioPL == null) {
       return;
     }    
-    if (!AIsPlaying || this.state.station!=this.props.station || this.state.errorMessage!=null) {
+    if (!AIsPlaying || this.state.mediaid!=this.props.mediaid || this.state.errorMessage!=null) {
       if (!audioPL.paused) {
         audioPL.pause();
-      }        
-      audioPL.removeAttribute('src');
-      audioPL.load();
+      }
+      if(!this.state.usePause) {
+        audioPL.removeAttribute('src');
+        audioPL.load();
+      }
       this.setState({
         errorMessage: null
       });
       this.props.hasError();
       if(!AIsPlaying) return;
     }
-    audioPL.removeAttribute('src');
-    audioPL.load();
+    if(!this.state.usePause || !isSameMedia) {
+      audioPL.removeAttribute('src');
+      audioPL.load();
+      if(AResumeAtSeconds) {
+        this.seekAudio(AResumeAtSeconds);
+      }
+    }
     var playPromise = audioPL.play();
     if (playPromise !== undefined) {
       playPromise.then(_ => {
@@ -300,7 +225,7 @@ export default class AudioPlayer extends Component {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: this.props.mediatitle,
         artist: this.props.mediaartist,
-        album: this.props.station,
+        album: this.props.mediaid,
         artwork: [
           logoSource
         ]
@@ -327,12 +252,8 @@ export default class AudioPlayer extends Component {
     navigator.mediaSession.playbackState = 'none';
   }
 
-
-
   handleAudioError = (e) => {
     let Error = null;
-    clearTimeout(this.state.reconnectTimeout);
-    var self = this;
     if (!e || !e.target || typeof e.target.error === 'undefined' || typeof e.target.error.code === 'undefined') {
       if ('onLine' in navigator && !navigator.onLine) {
         Error = {
@@ -393,13 +314,17 @@ export default class AudioPlayer extends Component {
     }
   }
 
+  timeUpdate = (AEvent) => {
+    this.props.timeUpdate(AEvent.currentTarget);
+  }
+
   handleLoadedData = () => {
     this.props.dataLoaded();
   }
 
 	render() {
     return (
-      <audio id="audioPlay" onLoadedData={this.handleLoadedData.bind(this)} onerror={this.handleAudioError.bind(this)}>{this.state.srcItems}</audio>
+      <audio id="audioPlay" onLoadedData={this.handleLoadedData.bind(this)} ontimeupdate={this.timeUpdate.bind(this)} onerror={this.handleAudioError.bind(this)}>{this.state.srcItems}</audio>
 		);
 	}
 }

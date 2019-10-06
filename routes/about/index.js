@@ -35,6 +35,11 @@ export default class About extends Component {
 					<p>Or <a href="https://paypal.me/RobinBakker" target="_blank" rel="noopener">buy me a ☕ + 🍪</a>!</p>
 
 					<p class={style.smallish}>v {this.props.version}</p>
+
+					<div class={style.experimental}>
+						<h2 class={style['content-title']}>🧪 Experimental</h2>
+						<p>Psst! I'm working on podcast functionality. Want to try it out? OK then... 🤞 and go to <Link href="/podcasts">Podcasts</Link></p>
+					</div>
 				</main>
 			</div>
 		);

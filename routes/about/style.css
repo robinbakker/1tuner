@@ -10,3 +10,11 @@
 	color:#646464;
 	margin-bottom:-1rem;
 }
+.experimental {
+	opacity: .5;
+	margin-top: 6rem;
+	transition: opacity .6s ease-in-out;
+}
+.experimental:hover {
+	opacity: 1;
+}

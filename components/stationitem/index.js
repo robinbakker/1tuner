@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
+import { getColorString } from '../../utils/misc';
 
 export default class StationItem extends Component {
 	constructor(props) {
@@ -11,23 +12,23 @@ export default class StationItem extends Component {
 		}
 		e.preventDefault();
 	}
-	getStyleString = (AString) => {
-		let idNrTxt = AString.split('').map(c => c.charCodeAt()).reduce((v1, v2) => v1 + v2)+'';
-		let offset = 140;
-		let nr1 = parseInt(idNrTxt.substr(0,2));
-		let nr2 = parseInt(idNrTxt.substr(-2));
-		let r=(offset+nr1-90), g=(offset-nr1+AString.length),b=(offset+nr2);
-		return 'background-color:rgba('+r+','+g+','+b+',.75)';
-	}
 	render() {
 		if (this.props.stationItem) {
+			let stLink = '/radio-station/'+this.props.stationItem.id;
 			return (
 				<div class={'preset-list__item-content preset-list__item-content--station'}>
-					<button data-station={this.props.stationItem.id} onClick={this.setStation} title={this.props.stationItem.name} class={'preset-list__button'  + (this.props.small ? ' preset-list__button--small' : '') + (this.props.stationItem.logosource ? '' : ' icon--station')} style={(this.props.stationItem.logosource ? '' : this.getStyleString(this.props.stationItem.id))}>
-						{this.props.stationItem.logosource ? <img class="button__image" alt={this.props.stationItem.name} loading={'lazy'} src={this.props.stationItem.logosource} /> : null}
-						<span class={'button__text' + (this.props.stationItem.logosource ? '' : ' button__text--inverted')}>{this.props.stationItem.name}</span>
-					</button>
-					<Link href={'/radio-station/'+this.props.stationItem.id} class={'preset-list__link'}>{this.props.stationItem.name}</Link>
+					{this.props.useLinksOnly ? 
+						<Link href={stLink} title={this.props.stationItem.name} class={'preset-list__button'  + (this.props.small ? ' preset-list__button--small' : '') + (this.props.stationItem.logosource ? '' : ' icon--station')} style={(this.props.stationItem.logosource ? '' : getColorString(this.props.stationItem.logosource))}>
+							{this.props.stationItem.logosource ? <img class="button__image" alt={this.props.stationItem.name} loading={'lazy'} src={this.props.stationItem.logosource} /> : null}
+							<span class={'button__text' + (this.props.stationItem.logosource ? '' : ' button__text--inverted')}>{this.props.stationItem.name}</span>
+						</Link>
+						:
+						<button data-station={this.props.stationItem.id} onClick={this.setStation} title={this.props.stationItem.name} class={'preset-list__button'  + (this.props.small ? ' preset-list__button--small' : '') + (this.props.stationItem.logosource ? '' : ' icon--station')} style={(this.props.stationItem.logosource ? '' : getColorString(this.props.stationItem.id))}>
+							{this.props.stationItem.logosource ? <img class="button__image" alt={this.props.stationItem.name} loading={'lazy'} src={this.props.stationItem.logosource} /> : null}
+							<span class={'button__text' + (this.props.stationItem.logosource ? '' : ' button__text--inverted')}>{this.props.stationItem.name}</span>
+						</button>
+					}
+					<Link href={stLink} class={'preset-list__link'}>{this.props.stationItem.name}</Link>
 				</div>
 			);
 		} else {

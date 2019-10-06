@@ -7,7 +7,7 @@ export default class AudioPlayerSource extends Component {
   
 	render() {
     let urlSrc, urlDataSrc;
-    if (this.props.isPlaying) {
+    if (this.props.isPlaying || this.props.usePause) {
       urlSrc = this.props.source.url;
       urlDataSrc = '';
     } else {

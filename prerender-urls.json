@@ -8,6 +8,9 @@
   "url": "/radio-stations",
   "title": "Radio Stations - 1tuner | listen to the radio"
 }, {
+  "url": "/podcasts",
+  "title": "Find Podcasts - 1tuner | listen to the radio"
+}, {
   "url": "/planner",
   "title": "Radio Planner - 1tuner | take control"
 }]
