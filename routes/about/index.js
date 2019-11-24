@@ -4,10 +4,6 @@ import Header from '../../components/header';
 import { Link } from 'preact-router/match';
 
 export default class About extends Component {
-	constructor(props) {
-    super(props);
-	}
-
 	componentDidMount() {
 		document.title = 'About - 1tuner | one web app to listen to audio streams';
 	}

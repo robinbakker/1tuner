@@ -7,7 +7,7 @@ export default class DropDown extends Component {
     this.state = {
       id:null,
       value: null,
-      optionList: []
+      optionList: null
     }
   }
 
@@ -21,23 +21,37 @@ export default class DropDown extends Component {
       this.setState({ id: this.props.id });
     }
   }
-  
-	render() {
+
+  loadData = () => {
+    let value = this.state.value;
+    let optionList = this.state.value;
     if (typeof this.props.initialValue !== 'undefined' && (this.state.value==null || this.state.value!=this.props.initialValue)) {
-      this.setState({ value: this.props.initialValue });
+      value = this.props.initialValue;
     }
     if ((!this.state.optionList || !this.state.optionList.length) && this.props.optionList && this.props.optionList.length) {
-      this.setState({ optionList: this.props.optionList })
+      optionList = this.props.optionList;
     }
-    return (
-      <label class={style['dd-container'] + ' label-container'}>
-        <span class={style['dd-label-text']+' label-text'}>{this.props.label}</span>
-        <select id={this.state.id} class={style['dd-select'] + ' dropdown'} value={this.state.value} onChange={this.handleChange}>
-          {this.state.optionList.map(optionItem => (
-            <option value={optionItem.value} selected={optionItem.value==this.state.value}>{optionItem.text}</option>
-          ))}
-        </select>
-      </label>
-		);
+    this.setState({
+      value: value, 
+      optionList: optionList 
+    });
+  }
+  
+	render({label}, {id, value, optionList}) {
+    if (optionList) {
+      return (
+        <label class={style['dd-container'] + ' label-container'}>
+          <span class={style['dd-label-text']+' label-text'}>{label}</span>
+          <select id={id} class={style['dd-select'] + ' dropdown'} value={value} onChange={this.handleChange}>
+            {optionList.map(optionItem => (
+              <option value={optionItem.value} selected={optionItem.value==value}>{optionItem.text}</option>
+            ))}
+          </select>
+        </label>
+      );
+    } else {
+      this.loadData();
+      return null;
+    }
 	}
 }

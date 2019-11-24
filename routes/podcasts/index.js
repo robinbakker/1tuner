@@ -78,7 +78,9 @@ export default class Podcasts extends Component {
 
 	setSearchInputBlur = () => {
 		if (typeof document != 'undefined') {
-			document.body.classList.remove('search-focus');
+			setTimeout(function() {
+				document.body.classList.remove('search-focus');
+			}, 500);
 		}
 	}
 	setSearchInputFocus = () => {

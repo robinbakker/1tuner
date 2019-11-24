@@ -1,9 +1,8 @@
-import './style/index.scss';
+import './style/index.css';
 
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
-
-import FilterPanel from './components/filterpanel';
+// import FilterPanel from './components/filterpanel';
 import Nav from './components/nav';
 import Footer from './components/footer';
 import Home from './routes/home';
@@ -19,6 +18,7 @@ import Error from './routes/error';
 import { version as AppVersion } from './package.json';
 import { get, set } from './utils/idb-keyval';
 import * as Languages from './assets/data/languages.json';
+import * as Featured from './assets/data/featured.json';
 
 export default class App extends Component {
 	constructor(props) {
@@ -44,56 +44,61 @@ export default class App extends Component {
 			version: AppVersion,
 			userVersion: null,
 		};
-		let self = this;
-		if (typeof indexedDB !== 'undefined') {
-			get('lm').then(val => self.setState({listeningMode: val ? val : 0}));
-			get('version').then(val => self.setState({userVersion: val}));
-			get('station').then(val => self.setState({station: val}));
-			get('planning').then(val => self.setState({planning: val}));
-			get('planning-list').then(val => self.setState({planningList: val}));
-			get('language-list').then(val => self.setState({languageList: val}));
-			get('podcast-list').then(val => self.setState({podcastList: val}));
-		}
 	}
 
-	render() {
-		if (this.state.stationList == null && !this.state.stationsLoading) {
-			this.setIsLoading(1, true);
-			if (typeof indexedDB !== 'undefined') {
-				let self = this;
-				get('station-list').then(val => self.loadStationList(val));
-			} else {
-			  this.loadStationList();
-			}
+	componentDidMount() {
+		this.loadData();
+	}
+
+	loadData = async () => {
+		let stationList = this.state.stationList || await get('station-list');
+
+		let userVersion = await get('version');
+		if (!stationList || !stationList.length || AppVersion != userVersion) {
+			stationList = await this.loadStationList();
 		}
-		if (this.state.languageList == null && !this.state.languagesLoading) {
-			this.setIsLoading(2, true);
-			this.loadLanguageList();
-		}
-		if (this.state.planningList == null) {
-			this.loadPlanningList();
-		}
+		let listeningMode = await get('lm') || 0;
+		let station = await get('station');
+		let planning = await get('planning');
+		let podcastList = await get('podcast-list');									
+		let lastStationList = await get('last-station-list') || this.getLastStationList(stationList);
+		let featured = this.loadFeatured(stationList);
+						
+		let languageList = this.state.languageList || await get('language-list') || this.loadLanguageList();
+		let planningList = this.state.planningList || await get('planning-list') || this.loadPlanningList();
+
+		this.setState({
+			listeningMode: listeningMode,
+			userVersion: userVersion,
+			station: station,
+			planning: planning,
+			planningList: planningList,
+			languageList: languageList,
+			podcastList: podcastList,
+			stationList: stationList,
+			lastStationList: lastStationList,
+			featured: featured
+		});
+	}
+
+	render({}, {enableFilterPanel, showFilterPanel, listeningMode, languageList, station, stationList, lastStationList,
+			planning, planningList, podcast, podcastList, featured, lastPodcastSearchQuery, lastPodcastSearchResult, version}) {		
 		return (
 		<div id="app">
 			<Nav />
-			{this.state.enableFilterPanel ?
-			<FilterPanel setLanguageList={this.setLanguageList.bind(this)} languageList={this.state.languageList} showFilterPanel={this.state.showFilterPanel} toggleFilterPanel={this.toggleFilterPanel.bind(this)} />
-			:
-			null
-			}
 			<Router onChange={this.handleRoute.bind(this)}>
-				<Home path="/" planningList={this.state.planningList} fullStationList={this.state.stationList} stationList={this.state.lastStationList} podcastList={this.state.podcastList} featured={this.state.featured} changeStation={this.changeStation.bind(this)} changePlanning={this.changePlanning.bind(this)} />
-				<Stations path="/radio-stations" stationList={this.state.stationList} changeStation={this.changeStation.bind(this)} languageList={this.state.languageList} toggleFilterPanel={this.toggleFilterPanel.bind(this)} showFilterPanel={this.state.showFilterPanel} />
-				<Station path="/radio-station/:id?" stationList={this.state.stationList} languageList={this.state.languageList} changeStation={this.changeStation.bind(this)} />
-				<Planner path="/planner" planningList={this.state.planningList} stationList={this.state.stationList} changePlanning={this.changePlanning.bind(this)} />
-				<Planning path="/planning/:name/:params?" planningList={this.state.planningList} stationList={this.state.stationList} addPlanning={this.addPlanning.bind(this)} deletePlanning={this.deletePlanning.bind(this)} changePlanning={this.changePlanning.bind(this)}/>
-				<PlanningEdit path="/planning-edit/:name?/:params?" planningList={this.state.planningList} languageList={this.state.languageList} stationList={this.state.stationList} addPlanning={this.addPlanning.bind(this)} resetPlanningList={this.resetPlanningList.bind(this)} />
-				<Podcasts path="/podcasts" latestPodcastSearchResult={this.latestPodcastSearchResult.bind(this)} searchQuery={this.state.lastPodcastSearchQuery} lastSearchResult={this.state.lastPodcastSearchResult} podcastList={this.state.podcastList} languageList={this.state.languageList} />
-				<Podcast path="/podcast/:name/:params?" savePodcastHistory={this.savePodcastHistory.bind(this)} podcastList={this.state.podcastList} lastPodcastSearchResult={this.state.lastPodcastSearchResult} playEpisode={this.playPodcastEpisode.bind(this)} />
-				<About path="/about" version={this.state.version} />
+				<Home path="/" stationList={lastStationList} planningList={planningList} podcastList={podcastList} featured={featured} changeStation={this.changeStation.bind(this)} changePlanning={this.changePlanning.bind(this)} />
+				<Stations path="/radio-stations" stationList={stationList} languageList={languageList} changeStation={this.changeStation.bind(this)} toggleFilterPanel={this.toggleFilterPanel.bind(this)} setLanguageList={this.setLanguageList.bind(this)} />
+				<Station path="/radio-station/:id?" stationList={stationList} languageList={languageList} changeStation={this.changeStation.bind(this)} />
+				<Planner path="/planner" planningList={planningList} stationList={stationList} changePlanning={this.changePlanning.bind(this)} />
+				<Planning path="/planning/:name/:params?" planningList={planningList} stationList={stationList} addPlanning={this.addPlanning.bind(this)} deletePlanning={this.deletePlanning.bind(this)} changePlanning={this.changePlanning.bind(this)}/>
+				<PlanningEdit path="/planning-edit/:name?/:params?" planningList={planningList} languageList={languageList} stationList={stationList} addPlanning={this.addPlanning.bind(this)} resetPlanningList={this.resetPlanningList.bind(this)} />
+				<Podcasts path="/podcasts" latestPodcastSearchResult={this.latestPodcastSearchResult.bind(this)} searchQuery={lastPodcastSearchQuery} lastSearchResult={lastPodcastSearchResult} podcastList={podcastList} languageList={languageList} />
+				<Podcast path="/podcast/:name/:params?" savePodcastHistory={this.savePodcastHistory.bind(this)} podcastList={podcastList} lastPodcastSearchResult={lastPodcastSearchResult} playEpisode={this.playPodcastEpisode.bind(this)} />
+				<About path="/about" version={version} />
 				<Error type="404" default />
 			</Router>
-			<Footer onRef={ref => (this.child = ref)} listeningMode={this.state.listeningMode} stationList={this.state.stationList} podcast={this.state.podcast} planning={this.state.planning} station={this.state.station} setPodcastEpisodeTimeElapsed={this.setPodcastEpisodeTimeElapsed.bind(this)} closeFooter={this.closeFooter.bind(this)} />
+			<Footer onRef={ref => (this.child = ref)} listeningMode={listeningMode} stationList={stationList} podcast={podcast} planning={planning} station={station} setPodcastEpisodeTimeElapsed={this.setPodcastEpisodeTimeElapsed.bind(this)} closeFooter={this.closeFooter.bind(this)} />
 		</div>
 		);
 	}
@@ -107,7 +112,9 @@ export default class App extends Component {
 			set('planning-list', this.state.planningList);
 			set('podcast-list', this.state.podcastList);
 			set('language-list', this.state.languageList);
-			set('last-station-list', this.state.lastStationList);
+			if(this.state.lastStationList) {
+				set('last-station-list', this.state.lastStationList);
+			}
 			if (AInit) {
 				set('version', this.state.version);
 				set('station-list', this.state.stationList);
@@ -130,8 +137,9 @@ export default class App extends Component {
 			if (lsIndex >= 0) {
 				lsArray.splice(lsIndex, 1);
 				lsArray.unshift(stationItem);
-				this.setState({lastStationList:lsArray});
-				this.saveLocal();
+				this.setState({lastStationList:lsArray}, () => {
+					this.saveLocal();
+				});
 				return;
 			}
 			if (this.state.stationList) {
@@ -144,8 +152,9 @@ export default class App extends Component {
 				if (stationItem) {
 					lsArray.splice(lsIndex, 1);
 					lsArray.unshift(stationItem);
-					this.setState({lastStationList:lsArray});
-					this.saveLocal();
+					this.setState({lastStationList:lsArray}, () => {
+						this.saveLocal();
+					});
 				}
 			} 
 		}		
@@ -158,8 +167,9 @@ export default class App extends Component {
 				listeningMode: 1,
 				station: AStation,
 				planning: null
+			}, () => {
+				this.saveLocal();
 			});
-			this.saveLocal();
 		}
 		if (AForcePlay && this.child) {
 			this.child.forcePlay(AForcePlay);
@@ -167,30 +177,33 @@ export default class App extends Component {
 	}
 	
 	playPodcastEpisode = (APodcast, AForcePlay) => {
-		if (APodcast) {
+		if (APodcast) {			
 			this.setState({
 				listeningMode: 3,
 				podcast: APodcast
+			}, () => {
+				this.saveLocal();
+				if (AForcePlay && this.child) {
+					this.child.forcePlay(AForcePlay);
+				}
 			});
-			this.saveLocal();
-			if (AForcePlay && this.child) {
-				this.child.forcePlay(AForcePlay);
-			}
 		}
 	}
 
 	setPodcastEpisodeTimeElapsed = (AFeedUrl, AMediaUrl, ASeconds) => {
+		if(!AFeedUrl || !AMediaUrl || !ASeconds) {
+			return;
+		}
 		let podcastList = this.state.podcastList;
 		for (let i=0; i<podcastList.length; i++) {
 			let podcast = podcastList[i];
 			if (!podcast || podcast.feedUrl!=AFeedUrl || !podcast.episodes || !podcast.episodes.length) {
 				continue;
 			}
-			for (let j=0;j<podcast.episodes.length; j++) {
+			for (let j=0; j<podcast.episodes.length; j++) {
 				if (podcast.episodes[j].url==AMediaUrl) {
-					podcastList[i].episodes[j].secondsElapsed = ASeconds;
-					this.setState({podcastList: podcastList});
-					this.saveLocal();
+					podcast.episodes[j].secondsElapsed = ASeconds;
+					this.savePodcastHistory(podcast);
 					return;
 				}
 			}
@@ -203,8 +216,9 @@ export default class App extends Component {
 				listeningMode: 2,
 				station: null,
 				planning: APlanning
+			}, () => {
+				this.saveLocal();
 			});
-			this.saveLocal();
 		}
 		if (AForcePlay && this.child) {
 			this.child.forcePlay(AForcePlay);
@@ -235,8 +249,9 @@ export default class App extends Component {
 			sList.splice(puIndex, 1);
 			this.setState({
 				planningList: sList
+			}, () => {
+				this.saveLocal();
 			});
-			this.saveLocal();
 		}
 	}
 
@@ -247,8 +262,9 @@ export default class App extends Component {
 				sList.push(APlanningItem);
 				this.setState({
 					planningList: sList
+				}, () => {
+					this.saveLocal();
 				});
-				this.saveLocal();
 			}
 		}
 	}
@@ -269,25 +285,31 @@ export default class App extends Component {
 	}
 
 	savePodcastHistory = (APodcast) => {
+		console.log('savePodcastHistory');
+		if (!APodcast || !APodcast.feedUrl) {
+			return;
+		}
 		let podcastArray = this.state.podcastList || [];
-		let pcIndex = -1;
+		let pcIndexArray = [];
 		for (let i=0; i<podcastArray.length; i++) {
 			if (podcastArray[i].feedUrl == APodcast.feedUrl) {
-				pcIndex = i;
-				break;
+				pcIndexArray.push(i);
 			}
 		}
-		if (pcIndex >= 0) {
-			podcastArray.slice(pcIndex, 1);			
+		if (pcIndexArray.length) {
+			pcIndexArray.forEach(function(pcIndex) {
+				podcastArray.splice(pcIndex, 1);			
+			});
 		}
 		podcastArray.unshift(APodcast);
-		if (podcastArray.length>100) {
-			podcastArray.slice(0, 100);
+		if (podcastArray.length>50) {
+			podcastArray.slice(0, 50);
 		}
 		this.setState({
 			podcastList: podcastArray
+		}, () => {
+			this.saveLocal();
 		});
-		this.saveLocal();
 	}
 
 	closeFooter = () => {
@@ -295,76 +317,72 @@ export default class App extends Component {
 			listeningMode: 0,
 			station: null,
 			planning: null
-		});
-		this.saveLocal();
+		}, () => {
+			this.saveLocal();
+			if (this.child) {
+				this.child.forcePlay(true);
+			}
+		});		
 	}
 	
 	handleRoute = (e) => {
-		if (e.url=='/radio-stations' || e.url=='/radio-stations/') {
-			this.setState({enableFilterPanel:true});
-    } else {
-			this.setState({enableFilterPanel:false});
-		}
+		// if (e.url=='/radio-stations' || e.url=='/radio-stations/') {
+		// 	this.setState({enableFilterPanel:true});
+    // } else {
+		// 	this.setState({enableFilterPanel:false});
+		// }
 	}
 	
 	setIsLoading = (ALoadingType, AIsLoading) => {
-		if (ALoadingType==1) {
-			this.setState({stationsLoading:AIsLoading});
-		} else if(ALoadingType==2) {
-			this.setState({languagesLoading:AIsLoading});
-		}
+		// if (ALoadingType==1) {
+		// 	this.setState({stationsLoading:AIsLoading});
+		// } else if(ALoadingType==2) {
+		// 	this.setState({languagesLoading:AIsLoading});
+		// }
 	}
 	
 	loadLanguageList = () => {
-		let self = this;
-		if (!this.state.languageList || this.state.languageList.length==0) {
-			let selectedLanguages = [];
-			if (typeof navigator !== 'undefined') {
-				if (navigator.languages) {
-					navigator.languages.forEach(e => selectedLanguages.push(e.toLowerCase()));
-				} else if (navigator.language){
-					selectedLanguages.push(navigator.language.toLowerCase());
-				}
+		let selectedLanguages = [];
+		if (typeof navigator !== 'undefined') {
+			if (navigator.languages) {
+				navigator.languages.forEach(e => selectedLanguages.push(e.toLowerCase()));
+			} else if (navigator.language){
+				selectedLanguages.push(navigator.language.toLowerCase());
 			}
-			let items = Languages;
-			let langs = [];
-			for (let item in items) {
-				let country = items[item].country_en;
-				if (!country) country = items[item].country;
-				langs.push({
-					id: item,
-					abbr: items[item].abbr,
-					displayorder: items[item].displayorder, 
-					name: items[item].name,
-					country: country,
-					flag: items[item].flag,
-					active: (selectedLanguages.indexOf(item.toLowerCase())!=-1),
-					preferred: (selectedLanguages.length && selectedLanguages[0]==item)
-				});
-			}
-			langs.sort(function(a, b) {
-				var startA = a.displayorder;
-				var startB = b.displayorder;
-				if (startA < startB) {
-					return -1;
-				}
-				if (startA > startB) {
-					return 1;
-				}
-				return 0;
+		}
+		let items = Languages;
+		let langs = [];
+		for (let item in items) {
+			let country = items[item].country_en;
+			if (!country) country = items[item].country;
+			langs.push({
+				id: item,
+				abbr: items[item].abbr,
+				displayorder: items[item].displayorder, 
+				name: items[item].name,
+				country: country,
+				flag: items[item].flag,
+				active: (selectedLanguages.indexOf(item.toLowerCase())!=-1),
+				preferred: (selectedLanguages.length && selectedLanguages[0]==item)
 			});
-			self.setLanguageList(langs);
 		}
+		langs.sort(function(a, b) {
+			var startA = a.displayorder;
+			var startB = b.displayorder;
+			if (startA < startB) {
+				return -1;
+			}
+			if (startA > startB) {
+				return 1;
+			}
+			return 0;
+		});
+		return langs;
 	}
-	loadStationList = (AStationList) => {
-		this.setIsLoading(1, true);
-		if (AStationList && this.state.version == this.state.userVersion) {
-			this.setStationList(AStationList, true);
-			return;
-		}
-		let self = this;
-		if (!this.state.stationList || this.state.stationList.length == 0 || this.state.version!=this.state.userVersion) {
-			fetch('https://1tuner.com/assets/data/stations.json?v=' + this.state.version, {
+	loadStationList = async () => {
+		let stationList = this.state.stationList
+		if (!stationList || stationList.length == 0) {
+			await fetch(window.location.origin + '/assets/data/stations.json?v=' + AppVersion, {
 				method: 'get'
 			}).then((resp) => resp.json()).then(function(items) {
 				let newState = [];
@@ -391,81 +409,77 @@ export default class App extends Component {
 					}
 					return 0;
 				});
-				self.setStationList(newState);				
+				stationList = newState;	
 			}).catch(function(err) {
 			  // Error :(
 				console.log(err);
 			});
 		}
+		return stationList;
 	}
-	loadFeatured = () => {
-		let self = this;
-		if (this.state.featured==null) {
-			fetch('https://1tuner.com/assets/data/featured.json?v=' + this.state.version, {
-				method: 'get'
-			}).then((resp) => resp.json()).then(function(items) {
-				if (items && items.length) {
-					let newState = {
-						stationItem: self.getStation(items[0].station),
-						description: items[0].description
-					}
-					self.setState({featured:newState});
+	loadFeatured = (AStationList) => {
+		let newFeatured = this.state.featured; 
+		if (!newFeatured) {
+			let items = Featured.featured;
+			if (items && items.length) {
+				let newState = {
+					stationItem: this.getStation(items[0].station, AStationList),
+					description: items[0].description
 				}
-			}).catch(function(err) {
-				// Error :(
-			});
+				newFeatured = newState;
+			}
 		}
+		return newFeatured;
 	}
 	loadPlanningList = () => {
-		if (!this.state.planningList || this.state.planningList.length == 0) {
-			this.setPlanningList([{
-				href: '/planning/Radio%202.5/?h0=3fm&h6=radio2&h9=3fm&h14=radio2&h18=3fm&h22=radio2',
-				name: 'Radio 2.5',
-				color: 'rgba(110, 156, 140, 0.75)',
-				schedule: [
-					{
-						'startHour': 0,
-						'endHour': 6,
-						'station': '3fm'
-					},
-					{
-						'startHour': 6,
-						'endHour': 9,
-						'station': 'radio2'
-					},
-					{
-						'startHour': 9,
-						'endHour': 14,
-						'station': '3fm'
-					},
-					{
-						'startHour': 14,
-						'endHour': 18,
-						'station': 'radio2'
-					},
-					{
-						'startHour': 18,
-						'endHour': 22,
-						'station': '3fm'
-					},
-					{
-						'startHour': 22,
-						'endHour': 24,
-						'station': 'radio2'
-					}
-				]
-			}]);
-		}
+		return [{
+			href: '/planning/Radio%202.5/?h0=3fm&h6=radio2&h9=3fm&h14=radio2&h18=3fm&h22=radio2',
+			name: 'Radio 2.5',
+			color: 'rgba(110, 156, 140, 0.75)',
+			schedule: [
+				{
+					'startHour': 0,
+					'endHour': 6,
+					'station': '3fm'
+				},
+				{
+					'startHour': 6,
+					'endHour': 9,
+					'station': 'radio2'
+				},
+				{
+					'startHour': 9,
+					'endHour': 14,
+					'station': '3fm'
+				},
+				{
+					'startHour': 14,
+					'endHour': 18,
+					'station': 'radio2'
+				},
+				{
+					'startHour': 18,
+					'endHour': 22,
+					'station': '3fm'
+				},
+				{
+					'startHour': 22,
+					'endHour': 24,
+					'station': 'radio2'
+				}
+			]
+		}];
 	}
 
-	getStation = (AStation) => {
-    if (!this.state.stationList || !this.state.stationList.length) {
+	getStation = (AStation, AStationList) => {
+		let stationList = this.state.stationList || AStationList;
+    if (!stationList || !stationList.length) {
       return null;
     }
     let Result = null;
-    for (let i=0;i<this.state.stationList.length;i++) {
-      if (this.state.stationList[i].id==AStation) {
-        Result = this.state.stationList[i];
+    for (let i=0; i<stationList.length; i++) {
+      if (stationList[i].id == AStation) {
+        Result = stationList[i];
         break;
       }
     }
@@ -476,54 +490,31 @@ export default class App extends Component {
 		if(ALanguageList) {
 			this.setState({
 				languageList: ALanguageList
-			});
-			this.saveLocal();
-		}
-		this.setIsLoading(2, false);
-	}
-	setStationList = (AStationList, ANoSaveLocal) => {
-		if(AStationList) {
-			this.setState({
-				stationList: AStationList
-			});
-			if(!ANoSaveLocal) this.saveLocal(true);
-		}
-		this.setLastStationList();
-		this.loadFeatured();
-		this.setIsLoading(1, false);
-	}
-	loadLastStationList = () => {
-		if (!this.state.lastStationList || !this.state.lastStationList.length) {
-			let self = this;
-			get('last-station-list').then(val => {
-				self.setLastStationList(val);
+			}, () => {
+				this.saveLocal();
 			});
 		}
 	}
-	setLastStationList = (ALastStationList) => {
-		if (ALastStationList) {
-			this.setState({
-				lastStationList: ALastStationList
-			});
+	
+	getLastStationList = (AStationList) => {
+		let stationList = AStationList || this.state.stationList;
+		if (!stationList) {
 			return;
-		} 
-		let stationList = this.state.stationList;
+		}
 		let lastStations = [];
 		for (var i=0; i<10; i++) {
 			if (stationList.length <= i) break;
 			lastStations.push(stationList[i]);
 		}
-		this.setState({
-			lastStationList: lastStations
-		});
-		this.saveLocal();
+		return lastStations;
 	}
 	setPlanningList = (APlanningList) => {
 		if (APlanningList) {
 			this.setState({
 				planningList: APlanningList
+			}, () => {
+				this.saveLocal();
 			});
-			this.saveLocal();
 		}
 	}
 }

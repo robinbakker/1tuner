@@ -59,8 +59,6 @@
 		height: initial;
 	}
 	.filter-panel {
-		position: absolute;
-		top: 3.5rem;
 		transform: translate3d(0,0,0);
 	}
 }

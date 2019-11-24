@@ -17,8 +17,8 @@ export default class Home extends Component {
 	changePlanning = (APlanning) => {
 		this.props.changePlanning(APlanning, true);
 	}
-	
-	render() {
+
+	render({ stationList, podcastList, planningList, featured }, {}) {
 		return (
 			<main class={'content ' + (style.home)}>
 				<div class={style['home-header']}>
@@ -27,17 +27,17 @@ export default class Home extends Component {
 				<section class={'content__section content__section--stations'}>
 					<h3 class={'section-title'}>Radio Stations</h3>
 					<div class={'section-main'}>
-						<StationList stationList={this.props.stationList} changeStation={this.changeStation.bind(this)} limitCount={5} horizontal={true} small={true} />
+						<StationList stationList={stationList} changeStation={this.changeStation.bind(this)} limitCount={5} horizontal={true} small={true} />
 					</div>
 					<footer class={'section-footer'}>
 						<Link href="/radio-stations" native class="btn btn--below btn--float-right">More radio stations</Link>
 					</footer>
 				</section>
-				{this.props.podcastList ? 
+				{podcastList ? 
 				<section class={'content__section content__section--podcasts'}>
 					<h3 class={'section-title'}>Podcasts</h3>
 					<div class={'section-main'}>
-						<PodcastList podcastList={this.props.podcastList} limitCount={5} horizontal={true} small={true} />
+						<PodcastList podcastList={podcastList} limitCount={5} horizontal={true} small={true} />
 					</div>
 					<footer class={'section-footer'}>
 						<Link href="/podcasts" native class="btn btn--below btn--float-right">Find more podcasts</Link>
@@ -45,29 +45,32 @@ export default class Home extends Component {
 				</section>
 				: null
 				}
+				{planningList ?
 				<section class={'content__section content__section--planner'}>
 					<h3 class={'section-title'}>Radio Planner</h3>
 					<div class={'section-main'}>
-						<PlanningList planningList={this.props.planningList} changePlanning={this.changePlanning.bind(this)} horizontal={true} small={true} />
+						<PlanningList planningList={planningList} changePlanning={this.changePlanning.bind(this)} horizontal={true} small={true} />
 					</div>
 					<footer class={'section-footer'}>
 						<Link href="/planner" native class="btn btn--below btn--float-right">More plannings</Link>
 					</footer>
 				</section>
-				{this.props.featured && this.props.featured.stationItem ? 
+				: null
+				}
+				{featured && featured.stationItem ? 
 				<section class={'content__section content__section--featured'}>
 					<h3 class={'section-title'}>Featured</h3>
 					<div class={'section-featured'}>
-						<StationItem stationItem={this.props.featured.stationItem} changeStation={this.changeStation.bind(this)} />
-						{this.props.featured.description ? 
+						<StationItem stationItem={featured.stationItem} changeStation={this.changeStation.bind(this)} />
+						{featured.description ? 
 						<div class={style['featured-info']}>
-						<h4 class={style['featured-title']}>{this.props.featured.stationItem.name}</h4>
-						<p class={style['featured-description']}>{this.props.featured.description}</p>
+						<h4 class={style['featured-title']}>{featured.stationItem.name}</h4>
+						<p class={style['featured-description']}>{featured.description}</p>
 						</div>
 						:null}
 					</div>
 					<footer class={'section-footer'}>
-						<Link href={'/radio-station/' + this.props.featured.stationItem.id} native class="btn btn--below btn--float-right">More info</Link>
+						<Link href={'/radio-station/' + featured.stationItem.id} native class="btn btn--below btn--float-right">More info</Link>
 					</footer>
 				</section>
 				:

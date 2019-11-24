@@ -85,7 +85,7 @@ export default class Podcast extends Component {
 				podcastInfo: podcastInfo,
 				isLoading: false
 			});
-			this.props.savePodcastHistory(podcastInfo);
+			self.props.savePodcastHistory(podcastInfo);
 		}).catch(err => {
 			if (AAlternativeFeedUrl) {
 				self.loadXmlFeed(AAlternativeFeedUrl);
@@ -154,17 +154,17 @@ export default class Podcast extends Component {
 	}
 
 	playEpisode = (e) => {
-		if(this.state.podcastInfo && this.state.podcastInfo.episodes) {
-		let podcast = this.state.podcastInfo;
-		 for(let i=0; i<podcast.episodes.length;i++) {
-			if(podcast.episodes[i].url == e.target.getAttribute('data-href')) {
-				podcast.episodes[i].isPlaying = true;
-			} else{
-				podcast.episodes[i].isPlaying = false;
-			}
-		 }
-		 this.props.playEpisode(podcast, true);
-		 this.setState({
+		if (this.state.podcastInfo && this.state.podcastInfo.episodes) {
+			let podcast = this.state.podcastInfo;
+		 	for (let i=0; i<podcast.episodes.length;i++) {
+				if (podcast.episodes[i].url == e.target.getAttribute('data-href')) {
+					podcast.episodes[i].isPlaying = true;
+				} else{
+					podcast.episodes[i].isPlaying = false;
+				}
+		 	}
+		 	this.props.playEpisode(podcast, true);
+		 	this.setState({
 				podcastInfo: podcast
 			});		 
 		}

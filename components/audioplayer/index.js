@@ -26,11 +26,12 @@ export default class AudioPlayer extends Component {
   }
 
   method(AIsPlaying, ASrcs, AMediaIDPlaying, AUsePause, ASecondsElapsed) {
-    let mediaPlaying = this.props.mediaid;
+    let self = this;
+    let mediaPlaying = this.state.mediaid;
     let resumeAtSeconds = 0;
-    if (AIsPlaying && (mediaPlaying!=AMediaIDPlaying || !this.state.srcItems.length)) {
+    if (AIsPlaying && (mediaPlaying != AMediaIDPlaying || !this.state.srcItems.length)) {
       let srcItems = [];
-      if(ASrcs && ASrcs.length) {
+      if (ASrcs && ASrcs.length) {
         mediaPlaying = AMediaIDPlaying;
         ASrcs.forEach((source) => {
           srcItems.push(<AudioPlayerSource isPlaying={AIsPlaying} usePause={AUsePause} source={source} />);
@@ -41,34 +42,41 @@ export default class AudioPlayer extends Component {
         });
       }
       this.setState({
-        srcItems:srcItems,
-        errorMessage:null,
+        srcItems: srcItems,
+        errorMessage: null,
         usePause: AUsePause
-      });
-      this.props.hasError(null);
-      if (AUsePause && ASecondsElapsed) resumeAtSeconds = ASecondsElapsed;
+      }, () => {
+        self.props.hasError(null);
+        if (AUsePause && ASecondsElapsed) {
+          resumeAtSeconds = ASecondsElapsed;
+        }
+        self.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds); 
+      });      
     } else {
       if (this.state.usePause != AUsePause) {
-        this.setState({usePause: AUsePause});
+        this.setState({usePause: AUsePause}, () => {
+          self.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds); 
+        });
+      } else {
+        self.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds); 
       }
     }
-    this.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds); 
   }
 
   seekAudio = (ASeconds) => {
-    if(!ASeconds) {
+    if (!ASeconds) {
       return;
     }
     var audioPL = document.getElementById('audioPlay');
-    if (ASeconds<0) {
+    if (ASeconds < 0) {
       ASeconds = Math.abs(ASeconds);
-      if(audioPL.currentTime<=ASeconds) {
+      if (audioPL.currentTime<=ASeconds) {
         audioPL.currentTime = 0;
       } else {
         audioPL.currentTime -= ASeconds;
       }
     } else {
-      if(audioPL.currentTime >= audioPL.duration - ASeconds) {
+      if (audioPL.currentTime >= audioPL.duration - ASeconds) {
         audioPL.currentTime = audioPL.duration-.1;
       } else {
         audioPL.currentTime += ASeconds;
@@ -139,10 +147,11 @@ export default class AudioPlayer extends Component {
   checkAudio = (AIsPlaying, AMediaPlayingID, AResumeAtSeconds) => {
     let mediaPlayingID = AMediaPlayingID ? AMediaPlayingID : this.props.mediaid;
     let isSameMedia = this.state.mediaid == mediaPlayingID;
+    console.log('checkAudio');
     if (this.state.isPlaying == AIsPlaying && isSameMedia && !this.state.errorMessage) {
       return; // Nothing changed
     }
-    var self = this;
+    let self = this;
     let isOffline = ('onLine' in navigator && !navigator.onLine);
     if (isOffline) {
       // Makes no sense to checkAudio/reconnect now... Try again later
@@ -154,53 +163,62 @@ export default class AudioPlayer extends Component {
           message: 'Offline',
           source: ''
         }
-      });
-      this.props.hasError(this.state.errorMessage);
+      }, () => {
+        self.props.hasError(self.state.errorMessage);
+      });      
       return;
     }
     this.killReconnectTimer();
-    this.setState({
-      isPlaying: AIsPlaying,
-      mediaid: mediaPlayingID,
-    });
-    var audioPL = document.getElementById('audioPlay');
+    let audioPL = document.getElementById('audioPlay');
     if (typeof audioPL === 'undefined' || audioPL == null) {
       return;
-    }    
-    if (!AIsPlaying || this.state.mediaid!=this.props.mediaid || this.state.errorMessage!=null) {
+    }
+    let errorMessage = this.state.errorMessage;
+    if (!AIsPlaying || mediaPlayingID!=this.props.mediaid || errorMessage!=null) {
       if (!audioPL.paused) {
         audioPL.pause();
       }
-      if(!this.state.usePause) {
+      if (!this.state.usePause) {
         audioPL.removeAttribute('src');
         audioPL.load();
       }
-      this.setState({
-        errorMessage: null
-      });
+      errorMessage = null;
       this.props.hasError();
-      if(!AIsPlaying) return;
-    }
-    if(!this.state.usePause || !isSameMedia) {
-      audioPL.removeAttribute('src');
-      audioPL.load();
-      if(AResumeAtSeconds) {
-        this.seekAudio(AResumeAtSeconds);
+      if (!AIsPlaying) {
+        this.setState({
+          isPlaying: AIsPlaying,
+          mediaid: mediaPlayingID,
+          errorMessage: errorMessage,
+        });
+        return;
       }
     }
-    var playPromise = audioPL.play();
+    if (!this.state.usePause || !isSameMedia) {
+      audioPL.removeAttribute('src');
+      audioPL.load();
+      if (AResumeAtSeconds) {
+        this.seekAudio(AResumeAtSeconds);
+      }
+    } else {
+      this.handleLoadedData();
+    }
+    let playPromise = audioPL.play();
     if (playPromise !== undefined) {
       playPromise.then(_ => {
         // Automatic playback started! // Show playing UI.
         self.setState({
           isPlaying: true,
           promiseIsPlaying: true,
+          errorMessage: null,
+          mediaid: mediaPlayingID
         });
       }).catch(() => {
         // Auto-play was prevented // Show paused UI.
         self.setState({
           isPlaying: false,
           promiseIsPlaying:false,
+          errorMessage: null,
+          mediaid: mediaPlayingID
         });
       });
     }
@@ -211,17 +229,17 @@ export default class AudioPlayer extends Component {
     if ('mediaSession' in navigator) {
       let logoSource = {};
       let mLogo = this.props.medialogo;
-      if(typeof mLogo === 'undefined' || (typeof mLogo !== 'undefined' && mLogo.indexOf('data')==0)) { 
+      if (typeof mLogo === 'undefined' || (typeof mLogo !== 'undefined' && mLogo.indexOf('data')==0)) { 
         logoSource = { src: 'https://1tuner.com/assets/icons/android-chrome-512x512.png', type: 'image/png' };
-       } else {
+      } else {
         let imgType = 'image/png';
-        if(mLogo.indexOf('.svg')>0) {
+        if (mLogo.indexOf('.svg') > 0) {
           imgType = 'image/svg+xml';
-        } else if(mLogo.indexOf('.jpg')>0) {
+        } else if (mLogo.indexOf('.jpg')>0) {
           imgType = 'image/jpg';
         }
         logoSource = { src: mLogo,  type: imgType };
-       }
+      }
       navigator.mediaSession.metadata = new MediaMetadata({
         title: this.props.mediatitle,
         artist: this.props.mediaartist,
@@ -230,9 +248,8 @@ export default class AudioPlayer extends Component {
           logoSource
         ]
       });
-      let self = this;
-      navigator.mediaSession.setActionHandler('play', _ => self.mediaSessionPlay());
-      navigator.mediaSession.setActionHandler('pause', _ => self.mediaSessionPause());
+      navigator.mediaSession.setActionHandler('play', _ => this.mediaSessionPlay());
+      navigator.mediaSession.setActionHandler('pause', _ => this.mediaSessionPause());
       //navigator.mediaSession.setActionHandler('stop', _ => self.mediaSessionStop());
       //navigator.mediaSession.setActionHandler('previoustrack', function() {console.log('prev');});
       //navigator.mediaSession.setActionHandler('nexttrack', function() {console.log('next');});
@@ -309,8 +326,9 @@ export default class AudioPlayer extends Component {
       this.setState({
         isPlaying: Error && Error.code == 1000, // try playing state for offline mode 
         errorMessage: Error
-      });
-      this.props.hasError(Error);
+      }, () => {
+        this.props.hasError(Error);
+      });      
     }
   }
 

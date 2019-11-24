@@ -1,5 +1,5 @@
 export function getColorString(AString) {
-  if(!AString) {
+  if (!AString) {
     return 'rgba(50,50,50,.75)';
   }
   let idNrTxt = AString.split('').map(c => c.charCodeAt()).reduce((v1, v2) => v1 + v2)+'';
@@ -12,7 +12,7 @@ export function getColorString(AString) {
 
 export function getUrlQueryParameterByName(AName, AUrl) {
   AName = AName.replace(/[\[\]]/g, "\\$&");
-  if(AUrl[0]!='?' && AUrl[0]!='&') {
+  if (AUrl[0]!='?' && AUrl[0]!='&') {
     AUrl = '?' + AUrl;
   }
   var regex = new RegExp("[?&]" + AName + "(=([^&#]*)|&|#|$)"),
@@ -40,7 +40,7 @@ export function removeHtml(AString) {
 }
 
 export function getTime(APart1, APart2) {
-  if(!APart2) {
+  if (!APart2) {
     APart2 = 0;
   }
   APart1 += '';
@@ -49,7 +49,7 @@ export function getTime(APart1, APart2) {
 }
 
 export function getTimeFromSeconds(ASeconds) {
-  if(!ASeconds) {
+  if (!ASeconds) {
     return getTime(0, 0);
   }
   return getTime(Math.floor(ASeconds/60), Math.floor(ASeconds%60));

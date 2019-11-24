@@ -10,7 +10,7 @@ export default class HourDropDown extends Component {
   }
 
   componentDidMount() {	
-    let hours = [], mins = [];
+    let hours = [];
 		for(let h=0; h<=24; h++) {
 			hours.push({value:h, text:h});
 		}

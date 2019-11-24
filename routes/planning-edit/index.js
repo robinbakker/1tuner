@@ -21,36 +21,43 @@ export default class PlanningEdit extends Component {
 	// gets called when this route is navigated to
 	componentDidMount() {
 		document.title = 'Planning - 1tuner';
+		this.loadData();
+	}
 
-		let self = this;
-
-		if(this.props.stationList) {
-			let stationList = [];
-			this.props.stationList.forEach(el => {
-				stationList.push({
-					value: el.id,
-		 			text: el.name + (el.language ? ' (' + self.getCountryCode(el.language) + ')' : '')
-				});
-			});
-			stationList.sort(function(a, b) {
-				var nameA = a.text.toUpperCase(); // ignore upper and lowercase
-				var nameB = b.text.toUpperCase(); // ignore upper and lowercase
-				if (nameA < nameB) {
-					return -1;
-				}
-				if (nameA > nameB) {
-					return 1;
-				}			
-				// names must be equal
-				return 0;
-			});
-			self.setState({
-				radioStations: stationList
-			});
+	loadData = () => {
+		if (!this.props.stationList || !this.props.stationList.length) {
+			return;
 		}
+		let self = this;
+		let stationList = [];
+		this.props.stationList.forEach(el => {
+			stationList.push({
+				value: el.id,
+				text: el.name + (el.language ? ' (' + self.getCountryCode(el.language) + ')' : '')
+			});
+		});
+		stationList.sort(function(a, b) {
+			var nameA = a.text.toUpperCase(); // ignore upper and lowercase
+			var nameB = b.text.toUpperCase(); // ignore upper and lowercase
+			if (nameA < nameB) {
+				return -1;
+			}
+			if (nameA > nameB) {
+				return 1;
+			}			
+			// names must be equal
+			return 0;
+		});
+		this.setState({
+			radioStations: stationList
+		}, this.setPlanning);
+	
+	}
+
+	setPlanning() {
 		if (this.props.name && typeof window !== 'undefined' && window.location) {
 			let s = this.getPlanning(this.props.name, window.location.href);
-			self.setState({
+			this.setState({
 				href: s.href,
 				name: s.name,
 				items: s.schedule
@@ -81,11 +88,11 @@ export default class PlanningEdit extends Component {
       let sUrlArr = APlanningHref.split('?');
 			let qp = sUrlArr[1];
 			if (this.state.planningList) {
-				for(var i=0; i<=this.state.planningList.length; i++) {
-					if(this.state.planningList[i].href.indexOf('?') >= 0) {
+				for (var i=0; i<=this.state.planningList.length; i++) {
+					if (this.state.planningList[i].href.indexOf('?') >= 0) {
 						let sUrlArr2 = this.state.planningList[i].href.split('?');
 						let qp2 = sUrlArr2[1];
-						if(qp==qp2) {
+						if (qp==qp2) {
 							Result = this.state.planningList[i];
 							break;
 						}
@@ -110,7 +117,7 @@ export default class PlanningEdit extends Component {
 						prevP = P;
 					}
 				}
-				if(prevP) {
+				if (prevP) {
 					schedule.push({
 						"startHour": prevH,
 						"endHour": 24,
@@ -228,47 +235,70 @@ export default class PlanningEdit extends Component {
 		});
 	}
 
-	render() {
-		return (
-			<div class={'page-container'}>
-				<Header title="Planning" />
-			<main class={'content ' + (style.planning)}>
-			<h1 class={'main-title'}>Planning
-			{this.props.name ?
-				<small class={'main-subtitle'}>Change some bits and pieces 🔧</small>
-				:
-				<small class={'main-subtitle'}>Add a new planning</small>
-			}
-			</h1>
-			{this.state.errorMessage && this.state.errorMessage!='' ?
-				<p class={style['error-message']}>{this.state.errorMessage}</p>
-				:
-				null
-			}
-				<form class={style.editplanningform} onSubmit={this.handleSubmit.bind(this)}>					
-					<ul class={style['item-list']}>
-						<li class={style['item-list__item']}>
-							<label class="label-container">
-								<span class="label-text">Name</span>
-								<input type="text" id="inpName" placeholder="Planning name" maxlength="100" pattern="[\w.,!:\)\(\s]+" class="textfield" value={this.state.name} onInput={this.setName} required />
-							</label>
-						</li>
-						{this.state.items.map(scheduleItem => (
-							<li class={style['item-list__item']}>
-								<EditScheduleItem station={scheduleItem.station} startHour={scheduleItem.startHour} endHour={scheduleItem.endHour} stationOptionList={this.state.radioStations} buttonClass="btn--remove" buttonText="Remove" rowChange={this.scheduleItemChanged} buttonClick={this.removeScheduleItem}></EditScheduleItem>
-							</li>
-						))}
-						<li class={style['item-list__item'] + ' ' + style['item-list__item--break']}>
-							<EditScheduleItem id="addItem" buttonClass="btn--add" buttonText="Add" buttonClick={this.addScheduleItem} startHour={this.state.newStartHour} endHour={this.state.newEndHour} rowChange={this.addItemChanged} stationOptionList={this.state.radioStations}></EditScheduleItem>
-						</li>
-					</ul>
-					<div class={'btn-container btn-container--content-right'}>
-						<Link href={this.state.href ? this.state.href : '/planner'} native class={'btn btn--cancel margin--right'}>Cancel</Link>
-						<input type="submit" class={'btn btn--save'} value="Save" />
-					</div>
-				</form>
-			</main>
-			</div>
-		);
+	render({name}, {items, errorMessage, radioStations,newStartHour,newEndHour,href}) {
+		if(!radioStations || !radioStations.length) {
+			this.loadData();
+			return(
+				<div class={'page-container'}>
+					<Header title="Planning" />
+					<main class={'content ' + (style.planning)}>
+						<h1 class={'main-title'}>Planning
+						{name ?
+							<small class={'main-subtitle'}>Change some bits and pieces 🔧</small>
+							:
+							<small class={'main-subtitle'}>Add a new planning</small>
+						}
+						</h1>
+						{errorMessage && errorMessage!='' ?
+							<p class={style['error-message']}>{errorMessage}</p>
+							:
+							null
+						}
+					</main>
+				</div>
+			);
+		} else {
+			return (
+				<div class={'page-container'}>
+					<Header title="Planning" />
+					<main class={'content ' + (style.planning)}>
+						<h1 class={'main-title'}>Planning
+						{name ?
+							<small class={'main-subtitle'}>Change some bits and pieces 🔧</small>
+							:
+							<small class={'main-subtitle'}>Add a new planning</small>
+						}
+						</h1>
+						{errorMessage && errorMessage!='' ?
+							<p class={style['error-message']}>{errorMessage}</p>
+							:
+							null
+						}
+						<form class={style.editplanningform} onSubmit={this.handleSubmit.bind(this)}>					
+							<ul class={style['item-list']}>
+								<li class={style['item-list__item']}>
+									<label class="label-container">
+										<span class="label-text">Name</span>
+										<input type="text" id="inpName" placeholder="Planning name" maxlength="100" pattern="[\w.,!:\)\(\s]+" class="textfield" value={this.state.name} onInput={this.setName} required />
+									</label>
+								</li>
+								{items.map(scheduleItem => (
+									<li class={style['item-list__item']}>
+										<EditScheduleItem station={scheduleItem.station} startHour={scheduleItem.startHour} endHour={scheduleItem.endHour} stationOptionList={radioStations} buttonClass="btn--remove" buttonText="Remove" rowChange={this.scheduleItemChanged} buttonClick={this.removeScheduleItem}></EditScheduleItem>
+									</li>
+								))}
+								<li class={style['item-list__item'] + ' ' + style['item-list__item--break']}>
+									<EditScheduleItem id="addItem" buttonClass="btn--add" buttonText="Add" buttonClick={this.addScheduleItem} startHour={newStartHour} endHour={newEndHour} rowChange={this.addItemChanged} stationOptionList={radioStations}></EditScheduleItem>
+								</li>
+							</ul>
+							<div class={'btn-container btn-container--content-right'}>
+								<Link href={href ? href : '/planner'} native class={'btn btn--cancel margin--right'}>Cancel</Link>
+								<input type="submit" class={'btn btn--save'} value="Save" />
+							</div>
+						</form>
+					</main>
+				</div>
+			);
+		}
 	}
 }

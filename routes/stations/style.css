@@ -1,4 +1,4 @@
-.stations {
+main.stations {
 	padding: 0rem 1.5rem 10rem 1.5rem;
 }
 .form-search {
@@ -28,7 +28,7 @@
 	left:.2rem;
 	transform: rotate(-45deg);
 }
-.textfield--search {
+input.textfield--search {
 	background: transparent;
 	border-color: #646464 !important;
 	margin-bottom: 1rem;
@@ -37,13 +37,13 @@
 	padding-left: 1.8rem;
 	transition: opacity .2s ease-in-out;
 }
-.textfield--search:focus {
+input.textfield--search:focus {
 	opacity:1;
 }
-.textfield--search::-ms-clear {
+input.textfield--search::-ms-clear {
 	display: none; 
 }
-.btn-search-reset {
+button.btn-search-reset {
 	background: transparent;
 	border: none;
 	font-weight: bold;
@@ -57,10 +57,10 @@
 	top:.3rem;
 	text-indent: -10rem;
 }
-.textfield--search:not(:valid) ~ .btn-search-reset {
+input.textfield--search:not(:valid) ~ button.btn-search-reset {
 	opacity: 0;
 }
-.btn-search-reset:after, .btn-search-reset:before {
+button.btn-search-reset:after, button.btn-search-reset:before {
 	background-color: #000;
 	position: absolute;
 	display: inline-block;
@@ -72,15 +72,15 @@
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
 }
-.btn-search-reset:before {
+button.btn-search-reset:before {
 	-webkit-transform: translateX(.2rem) translateY(.2rem) rotate(45deg);
 	transform: translateX(.2rem) translateY(.2rem) rotate(45deg);
 }
-.btn-search-reset:after {
+button.btn-search-reset:after {
 	-webkit-transform: translateX(.2rem) translateY(.2rem) rotate(-45deg);
 	transform: translateX(.2rem) translateY(.2rem) rotate(-45deg);
 }
-.btn--toggle-filter {
+button.btn--toggle-filter {
 	margin-top: 0;
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='%23fff' d='M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z'/%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3C/svg%3E");
 	background-position: .5rem .4rem;
@@ -89,10 +89,10 @@
 	padding-left: 2rem;
 }
 @media (min-width: 768px) {
-	.btn--toggle-filter {
+	button.btn--toggle-filter {
 		display: none;
 	}
-	.stations {
+	main.stations {
 		padding-right: 17.5rem;
 	}
 }

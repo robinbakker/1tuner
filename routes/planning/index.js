@@ -15,7 +15,8 @@ export default class Planning extends Component {
 		items: [],
 		radioStations: [],
 		planningList: [],
-		canEdit: true
+		canEdit: true,
+		baseDocTitle: 'Radio Planning - 1tuner'
 	};
 
 	getPlanning = (APlanningName, APlanningHref) => {
@@ -25,8 +26,8 @@ export default class Planning extends Component {
       let sUrlArr = APlanningHref.split('?');
 			let qp = sUrlArr[1];
 			if (this.state.planningList) {
-				for(var i=0; i<this.state.planningList.length; i++) {
-					if(this.state.planningList[i].href.indexOf('?') >= 0) {
+				for (var i=0; i<this.state.planningList.length; i++) {
+					if (this.state.planningList[i].href.indexOf('?') >= 0) {
 						let sUrlArr2 = this.state.planningList[i].href.split('?');
 						let qp2 = sUrlArr2[1];
 						if(qp==qp2) {
@@ -125,26 +126,22 @@ export default class Planning extends Component {
 	}
 
 	loadData = () => {
-		let baseDocTitle = 'Radio Planning - 1tuner';
-		document.title = baseDocTitle;
-
-		let self = this;
-		if (this.props.stationList) {
+		if (this.props.stationList && this.props.stationList.length && this.props.planningList && this.props.planningList.length) {
 			this.setState({
-				radioStations: this.props.stationList
-			})
-		}
-		if (this.props.planningList) {
-			this.setState({
+				radioStations: this.props.stationList,
 				planningList: this.props.planningList
-			})
-		}
+			}, () => {
+				this.setPlanning();
+			});
+		}		
+	}
 
-		if(this.props.name && typeof window !== 'undefined' && window.location) {
+	setPlanning = () => {
+		if (this.props.name && typeof window !== 'undefined' && window.location) {
 			let currentPlanning = this.getPlanning(this.props.name, window.location.href);
-			if(currentPlanning) {
+			if (currentPlanning) {
 				this.props.addPlanning(currentPlanning);
-				document.title = currentPlanning.name + ' - ' + baseDocTitle;
+				document.title = currentPlanning.name + ' - ' + this.state.baseDocTitle;
 				let scheduleItems = currentPlanning.schedule ? Object.values(currentPlanning.schedule) : [];
 				this.setState({
 					href: currentPlanning.href,
@@ -158,11 +155,9 @@ export default class Planning extends Component {
 		}
 	}
 
-	render() {
-		if((!this.state.radioStations || !this.state.radioStations.length || !this.state.planningList || !this.state.planningList.length) && this.props.stationList && this.props.stationList.length && this.props.planningList && this.props.planningList.length) {
+	render({},{name, canEdit, href, items, radioStations, planningList}) {
+		if (!radioStations || !radioStations.length || !planningList || !planningList.length) {
 			this.loadData();
-		}
-		if(!this.state.radioStations || !this.state.radioStations.length || !this.state.planningList || !this.state.planningList.length) {
 			return(
 				<div class={'page-container'}>
 				<Header title="Planning" />
@@ -174,24 +169,24 @@ export default class Planning extends Component {
 		} else {
 			return (
 				<div class={'page-container'}>
-				<Header title={this.state.name} sharetext={'Listen to these radio stations'} />
+				<Header title={name} sharetext={'Listen to these radio stations'} />
 				<main class={'content ' + (style.planning)}>
-					<h1 class={'main-title'}>{this.state.name}
+					<h1 class={'main-title'}>{name}
 					</h1>
 					<p>&nbsp;</p>
 					<div class={'btn-container btn-container--right'}>
 						<button onClick={this.playPlanning} class={'btn btn--play'}>Listen now</button>
 					</div>
-					{this.state.canEdit ?
+					{canEdit ?
 						<div class={'btn-container btn-container--left'}>
-							<Link href={this.state.href.replace('/planning/','/planning-edit/')} native class={'margin--right btn btn--edit ' + style['btn--planning']}>Edit</Link>
+							<Link href={href.replace('/planning/','/planning-edit/')} native class={'margin--right btn btn--edit ' + style['btn--planning']}>Edit</Link>
 							<button onClick={this.deletePlanning} class={'btn btn--delete'}>Delete</button>
 						</div>
 						: 
 						null 
 					}
 					<ul class={style['planning-list']}>
-						{this.state.items.map(scheduleItem => (
+						{items.map(scheduleItem => (
 							<li class={style['planning-list__item'] +' '+style['hours']+' '+ style['hours--' + this.getHours(scheduleItem.startHour, scheduleItem.endHour)] + ' ' + style[this.isActive(scheduleItem.startHour, scheduleItem.endHour)]}>
 								<time>{this.getTimeCaption(scheduleItem.startHour)}<button onClick={this.playPlanning} class={'btn ' + style['btn--on-air']}>On air</button></time>
 								{this.getStation(scheduleItem.station)}

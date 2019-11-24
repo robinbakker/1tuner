@@ -1,7 +1,7 @@
 .pageheader {
 	padding: 0 1.5rem .5rem;
 }
-.podcast {
+main.podcast {
 	padding: 0 1.5rem 5.5rem 1.5rem;
 	background-position: right 1.5rem top 6rem;
 	background-size: 25%;
@@ -11,7 +11,7 @@
 	flex-wrap: wrap;
 	align-content: flex-start;
 }
-.podcast--empty {
+main.podcast--empty {
 	display: block;
 }
 .start {
@@ -35,7 +35,7 @@ img.artwork {
 	height: auto;
 }
 @media (min-width: 768px) {
-	.podcast {
+	main.podcast {
 		display:block;
 	}
 	.start {
@@ -80,7 +80,7 @@ img.artwork {
 .podcast-episode__item--is-playing {
 	background-color: rgba(0,0,0,.05);
 }
-.btn--play-episode {
+button.btn--play-episode {
 	height: 1.2rem;
 	width: 1.5rem;
 	padding: 0;
@@ -88,7 +88,7 @@ img.artwork {
 	margin-right: .4rem;
 	cursor: pointer;
 }
-.btn--play-episode:after {
+button.btn--play-episode:after {
 	top:.25rem;
 	left:.5rem;
 }

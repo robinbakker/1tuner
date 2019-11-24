@@ -27,6 +27,9 @@
 		flex-direction: row;
 	}
 }
+.footer--hidden {
+	transform: translate3d(0,100%,0);
+}
 .footer--visible {
 	transform: translate3d(0,0,0);
 }
@@ -268,19 +271,24 @@
 	position: absolute;
 	width: 100%;
 	bottom: 0;
-	left:0;
-	border:none;
-	background-color:transparent;
+	left: 0;
+	border: none;
+	height: .3rem;
+	appearance: none;
+	color: transparent;
+	background-color: transparent;
+}
+.audio-progress::-webkit-progress-bar {
+	color: transparent;
+	background-color: transparent;
+	border: none;
 }
 .footer--mode3 .audio-progress {
 	display: block;
 }
 .audio-progress[value] {
-	border:none;
 	background-color: transparent;
 	color: #e60000;
-	height: .3rem;
-	appearance: none;
 }
 .audio-progress[value]::-webkit-progress-bar {
 	background-color: rgba(255,255,255,.2);

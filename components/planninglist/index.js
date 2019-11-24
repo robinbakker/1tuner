@@ -60,24 +60,45 @@ export default class PlanningList extends Component {
 		return result;
 	}
 
-	loadData = () => {
-		if (this.props.planningList && this.props.planningList.length>0) {
-			this.setState({items: this.props.planningList});			
+	loadData = async () => {
+		console.log('planninglist: loadData()');
+
+		let planningList = this.props.planningList;
+		let stationList = this.props.horizontal ? null : this.props.stationList;
+		// if (planningList && planningList.length > 0) {
+		// 	this.setState({items: planningList});			
+		// }
+		// if (!this.props.horizontal) {
+		// 	if (this.props.stationList && this.props.stationList.length) {
+		// 		this.setState({
+		// 			radioStations: this.props.stationList
+		// 		});
+		// 	}
+		// }
+		if(planningList || stationList) {
+			this.setState({
+				items: planningList,
+				radioStations: stationList
+			});
+			return true;
 		}
-		if (!this.props.horizontal) {
-			if (this.props.stationList && this.props.stationList.length) {
-				this.setState({
-					radioStations: this.props.stationList
-				});
-			}
+		return false;
+	}
+
+	shouldComponentUpdate() {
+		console.log('planninglist: shouldComponentUpdate()');
+		if ((!this.state.items || !this.state.items.length) && this.props.planningList && this.props.planningList.length) {
+			return this.loadData();
+		} else {
+			return false;
 		}
 	}
 
-	render() {
-		if ((!this.state.items || !this.state.items.length) && (this.props.planningList && this.props.planningList.length>0)) {
-			this.loadData();
-		}
+	render() {		
     if (!this.state.items || !this.state.items.length) {
+			if (this.props.planningList && this.props.planningList.length) {
+				this.loadData();
+			}
       return(
         <Loader />
       );

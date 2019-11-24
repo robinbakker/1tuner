@@ -1,5 +1,5 @@
-.home {
-    padding-top:0;
+main.home {
+    padding-top: 0 !important;
     padding-bottom: 10rem;
 }
 .home-header {

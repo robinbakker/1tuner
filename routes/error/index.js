@@ -4,10 +4,6 @@ import Header from '../../components/header';
 import { Link } from 'preact-router/match';
 
 export default class Error extends Component {
-	constructor(props) {
-    super(props);
-	}
-
 	componentDidMount() {
 		document.title = 'Page not found - 1tuner | one web app to listen to audio streams';
 	}

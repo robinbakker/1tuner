@@ -1,8 +1,8 @@
-.planning {
+main.planning {
   padding: 0rem 1.5rem 8rem 1.5rem;
   position: relative;
 }
-.planning h1 {
+main.planning h1 {
   margin-bottom:3rem;
 }
 .planning-list, .planning-list__item {
@@ -58,10 +58,10 @@
 .is-active.planning-list__item time {
   position: relative;
 }
-.btn--on-air {
+button.btn--on-air {
   display: none;
 }
-.is-active .btn--on-air {
+.is-active button.btn--on-air {
   position: absolute;
   right: .3rem;
   top: .3rem;

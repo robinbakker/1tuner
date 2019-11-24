@@ -14,8 +14,8 @@ export default class Planner extends Component {
 		this.props.changePlanning(APlanning, true);
 	}
 
-	render() {
-		if (!this.props.planningList || !this.props.stationList) {			
+	render({planningList, stationList, currentUser},{}) {
+		if (!planningList || !stationList) {			
 			return(
 				<div class={'page-container'}>
 				<Header title="Radio Planner" sharetext={'Plan your own radio listening at 1tuner.com'} />
@@ -36,7 +36,7 @@ export default class Planner extends Component {
 					<div class={'btn-container btn-container--right'}>
 						<Link href="/planning-edit" native class={'btn btn--create'}>Plan new</Link>
 					</div>
-					<PlanningList planningList={this.props.planningList} stationList={this.props.stationList} changePlanning={this.changePlanning.bind(this)} currentUser={this.props.currentUser} /> 
+					<PlanningList planningList={planningList} stationList={stationList} changePlanning={this.changePlanning.bind(this)} currentUser={currentUser} /> 
 				</main>
 				</div>
 			);
