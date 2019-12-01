@@ -30,6 +30,7 @@ export default class App extends Component {
 			station: null,
 			stationList: null,
 			lastStationList: null,
+			presetStationList: null,
 			podcast: null,
 			podcastList: null,
 			planning: null,
@@ -77,6 +78,7 @@ export default class App extends Component {
 			podcastList: podcastList,
 			stationList: stationList,
 			lastStationList: lastStationList,
+			presetStationList: JSON.parse(JSON.stringify(lastStationList)), // For now, we are filling the preset list with the previous last played station list
 			featured: featured
 		});
 	}
@@ -86,7 +88,7 @@ export default class App extends Component {
 		return (
 		<div id="app">
 			<Nav />
-			<Router onChange={this.handleRoute.bind(this)}>
+			<Router>
 				<Home path="/" stationList={lastStationList} planningList={planningList} podcastList={podcastList} featured={featured} changeStation={this.changeStation.bind(this)} changePlanning={this.changePlanning.bind(this)} />
 				<Stations path="/radio-stations" stationList={stationList} languageList={languageList} changeStation={this.changeStation.bind(this)} toggleFilterPanel={this.toggleFilterPanel.bind(this)} setLanguageList={this.setLanguageList.bind(this)} />
 				<Station path="/radio-station/:id?" stationList={stationList} languageList={languageList} changeStation={this.changeStation.bind(this)} />
@@ -98,7 +100,7 @@ export default class App extends Component {
 				<About path="/about" version={version} />
 				<Error type="404" default />
 			</Router>
-			<Footer onRef={ref => (this.child = ref)} listeningMode={listeningMode} stationList={stationList} podcast={podcast} planning={planning} station={station} setPodcastEpisodeTimeElapsed={this.setPodcastEpisodeTimeElapsed.bind(this)} closeFooter={this.closeFooter.bind(this)} />
+			<Footer onRef={ref => (this.child = ref)} listeningMode={listeningMode} stationList={stationList} tuneToStation={this.tuneToStation.bind(this)} podcast={podcast} planning={planning} station={station} setPodcastEpisodeTimeElapsed={this.setPodcastEpisodeTimeElapsed.bind(this)} closeFooter={this.closeFooter.bind(this)} />
 		</div>
 		);
 	}
@@ -160,8 +162,68 @@ export default class App extends Component {
 		}		
 	}
 
+	tuneToStation = (APrev) => {
+		let presetList = this.state.presetStationList;
+		let lastPlayedList = this.state.lastStationList;
+		if (!presetList || presetList.length < 2 || !lastPlayedList || lastPlayedList.length < 2) {
+			// something is wrong with the data, ignore tuning
+			return;
+		}
+		if (!this.state.station) {
+			this.changeStation(lastPlayedList[0].id, true);
+		}
+		let isFound = false;
+		for (let i=0; i<presetList.length; i++) {
+			if (presetList[i].id === this.state.station) {
+				let newIndex = APrev ? i-1 : i+1;
+				if (newIndex >= presetList.length) {
+					newIndex = 0;
+				} else if(newIndex < 0) {
+					newIndex = presetList.length-1;
+				}
+				this.changeStation(presetList[newIndex].id, true);
+				isFound = true;
+				break;
+			}
+		}
+		if (!isFound) {
+			let stationItem = null;
+			for (var i=0; i<this.state.stationList.length; i++) {
+				if (this.state.stationList[i].id == this.state.station) {
+					stationItem = this.state.stationList[i];
+					break;
+				}
+			}
+			if (stationItem) {
+				let insertIndex = 0;
+				for (let i=0; i<presetList.length; i++) {
+					// find the last played station in the presetlist, use this index for the insert
+					if (presetList[i].id === lastPlayedList[1].id) { 
+						insertIndex = i+1;
+						if (insertIndex >= presetList.length) {
+							insertIndex = 0;
+						}
+						break;
+					}
+				}
+				presetList.splice(insertIndex, 0, stationItem);
+				let newIndex = APrev ? insertIndex-1 : insertIndex+1;
+				if (newIndex >= presetList.length) {
+					newIndex = 0;
+				} else if(newIndex < 0) {
+					newIndex = presetList.length-1;
+				}
+				this.setState({
+					presetStationList: presetList
+				}, () => {
+					this.changeStation(presetList[newIndex].id, true);
+				});
+			}
+		}
+	}
+
 	changeStation = (AStation, AForcePlay) => {
-		if (typeof AStation !== 'undefined' && AStation!=this.state.station) {
+		if (typeof AStation !== 'undefined' && AStation !== this.state.station) {
 			this.addToLastStationList(AStation);
 			this.setState({
 				listeningMode: 1,
@@ -285,7 +347,6 @@ export default class App extends Component {
 	}
 
 	savePodcastHistory = (APodcast) => {
-		console.log('savePodcastHistory');
 		if (!APodcast || !APodcast.feedUrl) {
 			return;
 		}
@@ -323,22 +384,6 @@ export default class App extends Component {
 				this.child.forcePlay(true);
 			}
 		});		
-	}
-	
-	handleRoute = (e) => {
-		// if (e.url=='/radio-stations' || e.url=='/radio-stations/') {
-		// 	this.setState({enableFilterPanel:true});
-    // } else {
-		// 	this.setState({enableFilterPanel:false});
-		// }
-	}
-	
-	setIsLoading = (ALoadingType, AIsLoading) => {
-		// if (ALoadingType==1) {
-		// 	this.setState({stationsLoading:AIsLoading});
-		// } else if(ALoadingType==2) {
-		// 	this.setState({languagesLoading:AIsLoading});
-		// }
 	}
 	
 	loadLanguageList = () => {

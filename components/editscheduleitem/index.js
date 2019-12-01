@@ -71,7 +71,6 @@ export default class EditScheduleItem extends Component {
 	render({buttonClass,buttonText,stationOptionList}, {startHour,endHour,station,stationList}) {
     if (!stationList || !stationList.length) {
       if (stationOptionList && stationOptionList.length) {
-        console.log('EditScheduleItem: render, try loadData');
         this.loadData();
       }
       return <fieldset class={style['esi-container']}></fieldset>;

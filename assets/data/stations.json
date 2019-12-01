@@ -1500,5 +1500,21 @@
       }     
     ],
     "website": "https://kink.nl"
+  },
+  "lindaradio": {
+    "displayorder": 78,
+    "genres": {
+      "pop": true
+    },
+    "language": "nl",
+    "logosource": "https://avatars.io/twitter/lindanieuws",
+    "name": "LINDA.radio",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/TLPSTR10.mp3"
+      }     
+    ],
+    "website": "https://www.linda.nl/luister/"
   }
 }

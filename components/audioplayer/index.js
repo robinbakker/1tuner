@@ -99,7 +99,6 @@ export default class AudioPlayer extends Component {
     }
     let self= this;
     if (window.Worker && thisTimerWorker==null) {
-      //console.log('starting reconnect timer');
       try {
         thisTimerWorker = new Worker('/assets/workers/timer.js');
         thisTimerWorker.postMessage(RECONNECT_TIMEOUT);
@@ -133,7 +132,6 @@ export default class AudioPlayer extends Component {
   }
 
   killReconnectTimer = () => {
-    //console.log('killing reconnect timer');
     let thisTimerWorker = this.state.reconnectTimerWorker;
     if (thisTimerWorker != null) {
       thisTimerWorker.terminate();
@@ -147,7 +145,6 @@ export default class AudioPlayer extends Component {
   checkAudio = (AIsPlaying, AMediaPlayingID, AResumeAtSeconds) => {
     let mediaPlayingID = AMediaPlayingID ? AMediaPlayingID : this.props.mediaid;
     let isSameMedia = this.state.mediaid == mediaPlayingID;
-    console.log('checkAudio');
     if (this.state.isPlaying == AIsPlaying && isSameMedia && !this.state.errorMessage) {
       return; // Nothing changed
     }
@@ -251,8 +248,8 @@ export default class AudioPlayer extends Component {
       navigator.mediaSession.setActionHandler('play', _ => this.mediaSessionPlay());
       navigator.mediaSession.setActionHandler('pause', _ => this.mediaSessionPause());
       //navigator.mediaSession.setActionHandler('stop', _ => self.mediaSessionStop());
-      //navigator.mediaSession.setActionHandler('previoustrack', function() {console.log('prev');});
-      //navigator.mediaSession.setActionHandler('nexttrack', function() {console.log('next');});
+      navigator.mediaSession.setActionHandler('previoustrack', _ => this.mediaSessionPrev());
+      navigator.mediaSession.setActionHandler('nexttrack', _ => this.mediaSessionNext());
     }
   }
 
@@ -267,6 +264,12 @@ export default class AudioPlayer extends Component {
   mediaSessionStop = () => {
     this.props.handleMediaSessionEvent('stop');
     navigator.mediaSession.playbackState = 'none';
+  }
+  mediaSessionPrev = () => {
+    this.props.handleMediaSessionEvent('prev');
+  }
+  mediaSessionNext = () => {
+    this.props.handleMediaSessionEvent('next');
   }
 
   handleAudioError = (e) => {

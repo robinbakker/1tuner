@@ -63,7 +63,6 @@ export default class Footer extends Component {
   }
 
   loadData = () => {
-    console.log('footer: loadData()');
     let self = this;
     let wasPlaying = this.state.isPlaying; 
     if (this.props.listeningMode == LM_Station || this.props.listeningMode == LM_Planning) {
@@ -71,7 +70,7 @@ export default class Footer extends Component {
         if (this.props.stationList && this.props.stationList.length) {
           this.setState({stationList:this.props.stationList}, () => {
             this.loadData();
-          });          
+          });   
         } else {
           // Load stations or show error?
           console.log('no station list found');
@@ -211,7 +210,6 @@ export default class Footer extends Component {
   }
 
   setDataNone = () => {
-    console.log('footer: setDataNone()');
     if (this.state.isPlaying && this.child) {
       // Stop playing, child! :P
       this.child.method(false, null, '');    
@@ -386,7 +384,7 @@ export default class Footer extends Component {
     if (this.state.listeningMode == LM_Podcast) {
       let currentPodcast = this.props.podcast;
       let currentEpisode = this.getCurrentEpisode(currentPodcast.episodes);
-      if (this.state.podcast && this.state.mediaPlayingID != currentEpisode.url) {
+      if (this.state.podcast && currentEpisode && this.state.mediaPlayingID != currentEpisode.url) {
         this.props.setPodcastEpisodeTimeElapsed(this.state.podcast.feedUrl, this.state.mediaPlayingID, this.state.elapsedtime);
       }
       let playingOutcome = this.state.isPlaying || this.state.mediaPlayingID != currentEpisode.url;
@@ -487,7 +485,6 @@ export default class Footer extends Component {
         isPlayingOutcome.progressvalue = isPlayingOutcome.progressvalue || 0;
         isPlayingOutcome.media = isPlayingOutcome.media || self.state.media;
         isPlayingOutcome.listeningMode = isPlayingOutcome.listeningMode || self.state.listeningMode;
-        console.log('footer playAudio, isLoading: ' + !wasPlaying);
         self.setState({
           isLoading: !wasPlaying || isPlayingOutcome.mediaPlayingID !== self.state.mediaPlayingID,
           isPlaying: isPlayingOutcome.isPlaying,
@@ -507,7 +504,26 @@ export default class Footer extends Component {
   }
 
   handleMediaSessionEvent = (AEvent) => {
-    this.playAudio(AEvent, this);
+    switch(AEvent) {
+      case 'prev':
+        if (this.state.listeningMode == LM_Podcast) {
+          this.rewind();
+        } else {
+          // load prevous station
+          this.props.tuneToStation(true);
+        }
+        break;
+      case 'next':
+        if (this.state.listeningMode == LM_Podcast) {
+          this.fastForward();
+        } else {
+          // load next station
+          this.props.tuneToStation(false);
+        }
+        break;
+      default:
+        this.playAudio(AEvent, this);
+    }    
   }
 
   rewind = () => {

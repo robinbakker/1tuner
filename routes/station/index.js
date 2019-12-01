@@ -48,7 +48,6 @@ export default class Station extends Component {
 	}
 
 	loadData = () => {
-		console.log('station: loadData');
 		let station = this.getStation(this.props.id);
 		this.setState({currentStation: station});
 		if (station) {
