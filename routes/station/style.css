@@ -5,3 +5,12 @@ main.station {
 	background-repeat: no-repeat;
 	position: relative;
 }
+.related {
+	margin: 3rem 0;
+}
+
+@media (min-width: 768px) {
+	.related {
+		max-width: 70%;
+	}
+}

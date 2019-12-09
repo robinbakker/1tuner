@@ -18,7 +18,7 @@ html, body {
 	width: 100%;
 	padding: 0;
 	margin: 0;
-	background:#fff;
+	background: #fff;
 	font: 16px/1.6 BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 	color: var(--text-color);
 	-webkit-font-smoothing: antialiased;
@@ -63,15 +63,15 @@ a:hover {
 	padding: .4rem 0;
 }
 .textfield:invalid {
-	border-color:#f00;
+	border-color: #f00;
 }
 
 .label-text {
 	display: block;
 	text-transform: uppercase;
-	color:#999;
+	color: #999;
 	font-size: .6rem;
-	margin-bottom:.2rem;
+	margin-bottom: .2rem;
 }
 
 .hidden {
@@ -87,7 +87,7 @@ a:hover {
 	padding: .5rem 0;	
 }
 .content__section--stations {
-	margin-top:0;
+	margin-top: 0;
 }
 
 .btn-container {
@@ -99,17 +99,17 @@ a:hover {
 .btn-container--left,
 .btn-container--right {
 	position: absolute;
-  margin-top:-4rem;
+  margin-top: -4rem;
   right: 1.5rem;
 }
 .btn-container--left {
-	right:auto;
-	left:1.5rem;
+	right: auto;
+	left: 1.5rem;
 }
 .btn {
 	color: #fff;
 	background: var(--color-main);
-	border:none;
+	border: none;
 	font-weight: bold;
 	text-transform: uppercase;
 	font-size: .75rem;
@@ -138,14 +138,14 @@ a:hover {
 	padding-right: 1rem;
 }
 .btn--play:after {
-	content:'\20';
-	display:block;
+	content: '\20';
+	display: block;
 	top: .6rem;
   left: 1rem;
 	position: absolute;	
-  border-left:.6rem solid #fff;
-	border-top:.35rem solid transparent;
-	border-bottom:.35rem solid transparent;
+  border-left: .6rem solid #fff;
+	border-top: .35rem solid transparent;
+	border-bottom: .35rem solid transparent;
 }
 .btn--search {
 	padding-left: 2rem;
@@ -213,7 +213,7 @@ a:hover {
 .btn--remove:before {
 	content: '-';
 	font-size: 1.6rem;
-	line-height:.8rem;
+	line-height: .8rem;
 }
 .btn--info {
 	text-indent: -50rem;
@@ -239,7 +239,7 @@ a:hover {
 .btn--right {
 	position: absolute;
 	position: absolute;
-  margin-top:-4rem;
+  margin-top: -4rem;
   right: 1.5rem;
 
 }
@@ -256,10 +256,13 @@ a:hover {
 	text-transform: uppercase;
 	border-left: .15rem solid var(--color-main);
 	padding-left: .35rem;
-	margin-left:1.5rem;
+	margin-left: 1.5rem;
 	color: var(--title-color);
-	overflow:hidden;
+	overflow: hidden;
 	display: block; 
+}
+.section-title--no-padding {
+	margin-left:0;
 }
 .content .content__section:nth-child(1) .section-title { animation-delay: .5s }
 .content .content__section:nth-child(2) .section-title { animation-delay: 1s }
@@ -303,8 +306,8 @@ a:hover {
 
 .preset-list {
 	display: flex;
-	margin:0;
-	padding:0;
+	margin: 0;
+	padding: 0;
 	list-style: none;
 	width: 100%;
 	flex-flow: row wrap;
@@ -322,15 +325,14 @@ a:hover {
 .preset-list--horizontal .preset-list__item {
 	flex: 0 0 auto;
 }
-
 .preset-list__item {
 	align-content: flex-end;
-	padding:1.5rem;
+	padding: 1.5rem;
 }
 .preset-list__item--small {
-	width:6rem;
-	height:6rem;
-	margin:1rem;
+	width: 6rem;
+	height: 6rem;
+	margin: 1rem;
 }
 a.preset-list__link {
   display: none;
@@ -381,15 +383,15 @@ a.preset-list__link {
 }
 .preset-list__button:before {
 	border-left: 2px solid rgba(255,0,0,.75);
-	content:'\20';
+	content: '\20';
 	display: inline-block;
-	width:2px;
-	height:100%;
+	width: 2px;
+	height: 100%;
 	position: absolute;
 	z-index: 99;
 	opacity: 0;
-	left:0;
-	bottom:0;
+	left: 0;
+	bottom: 0;
 	transform: translate3d(0,0,0);
 	transition: transform .4s ease-in-out, opacity .4s ease-in-out;
 }
@@ -461,7 +463,7 @@ h1.main-title {
 .cast-button {
 	background: transparent no-repeat;
 	background-image: var(--icon-cast-open);
-	border:none;
+	border: none;
 	text-indent: -50rem;
 	overflow: hidden;
 	width: 1.6rem;
@@ -516,8 +518,8 @@ h1.main-title {
 	.preset-list--page a.preset-list__link {
 		display: inline-block;
 		font-size: 1.2rem;
-		padding:1rem;
-		color:var(--text-color);
+		padding: 1rem;
+		color: var(--text-color);
 		text-decoration: none;
 	}
 }

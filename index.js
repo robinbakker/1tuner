@@ -440,7 +440,8 @@ export default class App extends Component {
 						streams: items[item].streams,
 						website: items[item].website,
 						language: items[item].language,
-						genres: items[item].genres
+						genres: items[item].genres,
+						related: items[item].related
 					});
 				}
 				newState.sort(function(a, b) {

@@ -47,7 +47,8 @@
         "url": "https://icecast.omroep.nl/3fm-bb-aac"
       }
     ],
-    "website": "https://www.npo3fm.nl"
+    "website": "https://www.npo3fm.nl",
+    "related":["3fmalternative","funx","radio2"]
   },
   "3fmalternative": {
     "displayorder": 38,
@@ -70,7 +71,8 @@
         "url": "https://icecast.omroep.nl/3fm-alternative-aac"
       }
     ],
-    "website": "https://www.npo3fm.nl"
+    "website": "https://www.npo3fm.nl",
+    "related":["3fm"]
   },
   "antennebayern": {
     "displayorder": 27,
@@ -141,7 +143,8 @@
         "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p"
       }
     ],
-    "website": "https://www.bbc.co.uk/radio1"
+    "website": "https://www.bbc.co.uk/radio1",
+    "related": ["bbcradio2","bbcradio4","bbcradio5live"]
   },
   "bbcradio2": {
     "displayorder": 2,
@@ -163,7 +166,8 @@
         "url": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_med/llnw/bbc_radio_two.m3u8"
       }
     ],
-    "website": "https://www.bbc.co.uk/radio2"
+    "website": "https://www.bbc.co.uk/radio2",
+    "related": ["bbcradio1","bbcradio4","bbcradio5live"]
   },
   "bbcradio4": {
     "displayorder": 4,
@@ -185,7 +189,8 @@
         "url": "http://open.live.bbc.co.uk/mediaselector/5/select/version/2.0/mediaset/apple-ipad-hls/vpid/bbc_radio_fourfm/format/pls.pls"
       }
     ],
-    "website": "https://www.bbc.co.uk/radio4"
+    "website": "https://www.bbc.co.uk/radio4",
+    "related": ["bbcradio1","bbcradio2","bbcradio5live"]
   },
   "bbcradio5live": {
     "displayorder": 21,
@@ -357,7 +362,8 @@
         "url": "https://icecast.omroep.nl/funx-bb-mp3"
       }
     ],
-    "website": "https://www.funx.nl"
+    "website": "https://www.funx.nl",
+    "related":["3fm"]
   },
   "hot108jamz": {
     "displayorder": 55,
@@ -500,7 +506,8 @@
         "url": "http://streams.robstenders.nl:8063/kxclassics_mp3"
       }
     ],
-    "website": "http://www.kxclassics.nl"
+    "website": "http://www.kxclassics.nl",
+    "related":["kxclassicsedge","xxlbonanza","xxlblokhuis"]
   },
   "kxclassicsedge": {
     "displayorder": 8,
@@ -519,7 +526,8 @@
         "url": "http://streams.robstenders.nl:8063/edgeclassics_mp3"
       }
     ],
-    "website": "http://www.robstenders.nl"
+    "website": "http://www.robstenders.nl",
+    "related":["kxclassic","xxlbonanza","xxlblokhuis"]
   },
   "los40": {
     "displayorder": 29,
@@ -814,7 +822,8 @@
         "url": "https://icecast.omroep.nl/radio1-bb-aac"
       }
     ],
-    "website": "http://www.nporadio1.nl/"
+    "website": "http://www.nporadio1.nl/",
+    "related":["radio2","3fm","radio4","radio5"]
   },
   "radio10": {
     "displayorder": 10,
@@ -879,7 +888,8 @@
         "url": "https://icecast.omroep.nl/radio2-bb-aac"
       }
     ],
-    "website": "http://www.nporadio2.nl/"
+    "website": "http://www.nporadio2.nl/",
+    "related":["radio1","3fm","radio4","radio5"]
   },
   "radio4": {
     "displayorder": 16,
@@ -895,7 +905,8 @@
         "url": "https://icecast.omroep.nl/radio4-bb-mp3"
       }
     ],
-    "website": "https://www.nporadio4.nl/"
+    "website": "https://www.nporadio4.nl/",
+    "related": ["radio1","radio2","3fm","radio5"]
   },
   "radio5": {
     "displayorder": 14,
@@ -911,7 +922,8 @@
         "url": "https://icecast.omroep.nl/radio5-bb-mp3"
       }
     ],
-    "website": "https://www.nporadio5.nl/"
+    "website": "https://www.nporadio5.nl/",
+    "related": ["radio1","radio2","3fm","radio4"]
   },
   "radiomirchi": {
     "displayorder": 57,
@@ -1441,7 +1453,8 @@
         "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINK.mp3"
       }
     ],
-    "website": "https://kink.nl"
+    "website": "https://kink.nl",
+    "related": ["kinkdna"]
   },
   "arrow": {
     "displayorder": 75,
@@ -1484,7 +1497,7 @@
       "alternative": true,
       "pop": true,
       "rock": true,
-      "oldies":true
+      "oldies": true
     },
     "language": "nl",
     "logosource": "https://avatars.io/twitter/kinkpuntnl",
@@ -1499,7 +1512,8 @@
         "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINK_DNA.mp3"
       }     
     ],
-    "website": "https://kink.nl"
+    "website": "https://kink.nl",
+    "related": ["kink"]
   },
   "lindaradio": {
     "displayorder": 78,

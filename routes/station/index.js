@@ -2,13 +2,15 @@ import { h, Component } from 'preact';
 import style from './style';
 import Loader from '../../components/loader';
 import Header from '../../components/header';
+import StationList from '../../components/stationlist';
 
 export default class Station extends Component {
 	constructor(props) {
     super(props);
 		this.state = {
 			baseDocTitle: 'Radio Station - Listen now at 1tuner.com',
-			currentStation: null
+			currentStation: null,
+			relatedStationList: []
 		};
 	}
 
@@ -34,7 +36,7 @@ export default class Station extends Component {
 		}
 		let Result = null;
 		let languageList = this.props.languageList;
-		for (let i=0;i<languageList.length;i++) {
+		for (let i=0; i<languageList.length; i++) {
       if (languageList[i].id==ALang) {
         Result = languageList[i];
         break;
@@ -49,10 +51,18 @@ export default class Station extends Component {
 
 	loadData = () => {
 		let station = this.getStation(this.props.id);
-		this.setState({currentStation: station});
 		if (station) {
 			document.title = station.name + ' - ' + this.state.baseDocTitle;
 		}
+		let relatedStationList = [];
+		let self = this;
+		if (station.related && station.related.length) {
+			station.related.forEach(function(stationid) {
+				let tempStation = self.getStation(stationid);
+				relatedStationList.push(tempStation);
+			});
+		}
+		this.setState({currentStation: station, relatedStationList: relatedStationList});
 	}
 
 	shouldComponentUpdate() {
@@ -61,13 +71,13 @@ export default class Station extends Component {
 		}
 	}
 
-	render({stationList},{currentStation}) {	
-		if (currentStation) {
+	render({id,stationList},{currentStation,relatedStationList}) {	
+		if (currentStation && currentStation.id==id) {
 			return (
 				<div class={'page-container'}>
 				<Header title={currentStation.name} sharetext={'Listen now at 1tuner.com'} />
 				<main class={'content ' + (style.station)} style={'background-image:url(' + currentStation.logosource +')'}>
-					<h1 class={'main-title'}>{this.state.currentStation.name}
+					<h1 class={'main-title'}>{currentStation.name}
 					<small class={'main-subtitle main-subtitle--loud'}>{currentStation.langObj ? currentStation.langObj.flag : null} Radio station</small></h1>
 					<div class={'btn-container'}>
 						<button onClick={this.changeStation.bind(this)} class={'btn btn--play'}>Listen now</button>
@@ -76,6 +86,13 @@ export default class Station extends Component {
 					<p><a href={currentStation.website} target="_blank" rel="noopener">{currentStation.website}</a></p>
 					:
 					null }
+					{relatedStationList && relatedStationList.length ?
+					<section class={'content__section ' + style.related}>
+						<h3 class={'section-title section-title--no-padding'}>Related</h3>
+						<div>
+							<StationList stationList={relatedStationList} useLinksOnly={true} changeStation={this.changeStation.bind(this)} limitCount={10}  />
+						</div>
+					</section> : null}
 				</main>
 				</div>
 			);
