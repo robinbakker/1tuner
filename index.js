@@ -2,7 +2,6 @@ import './style/index.css';
 
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
-// import FilterPanel from './components/filterpanel';
 import Nav from './components/nav';
 import Footer from './components/footer';
 import Home from './routes/home';
@@ -16,7 +15,7 @@ import PlanningEdit from './routes/planning-edit';
 import About from './routes/about';
 import Error from './routes/error';
 import { version as AppVersion } from './package.json';
-import { get, set } from './utils/idb-keyval';
+import { get, set } from 'idb-keyval';
 import * as Languages from './assets/data/languages.json';
 import * as Featured from './assets/data/featured.json';
 
@@ -36,12 +35,12 @@ export default class App extends Component {
 			planning: null,
 			planningList: null,			
 			languageList: null,
-			showFilterPanel:false,
-			enableFilterPanel:false,
-			stationsLoading:false,
-			languagesLoading:false,
-			lastPodcastSearchQuery:null,
-			lastPodcastSearchResult:null,
+			showFilterPanel: false,
+			enableFilterPanel: false,
+			stationsLoading: false,
+			languagesLoading: false,
+			lastPodcastSearchQuery: null,
+			lastPodcastSearchResult: null,
 			version: AppVersion,
 			userVersion: null,
 		};
@@ -64,7 +63,7 @@ export default class App extends Component {
 		let podcastList = await get('podcast-list');									
 		let lastStationList = await get('last-station-list') || this.getLastStationList(stationList);
 		let featured = this.loadFeatured(stationList);
-						
+		
 		let languageList = this.state.languageList || await get('language-list') || this.loadLanguageList();
 		let planningList = this.state.planningList || await get('planning-list') || this.loadPlanningList();
 
@@ -395,18 +394,21 @@ export default class App extends Component {
 				selectedLanguages.push(navigator.language.toLowerCase());
 			}
 		}
-		let items = Languages;
+		let langItems = Languages;
+		if (langItems && langItems.default) {
+			langItems = langItems.default;
+		}
 		let langs = [];
-		for (let item in items) {
-			let country = items[item].country_en;
-			if (!country) country = items[item].country;
+		for (let item in langItems) {
+			let country = langItems[item].country_en;
+			if (!country) country = langItems[item].country;
 			langs.push({
 				id: item,
-				abbr: items[item].abbr,
-				displayorder: items[item].displayorder, 
-				name: items[item].name,
+				abbr: langItems[item].abbr,
+				displayorder: langItems[item].displayorder, 
+				name: langItems[item].name,
 				country: country,
-				flag: items[item].flag,
+				flag: langItems[item].flag,
 				active: (selectedLanguages.indexOf(item.toLowerCase())!=-1),
 				preferred: (selectedLanguages.length && selectedLanguages[0]==item)
 			});

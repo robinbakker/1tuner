@@ -6,7 +6,7 @@ main.station {
 	position: relative;
 }
 .related {
-	margin: 3rem 0;
+	margin: 4rem 0;
 }
 
 @media (min-width: 768px) {

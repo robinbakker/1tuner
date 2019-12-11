@@ -30,6 +30,27 @@ export default class Station extends Component {
 		return Result;
 	}
 
+	getSameGenreStations = (AStation) => {
+    if (!AStation.genres || !Array.isArray(AStation.genres) || !this.props.stationList || !this.props.stationList.length) {
+      return null;
+		}
+		let genreArrayString = JSON.stringify(AStation.genres.sort());
+    let result = [];
+		let stationList = this.props.stationList;		
+    for (let i=0; i < stationList.length; i++) {
+			if(stationList[i].id==AStation.id) {
+				continue;
+			}
+			let thisStationGenres = stationList[i].genres;
+      if (thisStationGenres && Array.isArray(thisStationGenres)) {
+				if (JSON.stringify(thisStationGenres.sort()) === genreArrayString) {
+					result.push(stationList[i]);
+				}
+      }
+		}		
+		return result;
+	}
+
 	getLang = (ALang) => {
 		if (!ALang || !this.props.languageList || !this.props.languageList.length) {
       return null;
@@ -54,12 +75,26 @@ export default class Station extends Component {
 		if (station) {
 			document.title = station.name + ' - ' + this.state.baseDocTitle;
 		}
-		let relatedStationList = [];
+		let relatedStationList = this.getSameGenreStations(station) || [];
 		let self = this;
 		if (station.related && station.related.length) {
 			station.related.forEach(function(stationid) {
 				let tempStation = self.getStation(stationid);
 				relatedStationList.push(tempStation);
+			});
+		}
+		if(relatedStationList && relatedStationList.length) {
+			relatedStationList.sort(function(keyA, keyB) {
+				if(keyA.language==keyB.language) {
+					return 0;
+				}
+				if(keyA.language==station.language) {
+					return -1;
+				}
+				if(keyB.language==station.language) {
+					return 1;
+				}
+				return 0;
 			});
 		}
 		this.setState({currentStation: station, relatedStationList: relatedStationList});
@@ -88,7 +123,7 @@ export default class Station extends Component {
 					null }
 					{relatedStationList && relatedStationList.length ?
 					<section class={'content__section ' + style.related}>
-						<h3 class={'section-title section-title--no-padding'}>Related</h3>
+						<h3 class={'section-title section-title--no-padding'}>Suggested...</h3>
 						<div>
 							<StationList stationList={relatedStationList} useLinksOnly={true} changeStation={this.changeStation.bind(this)} limitCount={10}  />
 						</div>

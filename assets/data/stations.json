@@ -1,12 +1,7 @@
 {
   "538": {
     "displayorder": 1,
-    "genres": {
-      "dance": true,
-      "hiphop": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["pop"],
     "language": "nl",
     "logosource": "https://pbs.twimg.com/profile_images/765892986496507904/E6Ccx8p4_400x400.jpg",
     "name": "Radio 538",
@@ -28,12 +23,7 @@
   },
   "3fm": {
     "displayorder": 3,
-    "genres": {
-      "dance": true,
-      "hiphop": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["pop","rock"],
     "language": "nl",
     "logosource": "//www.npo3fm.nl/templates/npo3fm/images/logo-npo3fm.png",
     "name": "NPO 3FM",
@@ -52,12 +42,7 @@
   },
   "3fmalternative": {
     "displayorder": 38,
-    "genres": {
-      "alternative": true,
-      "hiphop": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["alternative","pop","rock"],
     "language": "nl",
     "logosource": "//www.npo3fm.nl/templates/npo3fm/images/logo-npo3fm.png",
     "name": "NPO 3FM Alternative",
@@ -76,11 +61,7 @@
   },
   "antennebayern": {
     "displayorder": 27,
-    "genres": {
-      "local": true,
-      "news": true,
-      "pop": true
-    },
+    "genres": ["local","news","pop"],
     "language": "de",
     "logosource": "https://www.antenne.de/assets/templates/antenne-de/img/logo-antenne-de-header-2.svg",
     "name": "Antenne Bayern",
@@ -94,10 +75,7 @@
   },
   "banditrock": {
     "displayorder": 64,
-    "genres": {
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["pop", "rock"],
     "language": "sv-SE",
     "logosource": "https://pbs.twimg.com/profile_images/765851461095976960/8xGAdp6l_400x400.jpg",
     "name": "Bandit Rock",
@@ -111,11 +89,7 @@
   },
   "bayern1": {
     "displayorder": 26,
-    "genres": {
-      "local": true,
-      "news": true,
-      "pop": true
-    },
+    "genres": ["local","news","pop"],
     "language": "de",
     "logosource": "https://pbs.twimg.com/profile_images/989427326407626752/_MvPZ9TG_400x400.jpg",
     "name": "Bayern 1",
@@ -129,11 +103,7 @@
   },
   "bbcradio1": {
     "displayorder": 18,
-    "genres": {
-      "dance": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["dance","pop","rock"],
     "language": "en-UK",
     "logosource": "https://rmp.files.bbci.co.uk/rmp-shared-assets/0.2.6/img/network-logos/national/bbc_radio_one_colour.svg",
     "name": "BBC Radio 1",
@@ -148,11 +118,7 @@
   },
   "bbcradio2": {
     "displayorder": 2,
-    "genres": {
-      "oldies": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["oldies","pop","rock"],
     "language": "en-UK",
     "logosource": "https://static.bbci.co.uk/radio/109/1.96.20171025155453/img/logos/v2/bbc_radio_two_alt_colour.svg",
     "name": "BBC Radio 2",
@@ -171,11 +137,7 @@
   },
   "bbcradio4": {
     "displayorder": 4,
-    "genres": {
-      "oldies": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["oldies","pop","rock"],
     "language": "en-UK",
     "logosource": "https://static.bbci.co.uk/radio/109/1.96.20171025155453/img/logos/v2/bbc_radio_fourfm_alt_colour.svg",
     "name": "BBC Radio 4",
@@ -194,10 +156,7 @@
   },
   "bbcradio5live": {
     "displayorder": 21,
-    "genres": {
-      "news": true,
-      "talk": true
-    },
+    "genres": ["news","talk"],
     "language": "en-UK",
     "logosource": "https://rmp.files.bbci.co.uk/rmp-shared-assets/0.2.6/img/network-logos/national/bbc_radio_five_live_colour.svg",
     "name": "BBC Radio 5 live",
@@ -207,14 +166,12 @@
         "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio5live_mf_p"
       }
     ],
-    "website": "https://www.bbc.co.uk/5live"
+    "website": "https://www.bbc.co.uk/5live",
+    "related": ["bbcradio1","bbcradio2","bbcradio4"]
   },
   "bigfmindia": {
     "displayorder": 59,
-    "genres": {
-      "folk": true,
-      "pop": true
-    },
+    "genres": ["folk","pop"],
     "language": "hi",
     "logosource": "https://avatars.io/twitter/bigfmindia",
     "name": "Big FM",
@@ -228,10 +185,7 @@
   },
   "bnr": {
     "displayorder": 12,
-    "genres": {
-      "news": true,
-      "talk": true
-    },
+    "genres": ["news","talk"],
     "language": "nl",
     "logosource": "https://static.bnr.nl/assets/343/img/bnr/static/logo.png",
     "name": "BNR Nieuwsradio",
@@ -245,11 +199,7 @@
   },
   "cadena100": {
     "displayorder": 30,
-    "genres": {
-      "dance": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["dance","pop","rock"],
     "language": "es",
     "logosource": "https://avatars.io/twitter/CADENA100",
     "name": "CADENA 100",
@@ -263,10 +213,7 @@
   },
   "chantefrance": {
     "displayorder": 43,
-    "genres": {
-      "folk": true,
-      "pop": true
-    },
+    "genres": ["folk","pop"],
     "language": "fr",
     "logosource": "https://www.chantefrance.com/public/img/logo.png",
     "name": "Chante France",
@@ -280,9 +227,7 @@
   },
   "cheriefm": {
     "displayorder": 48,
-    "genres": {
-      "pop": true
-    },
+    "genres": ["pop"],
     "language": "fr",
     "logosource": "https://avatars.io/twitter/radiocheriefm",
     "name": "Chérie FM",
@@ -296,9 +241,7 @@
   },
   "classicfm": {
     "displayorder": 19,
-    "genres": {
-      "classical": true
-    },
+    "genres": ["classical"],
     "language": "en-UK",
     "logosource": "https://static.classicfm.com/assets_v4r/dist/combined/img/classic-logo_mobile.svg",
     "name": "Classic FM",
@@ -312,10 +255,7 @@
   },
   "francemusique": {
     "displayorder": 47,
-    "genres": {
-      "classical": true,
-      "jazz": true
-    },
+    "genres": ["classical","jazz"],
     "language": "fr",
     "logosource": "https://pbs.twimg.com/profile_images/756125080481071104/rGvb5a-Z_400x400.jpg",
     "name": "France Musique",
@@ -329,12 +269,7 @@
   },
   "funradio": {
     "displayorder": 45,
-    "genres": {
-      "dance": true,
-      "hiphop": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["dance","hiphop","pop","rock"],
     "language": "fr",
     "logosource": "https://avatars.io/twitter/funradio_fr",
     "name": "Fun Radio",
@@ -348,11 +283,7 @@
   },
   "funx": {
     "displayorder": 13,
-    "genres": {
-      "hiphop": true,
-      "pop": true,
-      "rnb": true
-    },
+    "genres": ["hiphop","pop","rnb"],
     "language": "nl",
     "logosource": "https://www.funx.nl/templates/funx/img/funx_logo.png",
     "name": "FunX",
@@ -367,11 +298,7 @@
   },
   "hot108jamz": {
     "displayorder": 55,
-    "genres": {
-      "hiphop": true,
-      "pop": true,
-      "rnb": true
-    },
+    "genres": ["hiphop","pop","rnb"],
     "language": "en-US",
     "logosource": "https://pbs.twimg.com/profile_images/522589267365621760/uZosb_Kb_400x400.jpeg",
     "name": "Hot 108 JAMZ",
@@ -385,11 +312,7 @@
   },
   "indiexl": {
     "displayorder": 69,
-    "genres": {
-      "alternative": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["alternative","pop","rock"],
     "language": "nl",
     "logosource": "https://www.indiexl.nl/wp-content/themes/indiexl.nl/includes/img/logo-trans.png",
     "name": "IndieXL",
@@ -403,12 +326,7 @@
   },
   "kcrwmusic": {
     "displayorder": 56,
-    "genres": {
-      "alternative": true,
-      "pop": true,
-      "rock": true,
-      "talk": true
-    },
+    "genres": ["alternative","pop","rock","talk"],
     "language": "en-US",
     "logosource": "https://pbs.twimg.com/profile_images/793550877357252608/mpVvA_u8_400x400.jpg",
     "name": "KCRW Music",
@@ -422,11 +340,7 @@
   },
   "kexp": {
     "displayorder": 36,
-    "genres": {
-      "alternative": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["alternative","pop","rock"],
     "language": "en-US",
     "logosource": "https://kexp.org/static/assets/img/logo-black.svg",
     "name": "KEXP",
@@ -440,11 +354,7 @@
   },
   "kfogradio": {
     "displayorder": 54,
-    "genres": {
-      "alternative": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["alternative","pop","rock"],
     "language": "en-US",
     "logosource": "https://avatars.io/twitter/KFOGradio",
     "name": "KFOG",
@@ -458,9 +368,7 @@
   },
   "kiisfmla": {
     "displayorder": 35,
-    "genres": {
-      "pop": true
-    },
+    "genres": ["pop"],
     "language": "en-US",
     "logosource": "https://avatars.io/twitter/1027KIISFM",
     "name": "KIIS-FM",
@@ -474,11 +382,7 @@
   },
   "kissfmuk": {
     "displayorder": 20,
-    "genres": {
-      "dance": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["dance","pop","rock"],
     "language": "en-UK",
     "logosource": "https://avatars.io/twitter/kissfmuk/large",
     "name": "KISS",
@@ -492,11 +396,7 @@
   },
   "kxclassic": {
     "displayorder": 7,
-    "genres": {
-      "oldies": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["oldies","pop","rock"],
     "language": "nl",
     "logosource": "https://pbs.twimg.com/profile_images/877115595132719105/YnUY1w_9_400x400.jpg",
     "name": "KX Classics",
@@ -511,12 +411,7 @@
   },
   "kxclassicsedge": {
     "displayorder": 8,
-    "genres": {
-      "alternative": true,
-      "oldies": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["alternative","oldies","pop","rock"],
     "language": "nl",
     "logosource": "https://pbs.twimg.com/profile_images/967826410088927233/4AIGMdx__400x400.jpg",
     "name": "KX Classics - The Edge",
@@ -531,11 +426,7 @@
   },
   "los40": {
     "displayorder": 29,
-    "genres": {
-      "dance": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["dance","pop","rock"],
     "language": "es",
     "logosource": "https://avatars.io/twitter/los40",
     "name": "LOS40",
@@ -549,9 +440,7 @@
   },
   "lugnafavoriter": {
     "displayorder": 65,
-    "genres": {
-      "pop": true
-    },
+    "genres": ["pop"],
     "language": "sv-SE",
     "logosource": "https://pbs.twimg.com/profile_images/813525827577114629/tFC1f7yS_400x400.jpg",
     "name": "Lugna Favoriter",
@@ -565,9 +454,7 @@
   },
   "mnm": {
     "displayorder": 34,
-    "genres": {
-      "pop": true
-    },
+    "genres": ["pop"],
     "language": "nl-BE",
     "logosource": "https://pbs.twimg.com/profile_images/1003250095083741185/E6KDAehu_400x400.jpg",
     "name": "MNM",
@@ -585,11 +472,7 @@
   },
   "mouv": {
     "displayorder": 42,
-    "genres": {
-      "dance": true,
-      "hiphop": true,
-      "pop": true
-    },
+    "genres": ["dance","hiphop","pop"],
     "language": "fr",
     "logosource": "https://pbs.twimg.com/profile_images/755711567233179648/2boyIwP4_400x400.jpg",
     "name": "Mouv'",
@@ -603,9 +486,7 @@
   },
   "myfmindia": {
     "displayorder": 58,
-    "genres": {
-      "pop": true
-    },
+    "genres": ["pop"],
     "language": "hi",
     "logosource": "https://pbs.twimg.com/profile_images/936826776289812480/Ai4QQeu2_400x400.jpg",
     "name": "My FM India",
@@ -619,10 +500,7 @@
   },
   "nostalgieeu": {
     "displayorder": 40,
-    "genres": {
-      "oldies": true,
-      "pop": true
-    },
+    "genres": ["oldies","pop"],
     "language": "nl-BE",
     "logosource": "https://avatars.io/twitter/NostalgieEU",
     "name": "Nostalgie",
@@ -636,10 +514,7 @@
   },
   "nostalgiefr": {
     "displayorder": 41,
-    "genres": {
-      "oldies": true,
-      "pop": true
-    },
+    "genres": ["oldies","pop"],
     "language": "fr",
     "logosource": "https://avatars.io/twitter/nostalgiefm",
     "name": "Nostalgie",
@@ -653,11 +528,7 @@
   },
   "nrjfr": {
     "displayorder": 44,
-    "genres": {
-      "dance": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["dance","pop","rock"],
     "language": "fr",
     "logosource": "https://avatars.io/twitter/nrjhitmusiconly",
     "name": "NRJ",
@@ -671,10 +542,7 @@
   },
   "p1se": {
     "displayorder": 60,
-    "genres": {
-      "news": true,
-      "talk": true
-    },
+    "genres": ["news","talk"],
     "language": "sv-SE",
     "logosource": "https://static-cdn.sr.se/sida/images/3632/3147207_2048_1152.jpg?preset=768x432",
     "name": "P1",
@@ -684,13 +552,12 @@
         "url": "https://http-live.sr.se/p1-mp3-192"
       }
     ],
-    "website": "https://sverigesradio.se/p1"
+    "website": "https://sverigesradio.se/p1",
+    "related":["p2se","p3se"]
   },
   "p2se": {
     "displayorder": 61,
-    "genres": {
-      "classical": true
-    },
+    "genres": ["classical"],
     "language": "sv-SE",
     "logosource": "https://static-cdn.sr.se/sida/images/3633/3147213_2048_1152.jpg?preset=768x432",
     "name": "P2",
@@ -700,15 +567,12 @@
         "url": "https://http-live.sr.se/p2-mp3-192"
       }
     ],
-    "website": "https://sverigesradio.se/p2"
+    "website": "https://sverigesradio.se/p2",
+    "related":["p1se","p3se"]
   },
   "p3se": {
     "displayorder": 62,
-    "genres": {
-      "dance": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["dance","pop","rock"],
     "language": "sv-SE",
     "logosource": "https://static-cdn.sr.se/sida/images/3634/3147199_2048_1152.jpg?preset=768x432",
     "name": "P3",
@@ -718,15 +582,12 @@
         "url": "https://http-live.sr.se/p3-mp3-192"
       }
     ],
-    "website": "https://sverigesradio.se/p3"
+    "website": "https://sverigesradio.se/p3",
+    "related":["p1se","p2se"]
   },
   "pinguinradio": {
     "displayorder": 9,
-    "genres": {
-      "alternative": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["alternative","pop","rock"],
     "language": "nl",
     "logosource": "https://pinguinradio.com/dist/images/squarePinguin.svg",
     "name": "Pinguin Radio",
@@ -740,10 +601,7 @@
   },
   "powerhitradio": {
     "displayorder": 66,
-    "genres": {
-      "dance": true,
-      "pop": true
-    },
+    "genres": ["dance","pop"],
     "language": "sv-SE",
     "logosource": "https://pbs.twimg.com/profile_images/725631955266637824/MisBluuI_400x400.jpg",
     "name": "Power Hit Radio",
@@ -757,9 +615,7 @@
   },
   "qmusic": {
     "displayorder": 4,
-    "genres": {
-      "pop": true
-    },
+    "genres": ["pop"],
     "language": "nl",
     "logosource": "https://pbs.twimg.com/profile_images/767629863981346816/MnREbzP0_400x400.jpg",
     "name": "Qmusic",
@@ -781,9 +637,7 @@
   },
   "qmusicbe": {
     "displayorder": 33,
-    "genres": {
-      "pop": true
-    },
+    "genres": ["pop"],
     "language": "nl-BE",
     "logosource": "https://pbs.twimg.com/profile_images/767629863981346816/MnREbzP0_400x400.jpg",
     "name": "Qmusic",
@@ -805,10 +659,7 @@
   },
   "radio1": {
     "displayorder": 5,
-    "genres": {
-      "news": true,
-      "talk": true
-    },
+    "genres": ["news","talk"],
     "language": "nl",
     "logosource": "//www.nporadio1.nl/templates/perfecttemplate/images/logo-npo-radio1.png",
     "name": "NPO Radio 1",
@@ -827,11 +678,7 @@
   },
   "radio10": {
     "displayorder": 10,
-    "genres": {
-      "oldies": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["oldies","pop","rock"],
     "language": "nl",
     "logosource": "https://avatars.io/twitter/radio10nl",
     "name": "Radio 10",
@@ -849,10 +696,7 @@
   },
   "radio100pnl": {
     "displayorder": 15,
-    "genres": {
-      "folk": true,
-      "pop": true
-    },
+    "genres": ["folk","pop"],
     "language": "nl",
     "logosource": "https://avatars.io/twitter/100pnl",
     "name": "100% NL",
@@ -870,11 +714,7 @@
   },
   "radio2": {
     "displayorder": 2,
-    "genres": {
-      "oldies": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["oldies","pop","rock"],
     "language": "nl",
     "logosource": "//www.nporadio2.nl/templates/nporadio2/assets/images/logo-radio2.svg",
     "name": "NPO Radio 2",
@@ -893,9 +733,7 @@
   },
   "radio4": {
     "displayorder": 16,
-    "genres": {
-      "classical": true
-    },
+    "genres": ["classical"],
     "language": "nl",
     "logosource": "https://www.nporadio4.nl/templates/nporadio4default/images/logo-radio4.png",
     "name": "NPO Radio 4",
@@ -910,9 +748,7 @@
   },
   "radio5": {
     "displayorder": 14,
-    "genres": {
-      "oldies": true
-    },
+    "genres": ["oldies"],
     "language": "nl",
     "logosource": "https://www.nporadio5.nl/templates/radio5/images/logo-radio5.svg",
     "name": "NPO Radio 5",
@@ -927,10 +763,7 @@
   },
   "radiomirchi": {
     "displayorder": 57,
-    "genres": {
-      "folk": true,
-      "pop": true
-    },
+    "genres": ["folk","pop"],
     "language": "hi",
     "logosource": "https://avatars.io/twitter/radiomirchi",
     "name": "Radio Mirchi",
@@ -944,12 +777,7 @@
   },
   "radionrw": {
     "displayorder": 25,
-    "genres": {
-      "dance": true,
-      "local": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["dance","local","pop","rock"],
     "language": "de",
     "logosource": "https://radionrw.de/images/iface/rnrw_logo.png",
     "name": "radio NRW",
@@ -963,9 +791,7 @@
   },
   "radiowadwojka": {
     "displayorder": 52,
-    "genres": {
-      "classical": true
-    },
+    "genres": ["classical"],
     "language": "pl",
     "logosource": "https://pbs.twimg.com/profile_images/877860095551574017/SB_nuYVr_400x400.jpg",
     "name": "Dwójka",
@@ -975,14 +801,12 @@
         "url": "http://stream3.polskieradio.pl:8902/;"
       }
     ],
-    "website": "https://dwojka.polskieradio.pl"
+    "website": "https://dwojka.polskieradio.pl",
+    "related":["radiowajedynka","radiowatrojka"]
   },
   "radiowajedynka": {
     "displayorder": 51,
-    "genres": {
-      "news": true,
-      "talk": true
-    },
+    "genres": ["news","talk"],
     "language": "pl",
     "logosource": "https://pbs.twimg.com/profile_images/915224827778273280/8_gdvase_400x400.jpg",
     "name": "Jedynka",
@@ -992,14 +816,12 @@
         "url": "http://stream3.polskieradio.pl:8900/;"
       }
     ],
-    "website": "https://jedynka.polskieradio.pl"
+    "website": "https://jedynka.polskieradio.pl",
+    "related":["radiowadwojka","radiowatrojka"]
   },
   "radiowatrojka": {
     "displayorder": 53,
-    "genres": {
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["pop","rock"],
     "language": "pl",
     "logosource": "https://pbs.twimg.com/profile_images/877842207201480705/a2qd6JNl_400x400.jpg",
     "name": "Trójka",
@@ -1009,13 +831,12 @@
         "url": "http://stream3.polskieradio.pl:8904/;"
       }
     ],
-    "website": "https://trojka.polskieradio.pl"
+    "website": "https://trojka.polskieradio.pl",
+    "related":["radiowadwojka","radiowajedynka"]
   },
   "radiozet": {
     "displayorder": 50,
-    "genres": {
-      "pop": true
-    },
+    "genres": ["pop"],
     "language": "pl",
     "logosource": "https://avatars.io/twitter/Radio_ZET",
     "name": "Radio ZET",
@@ -1033,11 +854,7 @@
   },
   "rixfm": {
     "displayorder": 63,
-    "genres": {
-      "dance": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["dance","pop","rock"],
     "language": "sv-SE",
     "logosource": "https://avatars.io/twitter/RIXFM",
     "name": "RIX FM",
@@ -1051,9 +868,7 @@
   },
   "rmffm": {
     "displayorder": 49,
-    "genres": {
-      "pop": true
-    },
+    "genres": ["pop"],
     "language": "pl",
     "logosource": "https://www.rmf.fm/2018/img/logo-x2.png",
     "name": "RMF FM",
@@ -1075,10 +890,7 @@
   },
   "rtl2fr": {
     "displayorder": 28,
-    "genres": {
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["pop","rock"],
     "language": "fr",
     "logosource": "https://lh3.googleusercontent.com/qgcBv_gC5JRokY5sSpyHV0Ct5WyiVpbW-KX8V-yhYVIStx8u8C0ScYPJ5HGV02_p_BE2Or7Q6eI4qw=s250-rw-no",
     "name": "RTL2",
@@ -1092,10 +904,7 @@
   },
   "rtlfr": {
     "displayorder": 27,
-    "genres": {
-      "news": true,
-      "pop": true
-    },
+    "genres": ["news","pop"],
     "language": "fr",
     "logosource": "https://pbs.twimg.com/profile_images/937955064680996864/IMyed9Eu_400x400.jpg",
     "name": "RTL",
@@ -1109,10 +918,7 @@
   },
   "skyradio": {
     "displayorder": 11,
-    "genres": {
-      "nonstop": true,
-      "pop": true
-    },
+    "genres": ["nonstop","pop"],
     "language": "nl",
     "logosource": "https://www.skyradio.nl/static/media/logo_skyradio.0a6171df.svg",
     "name": "Sky Radio",
@@ -1130,12 +936,7 @@
   },
   "skyrock": {
     "displayorder": 46,
-    "genres": {
-      "hiphop": true,
-      "pop": true,
-      "rap": true,
-      "rnb": true
-    },
+    "genres": ["hiphop","pop","rap","rnb"],
     "language": "fr",
     "logosource": "https://pbs.twimg.com/profile_images/827107627024908288/YUG0FMdc_400x400.jpg",
     "name": "Skyrock",
@@ -1149,11 +950,7 @@
   },
   "slamfm": {
     "displayorder": 17,
-    "genres": {
-      "dance": true,
-      "electronic": true,
-      "pop": true
-    },
+    "genres": ["dance","pop"],
     "language": "nl",
     "logosource": "https://avatars.io/twitter/slamofficial",
     "name": "SLAM!",
@@ -1171,11 +968,7 @@
   },
   "srw3": {
     "displayorder": 26,
-    "genres": {
-      "local": true,
-      "news": true,
-      "pop": true
-    },
+    "genres": ["local","news","pop"],
     "language": "de",
     "logosource": "https://avatars.io/twitter/swr3",
     "name": "SRW3",
@@ -1189,11 +982,7 @@
   },
   "sublimefm": {
     "displayorder": 67,
-    "genres": {
-      "funk": true,
-      "jazz": true,
-      "soul": true
-    },
+    "genres": ["funk","jazz","soul"],
     "language": "nl",
     "logosource": "https://pbs.twimg.com/profile_images/966638814881107968/0N8JEdaq_400x400.jpg",
     "name": "Sublime FM",
@@ -1207,10 +996,7 @@
   },
   "trafficradio": {
     "displayorder": 37,
-    "genres": {
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["pop","rock","talk"],
     "language": "nl",
     "logosource": "https://pbs.twimg.com/profile_images/378800000024542057/4835b06d0aafe103798f53f254e72bb6_400x400.jpeg",
     "name": "Traffic Radio",
@@ -1224,11 +1010,7 @@
   },
   "veronica": {
     "displayorder": 6,
-    "genres": {
-      "oldies": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["oldies","pop","rock"],
     "language": "nl",
     "logosource": "https://www.radioveronica.nl/images/logo_radio-veronica.svg",
     "name": "Radio Veronica",
@@ -1246,10 +1028,7 @@
   },
   "vrtradio1": {
     "displayorder": 31,
-    "genres": {
-      "news": true,
-      "pop": true
-    },
+    "genres": ["news","pop"],
     "language": "nl-BE",
     "logosource": "https://avatars.io/twitter/radio1be",
     "name": "Radio 1",
@@ -1267,11 +1046,7 @@
   },
   "vrtstubru": {
     "displayorder": 32,
-    "genres": {
-      "alternative": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["alternative","pop","rock"],
     "language": "nl-BE",
     "logosource": "https://avatars.io/twitter/stubru",
     "name": "Studio Brussel",
@@ -1289,11 +1064,7 @@
   },
   "wdr1live": {
     "displayorder": 23,
-    "genres": {
-      "dance": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["dance","pop","rock"],
     "language": "de",
     "logosource": "https://www1.wdr.de/resources/img/wdr/logo/epgmodule/1live_logo_claim.svg",
     "name": "1LIVE",
@@ -1307,14 +1078,12 @@
         "url": "https://1liveuni-lh.akamaihd.net/i/1LIVE_HDS@179577/index_1_a-p.m3u8"
       }
     ],
-    "website": "https://www1.wdr.de/radio/1live"
+    "website": "https://www1.wdr.de/radio/1live",
+    "related":["wdr2"]
   },
   "wdr2": {
     "displayorder": 24,
-    "genres": {
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["pop","rock"],
     "language": "de",
     "logosource": "https://www1.wdr.de/resources/img/wdr/logo/epgmodule/wdr2_logo_claim.svg",
     "name": "WDR 2",
@@ -1328,15 +1097,12 @@
         "url": "http://www.listenlive.eu/streams/germany/de_wdr2rheinland_128.m3u"
       }
     ],
-    "website": "https://www1.wdr.de/radio/wdr2"
+    "website": "https://www1.wdr.de/radio/wdr2",
+    "related":["wdr1live"]
   },
   "xxlbonanza": {
     "displayorder": 68,
-    "genres": {
-      "oldies": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["oldies","pop","rock"],
     "language": "nl",
     "logosource": "https://avatars.io/twitter/XXL_Bonanza",
     "name": "XXL Bonanza",
@@ -1350,11 +1116,7 @@
   },
   "z100ny": {
     "displayorder": 39,
-    "genres": {
-      "dance": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["dance","pop","rock"],
     "language": "en-US",
     "logosource": "https://avatars.io/twitter/Z100NewYork",
     "name": "Z100 New York",
@@ -1368,13 +1130,7 @@
   },
   "xxlblokhuis": {
     "displayorder": 70,
-    "genres": {
-      "alternative": true,
-      "pop": true,
-      "rock": true,
-      "soul": true,
-      "jazz": true
-    },
+    "genres": ["alternative","pop","rock","soul","jazz"],
     "language": "nl",
     "logosource": "https://pbs.twimg.com/media/DppohaXW0AAC69v.jpg",
     "name": "XXL Blokhuis",
@@ -1388,10 +1144,7 @@
   },
   "jointradioreggae": {
     "displayorder": 71,
-    "genres": {
-      "alternative": true,
-      "reggae": true
-    },
+    "genres": ["alternative","reggae"],
     "language": "he-IL",
     "name": "Joint Radio Reggae",
     "streams": [
@@ -1404,10 +1157,7 @@
   },
   "jointradiobeat": {
     "displayorder": 72,
-    "genres": {
-      "dance": true,
-      "trance": true
-    },
+    "genres": ["dance","trance"],
     "language": "he-IL",
     "name": "Joint Radio Beat",
     "streams": [
@@ -1420,9 +1170,7 @@
   },
   "jointradioblues": {
     "displayorder": 73,
-    "genres": {
-      "blues": true
-    },
+    "genres": ["blues"],
     "language": "he-IL",
     "name": "Joint Radio Blues",
     "streams": [
@@ -1435,11 +1183,7 @@
   },
   "kink": {
     "displayorder": 74,
-    "genres": {
-      "alternative": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["alternative","pop","rock"],
     "language": "nl",
     "logosource": "https://avatars.io/twitter/kinkpuntnl",
     "name": "KINK",
@@ -1458,11 +1202,7 @@
   },
   "arrow": {
     "displayorder": 75,
-    "genres": {
-      "oldies": true,
-      "pop": true,
-      "rock": true
-    },
+    "genres": ["oldies","pop","rock"],
     "language": "nl",
     "logosource": "https://avatars.io/twitter/arrowCLrock",
     "name": "Arrow Classic Rock",
@@ -1476,10 +1216,7 @@
   },
   "hotdanceradio": {
     "displayorder": 76,
-    "genres": {
-      "dance": true,
-      "pop": true
-    },
+    "genres": ["dance","pop"],
     "language": "nl",
     "logosource": "https://avatars.io/twitter/hotdanceradio",
     "name": "Hot Dance Radio",
@@ -1493,12 +1230,7 @@
   },
   "kinkdna": {
     "displayorder": 77,
-    "genres": {
-      "alternative": true,
-      "pop": true,
-      "rock": true,
-      "oldies": true
-    },
+    "genres": ["alternative","pop","rock","oldies"],
     "language": "nl",
     "logosource": "https://avatars.io/twitter/kinkpuntnl",
     "name": "KINK DNA",
@@ -1517,9 +1249,7 @@
   },
   "lindaradio": {
     "displayorder": 78,
-    "genres": {
-      "pop": true
-    },
+    "genres": ["pop","talk"],
     "language": "nl",
     "logosource": "https://avatars.io/twitter/lindanieuws",
     "name": "LINDA.radio",
