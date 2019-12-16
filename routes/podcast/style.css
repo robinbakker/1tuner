@@ -96,6 +96,7 @@ img.artwork {
 .podcast-episode__item {
 	margin-bottom: 1rem;
 	padding: .5rem 1rem;
+	word-wrap: break-word;
 }
 .podcast-episode__item--is-playing {
 	background-color: rgba(0,0,0,.05);
@@ -113,8 +114,7 @@ button.btn--play-episode:after {
 	left:.5rem;
 }
 
-
-.btnreload {
+button.btnreload {
 	padding: 0;
 }
 .modifieddate {

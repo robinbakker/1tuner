@@ -67,11 +67,11 @@ export default class Podcast extends Component {
 		let self = this;
 		let podcastInfo = APodcastInfo || this.state.podcastInfo || {};
 		fetch(AFeedUrl)
-		.then(resp => resp.text())
+		.then(resp => resp.ok ? resp.text() : Promise.reject(resp))
     .then(str => (new window.DOMParser()).parseFromString(str, 'text/xml'))
     .then(xmlDoc => {
 			if (!xmlDoc || !xmlDoc.getElementsByTagName('channel')[0]) {
-				return;
+				Promise.reject('no xml');
 			}
 			podcastInfo.feedUrl = podcastInfo.feedUrl || AFeedUrl;
 			podcastInfo.modified = new Date();

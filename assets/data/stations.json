@@ -1140,7 +1140,8 @@
         "url": "http://178.19.116.251:8000/blokhuis_mp3"
       }
     ],
-    "website": "http://www.robstenders.nl"
+    "website": "http://www.robstenders.nl",
+    "related":["kxclassicsedge","xxlbonanza","kxclassic"]
   },
   "jointradioreggae": {
     "displayorder": 71,

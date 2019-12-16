@@ -117,7 +117,7 @@ export default class Podcasts extends Component {
 					<section class={style.section + ' content__section content__section--podcasts'}>
 						<h3 class={'section-title'}>Last visited</h3>
 						<div class={'section-main'}>
-						<PodcastList podcastList={this.state.podcastList} horizontal={true} small={true} errorMessage={this.state.errorMessage} limitCount={10} />
+						<PodcastList podcastList={this.state.podcastList} horizontal={true} small={true} limitCount={10} />
 						</div>
 					</section>
 					:

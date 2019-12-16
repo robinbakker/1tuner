@@ -1,0 +1,17 @@
+{"podcasts" : [
+  {
+    "feedUrl": "https://api.kink.nl/rss/dailykink",
+    "name": "Daily Kink",
+    "artworkUrl": "https://api.kink.nl/cache/i/0/images/84.w1400.r1-1.41345b5.q90.jpg",
+    "artworkUrl600": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/b9/16/33/b91633b0-18b6-b914-1f26-030ac0080595/mza_4184087932258255582.jpg/600x600bb.jpg",
+    "description": "Elke werkdag in een paar minuten helemaal bij met het laatste muzieknieuws en de belangrijkste releases!"
+  },
+  {
+    "feedUrl":"https://api.kink.nl/rss/met-het-oor-op-morgen",
+    "name": "Met Het Oor Op Morgen",
+    "artworkUrl": "https://api.kink.nl/cache/i/0/images/453.w1400.r1-1.afd40c4.q90.jpg",
+    "artworkUrl600": "https://is2-ssl.mzstatic.com/image/thumb/Podcasts123/v4/43/3b/03/433b03fe-ead0-03db-9bf9-432e8b55853c/mza_8152843440635180227.jpg/600x600bb.jpg",
+    "description": "Elke werkdag draait Jasper Leijdens een uur lang louter nieuwe muziek"
+  }
+]
+}
