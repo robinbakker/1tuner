@@ -15,7 +15,7 @@ export default class Error extends Component {
 				<main class={'content ' + (style.error)}>
 					<h1 class={'main-title'}>Page not found... 
 					<small class={'main-subtitle'}>Nothing to see here 🙄</small></h1>
-					<p>Do you want to listen to a <Link href="/radio-stations" native>radio station</Link>? Or maybe plan your own <Link href="/planner" native>radio listening day</Link>?</p>
+					<p>Do you want to listen to a <Link href="/radio-stations" native>radio station</Link>? Or maybe plan your own <Link href="/playlists" native>radio listening day</Link>?</p>
 				</main>
 			</div>
 		);

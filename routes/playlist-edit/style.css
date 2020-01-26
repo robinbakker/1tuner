@@ -1,7 +1,8 @@
-main.planning {
-  padding: 0rem 1.5rem 10rem 1.5rem;
+main.playlist {
+  padding: 0 1.5rem 10rem 1.5rem;
+  background-color: var(--background-color);
 }
-.editplanningform {
+.editplaylistform {
   margin-top: 1.5rem;
 }
 .item-list, .item-list__item {

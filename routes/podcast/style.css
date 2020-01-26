@@ -2,10 +2,8 @@
 	padding: 0 1.5rem .5rem;
 }
 main.podcast {
-	padding: 0 1.5rem 5.5rem 1.5rem;
-	background-position: right 1.5rem top 6rem;
-	background-size: 25%;
-	background-repeat: no-repeat;
+	padding: 0 1.5rem 10rem 1.5rem;
+	background-color: var(--background-color);
 	position: relative;
 	display: flex;
 	flex-wrap: wrap;
@@ -60,7 +58,7 @@ img.artwork {
 		max-width: 20vw;
 		flex-basis: 20vw;
 		position: sticky;
-		top: 2rem;
+		top: 5rem;
 		text-align: left;
 		float:left;
 	}
@@ -102,25 +100,28 @@ img.artwork {
 	background-color: rgba(0,0,0,.05);
 }
 button.btn--play-episode {
-	height: 1.2rem;
+	height: 1.5rem;
 	width: 1.5rem;
 	padding: 0;
-	vertical-align: text-bottom;
+	vertical-align: bottom;
 	margin-right: .4rem;
 	cursor: pointer;
 }
 button.btn--play-episode:after {
-	top:.25rem;
+	top:.4rem;
 	left:.5rem;
 }
 
 button.btnreload {
 	padding: 0;
+	position: absolute;
 }
 .modifieddate {
-	padding: 0 1rem;
+	padding: 0 1rem 0 2rem;
 	height: 2rem;
-	background: #ebebeb;
+	border-radius: 3rem;
+	margin-left: .5rem;
+	background: var(--filter-panel-bg-color);
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;

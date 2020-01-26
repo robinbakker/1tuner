@@ -41,7 +41,7 @@ export default class DropDown extends Component {
     if (optionList) {
       return (
         <label class={style['dd-container'] + ' label-container'}>
-          <span class={style['dd-label-text']+' label-text'}>{label}</span>
+          {label ? <span class={style['dd-label-text'] +' label-text'}>{label}</span> : null }
           <select id={id} class={style['dd-select'] + ' dropdown'} value={value} onChange={this.handleChange}>
             {optionList.map(optionItem => (
               <option value={optionItem.value} selected={optionItem.value==value}>{optionItem.text}</option>

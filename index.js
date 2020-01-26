@@ -9,15 +9,23 @@ import Stations from './routes/stations';
 import Podcasts from './routes/podcasts';
 import Podcast from './routes/podcast';
 import Station from './routes/station';
-import Planner from './routes/planner';
-import Planning from './routes/planning';
-import PlanningEdit from './routes/planning-edit';
+import Playlists from './routes/playlists';
+import Playlist from './routes/playlist';
+import PlaylistEdit from './routes/playlist-edit';
+import Settings from './routes/settings';
 import About from './routes/about';
+import Redirect from './components/redirect';
 import Error from './routes/error';
 import { version as AppVersion } from './package.json';
-import { get, set } from 'idb-keyval';
+import { get, set, del, clear } from 'idb-keyval';
 import * as Languages from './assets/data/languages.json';
 import * as Featured from './assets/data/featured.json';
+
+let oldHistoryPushState = history.pushState;
+history.pushState = function() {
+	oldHistoryPushState.apply(this, arguments);
+	scrollTo(0, 0);
+};
 
 export default class App extends Component {
 	constructor(props) {
@@ -32,9 +40,11 @@ export default class App extends Component {
 			presetStationList: null,
 			podcast: null,
 			podcastList: null,
-			planning: null,
-			planningList: null,			
+			stationPodcastList: null,
+			playlist: null,
+			playlists: null,			
 			languageList: null,
+			settings: null,
 			showFilterPanel: false,
 			enableFilterPanel: false,
 			stationsLoading: false,
@@ -48,77 +58,107 @@ export default class App extends Component {
 
 	componentDidMount() {
 		this.loadData();
+		if (window) {
+			window.addEventListener('scroll', function() {
+				document.body.classList.toggle('has-header', window.scrollY > 40);
+			});
+		}
 	}
 
 	loadData = async () => {
+		let settings = await get('settings');
+		if (settings && settings.theme) {
+			document.body.setAttribute('data-theme', settings.theme);
+		}
+		if (settings && settings.experimental && settings.experimental.chromecast) {
+			this.initChromeCast();
+		}
 		let stationList = this.state.stationList || await get('station-list');
-
 		let userVersion = await get('version');
-		if (!stationList || !stationList.length || AppVersion != userVersion) {
+		if (!stationList || !stationList.length || AppVersion !== userVersion) {
 			stationList = await this.loadStationList();
 		}
 		let listeningMode = await get('lm') || 0;
+		
 		let station = await get('station');
-		let planning = await get('planning');
-		let podcastList = await get('podcast-list');									
+		let legacyPlaylist = await get('planning');
+		if (legacyPlaylist) {
+			del('planning');
+		}
+		let playlist = legacyPlaylist || await get('playlist');
+		let podcastList = await get('podcast-list');
+		let stationPodcastList = await get('station-podcast-list') || await this.loadStationPodcastList();
 		let lastStationList = await get('last-station-list') || this.getLastStationList(stationList);
 		let featured = this.loadFeatured(stationList);
 		
 		let languageList = this.state.languageList || await get('language-list') || this.loadLanguageList();
-		let planningList = this.state.planningList || await get('planning-list') || this.loadPlanningList();
+		let legacyPlaylists = await get('planning-list');
+		if (legacyPlaylists && legacyPlaylists.length) {
+			del('planning-list');
+		}
+		let playlists = this.state.playlists || legacyPlaylists || await get('playlists') || this.loadPlaylists();
 
 		this.setState({
 			listeningMode: listeningMode,
 			userVersion: userVersion,
+			settings: settings,
 			station: station,
-			planning: planning,
-			planningList: planningList,
+			playlist: playlist,
+			playlists: playlists,
 			languageList: languageList,
 			podcastList: podcastList,
+			stationPodcastList: stationPodcastList,
 			stationList: stationList,
 			lastStationList: lastStationList,
 			presetStationList: JSON.parse(JSON.stringify(lastStationList)), // For now, we are filling the preset list with the previous last played station list
 			featured: featured
-		});
+		}, () => { this.saveLocal(true); });
 	}
 
-	render({}, {enableFilterPanel, showFilterPanel, listeningMode, languageList, station, stationList, lastStationList,
-			planning, planningList, podcast, podcastList, featured, lastPodcastSearchQuery, lastPodcastSearchResult, version}) {		
+	render({}, {listeningMode, settings, languageList, station, stationList, lastStationList, stationPodcastList,
+			playlist, playlists, podcast, podcastList, featured, lastPodcastSearchQuery, lastPodcastSearchResult, version}) {		
 		return (
 		<div id="app">
 			<Nav />
 			<Router>
-				<Home path="/" stationList={lastStationList} planningList={planningList} podcastList={podcastList} featured={featured} changeStation={this.changeStation.bind(this)} changePlanning={this.changePlanning.bind(this)} />
+				<Home path="/" stationList={lastStationList} playlists={playlists} podcastList={podcastList} featured={featured} changeStation={this.changeStation.bind(this)} changePlaylist={this.changePlaylist.bind(this)} />
 				<Stations path="/radio-stations" stationList={stationList} languageList={languageList} changeStation={this.changeStation.bind(this)} toggleFilterPanel={this.toggleFilterPanel.bind(this)} setLanguageList={this.setLanguageList.bind(this)} />
-				<Station path="/radio-station/:id?" stationList={stationList} languageList={languageList} changeStation={this.changeStation.bind(this)} />
-				<Planner path="/planner" planningList={planningList} stationList={stationList} changePlanning={this.changePlanning.bind(this)} />
-				<Planning path="/planning/:name/:params?" planningList={planningList} stationList={stationList} addPlanning={this.addPlanning.bind(this)} deletePlanning={this.deletePlanning.bind(this)} changePlanning={this.changePlanning.bind(this)}/>
-				<PlanningEdit path="/planning-edit/:name?/:params?" planningList={planningList} languageList={languageList} stationList={stationList} addPlanning={this.addPlanning.bind(this)} resetPlanningList={this.resetPlanningList.bind(this)} />
-				<Podcasts path="/podcasts" latestPodcastSearchResult={this.latestPodcastSearchResult.bind(this)} searchQuery={lastPodcastSearchQuery} lastSearchResult={lastPodcastSearchResult} podcastList={podcastList} languageList={languageList} />
-				<Podcast path="/podcast/:name/:params?" savePodcastHistory={this.savePodcastHistory.bind(this)} podcastList={podcastList} lastPodcastSearchResult={lastPodcastSearchResult} playEpisode={this.playPodcastEpisode.bind(this)} />
+				<Station path="/radio-station/:id?" stationList={stationList} podcastList={stationPodcastList} changeStation={this.changeStation.bind(this)} />
+				<Playlists path="/playlists" playlists={playlists} stationList={stationList} changePlaylist={this.changePlaylist.bind(this)} />
+				<Playlist path="/playlist/:name/:params?" playlists={playlists} stationList={stationList} addPlaylist={this.addPlaylist.bind(this)} deletePlaylist={this.deletePlaylist.bind(this)} changePlaylist={this.changePlaylist.bind(this)}/>
+				<PlaylistEdit path="/playlist-edit/:name?/:params?" playlists={playlists} languageList={languageList} stationList={stationList} addPlaylist={this.addPlaylist.bind(this)} resetPlaylists={this.resetPlaylists.bind(this)} />
+				<Podcasts path="/podcasts/:params?" latestPodcastSearchResult={this.latestPodcastSearchResult.bind(this)} searchQuery={lastPodcastSearchQuery} lastSearchResult={lastPodcastSearchResult} podcastList={podcastList} stationPodcastList={stationPodcastList} />
+				<Podcast path="/podcast/:name/:params?" savePodcastHistory={this.savePodcastHistory.bind(this)} podcastList={podcastList} stationPodcastList={stationPodcastList} lastPodcastSearchResult={lastPodcastSearchResult} playEpisode={this.playPodcastEpisode.bind(this)} />
+				<Settings path="/settings/:params?" settings={settings} stationList={lastStationList} playlists={playlists} podcastList={podcastList} saveSettings={this.saveSettings.bind(this)} resetLocalPreferences={this.resetLocalPreferences.bind(this)} />
 				<About path="/about" version={version} />
+				<Redirect path="/planner" to="/playlists" />
+				<Redirect path="/planning/:name/:params?" to="/playlist" />
+				<Redirect path="/planning-edit/:name/:params?" to="/playlist-edit" />
 				<Error type="404" default />
 			</Router>
-			<Footer onRef={ref => (this.child = ref)} listeningMode={listeningMode} stationList={stationList} tuneToStation={this.tuneToStation.bind(this)} podcast={podcast} planning={planning} station={station} setPodcastEpisodeTimeElapsed={this.setPodcastEpisodeTimeElapsed.bind(this)} closeFooter={this.closeFooter.bind(this)} />
+			<Footer onRef={ref => (this.child = ref)} settings={settings} listeningMode={listeningMode} stationList={stationList} tuneToStation={this.tuneToStation.bind(this)} podcast={podcast} playlist={playlist} station={station} setPodcastEpisodeTimeElapsed={this.setPodcastEpisodeTimeElapsed.bind(this)} closeFooter={this.closeFooter.bind(this)} />
 		</div>
 		);
 	}
 
 	saveLocal = (AInit) => {
 		if (typeof indexedDB !== 'undefined') {
-			//console.log('saveLocal');
 			set('lm', this.state.listeningMode);
+			set('settings', this.state.settings);
 			set('station', this.state.station);
-			set('planning', this.state.planning);
-			set('planning-list', this.state.planningList);
+			set('playlist', this.state.playlist);
+			set('playlists', this.state.playlists);
 			set('podcast-list', this.state.podcastList);
+			set('station-podcast-list', this.state.stationPodcastList);
 			set('language-list', this.state.languageList);
-			if(this.state.lastStationList) {
+			if (this.state.lastStationList) {
 				set('last-station-list', this.state.lastStationList);
 			}
 			if (AInit) {
 				set('version', this.state.version);
 				set('station-list', this.state.stationList);
+				del('planning'); // legacy cleanup
+				del('planning-list'); // legacy cleanup
 			}
 		}
 	}
@@ -227,7 +267,7 @@ export default class App extends Component {
 			this.setState({
 				listeningMode: 1,
 				station: AStation,
-				planning: null
+				playlist: null
 			}, () => {
 				this.saveLocal();
 			});
@@ -271,12 +311,12 @@ export default class App extends Component {
 		}
 	}
 
-	changePlanning = (APlanning, AForcePlay) => {
-		if (APlanning && !this.state.planning || (this.state.planning && APlanning.href!=this.state.planning.href)) {
+	changePlaylist = (APlaylist, AForcePlay) => {
+		if (APlaylist && !this.state.playlist || (this.state.playlist && APlaylist.href !== this.state.playlist.href)) {
 			this.setState({
 				listeningMode: 2,
 				station: null,
-				planning: APlanning
+				playlist: APlaylist
 			}, () => {
 				this.saveLocal();
 			});
@@ -291,10 +331,10 @@ export default class App extends Component {
 		this.setState({showFilterPanel:show}); 
 	}
 
-	indexOfPlanningList = (APlanningHref) => {
-		if (this.state.planningList) {
-			for (let i=0; i<this.state.planningList.length; i++) {
-				if (this.state.planningList[i].href==APlanningHref) {
+	indexOfPlaylist = (APlaylistHref) => {
+		if (this.state.playlists) {
+			for (let i = 0; i < this.state.playlists.length; i++) {
+				if (this.state.playlists[i].href === APlaylistHref) {
 					return i;
 				}
 			}
@@ -302,27 +342,27 @@ export default class App extends Component {
 		return -1;
 	}
 
-	deletePlanning = (APlanningUrl) => {
-		APlanningUrl = APlanningUrl.substr(APlanningUrl.indexOf('/planning'));
-		let sList = this.state.planningList || [];
-		let puIndex = this.indexOfPlanningList(APlanningUrl);
+	deletePlaylist = (APlaylistUrl) => {
+		APlaylistUrl = APlaylistUrl.substr(APlaylistUrl.indexOf('/playlist'));
+		let sList = this.state.playlists || [];
+		let puIndex = this.indexOfPlaylist(APlaylistUrl);
 		if (puIndex >= 0) {
 			sList.splice(puIndex, 1);
 			this.setState({
-				planningList: sList
+				playlists: sList
 			}, () => {
 				this.saveLocal();
 			});
 		}
 	}
 
-	addPlanning = (APlanningItem) => {
-		if (APlanningItem && APlanningItem.href) {			
-			if (this.indexOfPlanningList(APlanningItem.href)<0) {
-				let sList = this.state.planningList || [];
-				sList.push(APlanningItem);
+	addPlaylist = (APlaylist) => {
+		if (APlaylist && APlaylist.href) {			
+			if (this.indexOfPlaylist(APlaylist.href)<0) {
+				let sList = this.state.playlists || [];
+				sList.push(APlaylist);
 				this.setState({
-					planningList: sList
+					playlists: sList
 				}, () => {
 					this.saveLocal();
 				});
@@ -330,10 +370,10 @@ export default class App extends Component {
 		}
 	}
 
-	resetPlanningList = () => {
-		if (this.state.planningList) {
+	resetPlaylists = () => {
+		if (this.state.playlists) {
 			this.setState({
-				planningList: null
+				playlists: null
 			});
 		}
 	}
@@ -343,6 +383,25 @@ export default class App extends Component {
 			lastPodcastSearchQuery: ASearchQuery,
 			lastPodcastSearchResult: ASearchResult
 		});
+	}
+
+	saveSettings = (ASettings) => {
+		if(!ASettings) {
+			return;
+		}
+		this.setState({
+			settings: ASettings
+		}, () => {
+			this.saveLocal();
+		});
+	}
+	
+	resetLocalPreferences = () =>{
+		if (typeof indexedDB !== 'undefined') {
+			clear().then(() => {
+				window.location.href = '/';
+			});
+		}
 	}
 
 	savePodcastHistory = (APodcast) => {
@@ -376,7 +435,7 @@ export default class App extends Component {
 		this.setState({
 			listeningMode: 0,
 			station: null,
-			planning: null
+			playlist: null
 		}, () => {
 			this.saveLocal();
 			if (this.child) {
@@ -427,7 +486,7 @@ export default class App extends Component {
 		return langs;
 	}
 	loadStationList = async () => {
-		let stationList = this.state.stationList
+		let stationList = this.state.stationList;
 		if (!stationList || stationList.length == 0) {
 			await fetch(window.location.origin + '/assets/data/stations.json?v=' + AppVersion, {
 				method: 'get'
@@ -443,7 +502,8 @@ export default class App extends Component {
 						website: items[item].website,
 						language: items[item].language,
 						genres: items[item].genres,
-						related: items[item].related
+						related: items[item].related,
+						podcasts: items[item].podcasts
 					});
 				}
 				newState.sort(function(a, b) {
@@ -465,6 +525,24 @@ export default class App extends Component {
 		}
 		return stationList;
 	}
+	loadStationPodcastList = async () => {
+		let stationPodcastList = this.state.stationPodcastList;
+		if (!stationPodcastList || stationPodcastList.length == 0) {
+			await fetch(window.location.origin + '/assets/data/podcasts.json?v=' + AppVersion, {
+				method: 'get'
+			}).then((resp) => resp.json()).then(function(data) {
+				let newState = [];
+				for (let item in data.podcasts) {
+					newState.push(data.podcasts[item]);
+				}
+				stationPodcastList = newState;
+			}).catch(function(err) {
+			  // Error :(
+				console.log(err);
+			});
+		}
+		return stationPodcastList;
+	}
 	loadFeatured = (AStationList) => {
 		let newFeatured = this.state.featured; 
 		if (!newFeatured) {
@@ -479,9 +557,9 @@ export default class App extends Component {
 		}
 		return newFeatured;
 	}
-	loadPlanningList = () => {
+	loadPlaylists = () => {
 		return [{
-			href: '/planning/Radio%202.5/?h0=3fm&h6=radio2&h9=3fm&h14=radio2&h18=3fm&h22=radio2',
+			href: '/playlist/Radio%202.5/?h0=3fm&h6=radio2&h9=3fm&h14=radio2&h18=3fm&h22=radio2',
 			name: 'Radio 2.5',
 			color: 'rgba(110, 156, 140, 0.75)',
 			schedule: [
@@ -556,13 +634,39 @@ export default class App extends Component {
 		}
 		return lastStations;
 	}
-	setPlanningList = (APlanningList) => {
-		if (APlanningList) {
+	setPlaylists = (APlaylists) => {
+		if (APlaylists) {
 			this.setState({
-				planningList: APlanningList
+				playlists: APlaylists
 			}, () => {
 				this.saveLocal();
 			});
 		}
 	}
+
+	initChromeCast = () => {
+    if (window && !window.__onGCastApiAvailable) {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1');
+      s.onload = this.castScriptLoaded;
+      document.head.appendChild(s);   
+    }
+  }
+
+  castScriptLoaded = () => {
+    let self = this;
+    window['__onGCastApiAvailable'] = function(isAvailable) {
+      if (isAvailable) {
+        self.initializeCastApi();
+      }
+    };
+	}
+	
+	initializeCastApi = () => {
+    cast.framework.CastContext.getInstance().setOptions({
+      receiverApplicationId: '2CFD5B94',
+      //receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+      autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+    });    
+  }
 }

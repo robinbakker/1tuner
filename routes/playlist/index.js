@@ -5,33 +5,33 @@ import { Link } from 'preact-router/match';
 import Loader from '../../components/loader';
 import Header from '../../components/header';
 import { getColorString, getUrlQueryParameterByName } from '../../utils/misc';
-import { getScheduleQueryParamsAsString } from '../../utils/planning';
+import { getScheduleQueryParamsAsString } from '../../utils/playlist';
 
-export default class Planning extends Component {
+export default class Playlists extends Component {
 	state = {
 		applePieTime: new Date(1980, 0, 4),
 		href:'',
 		name:'',
 		items: [],
 		radioStations: [],
-		planningList: [],
+		playlists: [],
 		canEdit: true,
-		baseDocTitle: 'Radio Planning - 1tuner'
+		baseDocTitle: 'Playlist - 1tuner'
 	};
 
-	getPlanning = (APlanningName, APlanningHref) => {
+	getPlaylist = (APlaylistName, APlaylistHref) => {
 		let Result = null;
-		APlanningHref = APlanningHref.substr(APlanningHref.indexOf('/planning/'));
-		if (APlanningHref.indexOf('?') >= 0) {
-      let sUrlArr = APlanningHref.split('?');
+		APlaylistHref = APlaylistHref.substr(APlaylistHref.indexOf('/playlist/'));
+		if (APlaylistHref.indexOf('?') >= 0) {
+      let sUrlArr = APlaylistHref.split('?');
 			let qp = sUrlArr[1];
-			if (this.state.planningList) {
-				for (var i=0; i<this.state.planningList.length; i++) {
-					if (this.state.planningList[i].href.indexOf('?') >= 0) {
-						let sUrlArr2 = this.state.planningList[i].href.split('?');
+			if (this.state.playlists) {
+				for (var i=0; i<this.state.playlists.length; i++) {
+					if (this.state.playlists[i].href.indexOf('?') >= 0) {
+						let sUrlArr2 = this.state.playlists[i].href.split('?');
 						let qp2 = sUrlArr2[1];
 						if(qp==qp2) {
-							Result = this.state.planningList[i];
+							Result = this.state.playlists[i];
 							break;
 						}
 					}
@@ -62,10 +62,10 @@ export default class Planning extends Component {
 						"station": prevP
 					});
 				}
-				let newHref = '/planning/' + encodeURI(APlanningName) + '/?' + getScheduleQueryParamsAsString(schedule);
+				let newHref = '/playlist/' + encodeURI(APlaylistName) + '/?' + getScheduleQueryParamsAsString(schedule);
 				Result = {
 					href: newHref,
-					name: APlanningName,
+					name: APlaylistName,
 					color: getColorString(newHref),
 					schedule: schedule
 				}
@@ -111,13 +111,13 @@ export default class Planning extends Component {
 		return result;
 	}
 
-	deletePlanning = () => {
-		this.props.deletePlanning(this.state.href);
-		route('/planner', true);
+	deletePlaylist = () => {
+		this.props.deletePlaylist(this.state.href);
+		route('/playlists', true);
 	}
 
-	playPlanning = () => {
-		this.props.changePlanning({
+	playPlaylist = () => {
+		this.props.changePlaylist({
 			href: this.state.href,
 			color: this.state.color,
 			name: this.state.name,
@@ -126,42 +126,42 @@ export default class Planning extends Component {
 	}
 
 	loadData = () => {
-		if (this.props.stationList && this.props.stationList.length && this.props.planningList && this.props.planningList.length) {
+		if (this.props.stationList && this.props.stationList.length && this.props.playlists && this.props.playlists.length) {
 			this.setState({
 				radioStations: this.props.stationList,
-				planningList: this.props.planningList
+				playlists: this.props.playlists
 			}, () => {
-				this.setPlanning();
+				this.setPlaylist();
 			});
 		}		
 	}
 
-	setPlanning = () => {
+	setPlaylist = () => {
 		if (this.props.name && typeof window !== 'undefined' && window.location) {
-			let currentPlanning = this.getPlanning(this.props.name, window.location.href);
-			if (currentPlanning) {
-				this.props.addPlanning(currentPlanning);
-				document.title = currentPlanning.name + ' - ' + this.state.baseDocTitle;
-				let scheduleItems = currentPlanning.schedule ? Object.values(currentPlanning.schedule) : [];
+			let currentPlaylist = this.getPlaylist(this.props.name, window.location.href);
+			if (currentPlaylist) {
+				this.props.addPlaylist(currentPlaylist);
+				document.title = currentPlaylist.name + ' - ' + this.state.baseDocTitle;
+				let scheduleItems = currentPlaylist.schedule ? Object.values(currentPlaylist.schedule) : [];
 				this.setState({
-					href: currentPlanning.href,
-					color: currentPlanning.color,
-					name: currentPlanning.name,
+					href: currentPlaylist.href,
+					color: currentPlaylist.color,
+					name: currentPlaylist.name,
 					items: scheduleItems,
 				});
 			}
 		} else {
-			route('/planner', true);
+			route('/playlists', true);
 		}
 	}
 
-	render({},{name, canEdit, href, items, radioStations, planningList}) {
-		if (!radioStations || !radioStations.length || !planningList || !planningList.length) {
+	render({},{name, canEdit, href, items, radioStations, playlists}) {
+		if (!radioStations || !radioStations.length || !playlists || !playlists.length) {
 			this.loadData();
 			return(
 				<div class={'page-container'}>
-				<Header title="Planning" />
-				<main class={'content content--is-loading ' + (style.planning)}>
+				<Header title="Playlist" />
+				<main class={'content content--is-loading ' + (style.playlist)}>
 					<Loader />
 				</main>
 				</div>
@@ -170,25 +170,25 @@ export default class Planning extends Component {
 			return (
 				<div class={'page-container'}>
 				<Header title={name} sharetext={'Listen to these radio stations'} />
-				<main class={'content ' + (style.planning)}>
+				<main class={'content ' + (style.playlist)}>
 					<h1 class={'main-title'}>{name}
 					</h1>
 					<p>&nbsp;</p>
 					<div class={'btn-container btn-container--right'}>
-						<button onClick={this.playPlanning} class={'btn btn--play'}>Listen now</button>
+						<button onClick={this.playPlaylist} class={'btn btn--play'}>Listen now</button>
 					</div>
 					{canEdit ?
 						<div class={'btn-container btn-container--left'}>
-							<Link href={href.replace('/planning/','/planning-edit/')} native class={'margin--right btn btn--edit ' + style['btn--planning']}>Edit</Link>
-							<button onClick={this.deletePlanning} class={'btn btn--delete'}>Delete</button>
+							<Link href={href.replace('/playlist/','/playlist-edit/')} native class={'margin--right btn btn--edit ' + style['btn--playlist']}>Edit</Link>
+							<button onClick={this.deletePlaylist} class={'btn btn--cancel'}>Delete</button>
 						</div>
 						: 
 						null 
 					}
-					<ul class={style['planning-list']}>
+					<ul class={style['playlists']}>
 						{items.map(scheduleItem => (
-							<li class={style['planning-list__item'] +' '+style['hours']+' '+ style['hours--' + this.getHours(scheduleItem.startHour, scheduleItem.endHour)] + ' ' + style[this.isActive(scheduleItem.startHour, scheduleItem.endHour)]}>
-								<time>{this.getTimeCaption(scheduleItem.startHour)}<button onClick={this.playPlanning} class={'btn ' + style['btn--on-air']}>On air</button></time>
+							<li class={style['playlists__item'] +' '+style['hours']+' '+ style['hours--' + this.getHours(scheduleItem.startHour, scheduleItem.endHour)] + ' ' + style[this.isActive(scheduleItem.startHour, scheduleItem.endHour)]}>
+								<time>{this.getTimeCaption(scheduleItem.startHour)}<button onClick={this.playPlaylist} class={'btn ' + style['btn--on-air']}>On air</button></time>
 								{this.getStation(scheduleItem.station)}
 							</li>
 						))}

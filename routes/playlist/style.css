@@ -1,45 +1,46 @@
-main.planning {
+main.playlist {
   padding: 0rem 1.5rem 8rem 1.5rem;
+  background-color: var(--background-color);
   position: relative;
 }
-main.planning h1 {
+main.playlist h1 {
   margin-bottom:3rem;
 }
-.planning-list, .planning-list__item {
+.playlists, .playlists__item {
   list-style: none;
   margin: 0;
   padding:0;
 }
-.planning-list {
-  border-top: 1px solid rgba(0,0,0,.1);
+.playlists {
+  border-top: 1px solid var(--playlist-header-bg-color);
   width: 30rem;
   max-width: 80vw;
   margin: 1rem auto 0 auto;
   display: block;
 }
-.planning-list__item {
+.playlists__item {
   display: flex;
   padding: 0;
   margin: 0;
-  background: rgba(0,0,0,.02);
-  border-bottom: 1px solid rgba(0,0,0,.1);
+  background: var(--playlist-item-bg-color);
+  border-bottom: 1px solid var(--playlist-header-bg-color);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-content: center;
   align-items: center;
 }
-.planning-list__item time {
+.playlists__item time {
   display: block;
   text-align: center;
-  background: rgba(0,0,0,.02);
+  background: var(--playlist-item-bg-color);
   font-size:.8rem;
   padding: .2rem;
   font-weight: bold;
   flex:0 1 0;
   width:100%;
 }
-.planning-list__item a {
+.playlists__item a {
   display: flex;
   margin:.6rem;
   flex: 1 1 0;
@@ -48,14 +49,14 @@ main.planning h1 {
   align-items: center;
 }
 .is-active {
-  border: 2px solid #cecece;
+  border: .2rem solid var(--playlist-item-active-border-color);
   border-radius: .2rem;
 }
-.is-active.planning-list__item,
-.is-active.planning-list__item time {
-  background: rgba(0,0,0,.04);
+.is-active.playlists__item,
+.is-active.playlists__item time {
+  background: var(--playlist-item-active-bg-color);
 }
-.is-active.planning-list__item time {
+.is-active.playlists__item time {
   position: relative;
 }
 button.btn--on-air {
@@ -89,12 +90,12 @@ button.btn--on-air {
 .hours--6 {
   height: 10rem;
 }
-.planning-list__item--break {
-  background-color:rgba(0,0,0,.05);
-  border-top:1px dashed rgba(0,0,0,.1);
+.playlists__item--break {
+  background-color:var(--playlist-item-active-bg-color);
+  border-top: 1px dashed var(--playlist-header-bg-color);
 }
 img.station-logo {
-  width:100%;
+  width: 100%;
   max-width: 3rem;
   max-height: 100%;
   vertical-align: middle;

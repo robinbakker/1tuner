@@ -1,4 +1,4 @@
-main.about {
+main.settings {
 	padding: 0 1.5rem 10rem 1.5rem;
 	background-color: var(--background-color);
 }
@@ -18,4 +18,10 @@ main.about {
 }
 .experimental:hover {
 	opacity: 1;
+}
+.selecttheme {
+	margin-top: 1.2rem;
+}
+.selecttheme label {
+	margin: 0;	
 }

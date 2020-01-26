@@ -1,92 +1,24 @@
 main.stations {
 	padding: 0rem 1.5rem 10rem 1.5rem;
-}
-.form-search {
-	display: block;
-	position: relative;
-	border: none;
-	margin: .6rem 0 0 0;
-	padding: 0;
-}
-.form-search:before, .form-search:after {
-	content: '\20';	
-	position: absolute;
-}
-.form-search:before {
-	left: .5rem;
-	top: .66rem;
-	border-radius: 50%;
-  height: .5rem;
-  width: .5rem;
-  border: .15rem solid #999;
-}
-.form-search:after {    
-	height: .15rem;
-	width: .5rem;
-	background: #999;
-	top:1.4rem;
-	left:.2rem;
-	transform: rotate(-45deg);
-}
-input.textfield--search {
-	background: transparent;
-	border-color: #646464 !important;
-	margin-bottom: 1rem;
-	width: 100%;
-	opacity: .66;
-	padding-left: 1.8rem;
-	transition: opacity .2s ease-in-out;
-}
-input.textfield--search:focus {
-	opacity:1;
-}
-input.textfield--search::-ms-clear {
-	display: none; 
-}
-button.btn-search-reset {
-	background: transparent;
-	border: none;
-	font-weight: bold;
-	font-size: 1rem;
-	cursor: pointer;
-	overflow: hidden;
-	width:2rem;
-	height:2rem;
-	position: absolute;
-	right: .3rem;
-	top:.3rem;
-	text-indent: -10rem;
-}
-input.textfield--search:not(:valid) ~ button.btn-search-reset {
-	opacity: 0;
-}
-button.btn-search-reset:after, button.btn-search-reset:before {
-	background-color: #000;
-	position: absolute;
-	display: inline-block;
-	height: .2rem;
-	width: .8rem;
-	content: '\20';
-	top: .6rem;
-	right: .6rem;
-	-webkit-backface-visibility: hidden;
-	backface-visibility: hidden;
-}
-button.btn-search-reset:before {
-	-webkit-transform: translateX(.2rem) translateY(.2rem) rotate(45deg);
-	transform: translateX(.2rem) translateY(.2rem) rotate(45deg);
-}
-button.btn-search-reset:after {
-	-webkit-transform: translateX(.2rem) translateY(.2rem) rotate(-45deg);
-	transform: translateX(.2rem) translateY(.2rem) rotate(-45deg);
+	background-color: var(--background-color);
 }
 button.btn--toggle-filter {
 	margin-top: 0;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='%23fff' d='M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z'/%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3C/svg%3E");
-	background-position: .5rem .4rem;
-	background-size: 25%;
-	background-repeat: no-repeat;
 	padding-left: 2rem;
+	position: relative;
+}
+button.btn--toggle-filter:before {
+	content: '\20';
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='%23fff' d='M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z'/%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3C/svg%3E");
+	background-position: .6rem .4rem;
+	background-size: 1.2rem;
+	background-repeat: no-repeat;
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	position: absolute;
+	left:0;
+	top:0;
 }
 @media (min-width: 768px) {
 	button.btn--toggle-filter {

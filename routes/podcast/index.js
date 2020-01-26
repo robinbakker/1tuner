@@ -3,7 +3,7 @@ import style from './style';
 import { Link } from 'preact-router/match';
 import Loader from '../../components/loader';
 import Header from '../../components/header';
-import { isValidUrl, getUrlQueryParameterByName, removeHtml, getTimeFromSeconds, getTime } from '../../utils/misc';
+import { isValidUrl, getUrlQueryParameterByName, removeHtml, getTimeFromSeconds, getTime, getFlagEmojiFromLanguage } from '../../utils/misc';
 
 export default class Podcast extends Component {
 	constructor(props) {
@@ -26,6 +26,7 @@ export default class Podcast extends Component {
 		let loadXml = true;
 		let podcastInfo = this.state.podcastInfo;		
 		let podcastSearchResult = this.props.lastPodcastSearchResult;
+		let stationPodcastList = this.props.stationPodcastList;
 		let podcastList = this.props.podcastList;
 		if (!podcastInfo && podcastList) {
 			for (let i=0; i < podcastList.length; i++) {
@@ -46,6 +47,16 @@ export default class Podcast extends Component {
 			for (let i=0; i < podcastSearchResult.length; i++) {
 				if (podcastSearchResult[i].feedUrl==AFeedUrl) {
 					podcastInfo = podcastSearchResult[i];
+					this.setState({podcastInfo: podcastInfo, isLoading: false});
+					loadXml = true;
+					break;
+				}
+			}
+		}
+		if (!podcastInfo && stationPodcastList) {
+			for (let i=0; i < stationPodcastList.length; i++) {
+				if (stationPodcastList[i].feedUrl==AFeedUrl) {
+					podcastInfo = stationPodcastList[i];
 					this.setState({podcastInfo: podcastInfo, isLoading: false});
 					loadXml = true;
 					break;
@@ -77,6 +88,7 @@ export default class Podcast extends Component {
 			podcastInfo.modified = new Date();
 			podcastInfo.name = xmlDoc.getElementsByTagName('channel')[0].getElementsByTagName('title')[0].childNodes[0].nodeValue;
 			let description = xmlDoc.getElementsByTagName('channel')[0].getElementsByTagName('description')[0].childNodes[0].wholeText || xmlDoc.getElementsByTagName('channel')[0].getElementsByTagName('description')[0].childNodes[0].nodeValue;
+			podcastInfo.language = xmlDoc.getElementsByTagName('channel')[0].getElementsByTagName('language')[0].childNodes[0].nodeValue;
 			podcastInfo.description	= description;
 			podcastInfo.artworkUrl = self.getArtworkUrl(xmlDoc);
 			podcastInfo.episodes = self.getFeedEpisodeArray(podcastInfo, xmlDoc); 
@@ -193,7 +205,7 @@ export default class Podcast extends Component {
 			}
 			return(
 				<div class={'page-container'}>
-				<Header title="Podcast" />
+				<Header title={'Podcast'} />
 				<main class={'content content--is-loading ' + style.podcast + ' ' + style['podcast--empty']}>
 					<h1>{this.props.name}</h1>
 					{ isLoading && !this.state.errorMessage ? 
@@ -212,7 +224,7 @@ export default class Podcast extends Component {
 				<Header title={podcastInfo.name} sharetext={'Listen to this podcast at 1tuner.com'} />
 				<div class={style.pageheader}>
 					<h1 class={'main-title'}>{podcastInfo.name}
-					<small class={'main-subtitle main-subtitle--loud'}>{podcastInfo.langObj ? podcastInfo.langObj.flag : null} Podcast</small></h1>
+					<small class={'main-subtitle main-subtitle--loud'}>{getFlagEmojiFromLanguage(podcastInfo.language)} Podcast</small></h1>
 				</div>
 				<main class={'content ' + (style.podcast)}>
 					<div class={style.start}>

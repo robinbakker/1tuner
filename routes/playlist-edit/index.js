@@ -5,9 +5,9 @@ import { Link } from 'preact-router/match';
 import EditScheduleItem from '../../components/editscheduleitem';
 import Header from '../../components/header';
 import { getColorString, getUrlQueryParameterByName } from '../../utils/misc';
-import { getScheduleQueryParamsAsString } from '../../utils/planning';
+import { getScheduleQueryParamsAsString } from '../../utils/playlist';
 
-export default class PlanningEdit extends Component {
+export default class PlaylistEdit extends Component {
 	state = {
 		href:'',
 		name:'',
@@ -20,7 +20,7 @@ export default class PlanningEdit extends Component {
 	
 	// gets called when this route is navigated to
 	componentDidMount() {
-		document.title = 'Planning - 1tuner';
+		document.title = 'Playlist - 1tuner';
 		this.loadData();
 	}
 
@@ -50,13 +50,13 @@ export default class PlanningEdit extends Component {
 		});
 		this.setState({
 			radioStations: stationList
-		}, this.setPlanning);
+		}, this.setPlaylist);
 	
 	}
 
-	setPlanning() {
+	setPlaylist() {
 		if (this.props.name && typeof window !== 'undefined' && window.location) {
-			let s = this.getPlanning(this.props.name, window.location.href);
+			let s = this.getPlaylist(this.props.name, window.location.href);
 			this.setState({
 				href: s.href,
 				name: s.name,
@@ -80,20 +80,20 @@ export default class PlanningEdit extends Component {
 		return Result;
 	}
 
-	getPlanning = (APlanningName, APlanningHref) => {
+	getPlaylist = (APlaylistName, APlaylistHref) => {
 		let Result = null;
-		APlanningHref = APlanningHref.substr(APlanningHref.indexOf('/planning-edit/'));
-		APlanningHref = APlanningHref.replace('/planning-edit/','/planning/');
-    if (APlanningHref.indexOf('?') >= 0) {
-      let sUrlArr = APlanningHref.split('?');
+		APlaylistHref = APlaylistHref.substr(APlaylistHref.indexOf('/playlist-edit/'));
+		APlaylistHref = APlaylistHref.replace('/playlist-edit/','/playlist/');
+    if (APlaylistHref.indexOf('?') >= 0) {
+      let sUrlArr = APlaylistHref.split('?');
 			let qp = sUrlArr[1];
-			if (this.state.planningList) {
-				for (var i=0; i<=this.state.planningList.length; i++) {
-					if (this.state.planningList[i].href.indexOf('?') >= 0) {
-						let sUrlArr2 = this.state.planningList[i].href.split('?');
+			if (this.state.playlist) {
+				for (var i=0; i<=this.state.playlist.length; i++) {
+					if (this.state.playlist[i].href.indexOf('?') >= 0) {
+						let sUrlArr2 = this.state.playlist[i].href.split('?');
 						let qp2 = sUrlArr2[1];
 						if (qp==qp2) {
-							Result = this.state.planningList[i];
+							Result = this.state.playlist[i];
 							break;
 						}
 					}
@@ -125,8 +125,8 @@ export default class PlanningEdit extends Component {
 					});
 				}
 				Result = {
-					href: APlanningHref,
-					name: APlanningName,
+					href: APlaylistHref,
+					name: APlaylistName,
 					schedule: schedule
 				}
 			}
@@ -141,27 +141,27 @@ export default class PlanningEdit extends Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		if (!this.state.name) {
-			this.setState({errorMessage:'Please fill in a name for the planning.'});
+			this.setState({errorMessage:'Please fill in a name for the playlist.'});
 			return;
 		}
 		if (document && !document.getElementById('inpName').validity.valid) {
-			this.setState({errorMessage:'Please fill in a name for the planning.'});
+			this.setState({errorMessage:'Please fill in a name for the playlist.'});
 			return;	
 		}
 		if (!this.state.items || !this.state.items.length) {
-			this.setState({errorMessage:'Hmm, your planning seems to be empty. Please try adding some rows?'});
+			this.setState({errorMessage:'Hmm, your playlist seems to be empty. Please try adding some rows?'});
 			return;
 		}
-		let planningHref = '/planning/' + encodeURI(this.state.name) + '/?' + getScheduleQueryParamsAsString(this.state.items);
+		let playlistHref = '/playlist/' + encodeURI(this.state.name) + '/?' + getScheduleQueryParamsAsString(this.state.items);
 		var postData = {
-			href: planningHref,
+			href: playlistHref,
 			name: this.state.name,
-			color: getColorString(planningHref),
+			color: getColorString(playlistHref),
 			schedule: this.state.items
 		};
-		this.props.addPlanning(postData);
+		this.props.addPlaylist(postData);
 
-		route('/planner', true);
+		route('/playlists', true);
 	}
 
 	addScheduleItem = (e, startHour, endHour, station) => {
@@ -240,13 +240,13 @@ export default class PlanningEdit extends Component {
 			this.loadData();
 			return(
 				<div class={'page-container'}>
-					<Header title="Planning" />
-					<main class={'content ' + (style.planning)}>
-						<h1 class={'main-title'}>Planning
+					<Header title="Playlist" />
+					<main class={'content ' + (style.playlist)}>
+						<h1 class={'main-title'}>Playlist
 						{name ?
 							<small class={'main-subtitle'}>Change some bits and pieces 🔧</small>
 							:
-							<small class={'main-subtitle'}>Add a new planning</small>
+							<small class={'main-subtitle'}>Add a new playlist</small>
 						}
 						</h1>
 						{errorMessage && errorMessage!='' ?
@@ -260,13 +260,13 @@ export default class PlanningEdit extends Component {
 		} else {
 			return (
 				<div class={'page-container'}>
-					<Header title="Planning" />
-					<main class={'content ' + (style.planning)}>
-						<h1 class={'main-title'}>Planning
+					<Header title="Playlist" />
+					<main class={'content ' + (style.playlist)}>
+						<h1 class={'main-title'}>Playlist
 						{name ?
 							<small class={'main-subtitle'}>Change some bits and pieces 🔧</small>
 							:
-							<small class={'main-subtitle'}>Add a new planning</small>
+							<small class={'main-subtitle'}>Add a new playlist</small>
 						}
 						</h1>
 						{errorMessage && errorMessage!='' ?
@@ -274,12 +274,12 @@ export default class PlanningEdit extends Component {
 							:
 							null
 						}
-						<form class={style.editplanningform} onSubmit={this.handleSubmit.bind(this)}>					
+						<form class={style.editplaylistform} onSubmit={this.handleSubmit.bind(this)}>					
 							<ul class={style['item-list']}>
 								<li class={style['item-list__item']}>
 									<label class="label-container">
 										<span class="label-text">Name</span>
-										<input type="text" id="inpName" placeholder="Planning name" maxlength="100" pattern="[\w.,!:\)\(\s]+" class="textfield" value={this.state.name} onInput={this.setName} required />
+										<input type="text" id="inpName" placeholder="Playlist name" maxlength="100" pattern="[\w.,!:\)\(\s]+" class="textfield" value={this.state.name} onInput={this.setName} required />
 									</label>
 								</li>
 								{items.map(scheduleItem => (
@@ -292,7 +292,7 @@ export default class PlanningEdit extends Component {
 								</li>
 							</ul>
 							<div class={'btn-container btn-container--content-right'}>
-								<Link href={href ? href : '/planner'} native class={'btn btn--cancel margin--right'}>Cancel</Link>
+								<Link href={href ? href : '/playlists'} native class={'btn btn--cancel margin--right'}>Cancel</Link>
 								<input type="submit" class={'btn btn--save'} value="Save" />
 							</div>
 						</form>

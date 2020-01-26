@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import style from './style';
 import PodcastList from '../../components/podcastlist';
 import Header from '../../components/header';
+import { isValidUrl, getUrlQueryParameterByName } from '../../utils/misc';
 
 export default class Podcasts extends Component {
 	constructor(props) {
@@ -11,16 +12,35 @@ export default class Podcasts extends Component {
 			searchTimer: 0,
 			lastSearchResult: null,
 			podcastList: null,
+			featuredPodcastList: null,
 			errorMessage: null
 		};
 	}
 
 	componentDidMount() {
-		document.title = 'Find Podcasts - 1tuner';	
+		document.title = 'Find Podcasts - 1tuner';
+		let searchQuery = getUrlQueryParameterByName('q', window.location.href.split('/?')[1]);
+		let featuredPodcastList = [];
+		if (this.props.stationPodcastList) {
+			let featuredFeeds = ['https://rss.art19.com/the-daily','https://rss.art19.com/vandaag','https://rss.art19.com/een-podcast-over-media','https://api.kink.nl/rss/release-rundown-2','https://rss.art19.com/man-man-man-de-podcast'];
+			for (let i = 0; i < this.props.stationPodcastList.length; i++) {
+				if (featuredFeeds.indexOf(this.props.stationPodcastList[i].feedUrl) !== -1) {
+					featuredPodcastList.push(this.props.stationPodcastList[i]);
+				}
+				if (featuredPodcastList.length === featuredFeeds.length) {
+					break;
+				}
+			}
+		}
 		this.setState({
-			searchQuery: this.props.searchQuery, 
+			searchQuery: searchQuery || this.props.searchQuery, 
 			lastSearchResult: this.props.lastSearchResult,
-			podcastList: this.props.podcastList
+			podcastList: this.props.podcastList,
+			featuredPodcastList: featuredPodcastList
+		}, () => {
+			if (searchQuery) {
+				this.findPodcasts();
+			}
 		});
 	}
 
@@ -56,6 +76,7 @@ export default class Podcasts extends Component {
 				newState.push({
 					feedUrl: data.results[item].feedUrl,
 					name: data.results[item].collectionName,
+					artistName: data.results[item].artistName,
 					artworkUrl: data.results[item].artworkUrl100,
 					artworkUrl600: data.results[item].artworkUrl600, 					
 					collectionid: data.results[item].collectionid
@@ -95,34 +116,48 @@ export default class Podcasts extends Component {
 		return false;
 	}
 
-	render() {
+	render({},{searchQuery, lastSearchResult, errorMessage, podcastList, featuredPodcastList}) {
 		return (
 			<div class={'page-container'}>
 			<Header title="Podcasts" sharetext={'Listen to podcasts at 1tuner.com'} />
 			<main class={'content ' + (style.podcasts)}>
 				<h1 class={'main-title'}>Podcasts
 				<small class={'main-subtitle'}>Listen to your favorite podcast 🎙️</small></h1>
-				<form class={style['form-search']}>
-					<input type="text" placeholder="Find..." value={this.state.searchQuery} maxlength="100" required pattern="[a-zA-Z0-9\s]+" class={'textfield ' + style['textfield--search']} onFocus={this.setSearchInputFocus.bind(this)} onBlur={this.setSearchInputBlur.bind(this)} onKeyDown={this.onKeyDown} onInput={this.setSearchQuery.bind(this)} />
-					<button class={style['btn-search-reset']} onClick={this.resetSearchQuery.bind(this)} type="reset">Reset</button>
+				<form class={'form-search'}>
+					<input type="text" placeholder="Find..." value={searchQuery} maxlength="100" required pattern="[a-zA-Z0-9\s]+" class={'textfield textfield--search'} onFocus={this.setSearchInputFocus.bind(this)} onBlur={this.setSearchInputBlur.bind(this)} onKeyDown={this.onKeyDown} onInput={this.setSearchQuery.bind(this)} />
+					<button class={'btn-search-reset'} onClick={this.resetSearchQuery.bind(this)} type="reset">Reset</button>
 				</form>
 				<div>
-				{this.state.searchQuery && this.state.searchQuery.length ?
-					<PodcastList podcastList={this.state.lastSearchResult} errorMessage={this.state.errorMessage} limitCount={100} />
+				{searchQuery && searchQuery.length ?
+					<PodcastList podcastList={lastSearchResult} errorMessage={errorMessage} limitCount={100} />
 					:
 					null
 				}
 				</div>				
-				{this.state.podcastList && this.state.podcastList.length ?
-					<section class={style.section + ' content__section content__section--podcasts'}>
-						<h3 class={'section-title'}>Last visited</h3>
+				{podcastList && podcastList.length ?
+					<article class={style.section + ' content__section content__section--podcasts'}>
+						<header class={'section-header'}>
+							<h3 class={'section-title'}>Last visited</h3>
+						</header>
 						<div class={'section-main'}>
-						<PodcastList podcastList={this.state.podcastList} horizontal={true} small={true} limitCount={10} />
+						<PodcastList podcastList={podcastList} horizontal={true} small={true} limitCount={10} />
 						</div>
-					</section>
+					</article>
 					:
 					null					
-				}				
+				}
+				{featuredPodcastList && featuredPodcastList.length ?
+					<article class={style.section + ' content__section content__section--podcasts'}>
+						<header class={'section-header'}>
+							<h3 class={'section-title'}>Featured</h3>
+						</header>
+						<div class={'section-main'}>
+						<PodcastList podcastList={featuredPodcastList} horizontal={true} small={true} limitCount={10} />
+						</div>
+					</article>
+					:
+					null					
+				}	
 			</main>
 			</div>
 		);

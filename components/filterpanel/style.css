@@ -11,11 +11,11 @@
 	position: fixed;
 	right: 0;
 	top: 0;
-	background: rgba(234, 234, 234, 0.9);
+	background: var(--filter-panel-bg-color);
 	width: 16rem;
 	height: 100%;
 	z-index: 1;
-	padding: 2rem;
+	padding: 5rem 2rem 0 2rem;
 	transform: translate3d(100%, 0, 0);
 	transition: transform .2s ease-in-out;
 }

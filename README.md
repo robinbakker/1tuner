@@ -1,5 +1,5 @@
 # 1tuner
-![Logo](https://1tuner.com/assets/icons/android-chrome-192x192.png)
+![Logo](https://1tuner.com/assets/icons/icon-192x192.png)
 
 A web app to listen to online radio. Also, create your own daily schedule (planning) and listen to different radio stations consecutively - the player will switch between radio streams automatically. 
 

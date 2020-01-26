@@ -11,6 +11,7 @@ export function getColorString(AString) {
 }
 
 export function getUrlQueryParameterByName(AName, AUrl) {
+  if(!AUrl || !AUrl.length) return;
   AName = AName.replace(/[\[\]]/g, "\\$&");
   if (AUrl[0]!='?' && AUrl[0]!='&') {
     AUrl = '?' + AUrl;
@@ -53,4 +54,21 @@ export function getTimeFromSeconds(ASeconds) {
     return getTime(0, 0);
   }
   return getTime(Math.floor(ASeconds/60), Math.floor(ASeconds%60));
+}
+
+export function getFlagEmojiFromLanguage(ALanguageCode) {
+  let code = ALanguageCode;
+  if (!code) {
+    return '';
+  }
+  if (code.indexOf('-') != -1) {
+    code = code.split('-')[1];
+  }
+  if (!/^[a-z]{2}$/i.test(code)) {
+    return '';
+  }
+  // Copyright (c) 2019 Kelvin Liu - See https://github.com/thekelvinliu/country-code-emoji
+  const OFFSET = 127397; // offset between uppercase ascii and regional indicator symbols 
+  const chars = [...code.toUpperCase()].map(c => c.charCodeAt() + OFFSET);
+  return String.fromCodePoint(...chars);
 }

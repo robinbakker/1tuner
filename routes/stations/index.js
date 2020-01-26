@@ -14,7 +14,7 @@ export default class Stations extends Component {
 	}
 
 	componentDidMount() {
-		document.title = 'Radio Stations - 1tuner';		
+		document.title = 'Radio stations - 1tuner';		
 	}
 
 	changeStation = (AStation) => {
@@ -57,14 +57,14 @@ export default class Stations extends Component {
 	render({stationList, languageList}, {searchQuery, showFilterPanel}) {
 		return (
 			<div class={'page-container'}>
-			<Header title="Radio Stations" sharetext={'Listen to online radio at 1tuner.com'} />
+			<Header title="Radio stations" sharetext={'Listen to online radio at 1tuner.com'} />
 			<FilterPanel setLanguageList={this.setLanguageList.bind(this)} languageList={languageList} showFilterPanel={showFilterPanel} toggleFilterPanel={this.toggleFilterPanel.bind(this)} />
 			<main class={'content ' + (style.stations) + ' ' + (showFilterPanel ? style['stations--show-panel'] : '')}>
-				<h1 class={'main-title'}>Radio Stations
+				<h1 class={'main-title'}>Radio stations
 				<small class={'main-subtitle'}>Listen to the radio 📻</small></h1>
-				<form class={style['form-search']}>
-					<input type="text" placeholder="Find..." maxlength="100" required pattern="[a-zA-Z0-9\s]+" class={'textfield ' + style['textfield--search']} onFocus={this.setSearchInputFocus.bind(this)} onBlur={this.setSearchInputBlur.bind(this)} onKeyDown={this.onKeyDown} onInput={this.setSearchQuery.bind(this)} />
-					<button class={style['btn-search-reset']} onClick={this.resetSearchQuery.bind(this)} type="reset">Reset</button>
+				<form class={'form-search'}>
+					<input type="text" placeholder="Find..." maxlength="100" required pattern="[a-zA-Z0-9\s]+" class={'textfield textfield--search'} onFocus={this.setSearchInputFocus.bind(this)} onBlur={this.setSearchInputBlur.bind(this)} onKeyDown={this.onKeyDown} onInput={this.setSearchQuery.bind(this)} />
+					<button class={'btn-search-reset'} onClick={this.resetSearchQuery.bind(this)} type="reset">Reset</button>
 				</form>
 				<button class={'btn ' + style['btn--toggle-filter']} onClick={this.toggleFilterPanel.bind(this)}>Filter</button>
 				<StationList languageList={languageList} useLinksOnly={false} stationList={stationList} stationSearchQuery={searchQuery} changeStation={this.changeStation.bind(this)} limitCount={100} />

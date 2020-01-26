@@ -67,5 +67,14 @@
   },
   "reggae" : {
     "name" : "Reggae"
+  },
+  "comedy" : {
+    "name" : "Comedy"
+  },
+  "drama" : {
+    "name" : "Drama"
+  },
+  "history" : {
+    "name" : "History"
   }
 }

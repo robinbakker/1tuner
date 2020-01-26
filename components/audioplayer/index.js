@@ -14,10 +14,12 @@ export default class AudioPlayer extends Component {
       mediaid: '',
       errorMessage: null,
       srcItems:[],
+      sources:[],
       callbackId: -1,
       reconnectTimerWorker: null,
       reconnectTriesCount:0,
-      usePause: false
+      usePause: false,
+      isCasting: false
     };
   }
 
@@ -42,6 +44,7 @@ export default class AudioPlayer extends Component {
         });
       }
       this.setState({
+        sources: ASrcs,
         srcItems: srcItems,
         errorMessage: null,
         usePause: AUsePause
@@ -145,7 +148,21 @@ export default class AudioPlayer extends Component {
   checkAudio = (AIsPlaying, AMediaPlayingID, AResumeAtSeconds) => {
     let mediaPlayingID = AMediaPlayingID ? AMediaPlayingID : this.props.mediaid;
     let isSameMedia = this.state.mediaid == mediaPlayingID;
-    if (this.state.isPlaying == AIsPlaying && isSameMedia && !this.state.errorMessage) {
+    let isCasting = this.state.isCasting;
+    let castSession = window && !(typeof cast === 'undefined') ? cast.framework.CastContext.getInstance().getCurrentSession() : null;
+    let castSessionChanged = false;
+    if (castSession == null) {
+      castSessionChanged = isCasting; // no castSession, but has isCasting flag
+    } else {
+      let sessionState = castSession.getSessionState();
+      if (sessionState === cast.framework.SessionState.SESSION_STARTED || sessionState === cast.framework.SessionState.SESSION_RESUMED) {
+        if (!isCasting) {
+          isCasting = true;
+          castSessionChanged = true;
+        }
+      }
+    }
+    if (this.state.isPlaying == AIsPlaying && isSameMedia && !this.state.errorMessage && !castSessionChanged) {
       return; // Nothing changed
     }
     let self = this;
@@ -171,13 +188,24 @@ export default class AudioPlayer extends Component {
       return;
     }
     let errorMessage = this.state.errorMessage;
-    if (!AIsPlaying || mediaPlayingID!=this.props.mediaid || errorMessage!=null) {
+    if (!AIsPlaying || mediaPlayingID!=this.props.mediaid || errorMessage!=null || castSessionChanged) {
       if (!audioPL.paused) {
         audioPL.pause();
       }
-      if (!this.state.usePause) {
+      if (!this.state.usePause || isCasting) {
         audioPL.removeAttribute('src');
         audioPL.load();
+      }
+      if (isCasting) {
+        var player = new cast.framework.RemotePlayer();
+        var controller = new cast.framework.RemotePlayerController(player);
+        if (controller) {
+          if (this.state.usePause) {
+            controller.playOrPause();
+          } else {
+            controller.stop();
+          }
+        }
       }
       errorMessage = null;
       this.props.hasError();
@@ -186,6 +214,7 @@ export default class AudioPlayer extends Component {
           isPlaying: AIsPlaying,
           mediaid: mediaPlayingID,
           errorMessage: errorMessage,
+          isCasting: isCasting
         });
         return;
       }
@@ -194,30 +223,57 @@ export default class AudioPlayer extends Component {
       audioPL.removeAttribute('src');
       audioPL.load();
       if (AResumeAtSeconds) {
-        this.seekAudio(AResumeAtSeconds);
+        if (isCasting) {          
+          var request = new chrome.cast.media.SeekRequest();
+          if(request) {
+            request.currentTime = AResumeAtSeconds;
+            request.resumeState = chrome.cast.media.ResumeState.PLAYBACK_START;
+            session.media[0].seek(request,
+            ()=>{console.log("seek success")},
+            ()=>{console.log("seek error")});
+          }
+        } else {
+          this.seekAudio(AResumeAtSeconds);
+        }
       }
     } else {
       this.handleLoadedData();
     }
-    let playPromise = audioPL.play();
-    if (playPromise !== undefined) {
-      playPromise.then(_ => {
-        // Automatic playback started! // Show playing UI.
-        self.setState({
-          isPlaying: true,
-          promiseIsPlaying: true,
-          errorMessage: null,
-          mediaid: mediaPlayingID
+    if(isCasting && this.state.sources.length) {
+      // Play on Chromecast
+      const mediaInfo = new chrome.cast.media.MediaInfo(this.state.sources[0].url, this.state.sources[0].mimetype);
+      mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
+      mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
+      mediaInfo.metadata.title = this.props.mediatitle || this.props.mediaartist;
+      mediaInfo.metadata.images = [
+        {'url':this.props.medialogo || 'https://1tuner.com/assets/icons/icon-512x512.png'}
+      ];
+
+      var request = new chrome.cast.media.LoadRequest(mediaInfo);
+      castSession.loadMedia(request).then(
+        function() { console.log('Load succeed'); },
+        function(errorCode) { console.log('Error code: ' + errorCode); debugger; console.log(castSession); });
+    } else {
+      let playPromise = audioPL.play();
+      if (playPromise !== undefined) {
+        playPromise.then(_ => {
+          // Automatic playback started! // Show playing UI.
+          self.setState({
+            isPlaying: true,
+            promiseIsPlaying: true,
+            errorMessage: null,
+            mediaid: mediaPlayingID
+          });
+        }).catch(() => {
+          // Auto-play was prevented // Show paused UI.
+          self.setState({
+            isPlaying: false,
+            promiseIsPlaying:false,
+            errorMessage: null,
+            mediaid: mediaPlayingID
+          });
         });
-      }).catch(() => {
-        // Auto-play was prevented // Show paused UI.
-        self.setState({
-          isPlaying: false,
-          promiseIsPlaying:false,
-          errorMessage: null,
-          mediaid: mediaPlayingID
-        });
-      });
+      }
     }
     this.startMediaSession();    
   }
@@ -227,7 +283,7 @@ export default class AudioPlayer extends Component {
       let logoSource = {};
       let mLogo = this.props.medialogo;
       if (typeof mLogo === 'undefined' || (typeof mLogo !== 'undefined' && mLogo.indexOf('data')==0)) { 
-        logoSource = { src: 'https://1tuner.com/assets/icons/android-chrome-512x512.png', type: 'image/png' };
+        logoSource = { src: 'https://1tuner.com/assets/icons/icon-512x512.png', type: 'image/png' };
       } else {
         let imgType = 'image/png';
         if (mLogo.indexOf('.svg') > 0) {

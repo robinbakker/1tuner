@@ -1,11 +1,12 @@
 .nav {
-	background: #222;
+	background: var(--nav-background-color);
 	display: block;
 	position: fixed;
 	bottom:0;
 	z-index: 3;
 	width:100%;
 	height:4rem;
+	box-shadow: 0 -.1rem .5rem rgba(0,0,0,.05);
 }
 .nav-list, .nav-list li {
 	list-style: none;
@@ -27,44 +28,55 @@
 .nav-link {
 	display: inline-block;
 	width: 3rem;
-	height: 3.2rem;
-	background-color: transparent;
-	background-blend-mode: luminosity;
-	background-size: 65%;
-	background-repeat: no-repeat;
-	background-position: top center;
+	height: 3rem;
 	text-align: center;
-	color: rgba(0,0,0,.75);
+	color: var(--nav-link-color);
 	text-transform: uppercase;
 	text-decoration: none;
 	position: relative;
-	margin-top: .8rem;
-	margin-left: 0;
-	border-bottom: .2rem solid transparent;
+	padding: 0;
+	margin: .7rem 0 0 0;
 	outline: none;
+	user-select: none;
+	transition: color .2s ease-in-out;
+	-webkit-tap-highlight-color: transparent;
 }
+.nav-link:hover,
 .nav-link.active {
-	border-bottom: .2rem solid #d00000;
+	color: var(--color-main);
 }
 
-.nav-link.nav-link--station {
-	background-size: 60%;
+.nav-link svg {
+	width: 1.7rem;
+	height: 1.7rem;
+	fill: var(--text-color);
+	transition: fill .2s ease-in-out;
 }
-.nav-link.nav-link--info {
-	background-size: 50%;
+.nav-link path,
+.nav-link circle {
+	stroke: var(--text-color);
+	transition: stroke .2s ease-in-out;
 }
+
+.nav-link.active svg,
+.nav-link:hover svg {
+	fill: var(--color-main);
+}
+.nav-link.active path,
+.nav-link.active circle,
+.nav-link:hover path,
+.nav-link:hover circle {
+	stroke: var(--color-main);
+}
+
 .nav-list__caption {
 	display: block;
-	color: #fff;
 	font-size: .8rem;
 	text-transform: none;
 	position: absolute;
 	bottom: 0;
 	width:100%;
 	text-align: center;
-}
-.nav-link--planner {
-  background-position: center 10%;
 }
 .nav-link--user {
 	padding-top:.3rem;
@@ -97,23 +109,9 @@ img.userphoto {
 		align-items: flex-start;
 	}
 	.nav-link {
-		border-left: .2rem solid transparent;
-		border-bottom: none;
+		padding: 0 0 0 .2rem;
 		width: 4rem;
 		height: 3.4rem;
-		margin-top: 0;
-		margin-bottom: 1.4rem;
-		background-size: 45% !important;
-		background-position: center 20% !important;
-	}
-	.nav-link.nav-link--info {
-		background-size: 40% !important;
-	}
-	.nav-link.active {
-		border-left: .2rem solid #d00000;
-		border-bottom: none;
-	}
-	.nav-link--planner .nav-list__caption {
-		left:0;
+		margin: 0 0 1.6rem 0;
 	}
 }

@@ -1,6 +1,7 @@
 main.home {
     padding-top: 0 !important;
     padding-bottom: 10rem;
+    background-color: var(--background-color);
 }
 .home-header {
     width: 100%;
@@ -8,6 +9,7 @@ main.home {
     background-size: cover;
     display: block;
     text-align: left;
+    box-shadow: 0 .2rem .5rem rgba(0,0,0,.1);
 }
 .home-header-logo {
     flex: 0 1 0;

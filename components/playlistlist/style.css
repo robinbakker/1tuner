@@ -11,8 +11,13 @@ img.station-logo {
 	display: flex;
 	align-items: center;
 	align-content: center;
-	justify-content: center;
+	justify-content: flex-end;
 	flex-wrap: wrap;
+	position: absolute;
+	z-index: 0;
+	right: 0;
+	bottom: 0;
+	opacity: .2;
 }
 .station-list__item {
 	flex:1;
