@@ -37,12 +37,6 @@ export default class Nav extends Component {
 							<span class={style['nav-list__caption']}>Settings</span>
 						</Link>
 					</li>
-					{/* <li class={style['nav-list__item']}>
-						<Link title="About" activeClassName={style.active} href="/about" class={style['nav-link'] + ' ' + style['nav-link--info']}>
-							<svg xmlns="http://www.w3.org/2000/svg" style="isolation:isolate" viewBox="0 0 42 42"><defs><clipPath id="cpInfo"><path d="M0 0h42v42H0z"/></clipPath></defs><g clip-path="url(#a)"><path fill-rule="evenodd" d="M18.95 11.184q0-.876.596-1.5.596-.623 1.469-.623.843 0 1.439.623.596.624.596 1.5 0 .843-.596 1.483-.596.64-1.439.64-.873 0-1.469-.64-.596-.64-.596-1.483zm.204 20.321V18.227q0-.606.523-.977t1.338-.371q.814 0 1.352.371.538.371.538.977v13.278q0 .506-.567.944-.567.438-1.323.438-.786 0-1.324-.421-.537-.422-.537-.961z"/><circle cx="21" cy="21" r="17" fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="3" stroke-width="2" vector-effect="non-scaling-stroke"/></g></svg>
-							<span class={style['nav-list__caption']}>About</span>
-						</Link>
-					</li> */}
 				</ul>
 			</nav>
 		);

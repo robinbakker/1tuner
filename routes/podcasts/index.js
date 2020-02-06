@@ -22,7 +22,7 @@ export default class Podcasts extends Component {
 		let searchQuery = getUrlQueryParameterByName('q', window.location.href.split('/?')[1]);
 		let featuredPodcastList = [];
 		if (this.props.stationPodcastList) {
-			let featuredFeeds = ['https://rss.art19.com/the-daily','https://rss.art19.com/vandaag','https://rss.art19.com/een-podcast-over-media','https://api.kink.nl/rss/release-rundown-2','https://rss.art19.com/man-man-man-de-podcast'];
+			let featuredFeeds = ['https://rss.art19.com/the-daily','https://rss.art19.com/vandaag','https://rss.art19.com/een-podcast-over-media','https://api.kink.nl/rss/release-rundown-2','https://rss.art19.com/man-man-man-de-podcast','https://podcast.npo.nl/feed/de-krokante-leesmap.xml'];
 			for (let i = 0; i < this.props.stationPodcastList.length; i++) {
 				if (featuredFeeds.indexOf(this.props.stationPodcastList[i].feedUrl) !== -1) {
 					featuredPodcastList.push(this.props.stationPodcastList[i]);

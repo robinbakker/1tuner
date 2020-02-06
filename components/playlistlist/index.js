@@ -126,9 +126,6 @@ export default class PlaylistList extends Component {
 									<div class={'preset-list__link-content'}>
 										<Link href={playlistItem.href} class={'preset-list__link'}>{playlistItem.name}</Link>
 										<span class={'preset-list__link-description'}>{this.getStationNames(playlistItem.schedule)}</span>
-										{/* <ul class={style['station-list']}>
-										{this.renderStationLogos(playlistItem.schedule)}
-										</ul> */}
 									</div>
 								}
 								{this.props.small ?

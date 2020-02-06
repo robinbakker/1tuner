@@ -8,10 +8,7 @@
 	justify-items: center;
 	position: fixed;
 	z-index: 99;
-	top:0;
-	/* background: var(--color-main) url(/assets/header-bg.jpg) center no-repeat;
-	background-size: cover;
-	background-blend-mode: multiply; */
+	top: 0;
 }
 .header.is-home {
 	display: none;

@@ -199,7 +199,6 @@
       }
     ],
     "website": "https://www.bnr.nl",
-    "related": ["kink"],
     "podcasts":["https://www.bnr.nl/podcast/newsroom?widget=rssfeed&view=podcastFeed","https://www.bnr.nl/podcast/de-technoloog?widget=rssfeed&view=podcastFeed"]
   },
   "cadena100": {
@@ -1212,7 +1211,7 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kinkdna","bnr"],
+    "related": ["kinkdna"],
     "podcasts": [
       "https://api.kink.nl/rss/dailykink",
       "https://api.kink.nl/rss/met-het-oor-op-morgen",

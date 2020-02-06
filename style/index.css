@@ -13,8 +13,8 @@
 	--header-background-color: rgb(231, 142, 0);
 	--header-background: radial-gradient(circle at bottom left, rgba(255,157,0,1) 0%, rgb(209, 129, 0) 100%);
 	--sub-header-background-color: rgba(122,122,122,.9);
-	--footer-background-color:rgba(170,170,170,.75); /* rgba(243, 243, 243,.75); */
-	--footer-text-color: #fff; /*var(--text-color);*/
+	--footer-background-color:rgba(170,170,170,.75);
+	--footer-text-color: #fff;
 	--form-border-color: #cacaca;
 	--filter-panel-bg-color: rgba(234, 234, 234, 0.9);
 	--scrollbar-thumb-color: #ccc;
@@ -746,7 +746,6 @@ h1.main-title {
 	transition: background-color .2s ease-in-out, box-shadow .2s ease-in-out;
 }
 .has-header .app-header {
-	/* background: var(--header-background); */
 	background-color: var(--header-background-color);
 	box-shadow: 0 0.2rem 0.5rem rgba(0,0,0,.1);
 	color: #fff;
@@ -860,7 +859,4 @@ h1.main-title {
 	.preset-list--page .preset-list__item {
 		padding-right: .5rem;
 	}
-	/* .preset-list--page .preset-list__item-content {
-		max-width: 80vw;
-	} */
 }

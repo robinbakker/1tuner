@@ -3,7 +3,7 @@
 	padding: 3.5rem 1.5rem 1.5rem 1.5rem;
 	background-color:var(--sub-header-background-color);
 	background-position: center right;
-	background-size: 75%;
+	background-size: cover;
 	background-blend-mode: saturation;
 	background-repeat: no-repeat;
 	position: relative;
@@ -23,6 +23,10 @@
 	transform: translateY(-3vw) rotate(-2.5deg) skewX(-2.5deg);
 }
 @media (min-width: 768px) {
+	.header {
+		background-size: 75%;
+		padding: 3.5rem 1.5rem 2.5rem 1.5rem;
+	}
 	.header:after {
 		transform: translateY(-3vw) rotate(-1.5deg) skewX(-1.5deg);
 	}
