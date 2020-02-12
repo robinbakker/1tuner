@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "1tuner",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "1 web app to listen to audio streams and auto-switch",
   "author": "Robin Bakker",
   "license": "MIT",

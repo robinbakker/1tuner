@@ -1371,5 +1371,23 @@
     ],
     "website": "https://www.npr.org",
     "podcasts": ["https://www.npr.org/rss/podcast.php?id=510318","https://www.npr.org/rss/podcast.php?id=510343"]
+  },
+  "ffh": {
+    "displayorder": 84,
+    "genres": ["pop"],
+    "language": "de",
+    "logosource": "https://avatars.io/twitter/ffhde",
+    "name": "HIT RADIO FFH",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://mp3.ffh.de/radioffh/hqlivestream.mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://mp3.ffh.de/radioffh/hqlivestream.aac"
+      }
+    ],
+    "website": "https://www.ffh.de"
   }  
 }

@@ -99,7 +99,7 @@ export default class Settings extends Component {
 						{!settings || !settings.experimental || !settings.experimental.chromecast ?
 							<p>Pssst! I'm working on Chromecast support. Want to try? OK, might be buggy, but 🤞 and <button onClick={this.enableChromecastSupport.bind(this)} class={'btn btn--small btn--secondary'}>Enable</button> Chromecast support</p>
 							:
-							<p>Thanks for checking this! Please let me know your thoughts on this. 🙂<br/>Is the Chromecast functionality too buggy? <button onClick={this.disableChromecastSupport.bind(this)} class={'btn btn--small btn--secondary'}>Disable</button> Chromecast support then... 🙁</p>
+							<p>Thanks for checking this new functionality! Please let me know your thoughts <a href="https://twitter.com/1tuner" rel="noopener me" target="_blank">@1tuner</a>. 🙂<br/>Is the Chromecast functionality too buggy? <button onClick={this.disableChromecastSupport.bind(this)} class={'btn btn--small btn--secondary'}>Disable</button> Chromecast support then... 🙁</p>
 						}
 					</div>
 				</main>
