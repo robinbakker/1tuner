@@ -42,7 +42,7 @@ export default class App extends Component {
 			podcastList: null,
 			stationPodcastList: null,
 			playlist: null,
-			playlists: null,			
+			playlists: null,
 			languageList: null,
 			settings: null,
 			showFilterPanel: false,
@@ -79,7 +79,7 @@ export default class App extends Component {
 			stationList = await this.loadStationList();
 		}
 		let listeningMode = await get('lm') || 0;
-		
+
 		let station = await get('station');
 		let legacyPlaylist = await get('planning');
 		if (legacyPlaylist) {
@@ -90,7 +90,7 @@ export default class App extends Component {
 		let stationPodcastList = await get('station-podcast-list') || await this.loadStationPodcastList();
 		let lastStationList = await get('last-station-list') || this.getLastStationList(stationList);
 		let featured = this.loadFeatured(stationList);
-		
+
 		let languageList = this.state.languageList || await get('language-list') || this.loadLanguageList();
 		let legacyPlaylists = await get('planning-list');
 		if (legacyPlaylists && legacyPlaylists.length) {
@@ -116,7 +116,7 @@ export default class App extends Component {
 	}
 
 	render({}, {listeningMode, settings, languageList, station, stationList, lastStationList, stationPodcastList,
-			playlist, playlists, podcast, podcastList, featured, lastPodcastSearchQuery, lastPodcastSearchResult, version}) {		
+			playlist, playlists, podcast, podcastList, featured, lastPodcastSearchQuery, lastPodcastSearchResult, version}) {
 		return (
 		<div id="app">
 			<Nav />
@@ -197,8 +197,8 @@ export default class App extends Component {
 						this.saveLocal();
 					});
 				}
-			} 
-		}		
+			}
+		}
 	}
 
 	tuneToStation = (APrev) => {
@@ -237,7 +237,7 @@ export default class App extends Component {
 				let insertIndex = 0;
 				for (let i=0; i<presetList.length; i++) {
 					// find the last played station in the presetlist, use this index for the insert
-					if (presetList[i].id === lastPlayedList[1].id) { 
+					if (presetList[i].id === lastPlayedList[1].id) {
 						insertIndex = i+1;
 						if (insertIndex >= presetList.length) {
 							insertIndex = 0;
@@ -276,9 +276,9 @@ export default class App extends Component {
 			this.child.forcePlay(AForcePlay);
 		}
 	}
-	
+
 	playPodcastEpisode = (APodcast, AForcePlay) => {
-		if (APodcast) {			
+		if (APodcast) {
 			this.setState({
 				listeningMode: 3,
 				podcast: APodcast
@@ -324,11 +324,11 @@ export default class App extends Component {
 		if (AForcePlay && this.child) {
 			this.child.forcePlay(AForcePlay);
 		}
-	}	
+	}
 
 	toggleFilterPanel = () => {
 		var show = !this.state.showFilterPanel;
-		this.setState({showFilterPanel:show}); 
+		this.setState({showFilterPanel:show});
 	}
 
 	indexOfPlaylist = (APlaylistHref) => {
@@ -357,7 +357,7 @@ export default class App extends Component {
 	}
 
 	addPlaylist = (APlaylist) => {
-		if (APlaylist && APlaylist.href) {			
+		if (APlaylist && APlaylist.href) {
 			if (this.indexOfPlaylist(APlaylist.href)<0) {
 				let sList = this.state.playlists || [];
 				sList.push(APlaylist);
@@ -395,7 +395,7 @@ export default class App extends Component {
 			this.saveLocal();
 		});
 	}
-	
+
 	resetLocalPreferences = () =>{
 		if (typeof indexedDB !== 'undefined') {
 			clear().then(() => {
@@ -417,7 +417,7 @@ export default class App extends Component {
 		}
 		if (pcIndexArray.length) {
 			pcIndexArray.forEach(function(pcIndex) {
-				podcastArray.splice(pcIndex, 1);			
+				podcastArray.splice(pcIndex, 1);
 			});
 		}
 		podcastArray.unshift(APodcast);
@@ -441,9 +441,9 @@ export default class App extends Component {
 			if (this.child) {
 				this.child.forcePlay(true);
 			}
-		});		
+		});
 	}
-	
+
 	loadLanguageList = () => {
 		let selectedLanguages = [];
 		if (typeof navigator !== 'undefined') {
@@ -464,7 +464,7 @@ export default class App extends Component {
 			langs.push({
 				id: item,
 				abbr: langItems[item].abbr,
-				displayorder: langItems[item].displayorder, 
+				displayorder: langItems[item].displayorder,
 				name: langItems[item].name,
 				country: country,
 				flag: langItems[item].flag,
@@ -517,7 +517,7 @@ export default class App extends Component {
 					}
 					return 0;
 				});
-				stationList = newState;	
+				stationList = newState;
 			}).catch(function(err) {
 			  // Error :(
 				console.log(err);
@@ -544,7 +544,7 @@ export default class App extends Component {
 		return stationPodcastList;
 	}
 	loadFeatured = (AStationList) => {
-		let newFeatured = this.state.featured; 
+		let newFeatured = this.state.featured;
 		if (!newFeatured) {
 			let items = Featured.featured;
 			if (items && items.length) {
@@ -612,7 +612,7 @@ export default class App extends Component {
 		return Result;
 	}
 
-	setLanguageList = (ALanguageList) => {
+  setLanguageList = (ALanguageList) => {
 		if(ALanguageList) {
 			this.setState({
 				languageList: ALanguageList
@@ -621,7 +621,7 @@ export default class App extends Component {
 			});
 		}
 	}
-	
+
 	getLastStationList = (AStationList) => {
 		let stationList = AStationList || this.state.stationList;
 		if (!stationList) {
@@ -649,7 +649,7 @@ export default class App extends Component {
       var s = document.createElement('script');
       s.setAttribute('src', 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1');
       s.onload = this.castScriptLoaded;
-      document.head.appendChild(s);   
+      document.head.appendChild(s);
     }
   }
 
@@ -661,12 +661,12 @@ export default class App extends Component {
       }
     };
 	}
-	
+
 	initializeCastApi = () => {
     cast.framework.CastContext.getInstance().setOptions({
       receiverApplicationId: '2CFD5B94',
       //receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
       autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
-    });    
+    });
   }
 }

@@ -70,19 +70,30 @@ export default class AudioPlayer extends Component {
     if (!ASeconds) {
       return;
     }
-    var audioPL = document.getElementById('audioPlay');
-    if (ASeconds < 0) {
-      ASeconds = Math.abs(ASeconds);
-      if (audioPL.currentTime<=ASeconds) {
-        audioPL.currentTime = 0;
-      } else {
-        audioPL.currentTime -= ASeconds;
+    if (this.state.isCasting) {
+      let request = new chrome.cast.media.SeekRequest();
+      if (request) {
+        request.currentTime = AResumeAtSeconds;
+        request.resumeState = chrome.cast.media.ResumeState.PLAYBACK_START;
+        session.media[0].seek(request,
+        ()=>{console.log('seek success')},
+        ()=>{console.log('seek error')});
       }
     } else {
-      if (audioPL.currentTime >= audioPL.duration - ASeconds) {
-        audioPL.currentTime = audioPL.duration-.1;
+      let audioPL = document.getElementById('audioPlay');
+      if (ASeconds < 0) {
+        ASeconds = Math.abs(ASeconds);
+        if (audioPL.currentTime<=ASeconds) {
+          audioPL.currentTime = 0;
+        } else {
+          audioPL.currentTime -= ASeconds;
+        }
       } else {
-        audioPL.currentTime += ASeconds;
+        if (audioPL.currentTime >= audioPL.duration - ASeconds) {
+          audioPL.currentTime = audioPL.duration-.1;
+        } else {
+          audioPL.currentTime += ASeconds;
+        }
       }
     }
   }
@@ -223,12 +234,13 @@ export default class AudioPlayer extends Component {
       audioPL.removeAttribute('src');
       audioPL.load();
       if (AResumeAtSeconds) {
-        if (isCasting) {          
+        if (isCasting) {
+          let castSession = window && !(typeof cast === 'undefined') ? cast.framework.CastContext.getInstance().getCurrentSession() : null;
           var request = new chrome.cast.media.SeekRequest();
-          if(request) {
+          if (request && castSession) {
             request.currentTime = AResumeAtSeconds;
-            request.resumeState = chrome.cast.media.ResumeState.PLAYBACK_START;
-            session.media[0].seek(request,
+            request.resumeState = chrome.cast.media.ResumeState.PLAYBACK_START;            
+            castSession.media[0].seek(request,
             ()=>{console.log("seek success")},
             ()=>{console.log("seek error")});
           }

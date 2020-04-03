@@ -159,7 +159,7 @@
     "artworkUrl": "https://podcast.npo.nl/data/thumb/kwaad-bloed.1400.8eb8eb01044ca3eee6dc85f4db657c64.jpg",
     "artworkUrl600": "https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/fe/69/f2/fe69f284-661a-0d97-4e9d-9f39dddc0f57/mza_8151255630799004531.jpg/600x600bb.jpg",
     "description": "Kwaad Bloed is een podcast over zes spraakmakende moordzaken en een mysterieuze verdwijning op het platteland. De gebruikte wapens? Een bijl, gif en zelfs een trein. En de daders zijn geen dolende geweldenaars maar in de meeste zaken bekenden van het slachtoffer. Niemand wordt als moordenaar geboren, zegt een vrouw die haar echtgenoot ombracht, maar waar gaat het mis? Wanneer wordt het de dader te veel? In hun gesprekken met nabestaanden, getuigen en ook daders, gaan Gerrit Kalsbeek en Jacqueline Maris op zoek naar wat er aan het misdrijf voorafging. Ook kijken ze wat er daarna gebeurde; met het dorp of de buurt, de nabestaanden en ook met de daders."
-  },  
+  },
   {
     "feedUrl":"https://www.bnr.nl/podcast/newsroom?widget=rssfeed&view=podcastFeed",
     "name": "Newsroom | BNR",
@@ -236,8 +236,13 @@
     "artworkUrl": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/0fe83a72-617f-4582-a282-ab0b01134269/image.jpg?t=1574868750&size=small",
     "artworkUrl600": "https://is3-ssl.mzstatic.com/image/thumb/Podcasts123/v4/82/79/82/827982fa-bd45-1ce7-d54b-7a3a9407b4c7/mza_16222164548820392583.jpg/600x600bb.jpg",
     "description": "Roel van Velzen (41) is muzikant, vader van twee jongens en sinds 1 april 2019 gescheiden. Na een relatie van twintig jaar beëindigden hij en z'n jeugdliefde Marloes hun relatie. Ze maakten elkaar niet meer gelukkig. Dat scheiden ging 'uit het boekje' volgens de mediator. Ze maakten het elkaar niet moeilijk en richtten zich vooral op wat het beste is voor hun kinderen. In 'Roels Sofasessies' onderzoekt hij hoe je een geluksdip kan ombuigen naar iets waardevols. Op z'n gloednieuwe bank ontvangt hij bevriende muzikanten en 'lotgenoten'. Ze praten over de zware dagen, de gênante momenten waar ze inmiddels gelukkig om kunnen lachen en over de lessen die je hieruit kan trekken. En er wordt gezongen: liedjes die z'n gasten zelf schreven of die veel voor ze betekenen. De rode draad in al deze intieme gesprekken is: hoe vind je opnieuw het geluk na een heel moeilijke tijd? Roel ontvangt op zijn bank: Richard Kemper, Claudia de Breij, Alain Clark, Evi Hanssen en Domien Verschuuren."
+  },
+  {
+    "feedUrl":"https://podcast.npo.nl/feed/de-man-en-de-maan.xml",
+    "name": "De Man en de Maan",
+    "artworkUrl": "https://podcast.npo.nl/data/thumb/de-man-en-de-maan.1400.d1ab94d2734360bd0875051eb43008cb.jpg",
+    "artworkUrl600": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a3/26/1a/a3261a67-3e14-2b5e-2927-3e1ed864bc2a/mza_6158397401004641018.jpg/600x600bb.jpg",
+    "description": "Een Nederlandse sterrenkundige gaat in zee met China om zijn grote droom waar te maken. Wat gebeurde er net na de oerknal? Voor het antwoord op die vraag moet astronoom Marc Klein Wolt naar de achterkant van de maan. Eén probleempje: daar is nog niemand geweest. Als hij in zee gaat met opkomende ruimtemacht China, blijkt samenwerken niet zonder risico. Documentairemaker Saar Slegers volgt hem tijdens zijn race tegen de klok en ziet hoe zijn wetenschappelijke droom langzaamaan verandert in een nachtmerrie. Een podcast over grootse dromen, culturele clashes en de nieuwe wereldorde. De Man en de Maan is een podcast van NTR, NPO Radio1, Autres Directions en Aldus’ producties en is tot stand gekomen met steun van het NPO-fonds. Meer informatie: www.ntr.nl/demanendemaan"
   }
-  
-  
 ]
 }

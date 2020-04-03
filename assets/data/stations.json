@@ -680,7 +680,7 @@
     ],
     "website": "http://www.nporadio1.nl",
     "related": ["radio2", "3fm", "radio4", "radio5"],
-    "podcasts": ["https://podcast.npo.nl/feed/de-dag.xml","https://podcast.npo.nl/feed/met-het-oog-op-morgen.xml","https://podcast.npo.nl/feed/poen.xml","https://podcast.npo.nl/feed/de-krokante-leesmap.xml","https://podcast.npo.nl/feed/kwaad-bloed.xml"]
+    "podcasts": ["https://podcast.npo.nl/feed/de-dag.xml","https://podcast.npo.nl/feed/met-het-oog-op-morgen.xml","https://podcast.npo.nl/feed/poen.xml","https://podcast.npo.nl/feed/de-man-en-de-maan.xml","https://podcast.npo.nl/feed/de-krokante-leesmap.xml","https://podcast.npo.nl/feed/kwaad-bloed.xml"]
   },
   "radio10": {
     "displayorder": 10,
@@ -1389,5 +1389,5 @@
       }
     ],
     "website": "https://www.ffh.de"
-  }  
+  }
 }
