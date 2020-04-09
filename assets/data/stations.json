@@ -407,7 +407,7 @@
     "streams": [
       {
         "mimetype": "audio/mpeg",
-        "url": "http://streams.robstenders.nl:8063/kxclassics_mp3"
+        "url": "https://mcp-1.streampanel.nl:8020/kxclassics_mp3"
       }
     ],
     "website": "http://www.kxclassics.nl",
@@ -417,16 +417,17 @@
     "displayorder": 8,
     "genres": ["alternative", "oldies", "rock"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/KXEdge",
-    "name": "KX Classics - The Edge",
+    "logosource": "https://images.ctfassets.net/avx85g85supt/6cTZbrKq9wyFbbnrWfIcM1/69a61413afae04f858cde9bc0bceb330/2020-Stenders-Blokhuis-Tiles-edge.jpg?f=center&fit=fill&w=270&q=90&fm=png",
+    "name": "The Edge",
     "streams": [
       {
         "mimetype": "audio/mpeg",
-        "url": "http://streams.robstenders.nl:8063/edgeclassics_mp3"
+        "url": "https://mcp-1.streampanel.nl:8020/edgeclassics_mp3"
       }
     ],
     "website": "http://www.robstenders.nl",
-    "related": ["kxclassic", "xxlbonanza", "xxlblokhuis"]
+    "related": ["xxlbonanza", "xxlblokhuis", "kxclassic"],
+    "podcasts": ["https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss","https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"]
   },
   "los40": {
     "displayorder": 29,
@@ -1111,16 +1112,17 @@
     "displayorder": 68,
     "genres": ["oldies", "pop", "rock"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/XXL_Bonanza",
-    "name": "XXL Bonanza",
+    "logosource": "https://images.ctfassets.net/avx85g85supt/2VdPHcbtWrAoAtxsAVSnVB/bce08cd5cc5199a9a0d99cec7ecc8faf/2020-Stenders-Blokhuis-Tiles-xxlstenders.jpg?f=center&fit=fill&w=250&q=90&h=250",
+    "name": "XXL Stenders",
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://streams.robstenders.nl:8063/bonanza_mp3"
+        "url": "https://mcp-1.streampanel.nl:8020/bonanza_mp3"
       }
     ],
     "website": "http://www.robstenders.nl",
-    "related": ["radio2", "xxlblokhuis", "kxclassic", "kxclassicsedge"]
+    "related": ["xxlblokhuis", "kxclassicsedge", "radio2", "kxclassic"],
+    "podcasts": ["https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss","https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"]
   },
   "z100ny": {
     "displayorder": 39,
@@ -1140,17 +1142,17 @@
     "displayorder": 70,
     "genres": ["alternative", "pop", "rock", "soul", "jazz"],
     "language": "nl",
-    "logosource": "https://pbs.twimg.com/media/DppohaXW0AAC69v.jpg",
+    "logosource": "https://images.ctfassets.net/avx85g85supt/7gpBPoztJoK3OgfBUgXVcm/81790f2c2f790d1ac2e408c6935027ae/2020-Stenders-Blokhuis-Tiles-xxlblokhuis.jpg?f=center&fit=fill&w=250&q=90&h=250",
     "name": "XXL Blokhuis",
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://178.19.116.251:8000/blokhuis_mp3"
+        "url": "https://mcp-1.streampanel.nl:8020/blokhuis_mp3"
       }
     ],
     "website": "http://www.robstenders.nl",
-    "related": ["radio2", "xxlbonanza", "kxclassic", "kxclassicsedge"],
-    "podcasts": ["https://podcast.npo.nl/feed/blokhuis-de-podcast.xml"]
+    "related": ["xxlbonanza", "kxclassicsedge", "radio2", "kxclassic"],
+    "podcasts": ["https://podcast.npo.nl/feed/blokhuis-de-podcast.xml","https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss","https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"]
   },
   "jointradioreggae": {
     "displayorder": 71,
