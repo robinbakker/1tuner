@@ -683,8 +683,22 @@
     "related": ["radio2", "3fm", "radio4", "radio5"],
     "podcasts": ["https://podcast.npo.nl/feed/de-dag.xml","https://podcast.npo.nl/feed/met-het-oog-op-morgen.xml","https://podcast.npo.nl/feed/poen.xml","https://podcast.npo.nl/feed/de-man-en-de-maan.xml","https://podcast.npo.nl/feed/de-krokante-leesmap.xml","https://podcast.npo.nl/feed/kwaad-bloed.xml"]
   },
+  "radio3s": {
+    "displayorder": 85,
+    "genres": ["electro", "world", "beat"],
+    "language": "en-US",
+    "logosource": "//radio3s.org/Radio-Solar-Sound-System.png",
+    "name": "Radio 3S / SolarSoundSystem",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "https://solarsoundsystem.org:8095/radio.mp3"
+      }
+    ],
+    "website": "https://Radio3S.org"
+  },
   "radio10": {
-    "displayorder": 10,
+    "displayorder": 11,
     "genres": ["oldies", "pop", "rock"],
     "language": "nl",
     "logosource": "https://avatars.io/twitter/radio10nl",
