@@ -28,6 +28,13 @@
     "description": "Vandaag is de dagelijkse podcast van NRC. Elke werkdag hoor je hét verhaal van de dag, verteld door onze beste journalisten. De presentatie is in handen van Thomas Rueb. Maandag 6 januari is NRC Vandaag terug met een nieuw seizoen."
   },
   {
+    "feedUrl": "https://api.kink.nl/rss/kink-distortion",
+    "name": "KINK Distortion!",
+    "artworkUrl": "https://api.kink.nl/cache/i/0/images/32.w1400.r1-1.4b0eb76.q90.jpg",
+    "artworkUrl600": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts123/v4/2b/40/15/2b40153a-4510-1c81-05dc-ee0f454e725a/mza_2859097288501691232.jpg/600x600bb.jpg",
+    "description": "Ga mee op wereldreis langs de hardste metal tracks van hét moment. In deze podcast ontdek je nieuwe, vette bands, maar breng je ook een ode aan de oude garde. Presentatie: Caroline Westendorp."
+  },
+  {
     "feedUrl": "https://api.kink.nl/rss/dailykink",
     "name": "Daily Kink",
     "artworkUrl": "https://api.kink.nl/cache/i/0/images/84.w1400.r1-1.41345b5.q90.jpg",

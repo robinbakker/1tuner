@@ -76,5 +76,26 @@
   },
   "history" : {
     "name" : "History"
+  },
+  "metal" : {
+    "name" : "Metal"
+  },
+  "metalcore" : {
+    "name" : "Metalcore"
+  },
+  "hardrock" : {
+    "name" : "Hard rock"
+  },
+  "hardcore" : {
+    "name" : "Hardcore"
+  },
+  "punk" : {
+    "name" : "Punk"
+  },
+  "world" : {
+    "name" : "World"
+  },
+  "beat" : {
+    "name" : "Beat"
   }
 }
