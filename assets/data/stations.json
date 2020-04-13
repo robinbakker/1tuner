@@ -698,7 +698,7 @@
     "website": "https://Radio3S.org"
   },
   "radio10": {
-    "displayorder": 11,
+    "displayorder": 10,
     "genres": ["oldies", "pop", "rock"],
     "language": "nl",
     "logosource": "https://avatars.io/twitter/radio10nl",
