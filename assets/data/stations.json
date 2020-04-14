@@ -686,9 +686,9 @@
   "radio3s": {
     "displayorder": 85,
     "genres": ["electro", "world", "beat"],
-    "language": "en-US",
+    "language": "en",
     "logosource": "//radio3s.org/Radio-Solar-Sound-System.png",
-    "name": "Radio 3S / SolarSoundSystem",
+    "name": "Radio 3S",
     "streams": [
       {
         "mimetype": "audio/mpeg",
