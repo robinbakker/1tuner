@@ -34,7 +34,7 @@ export default class Footer extends Component {
       isLoading: false,
       playlist: PLAYLIST_EMPTY,
       station: {},
-      mediaPlayingID:'', 
+      mediaPlayingID:'',
       audioSources: [],
       stationList: [],
       media: MEDIA_EMPTY,
@@ -56,7 +56,7 @@ export default class Footer extends Component {
   componentWillUnmount() {
     this.props.onRef(null);
   }
-  
+
   forcePlay = (APlayAudio) => {
     this.setState({
       isPlaying:APlayAudio
@@ -65,13 +65,13 @@ export default class Footer extends Component {
 
   loadData = () => {
     let self = this;
-    let wasPlaying = this.state.isPlaying; 
+    let wasPlaying = this.state.isPlaying;
     if (this.props.listeningMode == LM_Station || this.props.listeningMode == LM_Playlist) {
       if ((!this.state.stationList || !this.state.stationList.length)) {
         if (this.props.stationList && this.props.stationList.length) {
           this.setState({stationList:this.props.stationList}, () => {
             this.loadData();
-          });   
+          });
         } else {
           // Load stations or show error?
           console.log('no station list found');
@@ -82,7 +82,7 @@ export default class Footer extends Component {
     let thisTimerWorker = this.state.timerWorker;
     if (this.props.listeningMode!=LM_Playlist && thisTimerWorker!=null) {
       thisTimerWorker.terminate();
-    }    
+    }
     switch (this.props.listeningMode) {
       case LM_None:
         this.setDataNone();
@@ -111,14 +111,14 @@ export default class Footer extends Component {
           },
           podcast: null,
           station: currentStation,
-          mediaPlayingID: '', 
+          mediaPlayingID: '',
           audioSources: asrcs,
           timerWorker: null
         }, () => {
           if(wasPlaying) {
             self.playAudio(false, self);
           }
-        });        
+        });
         break;
       case LM_Podcast:
         if(!this.props.podcast || !this.props.podcast.episodes || !this.props.podcast.episodes.length) {
@@ -146,7 +146,7 @@ export default class Footer extends Component {
             },
             podcast: currentPodcast,
             station: null,
-            mediaPlayingID:'', 
+            mediaPlayingID:'',
             audioSources: epAudioSource,
             timerWorker: null
           }, () => {
@@ -165,7 +165,7 @@ export default class Footer extends Component {
               this.playAudio();
             }
           });
-        }          
+        }
         break;
       case LM_Playlist:
         let currentPlaylist = this.props.playlist;
@@ -206,25 +206,26 @@ export default class Footer extends Component {
         break;
       default:
         this.setDataNone();
-        break;          
+        break;
     }
   }
 
   setDataNone = () => {
     if (this.state.isPlaying && this.child) {
       // Stop playing, child! :P
-      this.child.method(false, null, '');    
+      this.child.method(false, null, '');
     }
     this.setState({
       listeningMode: LM_None,
       isPlaying: false,
       playlist: PLAYLIST_EMPTY,
       media: MEDIA_EMPTY,
-      station: {},        
-      mediaPlayingID:'', 
+      station: {},
+      mediaPlayingID:'',
       audioSources: [],
       timerWorker: null
     });
+    this.props.setListeningMode(LM_None);
   }
 
   getCurrentEpisode = (AEpisodeList) => {
@@ -263,7 +264,7 @@ export default class Footer extends Component {
     }
 		return Result;
   }
-  
+
   setActiveStation = (ASelfRef) => {
     let self = ASelfRef || this;
     if (self.state.listeningMode != LM_Playlist) return;
@@ -309,7 +310,7 @@ export default class Footer extends Component {
         return true;
       } else {
         prevItem.active=false;
-        self.playAudio(false, self); 
+        self.playAudio(false, self);
       }
     }
     self.setState({
@@ -353,7 +354,7 @@ export default class Footer extends Component {
 
   getNextScheduleItem = () => {
     let tempPlaylist = this.state.playlist;
-    if (typeof tempPlaylist === 'undefined' || 
+    if (typeof tempPlaylist === 'undefined' ||
         typeof tempPlaylist.schedule === 'undefined' ||
         tempPlaylist.schedule.length<=1) {
       return null;
@@ -371,7 +372,7 @@ export default class Footer extends Component {
   }
 
   changeAudio = (AUserSetIsPlaying) => {
-    if (this.props.listeningMode != this.state.listeningMode || 
+    if (this.props.listeningMode != this.state.listeningMode ||
       (this.state.listeningMode==LM_Playlist && !this.state.station) ||
       (this.state.listeningMode==LM_Station && this.state.station && this.props.station!=this.state.station.id)) {
       this.loadData();
@@ -412,13 +413,13 @@ export default class Footer extends Component {
         isPlaying: false
       };
     }
-    let isPlaying = AUserSetIsPlaying==null ? this.state.isPlaying : AUserSetIsPlaying; 
+    let isPlaying = AUserSetIsPlaying==null ? this.state.isPlaying : AUserSetIsPlaying;
     if (!isPlaying) {
       return {
         isPlaying: false
       };
-    } 
-    let self = this;      
+    }
+    let self = this;
     if (self.state.mediaPlayingID == stationid) {
       if (AUserSetIsPlaying) {
         return {
@@ -427,7 +428,7 @@ export default class Footer extends Component {
       }
       return null; // nothing changes
     }
-    
+
     if (typeof this.state.station.streams === 'undefined') {
       let CurrentStation = self.getStation(stationid);
       if (CurrentStation && CurrentStation.streams && typeof CurrentStation.streams !== 'undefined' && CurrentStation.streams.length) {
@@ -460,7 +461,7 @@ export default class Footer extends Component {
     let asrcs = [];
     if (!Station.streams) return asrcs;
     for (var i=0; i<Object.keys(Station.streams).length; i++) {
-      let stream = Station.streams[i];            
+      let stream = Station.streams[i];
       asrcs.push({ url:stream.url, mimetype:stream.mimetype });
     }
     return asrcs;
@@ -498,7 +499,7 @@ export default class Footer extends Component {
           progressvalue: isPlayingOutcome.progressvalue,
           media: isPlayingOutcome.media
         }, () => {
-          self.child.method(isPlayingOutcome.isPlaying, isPlayingOutcome.audioSources, isPlayingOutcome.mediaPlayingID, isPlayingOutcome.listeningMode==LM_Podcast, isPlayingOutcome.elapsedtime);    
+          self.child.method(isPlayingOutcome.isPlaying, isPlayingOutcome.audioSources, isPlayingOutcome.mediaPlayingID, isPlayingOutcome.listeningMode==LM_Podcast, isPlayingOutcome.elapsedtime);
         });
       }
     }
@@ -524,7 +525,7 @@ export default class Footer extends Component {
         break;
       default:
         this.playAudio(AEvent, this);
-    }    
+    }
   }
 
   rewind = () => {
@@ -556,8 +557,8 @@ export default class Footer extends Component {
     if (this.state.listeningMode != LM_Podcast) {
       if (this.state.progressvalue) {
         this.prevTimeVal = '';
-        this.setState({ 
-          progressvalue: 0, 
+        this.setState({
+          progressvalue: 0,
           elapsedtime: null,
           elapsedtimeText: ''
         });
@@ -591,9 +592,9 @@ export default class Footer extends Component {
 
 	render({settings}, {isPlaying,isLoading,listeningMode,audioSources,media,mediaPlayingID,progressvalue,elapsedtimeText,audioError,chromeCastScriptLoadStep}) {
     if (
-      (this.props.listeningMode!=this.props.listeningMode == LM_Podcast && this.props.listeningMode != this.state.listeningMode) || 
-      (this.props.listeningMode == LM_Station && (!this.state.station || this.props.station != this.state.station.id)) || 
-      (this.props.listeningMode == LM_Podcast && this.props.podcast && this.anotherPodcastEpisodeIsRequested()) || 
+      (this.props.listeningMode == LM_Podcast && this.props.listeningMode != this.state.listeningMode) ||
+      (this.props.listeningMode == LM_Station && (!this.state.station || this.props.station != this.state.station.id)) ||
+      (this.props.listeningMode == LM_Podcast && this.props.podcast && this.anotherPodcastEpisodeIsRequested()) ||
       (this.props.listeningMode == LM_Playlist && (!this.state.playlist || this.props.playlist.href != this.state.playlist.href))) {
       this.loadData();
     }
@@ -617,7 +618,7 @@ export default class Footer extends Component {
           <p>
             {media.programInfo}
             {media.nextProgram ? <span class={style['footer__next-program']}>{media.nextProgram}</span> : null}
-          </p> 
+          </p>
         </div>
         {settings && settings.experimental && settings.experimental.chromecast ?
           <div class={style['footer__item'] + ' ' + style['footer__item--chromecast']}>

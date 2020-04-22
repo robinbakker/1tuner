@@ -6,7 +6,7 @@ import style from './style';
 export default class PodcastList extends Component {
   constructor(props) {
     super(props);
-    this.state = {			
+    this.state = {
 			items: null,
 			selectedLangArray: null,
 			podcastSearchQuery: null
@@ -52,7 +52,7 @@ export default class PodcastList extends Component {
 		if (!this.props.languageList || !this.props.languageList.length) {
 			if (!this.state.selectedLangArray || !this.state.selectedLangArray.length) {
 				return false;
-			} else {				
+			} else {
 				return true;
 			}
 		} else {
@@ -65,13 +65,13 @@ export default class PodcastList extends Component {
 		if ((!this.props.podcastSearchQuery || !this.props.podcastSearchQuery.length)) {
 			if((!this.state.podcastSearchQuery || !this.state.podcastSearchQuery.length)) {
 				return false;
-			} else {				
+			} else {
 				return true;
 			}
 		} else {
 			if((!this.state.podcastSearchQuery || !this.state.podcastSearchQuery.length) || this.state.podcastSearchQuery!=this.props.podcastSearchQuery) {
 				return true;
-			} else {				
+			} else {
 				return false;
 			}
 		}
@@ -81,7 +81,7 @@ export default class PodcastList extends Component {
     if (!this.props.podcastList) {
       return(
 				<div>
-				{this.props.errorMessage ? 
+				{this.props.errorMessage ?
 					<p class={style.error}>{this.props.errorMessage}</p>
 					:
 					<Loader />
@@ -91,7 +91,7 @@ export default class PodcastList extends Component {
     } else {
        return (
 				<div>
-				{this.props.errorMessage ? 
+				{this.props.errorMessage ?
 					<p class={style.error}>{this.props.errorMessage}</p>
 					: null}
          <ul class={'preset-list' + (this.props.horizontal ? ' preset-list--horizontal' : ' preset-list--page')}>
@@ -100,7 +100,7 @@ export default class PodcastList extends Component {
 							<PodcastItem podcastItem={podcastItem} small={this.props.small} />
             </li>
           ))}
-				</ul>				
+				</ul>
 				</div>
       );
     }

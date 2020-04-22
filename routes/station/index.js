@@ -23,7 +23,7 @@ export default class Station extends Component {
       return null;
 		}
     let Result = null;
-		let stationList = this.props.stationList;		
+		let stationList = this.props.stationList;
     for (let i=0; i < stationList.length; i++) {
       if (stationList[i].id == AStation) {
 				Result = stationList[i];
@@ -39,7 +39,7 @@ export default class Station extends Component {
 		}
 		let genreArrayString = JSON.stringify(AStation.genres.sort());
     let result = [];
-		let stationList = this.props.stationList;		
+		let stationList = this.props.stationList;
     for (let i = 0; i < stationList.length; i++) {
 			if (stationList[i].id==AStation.id) {
 				continue;
@@ -50,7 +50,7 @@ export default class Station extends Component {
 					result.push(stationList[i]);
 				}
       }
-		}		
+		}
 		return result;
 	}
 
@@ -72,10 +72,14 @@ export default class Station extends Component {
 	}
 
 	loadData = () => {
-		let station = this.getStation(this.props.id);
+    let station = this.getStation(this.props.id);
 		if (station) {
 			document.title = station.name + ' - ' + this.state.baseDocTitle;
-		}
+		} else {
+      // that's weird, station couldn't be found... Try to reload?
+      this.props.reloadStationList(this.props.id);
+      return;
+    }
 		var podcastList = [];
 		if (station.podcasts && station.podcasts.length && this.props.podcastList && this.props.podcastList.length) {
 			for (let i = 0; i < station.podcasts.length; i++) {
@@ -83,7 +87,7 @@ export default class Station extends Component {
 				if (podcastItem) {
 				  podcastList.push(podcastItem);
 				}
-			}			
+			}
 		}
 		let relatedStationList = this.getSameGenreStations(station) || [];
 		let self = this;
@@ -117,7 +121,7 @@ export default class Station extends Component {
 		}
 	}
 
-	render({id,stationList},{currentStation,relatedStationList,podcastList}) {	
+	render({id,stationList},{currentStation,relatedStationList,podcastList}) {
 		if (currentStation && currentStation.id==id) {
 			return (
 				<div class={'page-container'}>
@@ -125,7 +129,7 @@ export default class Station extends Component {
 				<main class={'content ' + (style.station)}>
 					<header class={style.header} style={'background-image:url(' + currentStation.logosource +')'}>
 						<div class={style['header__bg-image-container']}>
-							<img class={style['header__bg-image']} alt={currentStation.name} src={currentStation.logosource} /> 
+							<img class={style['header__bg-image']} alt={currentStation.name} src={currentStation.logosource} />
 						</div>
 						<div class={style['header__content']}>
 							<div class={style['header__title']}>
@@ -151,7 +155,7 @@ export default class Station extends Component {
 							<div>
 								<PodcastList podcastList={podcastList} limitCount={20} horizontal={true} small={true} />
 							</div>
-						</article> 
+						</article>
 						: null
 					}
 					{relatedStationList && relatedStationList.length ?
@@ -162,7 +166,7 @@ export default class Station extends Component {
 							<div>
 								<StationList stationList={relatedStationList} useLinksOnly={true} horizontal={true} small={true} changeStation={this.changeStation.bind(this)} limitCount={10}  />
 							</div>
-						</article> 
+						</article>
 						: null
 					}
 				</main>

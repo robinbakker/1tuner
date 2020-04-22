@@ -73,11 +73,10 @@ export default class App extends Component {
 		if (settings && settings.experimental && settings.experimental.chromecast) {
 			this.initChromeCast();
 		}
-		let stationList = this.state.stationList || await get('station-list');
 		let userVersion = await get('version');
-		if (!stationList || !stationList.length || AppVersion !== userVersion) {
-			stationList = await this.loadStationList();
-		}
+    let stationList = AppVersion !== userVersion ? await this.loadStationList() : this.state.stationList || await get('station-list') || await this.loadStationList();
+    stationList = this.removeOldStationsFromList(stationList);
+    let stationPodcastList = AppVersion !== userVersion ? await this.loadStationPodcastList() : await get('station-podcast-list') || await this.loadStationPodcastList();
 		let listeningMode = await get('lm') || 0;
 
 		let station = await get('station');
@@ -87,8 +86,8 @@ export default class App extends Component {
 		}
 		let playlist = legacyPlaylist || await get('playlist');
 		let podcastList = await get('podcast-list');
-		let stationPodcastList = await get('station-podcast-list') || await this.loadStationPodcastList();
-		let lastStationList = await get('last-station-list') || this.getLastStationList(stationList);
+    let lastStationList = await get('last-station-list') || this.getLastStationList(stationList);
+    lastStationList = this.removeOldStationsFromList(lastStationList);
 		let featured = this.loadFeatured(stationList);
 
 		let languageList = this.state.languageList || await get('language-list') || this.loadLanguageList();
@@ -123,7 +122,7 @@ export default class App extends Component {
 			<Router>
 				<Home path="/" stationList={lastStationList} playlists={playlists} podcastList={podcastList} featured={featured} changeStation={this.changeStation.bind(this)} changePlaylist={this.changePlaylist.bind(this)} />
 				<Stations path="/radio-stations" stationList={stationList} languageList={languageList} changeStation={this.changeStation.bind(this)} toggleFilterPanel={this.toggleFilterPanel.bind(this)} setLanguageList={this.setLanguageList.bind(this)} />
-				<Station path="/radio-station/:id?" stationList={stationList} podcastList={stationPodcastList} changeStation={this.changeStation.bind(this)} />
+				<Station path="/radio-station/:id?" stationList={stationList} podcastList={stationPodcastList} changeStation={this.changeStation.bind(this)} reloadStationList={this.reloadStationList.bind(this)} />
 				<Playlists path="/playlists" playlists={playlists} stationList={stationList} changePlaylist={this.changePlaylist.bind(this)} />
 				<Playlist path="/playlist/:name/:params?" playlists={playlists} stationList={stationList} addPlaylist={this.addPlaylist.bind(this)} deletePlaylist={this.deletePlaylist.bind(this)} changePlaylist={this.changePlaylist.bind(this)}/>
 				<PlaylistEdit path="/playlist-edit/:name?/:params?" playlists={playlists} languageList={languageList} stationList={stationList} addPlaylist={this.addPlaylist.bind(this)} resetPlaylists={this.resetPlaylists.bind(this)} />
@@ -134,9 +133,11 @@ export default class App extends Component {
 				<Redirect path="/planner" to="/playlists" />
 				<Redirect path="/planning/:name/:params?" to="/playlist" />
 				<Redirect path="/planning-edit/:name/:params?" to="/playlist-edit" />
+        <Redirect path="/radio-station/xxlbonanza" to="/radio-station/xxlstenders" />
+        <Redirect path="/radio-station/kxclassicsedge" to="/radio-station/the-edge" />
 				<Error type="404" default />
 			</Router>
-			<Footer onRef={ref => (this.child = ref)} settings={settings} listeningMode={listeningMode} stationList={stationList} tuneToStation={this.tuneToStation.bind(this)} podcast={podcast} playlist={playlist} station={station} setPodcastEpisodeTimeElapsed={this.setPodcastEpisodeTimeElapsed.bind(this)} closeFooter={this.closeFooter.bind(this)} />
+			<Footer onRef={ref => (this.child = ref)} settings={settings} listeningMode={listeningMode} stationList={stationList} setListeningMode={this.setListeningMode.bind(this)} tuneToStation={this.tuneToStation.bind(this)} podcast={podcast} playlist={playlist} station={station} setPodcastEpisodeTimeElapsed={this.setPodcastEpisodeTimeElapsed.bind(this)} closeFooter={this.closeFooter.bind(this)} />
 		</div>
 		);
 	}
@@ -199,7 +200,11 @@ export default class App extends Component {
 				}
 			}
 		}
-	}
+  }
+
+  setListeningMode = (AListeningMode) => {
+    this.setState({listeningMode:AListeningMode});
+  }
 
 	tuneToStation = (APrev) => {
 		let presetList = this.state.presetStationList;
@@ -484,11 +489,27 @@ export default class App extends Component {
 			return 0;
 		});
 		return langs;
-	}
-	loadStationList = async () => {
+  }
+
+  reloadStationList = async (AStationID) => {
+    let newStationList = await this.loadStationList(true);
+    if (newStationList.some(item => item.id == AStationID)) {
+      this.setState({
+        stationList: newStationList
+      }, () => {
+        this.saveLocal(true);
+      });
+    } else {
+      // show error page and quit
+      window.location.href = window.location.origin + '/invalid-station-id/' + AStationID;
+    }
+  }
+
+	loadStationList = async (forceReload) => {
 		let stationList = this.state.stationList;
-		if (!stationList || stationList.length == 0) {
-			await fetch(window.location.origin + '/assets/data/stations.json?v=' + AppVersion, {
+		if (!stationList || stationList.length == 0 || forceReload) {
+      let versionParam = ''+ (forceReload ? new Date().getTime() : AppVersion);
+			await fetch(window.location.origin + '/assets/data/stations.json?v=' + versionParam, {
 				method: 'get'
 			}).then((resp) => resp.json()).then(function(items) {
 				let newState = [];
@@ -642,7 +663,21 @@ export default class App extends Component {
 				this.saveLocal();
 			});
 		}
-	}
+  }
+
+  removeOldStationsFromList = (AStationList) => {
+    let newList = AStationList;
+    if (AStationList.some(item => { return item.id==="kxclassicsedge" || item.id==="xxlbonanza"; })) {
+      // Temp fix to remove old stations
+      newList = [];
+      for (let i=0; i<AStationList.length; i++) {
+        if (AStationList[i].id!=="kxclassicsedge" && AStationList[i].id!=="xxlbonanza") {
+          newList.push(AStationList[i]);
+        }
+      }
+    }
+    return newList;
+  }
 
 	initChromeCast = () => {
     if (window && !window.__onGCastApiAvailable) {

@@ -33,7 +33,7 @@ export default class Home extends Component {
 						<StationList stationList={stationList} changeStation={this.changeStation.bind(this)} limitCount={5} horizontal={true} small={true} />
 					</div>
 				</article>
-				{podcastList ? 
+				{podcastList ?
 				<article class={'content__section content__section--podcasts'}>
 					<header class={'section-header'}>
 						<h3 class={'section-title'}>Podcasts</h3>
@@ -57,7 +57,7 @@ export default class Home extends Component {
 				</article>
 				: null
 				}
-				{featured && featured.stationItem ? 
+				{featured && featured.stationItem ?
 					<article class={'content__section content__section--featured'}>
 						<header class={'section-header'}>
 							<h3 class={'section-title'}>Featured</h3>
@@ -65,10 +65,10 @@ export default class Home extends Component {
 						</header>
 						<div class={'section-featured'}>
 							<StationItem stationItem={featured.stationItem} small={true} changeStation={this.changeStation.bind(this)} />
-							{featured.description ? 
+							{featured.description ?
 							<div class={style['featured-info']}>
 								<h4 class={style['featured-title']}>{featured.stationItem.name}</h4>
-								<p class={style['featured-description']}>{featured.description}</p>							
+								<p class={style['featured-description']}>{featured.description}</p>
 							</div>
 							: null}
 						</div>
@@ -89,7 +89,7 @@ export default class Home extends Component {
 						<div class={'section-about'}>
 							<p>This is a free web app. Here you can listen to online <Link href="/radio-stations" native>radio stations</Link>, <Link href="/podcasts" native>podcasts</Link> and create <Link href="/playlists" native>playlists</Link>.<br/>
 							Just add this site to your homescreen and you're good to go!</p>
-							<p>This app stores information in your browser to save your preferences and Google Analytics is used for basic analytics. <Link href="/about" native>Read more</Link></p>		
+							<p>This app stores information in your browser to save your preferences and Google Analytics is used for basic analytics. <Link href="/about" native>Read more</Link></p>
 						</div>
 				 </article>
 			</main>

@@ -5,13 +5,13 @@ import StationItem from '../stationitem';
 export default class StationList extends Component {
   constructor(props) {
     super(props);
-    this.state = {			
+    this.state = {
 			items: null,
 			selectedLangArray: null,
 			stationSearchQuery: null
 		};
 	}
-	
+
 	changeStation = (AStation) => {
 		if(AStation) {
 			this.props.changeStation(AStation);
@@ -86,7 +86,7 @@ export default class StationList extends Component {
 				items: newState,
 				selectedLangArray: selectedLangs,
 				stationSearchQuery: stationSearchQuery
-			});			
+			});
 		}
 	}
 
@@ -94,7 +94,7 @@ export default class StationList extends Component {
 		if (!this.props.languageList || !this.props.languageList.length) {
 			if (!this.state.selectedLangArray || !this.state.selectedLangArray.length) {
 				return false;
-			} else {				
+			} else {
 				return true;
 			}
 		} else {
@@ -107,18 +107,18 @@ export default class StationList extends Component {
 		if ((!this.props.stationSearchQuery || !this.props.stationSearchQuery.length)) {
 			if ((!this.state.stationSearchQuery || !this.state.stationSearchQuery.length)) {
 				return false;
-			} else {				
+			} else {
 				return true;
 			}
 		} else {
 			if ((!this.state.stationSearchQuery || !this.state.stationSearchQuery.length) || this.state.stationSearchQuery!=this.props.stationSearchQuery) {
 				return true;
-			} else {				
+			} else {
 				return false;
 			}
 		}
 	}
-  
+
 	render({stationList, horizontal, useLinksOnly, small}, {items}) {
 		if (!items || (this.isLanguageSelectionChanged() || this.isSearchQueryChanged())) {
 			if(stationList && stationList.length) {

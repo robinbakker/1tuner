@@ -1,13 +1,13 @@
 {"featured" : [
   {
+    "description": "Listen to edgy/alternative music from the 80's, 90's, 00's and now. Non-stop and no commercial breaks!",
+    "published": "2020-04-14",
+    "station": "the-edge"
+  },
+  {
     "description": "No Alternative. Dutch radio station; alternative/indie/modern rock. KINK is back!",
     "published": "2019-02-02",
     "station": "kink"
-  },
-  {
-    "description": "Listen to edgy/alternative classics from the 80's, 90's, 00's and now. Non-stop and no commercial breaks!",
-    "published": "2018-06-13",
-    "station": "kxclassicsedge"
   }
 ]
 }
