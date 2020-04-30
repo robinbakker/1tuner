@@ -1471,5 +1471,19 @@
       }
     ],
     "website": "https://www.ffh.de"
+  },
+  "wanderingsheep-jazz-cafe": {
+    "displayorder": 85,
+    "genres": ["jazz"],
+    "language": "en",
+    "logosource": "https://radio.wanderingsheep.org/tmp/images/logo.1503430800.png",
+    "name": "Wandering Sheep Radio - Jazz Cafe",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://wanderingsheep.net/jazzcafe/stream.mp3"
+      }
+    ],
+    "website": "https://wsradio.net"
   }
 }
