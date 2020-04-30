@@ -4,23 +4,33 @@ import { route } from 'preact-router';
 import { Link } from 'preact-router/match';
 import EditScheduleItem from '../../components/editscheduleitem';
 import Header from '../../components/header';
-import { getColorString, getUrlQueryParameterByName } from '../../utils/misc';
+import { getColorString, getUrlQueryParameterByName, setDocumentMetaTags } from '../../utils/misc';
 import { getScheduleQueryParamsAsString } from '../../utils/playlist';
 
 export default class PlaylistEdit extends Component {
-	state = {
-		href:'',
-		name:'',
-		errorMessage: '',
-		items: [],
-		radioStations: [],
-		newStartHour:6,
-		newEndHour: 9
-	};
-	
+  constructor(props) {
+    super(props);
+		this.state = {
+			docTitle: 'Playlist',
+      docDescriptionAdd: 'Add a playlist',
+      docDescriptionEdit: 'Edit this playlist',
+      href:'',
+      name:'',
+      errorMessage: '',
+      items: [],
+      radioStations: [],
+      newStartHour:6,
+      newEndHour: 9
+		};
+	}
+
 	// gets called when this route is navigated to
 	componentDidMount() {
-		document.title = 'Playlist - 1tuner';
+    if(this.props.name) {
+      setDocumentMetaTags(this.props.name + ' - ' + this.state.docTitle, this.state.docDescriptionEdit);
+    } else {
+      setDocumentMetaTags(this.state.docTitle, this.state.docDescriptionAdd);
+    }
 		this.loadData();
 	}
 
@@ -44,14 +54,14 @@ export default class PlaylistEdit extends Component {
 			}
 			if (nameA > nameB) {
 				return 1;
-			}			
+			}
 			// names must be equal
 			return 0;
 		});
 		this.setState({
 			radioStations: stationList
 		}, this.setPlaylist);
-	
+
 	}
 
 	setPlaylist() {
@@ -146,7 +156,7 @@ export default class PlaylistEdit extends Component {
 		}
 		if (document && !document.getElementById('inpName').validity.valid) {
 			this.setState({errorMessage:'Please fill in a name for the playlist.'});
-			return;	
+			return;
 		}
 		if (!this.state.items || !this.state.items.length) {
 			this.setState({errorMessage:'Hmm, your playlist seems to be empty. Please try adding some rows?'});
@@ -235,18 +245,18 @@ export default class PlaylistEdit extends Component {
 		});
 	}
 
-	render({name}, {items, errorMessage, radioStations,newStartHour,newEndHour,href}) {
+	render({name}, {docTitle, docDescriptionAdd, items, errorMessage, radioStations, newStartHour, newEndHour, href}) {
 		if(!radioStations || !radioStations.length) {
 			this.loadData();
 			return(
 				<div class={'page-container'}>
-					<Header title="Playlist" />
+					<Header title={docTitle} />
 					<main class={'content ' + (style.playlist)}>
-						<h1 class={'main-title'}>Playlist
+						<h1 class={'main-title'}>{docTitle}
 						{name ?
 							<small class={'main-subtitle'}>Change some bits and pieces 🔧</small>
 							:
-							<small class={'main-subtitle'}>Add a new playlist</small>
+              <small class={'main-subtitle'}>{docDescriptionAdd}</small>
 						}
 						</h1>
 						{errorMessage && errorMessage!='' ?
@@ -260,13 +270,13 @@ export default class PlaylistEdit extends Component {
 		} else {
 			return (
 				<div class={'page-container'}>
-					<Header title="Playlist" />
+					<Header title={docTitle} />
 					<main class={'content ' + (style.playlist)}>
-						<h1 class={'main-title'}>Playlist
+						<h1 class={'main-title'}>{docTitle}
 						{name ?
 							<small class={'main-subtitle'}>Change some bits and pieces 🔧</small>
 							:
-							<small class={'main-subtitle'}>Add a new playlist</small>
+              <small class={'main-subtitle'}>{docDescriptionAdd}</small>
 						}
 						</h1>
 						{errorMessage && errorMessage!='' ?
@@ -274,7 +284,7 @@ export default class PlaylistEdit extends Component {
 							:
 							null
 						}
-						<form class={style.editplaylistform} onSubmit={this.handleSubmit.bind(this)}>					
+						<form class={style.editplaylistform} onSubmit={this.handleSubmit.bind(this)}>
 							<ul class={style['item-list']}>
 								<li class={style['item-list__item']}>
 									<label class="label-container">

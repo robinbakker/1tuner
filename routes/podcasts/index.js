@@ -2,12 +2,14 @@ import { h, Component } from 'preact';
 import style from './style';
 import PodcastList from '../../components/podcastlist';
 import Header from '../../components/header';
-import { isValidUrl, getUrlQueryParameterByName } from '../../utils/misc';
+import { setDocumentMetaTags, getUrlQueryParameterByName } from '../../utils/misc';
 
 export default class Podcasts extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+      docTitle: 'Podcasts',
+      docDescription: 'Find podcasts at 1tuner.com',
 			searchQuery: null,
 			searchTimer: 0,
 			lastSearchResult: null,
@@ -18,7 +20,7 @@ export default class Podcasts extends Component {
 	}
 
 	componentDidMount() {
-		document.title = 'Find Podcasts - 1tuner';
+		setDocumentMetaTags(this.state.docTitle, this.state.docDescription);
 		let searchQuery = getUrlQueryParameterByName('q', window.location.href.split('/?')[1]);
 		let featuredPodcastList = [];
 		if (this.props.stationPodcastList) {
@@ -33,7 +35,7 @@ export default class Podcasts extends Component {
 			}
 		}
 		this.setState({
-			searchQuery: searchQuery || this.props.searchQuery, 
+			searchQuery: searchQuery || this.props.searchQuery,
 			lastSearchResult: this.props.lastSearchResult,
 			podcastList: this.props.podcastList,
 			featuredPodcastList: featuredPodcastList
@@ -78,7 +80,7 @@ export default class Podcasts extends Component {
 					name: data.results[item].collectionName,
 					artistName: data.results[item].artistName,
 					artworkUrl: data.results[item].artworkUrl100,
-					artworkUrl600: data.results[item].artworkUrl600, 					
+					artworkUrl600: data.results[item].artworkUrl600,
 					collectionid: data.results[item].collectionid
 				});
 			}
@@ -116,12 +118,12 @@ export default class Podcasts extends Component {
 		return false;
 	}
 
-	render({},{searchQuery, lastSearchResult, errorMessage, podcastList, featuredPodcastList}) {
+	render({},{docTitle, docDescription, searchQuery, lastSearchResult, errorMessage, podcastList, featuredPodcastList}) {
 		return (
 			<div class={'page-container'}>
-			<Header title="Podcasts" sharetext={'Listen to podcasts at 1tuner.com'} />
+			<Header title={docTitle} sharetext={this.state.docDescription} />
 			<main class={'content ' + (style.podcasts)}>
-				<h1 class={'main-title'}>Podcasts
+				<h1 class={'main-title'}>{docTitle}
 				<small class={'main-subtitle'}>Listen to your favorite podcast 🎙️</small></h1>
 				<form class={'form-search'}>
 					<input type="text" placeholder="Find..." value={searchQuery} maxlength="100" required pattern="[a-zA-Z0-9\s]+" class={'textfield textfield--search'} onFocus={this.setSearchInputFocus.bind(this)} onBlur={this.setSearchInputBlur.bind(this)} onKeyDown={this.onKeyDown} onInput={this.setSearchQuery.bind(this)} />
@@ -133,7 +135,7 @@ export default class Podcasts extends Component {
 					:
 					null
 				}
-				</div>				
+				</div>
 				{podcastList && podcastList.length ?
 					<article class={style.section + ' content__section content__section--podcasts'}>
 						<header class={'section-header'}>
@@ -144,7 +146,7 @@ export default class Podcasts extends Component {
 						</div>
 					</article>
 					:
-					null					
+					null
 				}
 				{featuredPodcastList && featuredPodcastList.length ?
 					<article class={style.section + ' content__section content__section--podcasts'}>
@@ -156,8 +158,8 @@ export default class Podcasts extends Component {
 						</div>
 					</article>
 					:
-					null					
-				}	
+					null
+				}
 			</main>
 			</div>
 		);

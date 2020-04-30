@@ -4,7 +4,7 @@ import { route } from 'preact-router';
 import { Link } from 'preact-router/match';
 import Loader from '../../components/loader';
 import Header from '../../components/header';
-import { getColorString, getUrlQueryParameterByName } from '../../utils/misc';
+import { getColorString, getUrlQueryParameterByName, setDocumentMetaTags } from '../../utils/misc';
 import { getScheduleQueryParamsAsString } from '../../utils/playlist';
 
 export default class Playlists extends Component {
@@ -16,7 +16,8 @@ export default class Playlists extends Component {
 		radioStations: [],
 		playlists: [],
 		canEdit: true,
-		baseDocTitle: 'Playlist - 1tuner'
+    docTitle: 'Playlist',
+    docDescription: 'Listen to these radio stations'
 	};
 
 	getPlaylist = (APlaylistName, APlaylistHref) => {
@@ -133,7 +134,7 @@ export default class Playlists extends Component {
 			}, () => {
 				this.setPlaylist();
 			});
-		}		
+		}
 	}
 
 	setPlaylist = () => {
@@ -141,7 +142,7 @@ export default class Playlists extends Component {
 			let currentPlaylist = this.getPlaylist(this.props.name, window.location.href);
 			if (currentPlaylist) {
 				this.props.addPlaylist(currentPlaylist);
-				document.title = currentPlaylist.name + ' - ' + this.state.baseDocTitle;
+        setDocumentMetaTags(currentPlaylist.name + ' - ' + this.state.docTitle, this.state.docDescription);
 				let scheduleItems = currentPlaylist.schedule ? Object.values(currentPlaylist.schedule) : [];
 				this.setState({
 					href: currentPlaylist.href,
@@ -155,7 +156,7 @@ export default class Playlists extends Component {
 		}
 	}
 
-	render({},{name, canEdit, href, items, radioStations, playlists}) {
+	render({},{name, canEdit, href, items, radioStations, playlists, docDescription}) {
 		if (!radioStations || !radioStations.length || !playlists || !playlists.length) {
 			this.loadData();
 			return(
@@ -169,10 +170,9 @@ export default class Playlists extends Component {
 		} else {
 			return (
 				<div class={'page-container'}>
-				<Header title={name} sharetext={'Listen to these radio stations'} />
+				<Header title={name} sharetext={docDescription} />
 				<main class={'content ' + (style.playlist)}>
-					<h1 class={'main-title'}>{name}
-					</h1>
+					<h1 class={'main-title'}>{name}</h1>
 					<p>&nbsp;</p>
 					<div class={'btn-container btn-container--right'}>
 						<button onClick={this.playPlaylist} class={'btn btn--play'}>Listen now</button>
@@ -182,8 +182,8 @@ export default class Playlists extends Component {
 							<Link href={href.replace('/playlist/','/playlist-edit/')} native class={'margin--right btn btn--edit ' + style['btn--playlist']}>Edit</Link>
 							<button onClick={this.deletePlaylist} class={'btn btn--cancel'}>Delete</button>
 						</div>
-						: 
-						null 
+						:
+						null
 					}
 					<ul class={style['playlists']}>
 						{items.map(scheduleItem => (

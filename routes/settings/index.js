@@ -3,11 +3,14 @@ import style from './style';
 import Header from '../../components/header';
 import DropDown from '../../components/dropdown';
 import { Link } from 'preact-router/match';
+import { setDocumentMetaTags } from '../../utils/misc';
 
 export default class Settings extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+      docTitle: 'Settings',
+      docDescription: 'Change some bits and pieces at 1tuner.com',
 			themeOptions: [
 				{text:'Default',value:'default'},
 				{text:'Light',value:'light'},
@@ -17,13 +20,13 @@ export default class Settings extends Component {
 	}
 
 	componentDidMount() {
-		document.title = 'Settings - 1tuner | one web app to listen to audio streams';
+		setDocumentMetaTags(this.state.docTitle, this.state.docDescription);
 	}
 
 	themeOptionChanged = optionValue => {
 		document.body.setAttribute('data-theme', optionValue);
 		let enableChromecast = this.props.settings.experimental && this.props.settings.experimental.chromecast;
-		let settings = { 
+		let settings = {
 			theme: optionValue,
 			experimental: {
 				chromecast: enableChromecast
@@ -63,7 +66,7 @@ export default class Settings extends Component {
 		if (this.props.settings && this.props.settings.theme) {
 			themeOption = this.props.settings.theme;
 		}
-		let settings = { 
+		let settings = {
 			theme: themeOption,
 			experimental: {
 				chromecast: enable
@@ -78,12 +81,12 @@ export default class Settings extends Component {
 		}
 	}
 
-	render({settings},{}) {
+	render({settings},{docTitle, docDescription}) {
 		return (
 			<div class={'page-container'}>
-				<Header title="Settings" />			
+				<Header title={docTitle} sharetext={docDescription} />
 				<main class={'content ' + (style.settings)}>
-					<h1 class={'main-title'}>Settings 
+					<h1 class={'main-title'}>{docTitle}
 					<small class={'main-subtitle'}>🎚️ What does this button do?</small></h1>
 					<h2 class={style['content-title']}>Theme</h2>
 					<p class={style.selecttheme}><DropDown initialValue={settings && settings.theme ? settings.theme : 'default'} optionList={this.state.themeOptions} valueChanged={this.themeOptionChanged.bind(this)} /></p>

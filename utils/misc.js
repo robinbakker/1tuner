@@ -68,7 +68,48 @@ export function getFlagEmojiFromLanguage(ALanguageCode) {
     return '';
   }
   // Copyright (c) 2019 Kelvin Liu - See https://github.com/thekelvinliu/country-code-emoji
-  const OFFSET = 127397; // offset between uppercase ascii and regional indicator symbols 
+  const OFFSET = 127397; // offset between uppercase ascii and regional indicator symbols
   const chars = [...code.toUpperCase()].map(c => c.charCodeAt() + OFFSET);
   return String.fromCodePoint(...chars);
+}
+
+export function setDocumentMetaTags(title, description, image, url, hideUrl) {
+  title = title || '1tuner';
+  description = description || 'Listen to radio, podcasts and create playlists.';
+  image = image || 'https://1tuner.com/assets/icons/icon-512x512.png';
+  url = url || window.location.href || 'https://1tuner.com';
+  document.title = title + ' - ' + description;
+  let metaTags = document.getElementsByTagName('meta');
+  metaTags = Array.prototype.slice.call(metaTags);
+  metaTags.forEach(tag => {
+    if (tag.hasAttribute('property')) {
+      switch (tag.getAttribute('property')) {
+        case 'og:title':
+          tag.setAttribute('content', title);
+          break;
+        case 'og:url':
+          tag.setAttribute('content', url);
+          break;
+        case 'og:image':
+          tag.setAttribute('content', image);
+          break;
+        case 'og:description':
+          tag.setAttribute('content', description);
+          break;
+      }
+    }
+  });
+  let canonical = document.querySelector('link[rel="canonical"');
+  if (hideUrl) {
+    if(canonical) {
+      document.querySelector('head').removeChild(canonical);
+    }
+    return;
+  } else if (!canonical) {
+    const headElement = document.head || document.querySelector('head');
+    canonical = document.createElement('link');
+    canonical.setAttribute('rel','canonical');
+    headElement.appendChild(canonical);
+  }
+  canonical.setAttribute('href', url);
 }

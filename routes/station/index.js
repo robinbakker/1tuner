@@ -5,13 +5,14 @@ import Header from '../../components/header';
 import StationList from '../../components/stationlist';
 import PodcastList from '../../components/podcastlist';
 import { Link } from 'preact-router/match';
-import { getFlagEmojiFromLanguage } from '../../utils/misc';
+import { getFlagEmojiFromLanguage, setDocumentMetaTags } from '../../utils/misc';
 
 export default class Station extends Component {
 	constructor(props) {
     super(props);
 		this.state = {
-			baseDocTitle: 'Radio Station - Listen now at 1tuner.com',
+      docTitle: 'Radio Station',
+      docDescription: 'Listen now at 1tuner.com',
 			currentStation: null,
 			relatedStationList: [],
 			podcastList: []
@@ -74,8 +75,9 @@ export default class Station extends Component {
 	loadData = () => {
     let station = this.getStation(this.props.id);
 		if (station) {
-			document.title = station.name + ' - ' + this.state.baseDocTitle;
+      setDocumentMetaTags(station.name + ' - ' + this.state.docTitle, this.state.docDescription, station.logosource);
 		} else {
+      setDocumentMetaTags();
       // that's weird, station couldn't be found... Try to reload?
       this.props.reloadStationList(this.props.id);
       return;
@@ -121,11 +123,11 @@ export default class Station extends Component {
 		}
 	}
 
-	render({id,stationList},{currentStation,relatedStationList,podcastList}) {
+	render({id,stationList},{currentStation,relatedStationList,podcastList,docTitle,docDescription}) {
 		if (currentStation && currentStation.id==id) {
 			return (
 				<div class={'page-container'}>
-				<Header title={currentStation.name} inverted={true} sharetext={'Listen now at 1tuner.com'} />
+				<Header title={currentStation.name} inverted={true} sharetext={docDescription} />
 				<main class={'content ' + (style.station)}>
 					<header class={style.header} style={'background-image:url(' + currentStation.logosource +')'}>
 						<div class={style['header__bg-image-container']}>
@@ -178,7 +180,7 @@ export default class Station extends Component {
 			}
 			return(
 				<div class={'page-container'}>
-				<Header title="Station" />
+				<Header title={docTitle} />
 				<main class={'content content--is-loading ' + (style.station)}>
 					<Loader />
 				</main>
