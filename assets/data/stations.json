@@ -20,6 +20,7 @@
       }
     ],
     "website": "https://www.538.nl",
+    "related": ["swijnenstal"],
     "podcasts":["https://rss.art19.com/man-man-man-de-podcast"]
   },
   "3fm": {
@@ -1485,5 +1486,20 @@
       }
     ],
     "website": "https://wsradio.net"
+  },
+  "swijnenstal": {
+    "displayorder": 89,
+    "genres": ["pop"],
+    "language": "nl",
+    "logosource": "https://avatars.io/twitter/swijnenstal",
+    "name": "Swijnenstal",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/TLPSTR07.mp3"
+      }
+    ],
+    "website": "http://www.swijnenstal.nl",
+    "related": ["538"]
   }
 }

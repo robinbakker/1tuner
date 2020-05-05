@@ -201,7 +201,7 @@ export default class Podcast extends Component {
 	render({}, {podcastInfo, isLoading, docTitle, docDescription, errorMessage}) {
 		if (!podcastInfo) {
       setDocumentMetaTags(this.props.name + ' - ' + docTitle, docDescription);
-			if (!isLoading) {
+			if (!isLoading && typeof window !== 'undefined') {
 				let feedUrl = getUrlQueryParameterByName('feedurl', window.location.href.split('/?')[1]);
 				this.getPodcast(feedUrl);
       }

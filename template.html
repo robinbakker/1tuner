@@ -2,42 +2,63 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>1tuner | listen to radio, podcasts and create playlists</title>
+		<title><%= htmlWebpackPlugin.options.title %></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="description" content="Listen to radio, podcasts and create playlists.">
-		<meta property="og:title" content="1tuner">
-		<meta property="og:description" content="Listen to radio, podcasts and create playlists.">
+		<meta name="description" content="<%= htmlWebpackPlugin.options.description %>">
+		<meta property="og:title" content="<%= htmlWebpackPlugin.options.title %>">
+		<meta property="og:description" content="<%= htmlWebpackPlugin.options.description %>">
 		<meta property="og:type" content="website">
-		<meta property="og:url" content="https://1tuner.com">
-		<meta property="og:image" content="https://1tuner.com/assets/icons/icon-512x512.png">
+		<meta property="og:url" content="https://1tuner.com<%= htmlWebpackPlugin.options.url %>">
+		<meta property="og:image" content="<%= htmlWebpackPlugin.options.logo %>">
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:site" content="@1tuner">
 		<meta name="twitter:creator" content="@robinbakker">
 		<link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
-		<link rel="mask-icon" href="/assets/icons/safari-pinned-tab.svg" color="#ff6000">
+    <link rel="mask-icon" href="/assets/icons/safari-pinned-tab.svg" color="#ff6000">
+    <link rel="canonical" href="https://1tuner.com<%= htmlWebpackPlugin.options.url %>">
 		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108430-3"></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments);}
 			gtag('js', new Date());
 			gtag('config', 'UA-108430-3', { 'anonymize_ip': true });
-		</script>
-		<script type="application/ld+json">
-			{
-				"@context": "http://schema.org",
-				"@type": "Organization",
-				"name": "1tuner",
-				"url": "https://1tuner.com",
-				"logo": "https://1tuner.com/assets/icons/icon-192x192.png",
-				"sameAs": [
-					"https://twitter.com/1tuner"
-				]
-			}
-		</script>
+    </script>
+    <script type="application/ld+json">{
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "1tuner",
+      "url": "https://1tuner.com",
+      "image": "https://1tuner.com/assets/icons/icon-512x512.png",
+      "thumbnailUrl": "https://1tuner.com/assets/icons/icon-192x192.png",
+      "operatingSystem": "All",
+      "applicationCategory": "Entertainment",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "ratingCount": "1"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "sameAs": [
+        "https://twitter.com/1tuner",
+        "https://github.com/robinbakker/1tuner"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Robin Bakker",
+        "url": "https://robinbakker.nl",
+        "sameAs": [
+          "https://twitter.com/robinbakker",
+          "https://github.com/robinbakker"
+        ]
+      }
+    }</script>
 		<% preact.headEnd %>
 	</head>
 	<body>

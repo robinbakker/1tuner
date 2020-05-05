@@ -74,6 +74,9 @@ export function getFlagEmojiFromLanguage(ALanguageCode) {
 }
 
 export function setDocumentMetaTags(title, description, image, url, hideUrl) {
+  if (typeof window === 'undefined') {
+    return;
+  }
   title = title || '1tuner';
   description = description || 'Listen to radio, podcasts and create playlists.';
   image = image || 'https://1tuner.com/assets/icons/icon-512x512.png';
