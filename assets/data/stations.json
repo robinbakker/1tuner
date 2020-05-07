@@ -3,7 +3,7 @@
     "displayorder": 1,
     "genres": ["pop"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/538",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/538",
     "name": "Radio 538",
     "streams": [
       {
@@ -79,7 +79,7 @@
     "displayorder": 64,
     "genres": ["pop", "rock"],
     "language": "sv-SE",
-    "logosource": "https://avatars.io/twitter/BanditRock",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/BanditRock",
     "name": "Bandit Rock",
     "streams": [
       {
@@ -93,7 +93,7 @@
     "displayorder": 26,
     "genres": ["local", "news", "pop"],
     "language": "de",
-    "logosource": "https://avatars.io/twitter/bayern1",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/bayern1",
     "name": "Bayern 1",
     "streams": [
       {
@@ -177,7 +177,7 @@
     "displayorder": 59,
     "genres": ["folk", "pop"],
     "language": "hi",
-    "logosource": "https://avatars.io/twitter/bigfmindia",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/bigfmindia",
     "name": "Big FM",
     "streams": [
       {
@@ -191,7 +191,7 @@
     "displayorder": 12,
     "genres": ["news", "talk"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/BNR",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/BNR",
     "name": "BNR Nieuwsradio",
     "streams": [
       {
@@ -206,7 +206,7 @@
     "displayorder": 30,
     "genres": ["dance", "pop", "rock"],
     "language": "es",
-    "logosource": "https://avatars.io/twitter/CADENA100",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/CADENA100",
     "name": "CADENA 100",
     "streams": [
       {
@@ -220,7 +220,7 @@
     "displayorder": 43,
     "genres": ["folk", "pop"],
     "language": "fr",
-    "logosource": "https://avatars.io/twitter/chantefrancefm",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/chantefrancefm",
     "name": "Chante France",
     "streams": [
       {
@@ -234,7 +234,7 @@
     "displayorder": 48,
     "genres": ["pop"],
     "language": "fr",
-    "logosource": "https://avatars.io/twitter/radiocheriefm",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/radiocheriefm",
     "name": "Chérie FM",
     "streams": [
       {
@@ -262,7 +262,7 @@
     "displayorder": 47,
     "genres": ["classical", "jazz"],
     "language": "fr",
-    "logosource": "https://avatars.io/twitter/francemusique",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/francemusique",
     "name": "France Musique",
     "streams": [
       {
@@ -276,7 +276,7 @@
     "displayorder": 45,
     "genres": ["dance", "hiphop", "pop", "rock"],
     "language": "fr",
-    "logosource": "https://avatars.io/twitter/funradio_fr",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/funradio_fr",
     "name": "Fun Radio",
     "streams": [
       {
@@ -305,7 +305,7 @@
     "displayorder": 55,
     "genres": ["hiphop", "pop", "rnb"],
     "language": "en-US",
-    "logosource": "https://avatars.io/twitter/hot108jamz",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/hot108jamz",
     "name": "Hot 108 JAMZ",
     "streams": [
       {
@@ -333,7 +333,7 @@
     "displayorder": 56,
     "genres": ["alternative", "pop", "rock", "talk"],
     "language": "en-US",
-    "logosource": "https://avatars.io/twitter/kcrw",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/kcrw",
     "name": "KCRW Music",
     "streams": [
       {
@@ -361,7 +361,7 @@
     "displayorder": 54,
     "genres": ["news","talk"],
     "language": "en-US",
-    "logosource": "https://avatars.io/twitter/msnbc",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/msnbc",
     "name": "MSNBC",
     "streams": [
       {
@@ -375,7 +375,7 @@
     "displayorder": 35,
     "genres": ["pop"],
     "language": "en-US",
-    "logosource": "https://avatars.io/twitter/1027KIISFM",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/1027KIISFM",
     "name": "KIIS-FM",
     "streams": [
       {
@@ -389,7 +389,7 @@
     "displayorder": 20,
     "genres": ["dance", "pop", "rock"],
     "language": "en-UK",
-    "logosource": "https://avatars.io/twitter/kissfmuk",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/kissfmuk",
     "name": "KISS",
     "streams": [
       {
@@ -403,7 +403,7 @@
     "displayorder": 7,
     "genres": ["oldies", "pop", "rock"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/KXclassics",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/KXclassics",
     "name": "KX Classics",
     "streams": [
       {
@@ -434,7 +434,7 @@
     "displayorder": 29,
     "genres": ["dance", "pop", "rock"],
     "language": "es",
-    "logosource": "https://avatars.io/twitter/los40",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/los40",
     "name": "LOS40",
     "streams": [
       {
@@ -448,7 +448,7 @@
     "displayorder": 65,
     "genres": ["pop"],
     "language": "sv-SE",
-    "logosource": "https://avatars.io/twitter/LugnaFavoriter",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/LugnaFavoriter",
     "name": "Lugna Favoriter",
     "streams": [
       {
@@ -462,7 +462,7 @@
     "displayorder": 34,
     "genres": ["pop"],
     "language": "nl-BE",
-    "logosource": "https://avatars.io/twitter/MNMbe",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/MNMbe",
     "name": "MNM",
     "streams": [
       {
@@ -480,7 +480,7 @@
     "displayorder": 42,
     "genres": ["dance", "hiphop", "pop"],
     "language": "fr",
-    "logosource": "https://avatars.io/twitter/mouv",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/mouv",
     "name": "Mouv'",
     "streams": [
       {
@@ -494,7 +494,7 @@
     "displayorder": 58,
     "genres": ["pop"],
     "language": "hi",
-    "logosource": "https://avatars.io/twitter/MYFMIndia",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/MYFMIndia",
     "name": "My FM India",
     "streams": [
       {
@@ -508,7 +508,7 @@
     "displayorder": 40,
     "genres": ["oldies", "pop"],
     "language": "nl-BE",
-    "logosource": "https://avatars.io/twitter/NostalgieEU",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/NostalgieEU",
     "name": "Nostalgie",
     "streams": [
       {
@@ -522,7 +522,7 @@
     "displayorder": 41,
     "genres": ["oldies", "pop"],
     "language": "fr",
-    "logosource": "https://avatars.io/twitter/nostalgiefm",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/nostalgiefm",
     "name": "Nostalgie",
     "streams": [
       {
@@ -536,7 +536,7 @@
     "displayorder": 44,
     "genres": ["dance", "pop", "rock"],
     "language": "fr",
-    "logosource": "https://avatars.io/twitter/nrjhitmusiconly",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/nrjhitmusiconly",
     "name": "NRJ",
     "streams": [
       {
@@ -609,7 +609,7 @@
     "displayorder": 66,
     "genres": ["dance", "pop"],
     "language": "sv-SE",
-    "logosource": "https://avatars.io/facebook/powersweden",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/powersweden",
     "name": "Power Hit Radio",
     "streams": [
       {
@@ -623,7 +623,7 @@
     "displayorder": 4,
     "genres": ["pop"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/QmusicNL",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/QmusicNL",
     "name": "Qmusic",
     "streams": [
       {
@@ -646,7 +646,7 @@
     "displayorder": 33,
     "genres": ["pop"],
     "language": "nl-BE",
-    "logosource": "https://avatars.io/twitter/Qmusic_BE",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/Qmusic_BE",
     "name": "Qmusic",
     "streams": [
       {
@@ -702,7 +702,7 @@
     "displayorder": 10,
     "genres": ["oldies", "pop", "rock"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/radio10nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/radio10nl",
     "name": "Radio 10",
     "streams": [
       {
@@ -720,7 +720,7 @@
     "displayorder": 15,
     "genres": ["folk", "pop"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/100pnl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/100pnl",
     "name": "100% NL",
     "streams": [
       {
@@ -788,7 +788,7 @@
     "displayorder": 57,
     "genres": ["folk", "pop"],
     "language": "hi",
-    "logosource": "https://avatars.io/twitter/radiomirchi",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/radiomirchi",
     "name": "Radio Mirchi",
     "streams": [
       {
@@ -816,7 +816,7 @@
     "displayorder": 52,
     "genres": ["classical"],
     "language": "pl",
-    "logosource": "https://avatars.io/twitter/RadiowaDwojka",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/RadiowaDwojka",
     "name": "Dwójka",
     "streams": [
       {
@@ -831,7 +831,7 @@
     "displayorder": 51,
     "genres": ["news", "talk"],
     "language": "pl",
-    "logosource": "https://avatars.io/twitter/RadiowaJedynka",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/RadiowaJedynka",
     "name": "Jedynka",
     "streams": [
       {
@@ -846,7 +846,7 @@
     "displayorder": 53,
     "genres": ["pop", "rock"],
     "language": "pl",
-    "logosource": "https://avatars.io/twitter/RadiowaTrojka",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/RadiowaTrojka",
     "name": "Trójka",
     "streams": [
       {
@@ -861,7 +861,7 @@
     "displayorder": 50,
     "genres": ["pop"],
     "language": "pl",
-    "logosource": "https://avatars.io/twitter/Radio_ZET",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/Radio_ZET",
     "name": "Radio ZET",
     "streams": [
       {
@@ -879,7 +879,7 @@
     "displayorder": 63,
     "genres": ["dance", "pop", "rock"],
     "language": "sv-SE",
-    "logosource": "https://avatars.io/twitter/RIXFM",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/RIXFM",
     "name": "RIX FM",
     "streams": [
       {
@@ -929,7 +929,7 @@
     "displayorder": 27,
     "genres": ["news", "pop"],
     "language": "fr",
-    "logosource": "https://avatars.io/twitter/RTLFrance",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/RTLFrance",
     "name": "RTL",
     "streams": [
       {
@@ -961,7 +961,7 @@
     "displayorder": 46,
     "genres": ["hiphop", "pop", "rap", "rnb"],
     "language": "fr",
-    "logosource": "https://avatars.io/twitter/SkyrockFM",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/SkyrockFM",
     "name": "Skyrock",
     "streams": [
       {
@@ -975,7 +975,7 @@
     "displayorder": 17,
     "genres": ["dance", "pop"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/slamofficial",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/slamofficial",
     "name": "SLAM!",
     "streams": [
       {
@@ -993,7 +993,7 @@
     "displayorder": 26,
     "genres": ["local", "news", "pop"],
     "language": "de",
-    "logosource": "https://avatars.io/twitter/swr3",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/swr3",
     "name": "SRW3",
     "streams": [
       {
@@ -1007,7 +1007,7 @@
     "displayorder": 67,
     "genres": ["funk", "jazz", "soul"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/sublime_nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/sublime_nl",
     "name": "Sublime FM",
     "streams": [
       {
@@ -1021,7 +1021,7 @@
     "displayorder": 37,
     "genres": ["pop", "rock", "talk"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/trafficradionl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/trafficradionl",
     "name": "Traffic Radio",
     "streams": [
       {
@@ -1053,7 +1053,7 @@
     "displayorder": 31,
     "genres": ["news", "pop"],
     "language": "nl-BE",
-    "logosource": "https://avatars.io/twitter/radio1be",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/radio1be",
     "name": "Radio 1",
     "streams": [
       {
@@ -1071,7 +1071,7 @@
     "displayorder": 32,
     "genres": ["alternative", "pop", "rock"],
     "language": "nl-BE",
-    "logosource": "https://avatars.io/twitter/stubru",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/stubru",
     "name": "Studio Brussel",
     "streams": [
       {
@@ -1143,7 +1143,7 @@
     "displayorder": 39,
     "genres": ["dance", "pop", "rock"],
     "language": "en-US",
-    "logosource": "https://avatars.io/twitter/Z100NewYork",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/Z100NewYork",
     "name": "Z100 New York",
     "streams": [
       {
@@ -1173,7 +1173,7 @@
     "displayorder": 71,
     "genres": ["alternative", "reggae"],
     "language": "he-IL",
-    "logosource":"https://avatars.io/facebook/jointradio",
+    "logosource":"https://res.cloudinary.com/onetuner/image/facebook/jointradio",
     "name": "Joint Radio Reggae",
     "streams": [
       {
@@ -1187,7 +1187,7 @@
     "displayorder": 72,
     "genres": ["dance", "trance"],
     "language": "he-IL",
-    "logosource":"https://avatars.io/facebook/jointradio",
+    "logosource":"https://res.cloudinary.com/onetuner/image/facebook/jointradio",
     "name": "Joint Radio Beat",
     "streams": [
       {
@@ -1201,7 +1201,7 @@
     "displayorder": 73,
     "genres": ["blues"],
     "language": "he-IL",
-    "logosource":"https://avatars.io/facebook/jointradio",
+    "logosource":"https://res.cloudinary.com/onetuner/image/facebook/jointradio",
     "name": "Joint Radio Blues",
     "streams": [
       {
@@ -1215,7 +1215,7 @@
     "displayorder": 74,
     "genres": ["alternative", "pop", "rock"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/kinkpuntnl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/kinkpuntnl",
     "name": "KINK",
     "streams": [
       {
@@ -1247,7 +1247,7 @@
     "displayorder": 75,
     "genres": ["oldies", "pop", "rock"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/arrowCLrock",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/arrowCLrock",
     "name": "Arrow Classic Rock",
     "streams": [
       {
@@ -1261,7 +1261,7 @@
     "displayorder": 76,
     "genres": ["dance", "pop"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/hotdanceradio",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/hotdanceradio",
     "name": "Hot Dance Radio",
     "streams": [
       {
@@ -1275,7 +1275,7 @@
     "displayorder": 77,
     "genres": ["alternative", "pop", "rock", "oldies"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/kinkpuntnl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/kinkpuntnl",
     "name": "KINK DNA",
     "streams": [
       {
@@ -1307,7 +1307,7 @@
     "displayorder": 86,
     "genres": ["alternative", "metal", "hardrock"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/kinkpuntnl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/kinkpuntnl",
     "name": "KINK DISTORTION",
     "streams": [
       {
@@ -1339,7 +1339,7 @@
     "displayorder": 87,
     "genres": ["alternative", "pop", "rock"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/kinkpuntnl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/kinkpuntnl",
     "name": "KINK NL",
     "streams": [
       {
@@ -1371,7 +1371,7 @@
     "displayorder": 78,
     "genres": ["pop", "talk"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/lindanieuws",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/lindanieuws",
     "name": "LINDA.radio",
     "streams": [
       {
@@ -1386,7 +1386,7 @@
     "displayorder": 79,
     "genres": ["rock", "alternative", "oldies"],
     "language": "nl-be",
-    "logosource": "https://avatars.io/twitter/willy_radio",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/willy_radio",
     "name": "Willy",
     "streams": [
       {
@@ -1401,7 +1401,7 @@
     "displayorder": 80,
     "genres": ["pop"],
     "language": "nl-be",
-    "logosource": "https://avatars.io/facebook/joe.alltheway",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/joe.alltheway",
     "name": "Joe",
     "streams": [
       {
@@ -1416,7 +1416,7 @@
     "displayorder": 81,
     "genres": ["news","talk"],
     "language": "en-US",
-    "logosource": "https://avatars.io/twitter/foxnews",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/foxnews",
     "name": "FOX News Radio",
     "streams": [
       {
@@ -1430,7 +1430,7 @@
     "displayorder": 82,
     "genres": ["classical","jazz","alternative","electronic"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/Concertzender",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/Concertzender",
     "name": "Concertzender",
     "streams": [
       {
@@ -1444,7 +1444,7 @@
     "displayorder": 83,
     "genres": ["news","talk"],
     "language": "en-US",
-    "logosource": "https://avatars.io/twitter/NPR",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/NPR",
     "name": "NPR",
     "streams": [
       {
@@ -1459,7 +1459,7 @@
     "displayorder": 84,
     "genres": ["pop"],
     "language": "de",
-    "logosource": "https://avatars.io/twitter/ffhde",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/ffhde",
     "name": "HIT RADIO FFH",
     "streams": [
       {
@@ -1491,7 +1491,7 @@
     "displayorder": 89,
     "genres": ["pop"],
     "language": "nl",
-    "logosource": "https://avatars.io/twitter/swijnenstal",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/swijnenstal",
     "name": "Swijnenstal",
     "streams": [
       {

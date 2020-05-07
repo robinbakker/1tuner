@@ -32,7 +32,7 @@ export default class About extends Component {
 					<ul>
 						<li>I'm using Google Analytics to track the amount of visitors (anonimized IPs and no user tracking).</li>
 						<li>Some basic information is stored in your browser for your preferences and to store your playlists.</li>
-						<li>The audio and logos are loaded from the radio stations / podcast sources directly or via <a href="https://avatars.io" target="_blank" rel="noopener">avatars.io</a>. Radio stations or podcast providers may use some sort of tracking on the media requests.</li>
+						<li>The audio and logos are loaded from the radio stations / podcast sources directly or via <a href="https://cloudinary.com" target="_blank" rel="noopener">cloudinary.com</a>. Radio stations or podcast providers may use some sort of tracking on the media requests.</li>
 						<li>The Apple iTunes Search API is used for the <Link href="/podcasts" native>podcast</Link> search functionality.</li>
 						<li>If needed, the podcast RSS feed will be requested via a pass-through website, currently at <a href="https://dented-radiosaurus.glitch.me" target="_blank" rel="noopener">Glitch</a>.</li>
 					</ul>
