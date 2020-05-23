@@ -3,7 +3,6 @@ import style from './style';
 import Header from '../../components/header';
 import DropDown from '../../components/dropdown';
 import { Link } from 'preact-router/match';
-import { setDocumentMetaTags } from '../../utils/misc';
 
 export default class Settings extends Component {
 	constructor(props) {
@@ -17,10 +16,6 @@ export default class Settings extends Component {
 				{text:'Dark',value:'dark'}
 			]
 		};
-	}
-
-	componentDidMount() {
-		setDocumentMetaTags(this.state.docTitle, this.state.docDescription);
 	}
 
 	themeOptionChanged = optionValue => {

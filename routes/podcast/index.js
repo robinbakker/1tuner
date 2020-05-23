@@ -3,7 +3,7 @@ import style from './style';
 import { Link } from 'preact-router/match';
 import Loader from '../../components/loader';
 import Header from '../../components/header';
-import { isValidUrl, getUrlQueryParameterByName, removeHtml, getTimeFromSeconds, getTime, getFlagEmojiFromLanguage, setDocumentMetaTags } from '../../utils/misc';
+import { isValidUrl, getUrlQueryParameterByName, removeHtml, getTimeFromSeconds, getTime, getFlagEmojiFromLanguage, setDocumentMetaTags, slugify } from '../../utils/misc';
 
 export default class Podcast extends Component {
 	constructor(props) {
@@ -19,7 +19,7 @@ export default class Podcast extends Component {
 
 	getPodcast = (AFeedUrl) => {
 		this.setState({isLoading:true});
-		AFeedUrl = AFeedUrl ? decodeURI(AFeedUrl) : null;
+		AFeedUrl = AFeedUrl ? decodeURIComponent(AFeedUrl) : null;
     if (!AFeedUrl || !isValidUrl(AFeedUrl)) {
 			this.setState({errorMessage:'Error: The feed url is invalid.'});
       return null;
@@ -198,18 +198,18 @@ export default class Podcast extends Component {
 		this.getPodcast(this.state.podcastInfo.feedUrl);
 	}
 
-	render({}, {podcastInfo, isLoading, docTitle, docDescription, errorMessage}) {
+	render({name, feedcode}, {podcastInfo, isLoading, docTitle, docDescription, errorMessage}) {
 		if (!podcastInfo) {
-      setDocumentMetaTags(this.props.name + ' - ' + docTitle, docDescription);
 			if (!isLoading && typeof window !== 'undefined') {
-				let feedUrl = getUrlQueryParameterByName('feedurl', window.location.href.split('/?')[1]);
+        let urlParam = feedcode ? atob(feedcode) : null;
+				let feedUrl = urlParam || getUrlQueryParameterByName('feedurl', window.location.href.split('/?')[1]);
 				this.getPodcast(feedUrl);
       }
 			return(
 				<div class={'page-container'}>
 				<Header title={docTitle} />
 				<main class={'content content--is-loading ' + style.podcast + ' ' + style['podcast--empty']}>
-					<h1>{this.props.name}</h1>
+					<h1>{name}</h1>
 					{ isLoading && !errorMessage ?
 						<Loader />
 						:
@@ -220,7 +220,7 @@ export default class Podcast extends Component {
 				</div>
 			);
 		} else {
-      setDocumentMetaTags(podcastInfo.name + ' - ' + docTitle, docDescription, podcastInfo.artworkUrl600 ? podcastInfo.artworkUrl600 : podcastInfo.artworkUrl);
+      setDocumentMetaTags(podcastInfo.name + ' - ' + docTitle, docDescription, podcastInfo.artworkUrl600 ? podcastInfo.artworkUrl600 : podcastInfo.artworkUrl, (window ? window.location.origin : '') + '/podcast/' + slugify(podcastInfo.name) + '/' + btoa(podcastInfo.feedUrl));
 			return (
 				<div class={'page-container'}>
 				<Header title={podcastInfo.name} sharetext={'Listen to this podcast at 1tuner.com'} />

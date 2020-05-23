@@ -117,28 +117,28 @@ export default class App extends Component {
 	render({}, {listeningMode, settings, languageList, station, stationList, lastStationList, stationPodcastList,
 			playlist, playlists, podcast, podcastList, featured, lastPodcastSearchQuery, lastPodcastSearchResult, version}) {
 		return (
-		<div id="app">
-			<Nav />
-			<Router>
-				<Home path="/" stationList={lastStationList} playlists={playlists} podcastList={podcastList} featured={featured} changeStation={this.changeStation.bind(this)} changePlaylist={this.changePlaylist.bind(this)} />
-				<Stations path="/radio-stations" stationList={stationList} languageList={languageList} changeStation={this.changeStation.bind(this)} toggleFilterPanel={this.toggleFilterPanel.bind(this)} setLanguageList={this.setLanguageList.bind(this)} />
-				<Station path="/radio-station/:id?" stationList={stationList} podcastList={stationPodcastList} changeStation={this.changeStation.bind(this)} reloadStationList={this.reloadStationList.bind(this)} />
-				<Playlists path="/playlists" playlists={playlists} stationList={stationList} changePlaylist={this.changePlaylist.bind(this)} />
-				<Playlist path="/playlist/:name/:params?" playlists={playlists} stationList={stationList} addPlaylist={this.addPlaylist.bind(this)} deletePlaylist={this.deletePlaylist.bind(this)} changePlaylist={this.changePlaylist.bind(this)}/>
-				<PlaylistEdit path="/playlist-edit/:name?/:params?" playlists={playlists} languageList={languageList} stationList={stationList} addPlaylist={this.addPlaylist.bind(this)} resetPlaylists={this.resetPlaylists.bind(this)} />
-				<Podcasts path="/podcasts/:params?" latestPodcastSearchResult={this.latestPodcastSearchResult.bind(this)} searchQuery={lastPodcastSearchQuery} lastSearchResult={lastPodcastSearchResult} podcastList={podcastList} stationPodcastList={stationPodcastList} />
-				<Podcast path="/podcast/:name/:params?" savePodcastHistory={this.savePodcastHistory.bind(this)} podcastList={podcastList} stationPodcastList={stationPodcastList} lastPodcastSearchResult={lastPodcastSearchResult} playEpisode={this.playPodcastEpisode.bind(this)} />
-				<Settings path="/settings/:params?" settings={settings} stationList={lastStationList} playlists={playlists} podcastList={podcastList} saveSettings={this.saveSettings.bind(this)} resetLocalPreferences={this.resetLocalPreferences.bind(this)} />
-				<About path="/about" version={version} />
-				<Redirect path="/planner" to="/playlists" />
-				<Redirect path="/planning/:name/:params?" to="/playlist" />
-				<Redirect path="/planning-edit/:name/:params?" to="/playlist-edit" />
-        <Redirect path="/radio-station/xxlbonanza" to="/radio-station/xxlstenders" />
-        <Redirect path="/radio-station/kxclassicsedge" to="/radio-station/the-edge" />
-				<Error type="404" default />
-			</Router>
-			<Footer onRef={ref => (this.child = ref)} settings={settings} listeningMode={listeningMode} stationList={stationList} setListeningMode={this.setListeningMode.bind(this)} tuneToStation={this.tuneToStation.bind(this)} podcast={podcast} playlist={playlist} station={station} setPodcastEpisodeTimeElapsed={this.setPodcastEpisodeTimeElapsed.bind(this)} closeFooter={this.closeFooter.bind(this)} />
-		</div>
+      <div id="app">
+        <Nav />
+        <Router>
+          <Home path="/" stationList={lastStationList} playlists={playlists} podcastList={podcastList} featured={featured} changeStation={this.changeStation.bind(this)} changePlaylist={this.changePlaylist.bind(this)} />
+          <Stations path="/radio-stations" stationList={stationList} languageList={languageList} changeStation={this.changeStation.bind(this)} toggleFilterPanel={this.toggleFilterPanel.bind(this)} setLanguageList={this.setLanguageList.bind(this)} />
+          <Station path="/radio-station/:id?" stationList={stationList} podcastList={stationPodcastList} changeStation={this.changeStation.bind(this)} reloadStationList={this.reloadStationList.bind(this)} />
+          <Playlists path="/playlists" playlists={playlists} stationList={stationList} changePlaylist={this.changePlaylist.bind(this)} />
+          <Playlist path="/playlist/:name/:params?" playlists={playlists} stationList={stationList} addPlaylist={this.addPlaylist.bind(this)} deletePlaylist={this.deletePlaylist.bind(this)} changePlaylist={this.changePlaylist.bind(this)}/>
+          <PlaylistEdit path="/playlist-edit/:name?/:params?" playlists={playlists} languageList={languageList} stationList={stationList} addPlaylist={this.addPlaylist.bind(this)} resetPlaylists={this.resetPlaylists.bind(this)} />
+          <Podcasts path="/podcasts/:params?" latestPodcastSearchResult={this.latestPodcastSearchResult.bind(this)} searchQuery={lastPodcastSearchQuery} lastSearchResult={lastPodcastSearchResult} podcastList={podcastList} stationPodcastList={stationPodcastList} />
+          <Podcast path="/podcast/:name/:feedcode?/:params?" savePodcastHistory={this.savePodcastHistory.bind(this)} podcastList={podcastList} stationPodcastList={stationPodcastList} lastPodcastSearchResult={lastPodcastSearchResult} playEpisode={this.playPodcastEpisode.bind(this)} />
+          <Settings path="/settings/:params?" settings={settings} stationList={lastStationList} playlists={playlists} podcastList={podcastList} saveSettings={this.saveSettings.bind(this)} resetLocalPreferences={this.resetLocalPreferences.bind(this)} />
+          <About path="/about" version={version} />
+          <Redirect path="/planner" to="/playlists" />
+          <Redirect path="/planning/:name/:params?" to="/playlist" />
+          <Redirect path="/planning-edit/:name/:params?" to="/playlist-edit" />
+          <Redirect path="/radio-station/xxlbonanza" to="/radio-station/xxlstenders" />
+          <Redirect path="/radio-station/kxclassicsedge" to="/radio-station/the-edge" />
+          <Error type="404" default />
+        </Router>
+        <Footer onRef={ref => (this.child = ref)} settings={settings} listeningMode={listeningMode} stationList={stationList} setListeningMode={this.setListeningMode.bind(this)} tuneToStation={this.tuneToStation.bind(this)} podcast={podcast} playlist={playlist} station={station} setPodcastEpisodeTimeElapsed={this.setPodcastEpisodeTimeElapsed.bind(this)} closeFooter={this.closeFooter.bind(this)} />
+      </div>
 		);
 	}
 
@@ -667,13 +667,27 @@ export default class App extends Component {
 
   removeOldStationsFromList = (AStationList) => {
     let newList = AStationList;
-    if (AStationList.some(item => { return item.id==="kxclassicsedge" || item.id==="xxlbonanza"; })) {
+    if (AStationList.some(item => { return item.id === 'kxclassicsedge' || item.id === 'xxlbonanza'; })) {
       // Temp fix to remove old stations
       newList = [];
       for (let i=0; i<AStationList.length; i++) {
-        if (AStationList[i].id!=="kxclassicsedge" && AStationList[i].id!=="xxlbonanza") {
+        if (AStationList[i].id !== 'kxclassicsedge' && AStationList[i].id !== 'xxlbonanza') {
           newList.push(AStationList[i]);
         }
+      }
+    }
+    if (AStationList.some(item => { return item.logosource.indexOf('https://avatars.io/') === 0 })) {
+      // Temp fix to remove avatars.io from cache
+      newList = [];
+      for (let i=0; i<AStationList.length; i++) {
+        let station = AStationList[i];
+        if (station.logosource.indexOf('https://avatars.io/twitter/') === 0) {
+          station.logosource = station.logosource.replace('https://avatars.io/twitter/','https://res.cloudinary.com/onetuner/image/twitter_name/');
+        }
+        if (station.logosource.indexOf('https://avatars.io/facebook/') === 0) {
+          station.logosource = station.logosource.replace('https://avatars.io/facebook/','https://res.cloudinary.com/onetuner/image/facebook/');
+        }
+        newList.push(station);
       }
     }
     return newList;

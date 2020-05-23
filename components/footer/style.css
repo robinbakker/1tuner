@@ -1,13 +1,13 @@
 .footer {
 	position: fixed;
 	z-index: 2;
-	bottom:4rem;
-	width:100%;
+	bottom: 4rem;
+	width: 100%;
 	transform: translate3d(0,100%,0);
 	background-color: var(--footer-background-color);
 	color: var(--footer-text-color);
 	padding: 1.5rem;
-	display:flex;
+	display: flex;
 	align-items: center;
 	transition: transform ease-in-out .2s;
 	background-position: center right;
@@ -36,17 +36,17 @@
 	transform: translate3d(0,0,0);
 }
 .footer__item {
-	flex-grow:1;
+	flex-grow: 1;
 	display: flex;
 	align-items: left;
 	flex-direction: column;
 }
 .footer__item h3,
 .footer__item p {
-	margin:0;
+	margin: 0;
 }
 .footer__item h3 {
-	margin-top:-.4rem;
+	margin-top: -.4rem;
 }
 .footer__item--audio {
 	flex-grow: 0;
@@ -99,13 +99,14 @@
 	background-position: center right;
 	background-size: 1.1rem;
 	padding-right: 1.8rem;
-	text-decoration: none;
+  text-decoration: none;
+  word-break: break-word;
 	text-shadow: 0 .1rem .1rem rgba(0,0,0,0.1);
 }
 .footer__link:hover {
 	text-decoration: underline;
 }
-.station-logo {	
+.station-logo {
 	max-width: 2rem;
 	max-height: 2rem;
 }
@@ -207,7 +208,7 @@
 	box-shadow: 1rem 1rem .75rem .25rem var(--color-main), -1rem -1rem .75rem .25rem var(--color-main), 0 0 0 0.1rem #fff;
 	transition: opacity 1s ease-in-out;
 }
-.play-button--loading:before {	
+.play-button--loading:before {
 	opacity: 0;
 	animation: borderrotate 2s linear infinite;
 	animation-delay: 1s;
@@ -220,7 +221,7 @@
 	display:block;
 	top: 1rem;
   left: 1.2rem;
-	position: absolute;	
+	position: absolute;
 }
 .play-button--play:after {
   border-left:.75rem solid #fff;
@@ -252,7 +253,7 @@
 	border:none;
 	color: #fff;
 	text-shadow: 0 0.1rem 0.1rem rgba(0,0,0,0.1);
-	border-radius: .2rem; 
+	border-radius: .2rem;
 	position: relative;
 	transition: opacity .2s ease-in-out;
 	outline: none;

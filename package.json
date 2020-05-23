@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "1tuner",
-  "version": "2.0.9",
+  "version": "2.1.0",
   "description": "1 web app to listen to audio streams and auto-switch",
   "author": "Robin Bakker",
   "license": "MIT",
@@ -10,8 +10,7 @@
     "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
     "build": "preact build --prerenderUrls ./prerender-urls.js --template template.html ",
     "serve": "preact build && preact serve",
-    "dev": "preact watch --template template.html",
-    "test": "eslint src && preact test"
+    "dev": "preact watch --template template.html"
   },
   "eslintConfig": {
     "extends": "eslint-config-synacor"
@@ -20,11 +19,11 @@
     "eslint": "^6.8.0",
     "if-env": "^1.0.4",
     "preact-cli": "^3.0.0-rc.10",
-    "preact-render-to-string": "^5.1.6"
+    "preact-render-to-string": "^5.1.8"
   },
   "dependencies": {
     "idb-keyval": "^3.2.0",
-    "preact": "^10.4.1",
+    "preact": "^10.4.4",
     "preact-router": "^3.2.1"
   }
 }

@@ -77,12 +77,12 @@ export default class PodcastList extends Component {
 		}
 	}
 
-	render() {
-    if (!this.props.podcastList) {
+	render({podcastList, horizontal, small, errorMessage},{}) {
+    if (!podcastList) {
       return(
 				<div>
-				{this.props.errorMessage ?
-					<p class={style.error}>{this.props.errorMessage}</p>
+				{errorMessage ?
+					<p class={style.error}>{errorMessage}</p>
 					:
 					<Loader />
 				}
@@ -91,13 +91,13 @@ export default class PodcastList extends Component {
     } else {
        return (
 				<div>
-				{this.props.errorMessage ?
-					<p class={style.error}>{this.props.errorMessage}</p>
+				{errorMessage ?
+					<p class={style.error}>{errorMessage}</p>
 					: null}
-         <ul class={'preset-list' + (this.props.horizontal ? ' preset-list--horizontal' : ' preset-list--page')}>
-          {this.props.podcastList.map(podcastItem => (
+         <ul class={'preset-list' + (horizontal ? ' preset-list--horizontal' : ' preset-list--page')}>
+          {podcastList.map(podcastItem => (
             <li class={'preset-list__item'}>
-							<PodcastItem podcastItem={podcastItem} small={this.props.small} />
+							<PodcastItem podcastItem={podcastItem} small={small} />
             </li>
           ))}
 				</ul>

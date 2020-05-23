@@ -412,7 +412,7 @@
       }
     ],
     "website": "https://www.kxclassics.nl",
-    "related": ["the-edge", "xxlstenders", "xxlblokhuis"]
+    "related": ["the-edge", "xxlstenders", "xxlblokhuis", "40upradio"]
   },
   "the-edge": {
     "displayorder": 8,
@@ -751,7 +751,7 @@
       }
     ],
     "website": "http://www.nporadio2.nl",
-    "related": ["xxlstenders", "xxlblokhuis", "radio1", "3fm", "radio4", "radio5"],
+    "related": ["xxlstenders", "xxlblokhuis", "40upradio", "radio1", "3fm", "radio4", "radio5"],
     "podcasts": ["https://podcast.npo.nl/feed/30-minuten-rauw.xml","https://podcast.npo.nl/feed/barts-classic-track.xml","https://podcast.npo.nl/feed/blokhuis-de-podcast.xml","https://podcast.npo.nl/feed/spijkers-met-koppen.xml","https://podcast.npo.nl/feed/de-albumshow.xml"]
   },
   "radio4": {
@@ -1136,7 +1136,7 @@
       }
     ],
     "website": "https://www.robstenders.nl",
-    "related": ["xxlblokhuis", "the-edge", "radio2", "kxclassic"],
+    "related": ["xxlblokhuis", "the-edge", "radio2", "kxclassic", "40upradio"],
     "podcasts": ["https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss","https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"]
   },
   "z100ny": {
@@ -1501,5 +1501,20 @@
     ],
     "website": "http://www.swijnenstal.nl",
     "related": ["538"]
+  },
+  "40upradio": {
+    "displayorder": 90,
+    "genres": ["pop","oldies","rock","blues"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/40upradio",
+    "name": "40UP Radio",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://40upstream.live-streams.nl/40up1"
+      }
+    ],
+    "website": "https://40upradio.nl",
+    "related": ["radio2", "kxclassic", "xxlstenders"]
   }
 }

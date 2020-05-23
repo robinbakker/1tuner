@@ -15,10 +15,6 @@ export default class Playlists extends Component {
     };
   }
 
-  componentDidMount() {
-    setDocumentMetaTags(this.state.docTitle, this.state.docDescription);
-  }
-
   changePlaylist = (APlaylist) => {
     this.props.changePlaylist(APlaylist, true);
   }

@@ -2,12 +2,12 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title><%= htmlWebpackPlugin.options.title %></title>
+		<title><%= htmlWebpackPlugin.options.title %> | <%= htmlWebpackPlugin.options.subtitle %></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="description" content="<%= htmlWebpackPlugin.options.description %>">
-		<meta property="og:title" content="<%= htmlWebpackPlugin.options.title %>">
+		<meta property="og:title" content="<%= htmlWebpackPlugin.options.title %> | <%= htmlWebpackPlugin.options.subtitle %>">
 		<meta property="og:description" content="<%= htmlWebpackPlugin.options.description %>">
 		<meta property="og:type" content="website">
 		<meta property="og:url" content="https://1tuner.com<%= htmlWebpackPlugin.options.url %>">
@@ -27,38 +27,11 @@
 			gtag('js', new Date());
 			gtag('config', 'UA-108430-3', { 'anonymize_ip': true });
     </script>
-    <script type="application/ld+json">{
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "1tuner",
-      "url": "https://1tuner.com",
-      "image": "https://1tuner.com/assets/icons/icon-512x512.png",
-      "thumbnailUrl": "https://1tuner.com/assets/icons/icon-192x192.png",
-      "operatingSystem": "All",
-      "applicationCategory": "Entertainment",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5",
-        "ratingCount": "1"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0"
-      },
-      "sameAs": [
-        "https://twitter.com/1tuner",
-        "https://github.com/robinbakker/1tuner"
-      ],
-      "author": {
-        "@type": "Person",
-        "name": "Robin Bakker",
-        "url": "https://robinbakker.nl",
-        "sameAs": [
-          "https://twitter.com/robinbakker",
-          "https://github.com/robinbakker"
-        ]
-      }
-    }</script>
+    <% if(typeof htmlWebpackPlugin.options.jsonld !== 'undefined') { %>
+    <script type="application/ld+json">
+		<%= JSON.stringify(htmlWebpackPlugin.options.jsonld) %>
+    </script>
+    <% } %>
 		<% preact.headEnd %>
 	</head>
 	<body>

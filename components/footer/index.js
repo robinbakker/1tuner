@@ -139,7 +139,7 @@ export default class Footer extends Component {
             playlist: PLAYLIST_EMPTY,
             media: {
               name: currentPodcast.name,
-              link: `/podcast/${currentPodcast.name}/?feedurl=${currentPodcast.feedUrl}`,
+              link: `/podcast/${encodeURIComponent(currentPodcast.name)}/${encodeURIComponent(currentPodcast.feedUrl)}`,
               logoUrl: currentPodcast.artworkUrl,
               programInfo: currentEpisode.title,
               nextProgram:''
@@ -400,7 +400,7 @@ export default class Footer extends Component {
         progressvalue: 0,
         media: {
           name: currentPodcast.name,
-          link: `/podcast/${currentPodcast.name}/?feedurl=${currentPodcast.feedUrl}`,
+          link: `/podcast/${encodeURIComponent(currentPodcast.name)}/${encodeURIComponent(currentPodcast.feedUrl)}`,
           logoUrl: currentPodcast.artworkUrl,
           programInfo: currentEpisode.title,
           nextProgram:''
