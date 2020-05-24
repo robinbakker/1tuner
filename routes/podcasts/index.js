@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import style from './style';
 import PodcastList from '../../components/podcastlist';
 import Header from '../../components/header';
-import { getUrlQueryParameterByName } from '../../utils/misc';
+import { getUrlQueryParameterByName, setDocumentMetaTags } from '../../utils/misc';
 
 export default class Podcasts extends Component {
 	constructor(props) {
@@ -20,6 +20,7 @@ export default class Podcasts extends Component {
 	}
 
 	componentDidMount() {
+    setDocumentMetaTags(this.state.docTitle, this.state.docDescription);
 		let searchQuery = getUrlQueryParameterByName('q', window.location.href.split('/?')[1]);
 		let featuredPodcastList = [];
 		if (this.props.stationPodcastList) {

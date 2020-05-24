@@ -200,6 +200,7 @@ export default class Podcast extends Component {
 
 	render({name, feedcode}, {podcastInfo, isLoading, docTitle, docDescription, errorMessage}) {
 		if (!podcastInfo) {
+      setDocumentMetaTags(this.props.name + ' | ' + docTitle, docDescription);
 			if (!isLoading && typeof window !== 'undefined') {
         let urlParam = feedcode ? atob(feedcode) : null;
 				let feedUrl = urlParam || getUrlQueryParameterByName('feedurl', window.location.href.split('/?')[1]);
@@ -220,7 +221,7 @@ export default class Podcast extends Component {
 				</div>
 			);
 		} else {
-      setDocumentMetaTags(podcastInfo.name + ' - ' + docTitle, docDescription, podcastInfo.artworkUrl600 ? podcastInfo.artworkUrl600 : podcastInfo.artworkUrl, (window ? window.location.origin : '') + '/podcast/' + slugify(podcastInfo.name) + '/' + btoa(podcastInfo.feedUrl));
+      setDocumentMetaTags(podcastInfo.name + ' | ' + docTitle, docDescription, podcastInfo.artworkUrl600 ? podcastInfo.artworkUrl600 : podcastInfo.artworkUrl, (window ? window.location.origin : '') + '/podcast/' + slugify(podcastInfo.name) + '/' + btoa(podcastInfo.feedUrl));
 			return (
 				<div class={'page-container'}>
 				<Header title={podcastInfo.name} sharetext={'Listen to this podcast at 1tuner.com'} />

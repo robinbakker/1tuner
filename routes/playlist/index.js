@@ -142,7 +142,7 @@ export default class Playlists extends Component {
 			let currentPlaylist = this.getPlaylist(this.props.name, window.location.href);
 			if (currentPlaylist) {
 				this.props.addPlaylist(currentPlaylist);
-        setDocumentMetaTags(currentPlaylist.name + ' - ' + this.state.docTitle, this.state.docDescription);
+        setDocumentMetaTags(currentPlaylist.name + ' | ' + this.state.docTitle, this.state.docDescription);
 				let scheduleItems = currentPlaylist.schedule ? Object.values(currentPlaylist.schedule) : [];
 				this.setState({
 					href: currentPlaylist.href,

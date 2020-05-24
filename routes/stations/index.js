@@ -3,6 +3,7 @@ import style from './style';
 import StationList from '../../components/stationlist';
 import Header from '../../components/header';
 import FilterPanel from '../../components/filterpanel';
+import { setDocumentMetaTags } from '../../utils/misc';
 
 export default class Stations extends Component {
 	constructor(props) {
@@ -13,6 +14,10 @@ export default class Stations extends Component {
 			searchQuery: null,
 			showFilterPanel: false
 		};
+  }
+
+  componentDidMount() {
+		setDocumentMetaTags(this.state.docTitle, this.state.docDescription);
 	}
 
 	changeStation = (AStation) => {

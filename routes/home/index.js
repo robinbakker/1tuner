@@ -6,8 +6,13 @@ import PodcastList from "../../components/podcastlist";
 import PlaylistList from "../../components/playlistlist";
 import Loader from "../../components/loader";
 import { Link } from "preact-router/match";
+import { setDocumentMetaTags } from "../../utils/misc";
 
 export default class Home extends Component {
+  componentDidMount() {
+    setDocumentMetaTags();
+  }
+
   changeStation = (AStation) => {
     this.props.changeStation(AStation, true);
   };

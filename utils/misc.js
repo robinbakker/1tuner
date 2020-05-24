@@ -81,7 +81,7 @@ export function setDocumentMetaTags(title, description, image, url, hideUrl) {
   description = description || 'Listen to radio, podcasts and create playlists.';
   image = image || 'https://1tuner.com/assets/icons/icon-512x512.png';
   url = url || window.location.href || 'https://1tuner.com';
-  document.title = title + ' - ' + description;
+  document.title = title + ' | ' + description;
   let metaTags = document.getElementsByTagName('meta');
   metaTags = Array.prototype.slice.call(metaTags);
   metaTags.forEach(tag => {

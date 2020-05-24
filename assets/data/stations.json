@@ -40,7 +40,8 @@
       }
     ],
     "website": "https://www.npo3fm.nl",
-    "related": ["3fmalternative", "funx", "radio2"]
+    "related": ["3fmalternative", "funx", "radio2"],
+    "podcasts": ["https://podcast.npo.nl/feed/vera-on-track.xml","https://podcast.npo.nl/feed/de-music-starts-here-podcast.xml","https://podcast.npo.nl/feed/apodcalypse.xml"]
   },
   "3fmalternative": {
     "displayorder": 38,
@@ -1515,6 +1516,7 @@
       }
     ],
     "website": "https://40upradio.nl",
-    "related": ["radio2", "kxclassic", "xxlstenders"]
+    "related": ["radio2", "kxclassic", "xxlstenders"],
+    "podcasts": ["https://40upradio.nl/timknol/feed/tim/","https://40upradio.nl/johanderksen/feed/johan/"]
   }
 }

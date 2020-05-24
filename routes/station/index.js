@@ -75,7 +75,7 @@ export default class Station extends Component {
 	loadData = () => {
     let station = this.getStation(this.props.id);
 		if (station) {
-      setDocumentMetaTags(station.name + ' - ' + this.state.docTitle, this.state.docDescription, station.logosource);
+      setDocumentMetaTags(station.name + ' | ' + this.state.docTitle, this.state.docDescription, station.logosource);
 		} else {
       setDocumentMetaTags();
       // that's weird, station couldn't be found... Try to reload?

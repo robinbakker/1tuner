@@ -264,6 +264,41 @@
     "artworkUrl": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/image.jpg?t=1586181286&size=small",
     "artworkUrl600": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/image.jpg?t=1586181286&size=large",
     "description": "Stenders & Blokhuis presenteren: De Tapes"
+  },
+  {
+    "feedUrl":"https://40upradio.nl/timknol/feed/tim/",
+    "name": "Sweet Melodies (40UP Radio)",
+    "artworkUrl": "https://40upradio.nl/timknol/wp-content/uploads/sites/103/2016/04/40upRadio_TimKnol_3000x3000.jpg",
+    "artworkUrl600": "https://40upradio.nl/timknol/wp-content/uploads/sites/103/2016/04/40upRadio_TimKnol_3000x3000.jpg",
+    "description": "Tim Knol"
+  },
+  {
+    "feedUrl":"https://40upradio.nl/johanderksen/feed/johan/",
+    "name": "Muziek voor Volwassenen (40UP Radio)",
+    "artworkUrl": "https://40upradio.nl/johanderksen/wp-content/uploads/sites/63/2016/04/40upRadio_JohanDerksen_3000x3000.jpg",
+    "artworkUrl600": "https://40upradio.nl/johanderksen/wp-content/uploads/sites/63/2016/04/40upRadio_JohanDerksen_3000x3000.jpg",
+    "description": "Johan Derksen"
+  },
+  {
+    "feedUrl":"https://podcast.npo.nl/feed/vera-on-track.xml",
+    "name": "Vera On Track",
+    "artworkUrl": "https://podcast.npo.nl/data/thumb/vera-on-track.300.27f4dce991e33bc7b937abcec1e68d14.jpg",
+    "artworkUrl600": "https://podcast.npo.nl/data/thumb/vera-on-track.1400.27f4dce991e33bc7b937abcec1e68d14.jpg",
+    "description": "3FM-dj Vera Siemons neemt je mee naar de tofste festivals, concerten en artiesten en brengt hier uitgebreid verslag van uit speciaal voor jou."
+  },
+  {
+    "feedUrl":"https://podcast.npo.nl/feed/apodcalypse.xml",
+    "name": "APODCALYPSE",
+    "artworkUrl": "https://podcast.npo.nl/data/thumb/apodcalypse.300.9771a010dfb9045f810158b18851d484.jpg",
+    "artworkUrl600": "https://podcast.npo.nl/data/thumb/apodcalypse.1400.9771a010dfb9045f810158b18851d484.jpg",
+    "description": "Mocht de wereld vergaan, dan kun je maar beter nog één keer je hele platenkast doorwerken. En omdat Ryanne van Dorst noodgedwongen thuis zit, is daar alle tijd voor! Zo lang de Coronacrisis duurt, hoor je drie keer per week een nieuwe aflevering van APODCALYPSE."
+  },
+  {
+    "feedUrl":"https://podcast.npo.nl/feed/de-music-starts-here-podcast.xml",
+    "name": "3FM New Music Friday",
+    "artworkUrl": "https://podcast.npo.nl/data/thumb/de-music-starts-here-podcast.300.0c9e3cd377af853d4ee3eca4a96a8f3d.jpg",
+    "artworkUrl600": "https://podcast.npo.nl/data/thumb/de-music-starts-here-podcast.1400.0c9e3cd377af853d4ee3eca4a96a8f3d.jpg",
+    "description": "Elke vrijdag neemt 3FM-dj Sander Hoogendoorn je mee door alle nieuwe releases! En dat doet hij niet alleen, maar samen met een van zijn muzikale vrienden. Zo ben je binnen een half uurtje weer op de hoogte van de beste nieuwe muziek!"
   }
 ]
 }
