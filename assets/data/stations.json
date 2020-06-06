@@ -1518,5 +1518,19 @@
     "website": "https://40upradio.nl",
     "related": ["radio2", "kxclassic", "xxlstenders"],
     "podcasts": ["https://40upradio.nl/timknol/feed/tim/","https://40upradio.nl/johanderksen/feed/johan/"]
+  },
+  "classicnl": {
+    "displayorder": 91,
+    "genres": ["classical"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/classicnlradio",
+    "name": "classicnl",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/CLASSICFM.mp3"
+      }
+    ],
+    "website": "https://www.classic.nl"
   }
 }
