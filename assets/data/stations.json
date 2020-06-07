@@ -1009,14 +1009,14 @@
     "genres": ["funk", "jazz", "soul"],
     "language": "nl",
     "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/sublime_nl",
-    "name": "Sublime FM",
+    "name": "Sublime",
     "streams": [
       {
         "mimetype": "audio/mp3",
         "url": "https://stream01.sublimefm.nl/SublimeFM_mp3"
       }
     ],
-    "website": "https://sublimefm.nl"
+    "website": "https://sublime.nl"
   },
   "trafficradio": {
     "displayorder": 37,
