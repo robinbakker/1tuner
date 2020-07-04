@@ -1,31 +1,33 @@
 {"podcasts" : [
   {
-    "feedUrl":"https://rss.art19.com/the-daily",
+    "feedUrl": "https://rss.art19.com/the-daily",
     "name": "The Daily",
     "artworkUrl": "https://content.production.cdn.art19.com/images/01/1b/f3/d6/011bf3d6-a448-4533-967b-e2f19e376480/7fdd4469c1b5cb3b66aa7dcc9fa21f138efe9a0310a8a269f3dcd07c83a552844fcc445ea2d53db1e55d6fb077aeaa8a1566851f8f2d8ac4349d9d23a87a69f5.jpeg",
     "artworkUrl600": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/57/9e/80/579e802f-63e7-e5b8-1e2f-8bcb4a1968f7/mza_4646561600001809308.jpeg/600x600bb.jpg",
     "description": "This is what the news should sound like. The biggest stories of our time, told by the best journalists in the world. Hosted by Michael Barbaro. Twenty minutes a day, five days a week, ready by 6 a.m."
   },
   {
-    "feedUrl":"https://www.npr.org/rss/podcast.php?id=510318",
+    "feedUrl": "https://www.npr.org/rss/podcast.php?id=510318",
     "name": "Up First",
     "artworkUrl": "https://media.npr.org/assets/img/2019/11/06/up-first-tile-npr-new_sq-42960829020267d0cf351b10ca4b3bb824b96ab6.jpg?s=100",
     "artworkUrl600": "https://is2-ssl.mzstatic.com/image/thumb/Podcasts123/v4/37/cb/d8/37cbd883-1c5b-acab-e19b-5d1f26c363eb/mza_13122205564624174740.jpg/600x600bb.jpg",
     "description": "NPR's Up First is the news you need to start your day. The three biggest stories of the day, with reporting and analysis from NPR News — in 10 minutes. Available weekdays by 6 a.m. ET, with hosts Rachel Martin, Noel King, David Greene and Steve Inskeep. Now available on Saturdays by 8 a.m. ET, with hosts Lulu Garcia-Navarro and Scott Simon. Subscribe and listen, then support your local NPR station at donate.npr.org."
   },
   {
-    "feedUrl":"https://www.npr.org/rss/podcast.php?id=510343",
+    "feedUrl": "https://www.npr.org/rss/podcast.php?id=510343",
     "name": "White Lies",
     "artworkUrl": "https://media.npr.org/assets/img/2019/04/16/white-lies_final_sq-b1391789cfa7562bf3a4cd0c9cdae27fc4fa01b9.jpg?s=100",
     "artworkUrl600": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts123/v4/e3/b2/aa/e3b2aa96-3b71-334d-a83d-7f07411c34da/mza_1506858700300758406.jpg/600x600bb.jpg",
     "description": "In 1965, Rev. James Reeb was murdered in Selma, Alabama. Three men were tried and acquitted, but no one was ever held to account. Fifty years later, two journalists from Alabama return to the city where it happened, expose the lies that kept the murder from being solved and uncover a story about guilt and memory that says as much about America today as it does about the past."
   },
   {
-    "feedUrl":"https://rss.art19.com/vandaag",
+    "feedUrl": "https://rss.art19.com/vandaag",
     "name": "NRC Vandaag",
     "artworkUrl": "https://content.production.cdn.art19.com/images/63/2b/c7/f7/632bc7f7-8f15-4e44-9e08-26cdf26775e7/d5fa90b4ad5bd342c235841e5dea9477285b137b6e49350dbbbbd1ae61deec3f24500827b2cefad72f7f12357bb3d27f7df54d33a097eb1cf3f4367d994dac55.jpeg",
     "artworkUrl600": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/f3/d8/1e/f3d81e19-3e22-4060-aee1-ae828d457f6b/mza_1748232352775787452.jpeg/600x600bb.jpg",
-    "description": "Vandaag is de dagelijkse podcast van NRC. Elke werkdag hoor je hét verhaal van de dag, verteld door onze beste journalisten. De presentatie is in handen van Thomas Rueb. Maandag 6 januari is NRC Vandaag terug met een nieuw seizoen."
+    "description": "Vandaag is de dagelijkse podcast van NRC. Elke werkdag hoor je hét verhaal van de dag, verteld door onze beste journalisten. De presentatie is in handen van Thomas Rueb.",
+    "appleId": 1460234936,
+    "Website": "https://www.nrc.nl/rubriek/podcast-vandaag"
   },
   {
     "feedUrl": "https://api.kink.nl/rss/kink-distortion",
@@ -42,56 +44,56 @@
     "description": "Elke werkdag in een paar minuten helemaal bij met het laatste muzieknieuws en de belangrijkste releases!"
   },
   {
-    "feedUrl":"https://api.kink.nl/rss/met-het-oor-op-morgen",
+    "feedUrl": "https://api.kink.nl/rss/met-het-oor-op-morgen",
     "name": "Brand New KINK",
     "artworkUrl": "https://api.kink.nl/cache/i/0/images/453.w1400.r1-1.afd40c4.q90.jpg",
     "artworkUrl600": "https://is2-ssl.mzstatic.com/image/thumb/Podcasts123/v4/43/3b/03/433b03fe-ead0-03db-9bf9-432e8b55853c/mza_8152843440635180227.jpg/600x600bb.jpg",
     "description": "Elke werkdag draait Jasper Leijdens een uur lang louter nieuwe muziek"
   },
   {
-    "feedUrl":"https://api.kink.nl/rss/klub-kink",
+    "feedUrl": "https://api.kink.nl/rss/klub-kink",
     "name": "Klub KINK",
     "artworkUrl": "https://api.kink.nl/cache/i/0/images/57.w1400.r1-1.ae5e776.q90.jpg",
     "artworkUrl600": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/5c/3b/62/5c3b62e7-e639-dd5d-0eb6-9beea0992202/mza_3619790770372441012.jpg/600x600bb.jpg",
     "description": "Elke week brengt Stefan Koopmanschap je de beste nieuwe alternatieve dance, dj-sets en classics."
   },
   {
-    "feedUrl":"https://api.kink.nl/rss/the-heavy-show",
+    "feedUrl": "https://api.kink.nl/rss/the-heavy-show",
     "name": "The Heavy Show",
     "artworkUrl": "https://api.kink.nl/cache/i/0/images/127.w1400.r1-1.263b1f7.q90.jpg",
     "artworkUrl600": "https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/bc/2a/24/bc2a24e3-0432-8b67-26ec-486e2e301630/mza_3575006805996332526.jpg/600x600bb.jpg",
     "description": "Elke week schotelt Caroline je twee uur lang de vetste metal, hardcore en punk van het moment voor in The Heavy Show. Donderdagavond om 21u op de radio, daarna 24/7 als podcast!"
   },
   {
-    "feedUrl":"https://api.kink.nl/rss/outlaw-41",
+    "feedUrl": "https://api.kink.nl/rss/outlaw-41",
     "name": "Outlaw 41",
     "artworkUrl": "https://api.kink.nl/cache/i/0/images/64.w1400.r1-1.cbfa649.q90.jpg",
     "artworkUrl600": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/63/21/48/63214888-ab19-43e8-f997-9085daec53af/mza_795640347909370563.jpg/600x600bb.jpg",
     "description": "Jasper Leijdens brengt je elke week de beste tracks van nu, afgeteld van 40 naar 0! Elke vrijdagmiddag op KINK, daarna als podcast te luisteren wanneer het jou uitkomt!"
   },
   {
-    "feedUrl":"https://api.kink.nl/rss/release-rundown",
+    "feedUrl": "https://api.kink.nl/rss/release-rundown",
     "name": "Release Rundown (Nederlands)",
     "artworkUrl": "https://api.kink.nl/cache/i/0/images/109.w1400.r1-1.50e1fe0.q90.jpg",
     "artworkUrl600": "https://is2-ssl.mzstatic.com/image/thumb/Podcasts123/v4/bf/bb/cd/bfbbcdc7-e929-c2f6-cc71-fe5dd8c6e9a5/mza_9104168205209130752.jpg/600x600bb.jpg",
     "description": "De artiesten zelf vertellen track voor track alles over hun nieuwe album. Maandagavonden op de radio, altijd als podcast!"
   },
   {
-    "feedUrl":"https://api.kink.nl/rss/release-rundown-2",
+    "feedUrl": "https://api.kink.nl/rss/release-rundown-2",
     "name": "Release Rundown (English)",
     "artworkUrl": "https://api.kink.nl/cache/i/0/images/109.w1400.r1-1.50e1fe0.q90.jpg",
     "artworkUrl600": "https://is2-ssl.mzstatic.com/image/thumb/Podcasts123/v4/bf/bb/cd/bfbbcdc7-e929-c2f6-cc71-fe5dd8c6e9a5/mza_9104168205209130752.jpg/600x600bb.jpg",
     "description": "In Release Rundown we chat with an artist about their album, taking the conversation track by track. How did the album come to be, what are the songs about and what are the stories behind their creation?"
   },
   {
-    "feedUrl":"https://api.kink.nl/rss/oeverloos",
+    "feedUrl": "https://api.kink.nl/rss/oeverloos",
     "name": "Oeverloos",
     "artworkUrl": "https://api.kink.nl/cache/i/0/images/107.w1400.r1-1.f187a32.q90.jpg",
     "artworkUrl600": "https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/cf/c5/27/cfc527a8-c264-8c88-2a43-472d313c1349/mza_7953996943846594394.jpg/600x600bb.jpg",
     "description": "Leon Verdonschot presenteert voor KINK het interviewprogramma Oeverloos. Als podcast, en elke zondagochtend om 10 uur op de radio. Verdonschot is journalist voor onder meer De Groene Amsterdammer, columnist voor Nieuwe Revu en De Limburger, regisseur (hij maakte documentaire over onder meer de Heideroosjes, Bruce Springsteen en Rob de Nijs) en schrijver: zijn laatste boeken VOS (over Gorki-zanger Luc De Vos) en RICO (over kickbokser Rico Verhoeven) stonden op 1 in respectievelijk Vlaanderen en Nederland, en RICO werd verkozen tot Sportboek van het Jaar 2018. Iedere aflevering eindigt met een nummer van Gorki, dus het laatste woord is altijd aan Luc De Vos."
   },
   {
-    "feedUrl":"https://api.kink.nl/rss/st-pauls-boutique",
+    "feedUrl": "https://api.kink.nl/rss/st-pauls-boutique",
     "name": "St Pauls Boutique",
     "artworkUrl": "https://api.kink.nl/cache/i/0/images/117.w1400.r1-1.7395134.q90.jpg",
     "artworkUrl600": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/f8/71/e4/f871e450-0d16-ccfa-1ec4-2d421e4168ca/mza_9355576305893669162.jpg/600x600bb.jpg",
@@ -105,133 +107,159 @@
     "description": "Ruud de Wild stelt 30 minuten lang vlijmscherpe vragen aan een bijzonder persoon. De wekker wordt gezet, er wordt geen vraag geschuwd en het resultaat hoor je ongecensureerd in 30 MINUTEN RAUW."
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/barts-classic-track.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/barts-classic-track.xml",
     "name": "Barts Classic Track",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/barts-classic-track.1400.c24a9b954492607f9be7127e05ad45a8.jpg",
     "artworkUrl600": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/0b/79/21/0b792152-3e6c-6124-415c-17b0971c292c/mza_6299992321841035882.jpg/600x600bb.jpg",
     "description": "In Barts Classic Track bespreekt NPO Radio 2 DJ Bart Arens samen met de artiest in kwestie hoe grote Nederlandse hits tot stand zijn gekomen. Achter het mengpaneel van de Wisseloord Studios wordt de track laagje voor laagje ontleed en hoor je hoe het nummer is ontstaan. Iedere maand een nieuwe aflevering!"
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/spijkers-met-koppen.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/spijkers-met-koppen.xml",
     "name": "Spijkers met Koppen",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/spijkers-met-koppen.1400.d123cd15c62239616c69f42538b4a533.jpg",
     "artworkUrl600": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/6c/88/5f/6c885fab-c5a8-d88a-86c2-b079ae193a16/mza_4548442167716205037.jpg/600x600bb.jpg",
     "description": "Spijkers met Koppen live vanuit café The Florin in Utrecht met muziek, cultuur, cabaret en opvallend nieuws. Presentatie: Felix Meurders en Dolf Jansen."
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/blokhuis-de-podcast.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/blokhuis-de-podcast.xml",
     "name": "Blokhuis de Podcast",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/blokhuis-de-podcast.1400.b51101c0034657931ce88526edcdec9c.jpg",
     "artworkUrl600": "https://is2-ssl.mzstatic.com/image/thumb/Podcasts123/v4/3c/f5/df/3cf5df5a-4a22-ec24-6785-f0e6299f1bc2/mza_14538000323983866761.jpg/600x600bb.jpg",
     "description": "Blokhuis de Podcast is de compacte podcast versie van het Radio 2 programma Blokhuis (elke zondagavond 22-00 uur). Muziekkenner Leo Blokhuis praat je wekelijks bij met de opmerkelijkste verse tracks voor je playlist. Met een uitgebreid rondje door de platenzaak langs de beste nieuwe albumreleases. En twee livetracks uit het zondagse radioprogramma. Blijf op de hoogte via deze podcast van het beste nieuwe materiaal voor de popliefhebber."
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/de-albumshow.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/de-albumshow.xml",
     "name": "De Albumshow",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/de-albumshow.1400.d123cd15c62239616c69f42538b4a533.jpg",
     "artworkUrl600": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/00/af/ca/00afcab3-79f0-6431-d495-5af952df9506/mza_4743230104593871.jpg/600x600bb.jpg",
     "description": "Blokhuis de Podcast is de compacte podcast versie van het Radio 2 programma Blokhuis (elke zondagavond 22-00 uur). Muziekkenner Leo Blokhuis praat je wekelijks bij met de opmerkelijkste verse tracks voor je playlist. Met een uitgebreid rondje door de platenzaak langs de beste nieuwe albumreleases. En twee livetracks uit het zondagse radioprogramma. Blijf op de hoogte via deze podcast van het beste nieuwe materiaal voor de popliefhebber."
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/de-dag.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/de-dag.xml",
     "name": "De Dag",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/de-dag.1400.9897089bccac2a11cc2f8991a0a58d6c.jpg",
     "artworkUrl600": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts123/v4/95/55/fa/9555fabb-343e-3859-4c05-8f421f5a4885/mza_1355691311593021135.jpg/600x600bb.jpg",
-    "description": "Elke werkdag hoor je bij 'De Dag' gesprekken die nét even verder graven. Jurgen van den Berg, Lara Rense en Elisabeth Steinz nemen je mee in verhalen achter het nieuws, verteld door betrokkenen en journalisten van alle omroepen."
+    "description": "Elke werkdag hoor je bij 'De Dag' gesprekken die nét even verder graven. Jurgen van den Berg, Lara Rense en Elisabeth Steinz nemen je mee in verhalen achter het nieuws, verteld door betrokkenen en journalisten van alle omroepen.",
+    "appleId": 1339219119,
+    "website": "https://www.nporadio1.nl/podcasts/de-dag"
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/met-het-oog-op-morgen.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/met-het-oog-op-morgen.xml",
     "name": "NOS Met het Oog op Morgen",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/met-het-oog-op-morgen.1400.59b3929ba924528e247e170d33b72d00.jpg",
     "artworkUrl600": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/bf/d4/43/bfd44383-02d5-596d-c6b9-ee7a8e76e16a/mza_725470743154182643.jpg/600x600bb.jpg",
     "description": "Het Oog brengt een overzicht van het nieuws, een blik in de ochtendkranten en het betere journalistieke interview met mensen in en achter het nieuws, omlijst door mooie muziek."
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/poen.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/poen.xml",
     "name": "POEN",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/poen.1400.ed25883abb3bd6040a3722573acaeec5.jpg",
     "artworkUrl600": "https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/e0/01/7e/e0017e76-064d-a7ad-929a-1b46aa8731df/mza_9619508669633600094.jpg/600x600bb.jpg",
     "description": "POEN - de podcast over economisch nieuws van de NOS. Verslaggevers Wouters en Waaijers duiken in de grote verhalen uit de wereld van het geld, de pegels, de monnies. Waardoor je aan het eind beter begrijpt hoe de economie werkt en wat je ermee moet."
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/de-krokante-leesmap.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/de-krokante-leesmap.xml",
     "name": "De Krokante Leesmap",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/de-krokante-leesmap.1400.84c71bda4f9343b4e0ce5837b7326461.jpg",
     "artworkUrl600": "https://is2-ssl.mzstatic.com/image/thumb/Podcasts123/v4/f7/d8/67/f7d867e4-2818-fadc-f01d-4bcd6278aee2/mza_8347981705070845867.jpg/600x600bb.jpg",
-    "description": "Op geheel eigen wijze nemen Marcel van Roosmalen, Noortje Veldhuizen en Roelof de Vries de bladen door. Wat is de moeite van het lezen waard, en wat kun je gerust links laten liggen? Van vrouwenblad tot astrologie-journaal en van omroepmagazine tot sporttijdschrift: Marcel, Noortje en Roelof zijn je onmisbare gidsen in de papieren jungle."
+    "description": "Voormalig bladenrecensenten Marcel van Roosmalen, Noortje Veldhuizen en Roelof de Vries, trekken het land in.",
+    "website": "https://www.nporadio1.nl/podcasts/de-krokante-leesmap"
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/kwaad-bloed.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/kwaad-bloed.xml",
     "name": "Kwaad Bloed",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/kwaad-bloed.1400.8eb8eb01044ca3eee6dc85f4db657c64.jpg",
     "artworkUrl600": "https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/fe/69/f2/fe69f284-661a-0d97-4e9d-9f39dddc0f57/mza_8151255630799004531.jpg/600x600bb.jpg",
     "description": "Kwaad Bloed is een podcast over zes spraakmakende moordzaken en een mysterieuze verdwijning op het platteland. De gebruikte wapens? Een bijl, gif en zelfs een trein. En de daders zijn geen dolende geweldenaars maar in de meeste zaken bekenden van het slachtoffer. Niemand wordt als moordenaar geboren, zegt een vrouw die haar echtgenoot ombracht, maar waar gaat het mis? Wanneer wordt het de dader te veel? In hun gesprekken met nabestaanden, getuigen en ook daders, gaan Gerrit Kalsbeek en Jacqueline Maris op zoek naar wat er aan het misdrijf voorafging. Ook kijken ze wat er daarna gebeurde; met het dorp of de buurt, de nabestaanden en ook met de daders."
   },
   {
-    "feedUrl":"https://www.bnr.nl/podcast/newsroom?widget=rssfeed&view=podcastFeed",
+    "feedUrl": "https://feed.pippa.io/public/shows/5daef7146189552221218fd7",
+    "name": "Zelfspodcast",
+    "appleId": 1484484777,
+    "description": "Siewertsz & Schimmelpenninck",
+    "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/2b/5f/24/2b5f2498-a891-17f5-42dc-ef94c2531782/mza_9730970843210642276.jpeg/100x100bb.jpg",
+    "artworkUrl600": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/2b/5f/24/2b5f2498-a891-17f5-42dc-ef94c2531782/mza_9730970843210642276.jpeg/600x600bb.jpg",
+    "website": "https://petje.af/zelfspodcast",
+    "social": [
+      { "type":"instagram", "title": "@zelfspodcast", "url":"https://www.instagram.com/zelfspodcast" }
+    ]
+  },
+  {
+    "feedUrl": "https://www.bnr.nl/podcast/newsroom?widget=rssfeed&view=podcastFeed",
     "name": "Newsroom | BNR",
     "artworkUrl": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts123/v4/a9/f3/26/a9f326ec-522c-9a9c-dc0e-478c69a653a4/mza_8754402653873897077.jpg/100x100bb.jpg",
     "artworkUrl600": "https://bnr-external-prod.imgix.net/04b8fee7af04a61188448d111ac571a98ccaf920.jpg?auto=format&fm=jpg&q=45&cs=tinysrgb&w=1400&h=1400",
     "description": "De dagelijkse nieuwspodcast van het FD en BNR. De belangrijkste nieuwsverhalen van de redactie verteld door onze journalisten en specialisten. Mark Beekhuis neemt je mee de nieuwsvloer op."
   },
   {
-    "feedUrl":"https://www.bnr.nl/podcast/de-technoloog?widget=rssfeed&view=podcastFeed",
+    "feedUrl": "https://www.bnr.nl/podcast/de-technoloog?widget=rssfeed&view=podcastFeed",
     "name": "De Technoloog | BNR",
     "artworkUrl": "https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/2a/15/27/2a152710-609c-9977-e8b5-60e6cb510558/mza_1272903770338811043.jpg/100x100bb.jpg",
     "artworkUrl600": "https://bnr-external-prod.imgix.net/26d1c0da348967fa66deabb55398464bddf4ff70.jpg?auto=format&fm=jpg&q=45&cs=tinysrgb&w=1400&h=1400",
     "description": "Herbert Blankesteijn en Ben van der Burg in gesprek met spraakmakende experts over technologische ontwikkelingen en de impact op onze samenleving."
   },
   {
-    "feedUrl":"https://podcasts.files.bbci.co.uk/p02nq0gn.rss",
+    "feedUrl": "https://podcasts.files.bbci.co.uk/p02nq0gn.rss",
     "name": "Global News Podcast",
     "artworkUrl": "http://ichef.bbci.co.uk/images/ic/3000x3000/p05z434b.jpg",
     "artworkUrl600": "https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/fd/4d/ae/fd4daedf-a735-cd14-7a24-eebe4b195930/mza_1782238947154757153.jpg/600x600bb.jpg",
     "description": "The day’s top stories from BBC News. Delivered twice a day on weekdays, daily at weekends"
   },
   {
-    "feedUrl":"https://podcasts.files.bbci.co.uk/p02nrss1.rss",
+    "feedUrl": "https://podcasts.files.bbci.co.uk/p02nrss1.rss",
     "name": "More or Less: Behind the Stats",
     "artworkUrl": "http://ichef.bbci.co.uk/images/ic/3000x3000/p058ggtp.jpg",
     "artworkUrl600": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/26/cf/32/26cf3245-4f2f-bfde-8117-2e08b9e98ab0/mza_3048031617250188411.jpg/600x600bb.jpg",
     "description": "Tim Harford and the More or Less team try to make sense of the statistics which surround us. From BBC Radio 4"
   },
   {
-    "feedUrl":"https://podcasts.files.bbci.co.uk/b006qykl.rss",
+    "feedUrl": "https://podcasts.files.bbci.co.uk/b006qykl.rss",
     "name": "In Our Time",
     "artworkUrl": "http://ichef.bbci.co.uk/images/ic/3000x3000/p06p0j3s.jpg",
     "artworkUrl600": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/32/b1/87/32b18731-3fc2-8dbc-5f54-8d10835f4be2/mza_6299103342476961450.jpg/600x600bb.jpg",
     "description": "Melvyn Bragg and guests discuss the history of ideas"
   },
   {
-    "feedUrl":"https://podcasts.files.bbci.co.uk/p02pc9pj.rss",
+    "feedUrl": "https://podcasts.files.bbci.co.uk/p02pc9pj.rss",
     "name": "Friday Night Comedy from BBC Radio 4",
     "artworkUrl": "https://ichef.bbci.co.uk/images/ic/3000x3000/p07kfvzb.jpg",
     "artworkUrl600": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/47/70/22/477022d9-5434-8a2d-c2e0-2d6cada4f500/mza_1547315491054706863.jpg/600x600bb.jpg",
     "description": "Download the best satirical comedy from Radio 4, every Friday. Features The News Quiz, The Now Show, Dead Ringers and Lobby Land."
   },
   {
-    "feedUrl":"https://rss.art19.com/man-man-man-de-podcast",
+    "feedUrl": "https://rss.art19.com/man-man-man-de-podcast",
     "name": "Man man man, de podcast",
+    "appleId": 1419505429,
     "artworkUrl": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/5c/04/ff/5c04ff8a-a27b-ea59-31a2-5f3d228f7551/mza_2081063904726091647.jpeg/100x100bb.jpg",
     "artworkUrl600": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/5c/04/ff/5c04ff8a-a27b-ea59-31a2-5f3d228f7551/mza_2081063904726091647.jpeg/600x600bb.jpg",
-    "description": "Bas, Chris en Domien zoeken uit hoe mannelijk ze eigenlijk zijn. Ook leuk voor vrouwen!"
+    "description": "Bas, Chris en Domien zoeken uit hoe mannelijk ze eigenlijk zijn. Ook leuk voor vrouwen!",
+    "website": "https://www.manmanmandepodcast.nl",
+    "social": [
+      { "type":"twitter", "title": "@manmanmancast", "url":"https://twitter.com/manmanmancast" },
+      { "type":"instagram", "title": "@manmanmancast", "url":"https://www.instagram.com/manmanmancast" }
+    ]
   },
   {
-    "feedUrl":"https://rss.art19.com/een-podcast-over-media",
+    "feedUrl": "https://rss.art19.com/een-podcast-over-media",
     "name": "Een Podcast over Media",
     "artworkUrl": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts123/v4/3e/11/45/3e1145d8-cea7-c254-3c04-857b652a5c6b/mza_5541656390060727316.jpeg/100x100bb.jpg",
     "artworkUrl600": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts123/v4/3e/11/45/3e1145d8-cea7-c254-3c04-857b652a5c6b/mza_5541656390060727316.jpeg/600x600bb.jpg",
-    "description": "Met Alexander Klöpping & Ernst-Jan Pfauth"
+    "description": "Met Alexander Klöpping & Ernst-Jan Pfauth",
+    "website": "https://mediapodcast.nl",
+    "social": [
+      { "type":"telegram", "title": "@podcastovermedia", "url":"https://t.me/s/podcastovermedia"},
+      { "type":"telegram", "title": "Groeps-chat", "url":"https://t.me/podcastovermediachat" }
+    ]
   },
   {
-    "feedUrl":"https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/ada937c2-d543-4239-aab1-aafd00f12a7d/podcast.rss",
+    "feedUrl": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/ada937c2-d543-4239-aab1-aafd00f12a7d/podcast.rss",
     "name": "Faberyayo & de Moeders",
     "artworkUrl": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/ada937c2-d543-4239-aab1-aafd00f12a7d/image.jpg?t=1573126132&size=small",
     "artworkUrl600": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/ada937c2-d543-4239-aab1-aafd00f12a7d/image.jpg?t=1573126132&size=Large",
     "description": "Naast lid van De Jeugd van Tegenwoordig is Pepijn Lanen (37) ook solo-artiest, schrijver, podcastmaker, echtgenoot én vader. Mix al die aspecten van zijn leven door elkaar, dan krijg je het album ‘❤️’ én de LINDA.podcast ‘Faberyayo & de Moeders’. Hierin praat Pepijn met bekende vrouwen, én mama’s over het ouderschap. Waren de zwangerschappen gepland? Hoe waren de eerste maanden na de geboorte? Hoezeer zijn hun levens en persoonlijkheid veranderd? Kleine, persoonlijke anekdotes wisselen grotere levensvragen af. Pepijn spreekt met z’n eigen vrouw Coco (zij kan ieder moment bevallen van hun derde kind) en met de bekende moeders YouTuber Monica Geuze, actrice/journalist Tatum Dagelet, schrijfster Saskia Noort en LINDA.-hoofdredacteur Karin Swerink. Bron foto: Blommers/Schumm"
   },
   {
-    "feedUrl":"https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/401aeff9-7a6e-435f-9e8f-ab4800fc215c/podcast.rss",
+    "feedUrl": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/401aeff9-7a6e-435f-9e8f-ab4800fc215c/podcast.rss",
     "name": "1e Klas Verhalen",
     "artworkUrl": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/401aeff9-7a6e-435f-9e8f-ab4800fc215c/image.jpg?t=1579533655&size=small",
     "artworkUrl600": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/401aeff9-7a6e-435f-9e8f-ab4800fc215c/image.jpg?t=1579533655&size=Large",
@@ -245,60 +273,61 @@
     "description": "Roel van Velzen (41) is muzikant, vader van twee jongens en sinds 1 april 2019 gescheiden. Na een relatie van twintig jaar beëindigden hij en z'n jeugdliefde Marloes hun relatie. Ze maakten elkaar niet meer gelukkig. Dat scheiden ging 'uit het boekje' volgens de mediator. Ze maakten het elkaar niet moeilijk en richtten zich vooral op wat het beste is voor hun kinderen. In 'Roels Sofasessies' onderzoekt hij hoe je een geluksdip kan ombuigen naar iets waardevols. Op z'n gloednieuwe bank ontvangt hij bevriende muzikanten en 'lotgenoten'. Ze praten over de zware dagen, de gênante momenten waar ze inmiddels gelukkig om kunnen lachen en over de lessen die je hieruit kan trekken. En er wordt gezongen: liedjes die z'n gasten zelf schreven of die veel voor ze betekenen. De rode draad in al deze intieme gesprekken is: hoe vind je opnieuw het geluk na een heel moeilijke tijd? Roel ontvangt op zijn bank: Richard Kemper, Claudia de Breij, Alain Clark, Evi Hanssen en Domien Verschuuren."
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/de-man-en-de-maan.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/de-man-en-de-maan.xml",
     "name": "De Man en de Maan",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/de-man-en-de-maan.1400.d1ab94d2734360bd0875051eb43008cb.jpg",
     "artworkUrl600": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a3/26/1a/a3261a67-3e14-2b5e-2927-3e1ed864bc2a/mza_6158397401004641018.jpg/600x600bb.jpg",
     "description": "Een Nederlandse sterrenkundige gaat in zee met China om zijn grote droom waar te maken. Wat gebeurde er net na de oerknal? Voor het antwoord op die vraag moet astronoom Marc Klein Wolt naar de achterkant van de maan. Eén probleempje: daar is nog niemand geweest. Als hij in zee gaat met opkomende ruimtemacht China, blijkt samenwerken niet zonder risico. Documentairemaker Saar Slegers volgt hem tijdens zijn race tegen de klok en ziet hoe zijn wetenschappelijke droom langzaamaan verandert in een nachtmerrie. Een podcast over grootse dromen, culturele clashes en de nieuwe wereldorde. De Man en de Maan is een podcast van NTR, NPO Radio1, Autres Directions en Aldus’ producties en is tot stand gekomen met steun van het NPO-fonds. Meer informatie: www.ntr.nl/demanendemaan"
   },
   {
-    "feedUrl":"https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss",
+    "feedUrl": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss",
     "name": "De Beste 10",
     "artworkUrl": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/image.jpg?t=1586181376&size=small",
     "artworkUrl600": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/image.jpg?t=1586181376&size=large",
     "description": "Stenders & Blokhuis presenteren: De Beste 10"
   },
   {
-    "feedUrl":"https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss",
+    "feedUrl": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss",
     "name": "De Tapes",
     "artworkUrl": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/image.jpg?t=1586181286&size=small",
     "artworkUrl600": "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/image.jpg?t=1586181286&size=large",
     "description": "Stenders & Blokhuis presenteren: De Tapes"
   },
   {
-    "feedUrl":"https://40upradio.nl/timknol/feed/tim/",
+    "feedUrl": "https://40upradio.nl/timknol/feed/tim/",
     "name": "Sweet Melodies (40UP Radio)",
     "artworkUrl": "https://40upradio.nl/timknol/wp-content/uploads/sites/103/2016/04/40upRadio_TimKnol_3000x3000.jpg",
     "artworkUrl600": "https://40upradio.nl/timknol/wp-content/uploads/sites/103/2016/04/40upRadio_TimKnol_3000x3000.jpg",
     "description": "Tim Knol"
   },
   {
-    "feedUrl":"https://40upradio.nl/johanderksen/feed/johan/",
+    "feedUrl": "https://40upradio.nl/johanderksen/feed/johan/",
     "name": "Muziek voor Volwassenen (40UP Radio)",
     "artworkUrl": "https://40upradio.nl/johanderksen/wp-content/uploads/sites/63/2016/04/40upRadio_JohanDerksen_3000x3000.jpg",
     "artworkUrl600": "https://40upradio.nl/johanderksen/wp-content/uploads/sites/63/2016/04/40upRadio_JohanDerksen_3000x3000.jpg",
     "description": "Johan Derksen"
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/vera-on-track.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/vera-on-track.xml",
     "name": "Vera On Track",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/vera-on-track.300.27f4dce991e33bc7b937abcec1e68d14.jpg",
     "artworkUrl600": "https://podcast.npo.nl/data/thumb/vera-on-track.1400.27f4dce991e33bc7b937abcec1e68d14.jpg",
     "description": "3FM-dj Vera Siemons neemt je mee naar de tofste festivals, concerten en artiesten en brengt hier uitgebreid verslag van uit speciaal voor jou."
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/apodcalypse.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/apodcalypse.xml",
     "name": "APODCALYPSE",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/apodcalypse.300.9771a010dfb9045f810158b18851d484.jpg",
     "artworkUrl600": "https://podcast.npo.nl/data/thumb/apodcalypse.1400.9771a010dfb9045f810158b18851d484.jpg",
     "description": "Mocht de wereld vergaan, dan kun je maar beter nog één keer je hele platenkast doorwerken. En omdat Ryanne van Dorst noodgedwongen thuis zit, is daar alle tijd voor! Zo lang de Coronacrisis duurt, hoor je drie keer per week een nieuwe aflevering van APODCALYPSE."
   },
   {
-    "feedUrl":"https://podcast.npo.nl/feed/de-music-starts-here-podcast.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/de-music-starts-here-podcast.xml",
     "name": "3FM New Music Friday",
     "artworkUrl": "https://podcast.npo.nl/data/thumb/de-music-starts-here-podcast.300.0c9e3cd377af853d4ee3eca4a96a8f3d.jpg",
     "artworkUrl600": "https://podcast.npo.nl/data/thumb/de-music-starts-here-podcast.1400.0c9e3cd377af853d4ee3eca4a96a8f3d.jpg",
-    "description": "Elke vrijdag neemt 3FM-dj Sander Hoogendoorn je mee door alle nieuwe releases! En dat doet hij niet alleen, maar samen met een van zijn muzikale vrienden. Zo ben je binnen een half uurtje weer op de hoogte van de beste nieuwe muziek!"
+    "description": "Elke vrijdag neemt 3FM-dj Sander Hoogendoorn je mee door alle nieuwe releases! En dat doet hij niet alleen, maar samen met een van zijn muzikale vrienden. Zo ben je binnen een half uurtje weer op de hoogte van de beste nieuwe muziek!",
+    "website": "https://www.npo3fm.nl/podcasts/de-music-starts-here-podcast"
   }
 ]
 }
