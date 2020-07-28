@@ -11,7 +11,7 @@ export default class PlaylistList extends Component {
 			radioStations:[]
 		};
   }
-  
+
 	setPlaylist = (e) => {
 		if(typeof e.currentTarget.attributes['data-playlist'] !== 'undefined' && this.state.items) {
 			let playlistItem;
@@ -39,7 +39,7 @@ export default class PlaylistList extends Component {
     }
 		return Result;
 	}
-	
+
 	renderStationLogos = (APlaylistSchedule) => {
 		let result = [];
 		let stationArray = [];
@@ -68,7 +68,7 @@ export default class PlaylistList extends Component {
 			if(stationArray.indexOf(AItem.station)==-1) {
 				stationArray.push(AItem.station);
 				let st = self.getStation(AItem.station);
-				if (st) {					
+				if (st) {
 					result.push(st.name);
 				}
 			}
@@ -79,7 +79,7 @@ export default class PlaylistList extends Component {
 	loadData = async () => {
 		let playlists = this.props.playlists;
 		let stationList = this.props.horizontal ? null : this.props.stationList;
-		
+
 		if (playlists || stationList) {
 			this.setState({
 				items: playlists,
@@ -90,17 +90,9 @@ export default class PlaylistList extends Component {
 		return false;
 	}
 
-	shouldComponentUpdate() {
-		if ((!this.state.items || !this.state.items.length) && this.props.playlists && this.props.playlists.length) {
-			return this.loadData();
-		} else {
-			return false;
-		}
-	}
-
-	render() {		
-    if (!this.state.items || !this.state.items.length) {
-			if (this.props.playlists && this.props.playlists.length) {
+	render({playlists, horizontal, small},{items}) {
+    if (!items || !items.length) {
+			if (playlists && playlists.length) {
 				this.loadData();
 			}
       return(
@@ -108,27 +100,27 @@ export default class PlaylistList extends Component {
       );
     } else {
 			return (
-				<ul class={'preset-list' + (this.props.horizontal ? ' preset-list--horizontal' : ' preset-list--page')}>
-          {this.state.items.map(playlistItem => (
+				<ul class={'preset-list' + (horizontal ? ' preset-list--horizontal' : ' preset-list--page')}>
+          {items.map(playlistItem => (
    					<li class={'preset-list__item'}>
-							{this.props.horizontal ? 
-								<button data-playlist={playlistItem.href} onClick={this.setPlaylist.bind(this)} title={playlistItem.name} class={'preset-list__button'  + (this.props.small ? ' preset-list__button--small' : '') + ' icon--playlist'} style={'background-color:'+playlistItem.color}>
+							{horizontal ?
+								<button data-playlist={playlistItem.href} onClick={this.setPlaylist.bind(this)} title={playlistItem.name} class={'preset-list__button'  + (small ? ' preset-list__button--small' : '') + ' icon--playlist'} style={'background-color:' + playlistItem.color}>
 									<span class="button__text button__text--inverted">{playlistItem.name}</span>
 								</button>
 							:
 							<div class={'preset-list__item-content preset-list__item-content--playlist'}>
-								<Link href={playlistItem.href} title={playlistItem.name} class={'preset-list__button'  + (this.props.small ? ' preset-list__button--small' : '') + ' icon--playlist'} style={'background-color:'+playlistItem.color}>
-								  <span class={'button__text button__text--inverted'}>{playlistItem.name}</span>							
+								<Link href={playlistItem.href} title={playlistItem.name} class={'preset-list__button'  + (small ? ' preset-list__button--small' : '') + ' icon--playlist'} style={'background-color:' + playlistItem.color}>
+								  <span class={'button__text button__text--inverted'}>{playlistItem.name}</span>
 								</Link>
-								{this.props.small ? 
-									null 
+								{small ?
+									null
 									:
 									<div class={'preset-list__link-content'}>
 										<Link href={playlistItem.href} class={'preset-list__link'}>{playlistItem.name}</Link>
 										<span class={'preset-list__link-description'}>{this.getStationNames(playlistItem.schedule)}</span>
 									</div>
 								}
-								{this.props.small ?
+								{small ?
 									null
 									:
 									<button data-playlist={playlistItem.href} onClick={this.setPlaylist.bind(this)} title={playlistItem.name} title={'Play'} class={'btn btn--secondary btn--play'}></button>

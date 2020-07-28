@@ -24,6 +24,7 @@ export default class Playlists extends Component {
   }
 
 	render({playlists, stationList, currentUser}, {docTitle, docDescription}) {
+    //debugger;
 		if (!playlists || !stationList) {
 			return(
 				<div class={'page-container'}>

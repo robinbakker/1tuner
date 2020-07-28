@@ -117,12 +117,6 @@ export default class Station extends Component {
 		this.setState({currentStation: station, relatedStationList: relatedStationList, podcastList: podcastList});
 	}
 
-	shouldComponentUpdate() {
-		if (!this.state.currentStation && this.props.stationList && this.props.stationList.length) {
-			this.loadData();
-		}
-	}
-
 	render({id,stationList},{currentStation,relatedStationList,podcastList,docTitle,docDescription}) {
 		if (currentStation && currentStation.id==id) {
 			return (
