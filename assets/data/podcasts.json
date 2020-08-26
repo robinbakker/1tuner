@@ -328,6 +328,19 @@
     "artworkUrl600": "https://podcast.npo.nl/data/thumb/de-music-starts-here-podcast.1400.0c9e3cd377af853d4ee3eca4a96a8f3d.jpg",
     "description": "Elke vrijdag neemt 3FM-dj Sander Hoogendoorn je mee door alle nieuwe releases! En dat doet hij niet alleen, maar samen met een van zijn muzikale vrienden. Zo ben je binnen een half uurtje weer op de hoogte van de beste nieuwe muziek!",
     "website": "https://www.npo3fm.nl/podcasts/de-music-starts-here-podcast"
+  },
+  {
+    "feedUrl": "https://shoptalkshow.com/feed/podcast",
+    "name": "ShopTalk » Podcast Feed",
+    "artworkUrl": "https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/01/f1/9f/01f19f03-a486-8a03-289b-65e728c3a741/mza_2487052099784590113.png/100x100bb.jpg",
+    "artworkUrl600": "https://res.cloudinary.com/css-tricks/image/upload/v1549562952/ShopTalk-3000_noum8w.png",
+    "description": "A live podcast with Chris Coyier and Dave Rupert about front end web design, development, and UX.",
+    "website": "https://shoptalkshow.com",
+    "social": [
+      { "type":"twitter", "title": "@shoptalkshow", "url":"https://twitter.com/shoptalkshow" },
+      { "type":"twitter", "title": "@chriscoyier", "url":"https://twitter.com/chriscoyier" },
+      { "type":"twitter", "title": "@davatron5000", "url":"https://twitter.com/davatron5000" }
+    ]
   }
 ]
 }
