@@ -331,7 +331,7 @@
   },
   {
     "feedUrl": "https://shoptalkshow.com/feed/podcast",
-    "name": "ShopTalk » Podcast Feed",
+    "name": "ShopTalk Podcast Feed",
     "artworkUrl": "https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/01/f1/9f/01f19f03-a486-8a03-289b-65e728c3a741/mza_2487052099784590113.png/100x100bb.jpg",
     "artworkUrl600": "https://res.cloudinary.com/css-tricks/image/upload/v1549562952/ShopTalk-3000_noum8w.png",
     "description": "A live podcast with Chris Coyier and Dave Rupert about front end web design, development, and UX.",
@@ -340,6 +340,17 @@
       { "type":"twitter", "title": "@shoptalkshow", "url":"https://twitter.com/shoptalkshow" },
       { "type":"twitter", "title": "@chriscoyier", "url":"https://twitter.com/chriscoyier" },
       { "type":"twitter", "title": "@davatron5000", "url":"https://twitter.com/davatron5000" }
+    ]
+  },
+  {
+    "feedUrl": "https://thecsspodcast.libsyn.com/rss",
+    "name": "The CSS Podcast",
+    "artworkUrl": "https://ssl-static.libsyn.com/p/assets/9/8/1/c/981c2ef87dd4c9e7/TCP000_thumbnail_v3.png",
+    "artworkUrl600": "https://ssl-static.libsyn.com/p/assets/9/8/1/c/981c2ef87dd4c9e7/TCP000_thumbnail_v3.png",
+    "description": "Cascading Style Sheets (CSS) is the web’s core styling language. For web developers, It’s one of the quickest technologies to get started with, but one of the hardest to master. Follow Una Kravets and Adam Argyle, Developer Advocates from Google, who gleefully breakdown complex aspects of CSS into digestible episodes covering everything from accessibility to z-index.",
+    "social": [
+      { "type":"twitter", "title": "@Una", "url":"https://twitter.com/Una" },
+      { "type":"twitter", "title": "@argyleink", "url":"https://twitter.com/argyleink" }
     ]
   }
 ]
