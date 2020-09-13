@@ -24,15 +24,7 @@ export default class Settings extends Component {
 	}
 
 	themeOptionChanged = optionValue => {
-		document.body.setAttribute('data-theme', optionValue);
-		let enableChromecast = this.props.settings.experimental && this.props.settings.experimental.chromecast;
-		let settings = {
-			theme: optionValue,
-			experimental: {
-				chromecast: enableChromecast
-			}
-		 };
-		this.props.saveSettings(settings);
+		this.callSaveSettings(optionValue)
 	}
 
 	formatExportLink = () => {
@@ -52,6 +44,15 @@ export default class Settings extends Component {
 		return window.location.origin + '/settings/?stations=' + stationArr.join(',') + '&podcasts=' + podcastArr.join(',');
 	}
 
+  enablePodcastindexSearch = (ev) => {
+		this.setPodcastindexSearch(true);
+		ev.preventDefault();
+	}
+	disablePodcastindexSearch = (ev) => {
+		this.setPodcastindexSearch(false);
+		ev.preventDefault();
+  }
+
 	enableChromecastSupport = (ev) => {
 		this.setChromecastSupport(true);
 		ev.preventDefault();
@@ -61,19 +62,34 @@ export default class Settings extends Component {
 		ev.preventDefault();
 	}
 
-	setChromecastSupport = (enable) => {
-		let themeOption = this.state.themeOptions[0];
-		if (this.props.settings && this.props.settings.theme) {
+	setPodcastindexSearch = (enable) => {
+		this.callSaveSettings(null, null, enable);
+  }
+
+  setChromecastSupport = (enable) => {
+		this.callSaveSettings(null, enable);
+	}
+
+  callSaveSettings = (themeValue, enableChromecastValue, enablePodcastindexSearchValue) => {
+    let themeOption = this.state.themeOptions[0];
+    if (this.props.settings && this.props.settings.theme) {
 			themeOption = this.props.settings.theme;
-		}
+    }
+    if (themeValue) {
+      document.body.setAttribute('data-theme', themeValue);
+      themeOption = themeValue;
+    }
+    let enableChromecast = enableChromecastValue || (this.props.settings && this.props.settings.experimental && this.props.settings.experimental.chromecast);
+    let enablePodcastindex = enablePodcastindexSearchValue || (this.props.settings && this.props.settings.experimental && this.props.settings.experimental.podcastindex);
 		let settings = {
 			theme: themeOption,
 			experimental: {
-				chromecast: enable
+        chromecast: enableChromecast,
+        podcastindex: enablePodcastindex
 			}
 		};
 		this.props.saveSettings(settings);
-	}
+  }
 
 	resetLocalPreferences = () => {
 		if (window.confirm('Are you sure you want to delete all your local preferences, play history and playlists?')) {
@@ -103,6 +119,12 @@ export default class Settings extends Component {
 							<p>Pssst! I'm working on Chromecast support. Want to try? OK, might be buggy, but 🤞 and <button onClick={this.enableChromecastSupport.bind(this)} class={'btn btn--small btn--secondary'}>Enable</button> Chromecast support</p>
 							:
 							<p>Thanks for checking this new functionality! Please let me know your thoughts <a href="https://twitter.com/1tuner" rel="noopener me" target="_blank">@1tuner</a>. 🙂<br/>Is the Chromecast functionality too buggy? <button onClick={this.disableChromecastSupport.bind(this)} class={'btn btn--small btn--secondary'}>Disable</button> Chromecast support then... 🙁</p>
+						}
+            {!settings || !settings.experimental || !settings.experimental.podcastindex ?
+							<p>And maybe try <a href="https://podcastindex.org" target="_blank" rel="noopener">Podcastindex.org</a> as podcast search engine instead of Apple? <button onClick={this.enablePodcastindexSearch.bind(this)} class={'btn btn--small btn--secondary'}>Enable</button> the Podcastindex.org search engine.</p>
+							:
+							<p>Thanks for trying podcast search via <a href="https://podcastindex.org" target="_blank" rel="noopener">Podcastindex.org</a>! Please let me know your thoughts <a href="https://twitter.com/1tuner" rel="noopener me" target="_blank">@1tuner</a>. 🙂<br/>
+              If you want to use Apple iTunes Search API again, then <button onClick={this.disablePodcastindexSearch.bind(this)} class={'btn btn--small btn--secondary'}>Disable</button> Podcastindex.org support... 🙁</p>
 						}
 					</div>
 				</main>

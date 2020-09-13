@@ -66,30 +66,59 @@ export default class Podcasts extends Component {
 		if (!this.state.searchQuery) {
 			return;
 		}
-		let self = this;
-		fetch(`https://itunes.apple.com/search?term=${this.state.searchQuery}&media=podcast`).then((resp) => resp.json())
-		.then(function(data) {
-			if (!data || !data.results ||  !data.results.length) {
-				self.setState({ errorMessage: 'Sorry, nothing found for "' + self.state.searchQuery + '"... 😥 Maybe you can try to change your search query?' })
-				return;
-			}
-			let newState = [];
-			for (let item in data.results) {
-				newState.push({
-					feedUrl: data.results[item].feedUrl,
-					name: data.results[item].collectionName,
-					artistName: data.results[item].artistName,
-					artworkUrl: data.results[item].artworkUrl100,
-					artworkUrl600: data.results[item].artworkUrl600,
-					collectionid: data.results[item].collectionid
-				});
-			}
-			self.props.latestPodcastSearchResult(self.state.searchQuery, newState);
-			self.setState({lastSearchResult: newState, errorMessage: null})
-		}).catch(err => {
-			self.setState({lastSearchResult: null, errorMessage:'🎇 BANG! - That\'s an error... Sorry! Please try again or rephrase your search query.'})
-			console.log(err);
-		});
+    let self = this;
+    if (this.props.settings.experimental && this.props.settings.experimental.podcastindex) {
+      fetch(`https://podcastindex.robinbakker.workers.dev`,{
+        method: 'POST',
+				body: self.state.searchQuery
+      }).then((resp) => resp.json())
+      .then(function(data) {
+        if (!data || !data.feeds || !data.feeds.length) {
+          self.setState({ errorMessage: 'Sorry, nothing found for "' + self.state.searchQuery + '"... 😥 Maybe you can try to change your search query?' })
+          return;
+        }
+        let newState = [];
+        for (let item in data.feeds) {
+          newState.push({
+            feedUrl: data.feeds[item].url,
+            name: data.feeds[item].title,
+            artistName: data.feeds[item].author,
+            artworkUrl: data.feeds[item].image,
+            artworkUrl600: data.feeds[item].artwork,
+            collectionid: data.feeds[item].itunesId
+          });
+        }
+        self.props.latestPodcastSearchResult(self.state.searchQuery, newState);
+        self.setState({lastSearchResult: newState, errorMessage: null})
+      }).catch(err => {
+        self.setState({lastSearchResult: null, errorMessage:'🎇 BANG! - That\'s an error... Sorry! Please try again or rephrase your search query.'})
+        console.log(err);
+      });
+    } else {
+      fetch(`https://itunes.apple.com/search?term=${this.state.searchQuery}&media=podcast`).then((resp) => resp.json())
+      .then(function(data) {
+        if (!data || !data.results ||  !data.results.length) {
+          self.setState({ errorMessage: 'Sorry, nothing found for "' + self.state.searchQuery + '"... 😥 Maybe you can try to change your search query?' })
+          return;
+        }
+        let newState = [];
+        for (let item in data.results) {
+          newState.push({
+            feedUrl: data.results[item].feedUrl,
+            name: data.results[item].collectionName,
+            artistName: data.results[item].artistName,
+            artworkUrl: data.results[item].artworkUrl100,
+            artworkUrl600: data.results[item].artworkUrl600,
+            collectionid: data.results[item].collectionid
+          });
+        }
+        self.props.latestPodcastSearchResult(self.state.searchQuery, newState);
+        self.setState({lastSearchResult: newState, errorMessage: null})
+      }).catch(err => {
+        self.setState({lastSearchResult: null, errorMessage:'🎇 BANG! - That\'s an error... Sorry! Please try again or rephrase your search query.'})
+        console.log(err);
+      });
+    }
 	}
 
 	resetSearchQuery = () => {
