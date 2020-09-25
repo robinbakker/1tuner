@@ -91,7 +91,7 @@ export default class Podcast extends Component {
 			let description = xmlDoc.getElementsByTagName('channel')[0].getElementsByTagName('description')[0].childNodes[0].wholeText || xmlDoc.getElementsByTagName('channel')[0].getElementsByTagName('description')[0].childNodes[0].nodeValue;
 			podcastInfo.language = xmlDoc.getElementsByTagName('channel')[0].getElementsByTagName('language')[0].childNodes[0].nodeValue;
 			podcastInfo.description	= description;
-			podcastInfo.artworkUrl = self.getArtworkUrl(xmlDoc);
+			podcastInfo.logo = self.getArtworkUrl(xmlDoc);
 			podcastInfo.episodes = self.getFeedEpisodeArray(podcastInfo, xmlDoc);
 			self.setState({
 				podcastInfo: podcastInfo,
@@ -221,7 +221,7 @@ export default class Podcast extends Component {
 				</div>
 			);
 		} else {
-      setDocumentMetaTags(podcastInfo.name + ' | ' + docTitle, docDescription, podcastInfo.artworkUrl600 ? podcastInfo.artworkUrl600 : podcastInfo.artworkUrl, (window ? window.location.origin : '') + '/podcast/' + slugify(podcastInfo.name) + '/' + btoa(podcastInfo.feedUrl));
+      setDocumentMetaTags(podcastInfo.name + ' | ' + docTitle, docDescription, podcastInfo.logo600 ? podcastInfo.logo600 : podcastInfo.logo, (window ? window.location.origin : '') + '/podcast/' + slugify(podcastInfo.name) + '/' + btoa(podcastInfo.feedUrl));
 			return (
 				<div class={'page-container'}>
 				<Header title={podcastInfo.name} sharetext={'Listen to this podcast at 1tuner.com'} />
@@ -231,7 +231,7 @@ export default class Podcast extends Component {
 				</div>
 				<main class={'content ' + (style.podcast)}>
 					<div class={style.start}>
-						<img class={style.artwork} src={(podcastInfo.artworkUrl600 ? podcastInfo.artworkUrl600 : podcastInfo.artworkUrl)} alt={podcastInfo.name} />
+						<img class={style.artwork} src={(podcastInfo.logo600 ? podcastInfo.logo600 : podcastInfo.logo)} alt={podcastInfo.name} />
 						<div class={style.description}>
 							<p class={style.descriptiontext}>{removeHtml(podcastInfo.description)}</p>
 							{podcastInfo.modified ?

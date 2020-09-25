@@ -140,7 +140,7 @@ export default class Footer extends Component {
             media: {
               name: currentPodcast.name,
               link: `/podcast/${encodeURIComponent(currentPodcast.name)}/${encodeURIComponent(currentPodcast.feedUrl)}`,
-              logoUrl: currentPodcast.artworkUrl,
+              logoUrl: currentPodcast.logo,
               programInfo: currentEpisode.title,
               nextProgram:''
             },
@@ -401,7 +401,7 @@ export default class Footer extends Component {
         media: {
           name: currentPodcast.name,
           link: `/podcast/${encodeURIComponent(currentPodcast.name)}/${encodeURIComponent(currentPodcast.feedUrl)}`,
-          logoUrl: currentPodcast.artworkUrl,
+          logoUrl: currentPodcast.logo,
           programInfo: currentEpisode.title,
           nextProgram:''
         },

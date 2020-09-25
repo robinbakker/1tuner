@@ -24,7 +24,7 @@ export default class Podcasts extends Component {
 		let searchQuery = getUrlQueryParameterByName('q', window.location.href.split('/?')[1]);
 		let featuredPodcastList = [];
 		if (this.props.stationPodcastList) {
-			let featuredFeeds = ['https://rss.art19.com/the-daily','https://rss.art19.com/vandaag','https://rss.art19.com/een-podcast-over-media','https://api.kink.nl/rss/release-rundown-2','https://rss.art19.com/man-man-man-de-podcast','https://podcast.npo.nl/feed/de-krokante-leesmap.xml'];
+			let featuredFeeds = ['https://rss.art19.com/the-daily','https://rss.art19.com/vandaag','https://rss.art19.com/een-podcast-over-media','https://podcasts.files.bbci.co.uk/p089sfrz.rss','https://rss.art19.com/man-man-man-de-podcast','https://podcast.npo.nl/feed/de-krokante-leesmap.xml'];
 			for (let i = 0; i < this.props.stationPodcastList.length; i++) {
 				if (featuredFeeds.indexOf(this.props.stationPodcastList[i].feedUrl) !== -1) {
 					featuredPodcastList.push(this.props.stationPodcastList[i]);
@@ -67,10 +67,10 @@ export default class Podcasts extends Component {
 			return;
 		}
     let self = this;
-    if (this.props.settings.experimental && this.props.settings.experimental.podcastindex) {
-      fetch(`https://podcastindex.robinbakker.workers.dev`,{
+    if (this.props.settings && this.props.settings.experimental && this.props.settings.experimental.podcastindex) {
+      fetch('https://podcastindex.robinbakker.workers.dev', {
         method: 'POST',
-				body: self.state.searchQuery
+        body: self.state.searchQuery
       }).then((resp) => resp.json())
       .then(function(data) {
         if (!data || !data.feeds || !data.feeds.length) {
@@ -83,8 +83,8 @@ export default class Podcasts extends Component {
             feedUrl: data.feeds[item].url,
             name: data.feeds[item].title,
             artistName: data.feeds[item].author,
-            artworkUrl: data.feeds[item].image,
-            artworkUrl600: data.feeds[item].artwork,
+            logo: data.feeds[item].image,
+            logo600: data.feeds[item].artwork,
             collectionid: data.feeds[item].itunesId
           });
         }
@@ -107,8 +107,8 @@ export default class Podcasts extends Component {
             feedUrl: data.results[item].feedUrl,
             name: data.results[item].collectionName,
             artistName: data.results[item].artistName,
-            artworkUrl: data.results[item].artworkUrl100,
-            artworkUrl600: data.results[item].artworkUrl600,
+            logo: data.results[item].artworkUrl100,
+            logo600: data.results[item].artworkUrl600,
             collectionid: data.results[item].collectionid
           });
         }

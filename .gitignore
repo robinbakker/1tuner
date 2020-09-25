@@ -2,6 +2,7 @@
 .firebaserc
 .vscode
 .well-known
+.env
 node_modules
 /build
 /*.log

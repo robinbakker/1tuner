@@ -27,7 +27,7 @@
     "displayorder": 3,
     "genres": ["pop", "rock"],
     "language": "nl",
-    "logosource": "//www.npo3fm.nl/templates/npo3fm/images/logo-npo3fm.png",
+    "logosource": "https://www.npo3fm.nl/templates/npo3fm/images/logo-npo3fm.png",
     "name": "NPO 3FM",
     "streams": [
       {
@@ -47,7 +47,7 @@
     "displayorder": 38,
     "genres": ["alternative", "pop", "rock"],
     "language": "nl",
-    "logosource": "//www.npo3fm.nl/templates/npo3fm/images/logo-npo3fm.png",
+    "logosource": "https://www.npo3fm.nl/templates/npo3fm/images/logo-npo3fm.png",
     "name": "NPO 3FM Alternative",
     "streams": [
       {
@@ -669,7 +669,7 @@
     "displayorder": 5,
     "genres": ["news", "talk"],
     "language": "nl",
-    "logosource": "//www.nporadio1.nl/templates/perfecttemplate/images/logo-npo-radio1.png",
+    "logosource": "https://www.nporadio1.nl/templates/perfecttemplate/images/logo-npo-radio1.png",
     "name": "NPO Radio 1",
     "streams": [
       {
@@ -681,7 +681,7 @@
         "url": "https://icecast.omroep.nl/radio1-bb-aac"
       }
     ],
-    "website": "http://www.nporadio1.nl",
+    "website": "https://www.nporadio1.nl",
     "related": ["radio2", "3fm", "radio4", "radio5"],
     "podcasts": ["https://podcast.npo.nl/feed/de-dag.xml","https://podcast.npo.nl/feed/met-het-oog-op-morgen.xml","https://podcast.npo.nl/feed/poen.xml","https://podcast.npo.nl/feed/de-man-en-de-maan.xml","https://podcast.npo.nl/feed/de-krokante-leesmap.xml","https://podcast.npo.nl/feed/kwaad-bloed.xml"]
   },
@@ -739,7 +739,7 @@
     "displayorder": 2,
     "genres": ["oldies", "pop", "rock"],
     "language": "nl",
-    "logosource": "//www.nporadio2.nl/templates/nporadio2/assets/images/logo-radio2.svg",
+    "logosource": "https://www.nporadio2.nl/templates/nporadio2/assets/images/logo-radio2.svg",
     "name": "NPO Radio 2",
     "streams": [
       {
@@ -751,7 +751,7 @@
         "url": "https://icecast.omroep.nl/radio2-bb-aac"
       }
     ],
-    "website": "http://www.nporadio2.nl",
+    "website": "https://www.nporadio2.nl",
     "related": ["xxlstenders", "xxlblokhuis", "40upradio", "radio1", "3fm", "radio4", "radio5"],
     "podcasts": ["https://podcast.npo.nl/feed/30-minuten-rauw.xml","https://podcast.npo.nl/feed/barts-classic-track.xml","https://podcast.npo.nl/feed/blokhuis-de-podcast.xml","https://podcast.npo.nl/feed/spijkers-met-koppen.xml","https://podcast.npo.nl/feed/de-albumshow.xml"]
   },
@@ -1232,16 +1232,7 @@
     "related": ["kinkdna","kink-nl","kink-distortion"],
     "podcasts": [
       "https://api.kink.nl/rss/dailykink",
-      "https://api.kink.nl/rss/met-het-oor-op-morgen",
-      "https://api.kink.nl/rss/klub-kink",
-      "https://api.kink.nl/rss/the-heavy-show",
-      "https://api.kink.nl/rss/kink-distortion",
-      "https://api.kink.nl/rss/oeverloos",
-      "https://api.kink.nl/rss/outlaw-41",
-      "https://api.kink.nl/rss/release-rundown",
-      "https://api.kink.nl/rss/release-rundown2",
-      "https://api.kink.nl/rss/oeverloos",
-      "https://api.kink.nl/rss/st-pauls-boutique"
+      "https://api.kink.nl/rss/oeverloos"
     ]
   },
   "arrow": {
@@ -1517,7 +1508,7 @@
     ],
     "website": "https://40upradio.nl",
     "related": ["radio2", "kxclassic", "xxlstenders"],
-    "podcasts": ["https://40upradio.nl/timknol/feed/tim/","https://40upradio.nl/johanderksen/feed/johan/"]
+    "podcasts": ["https://40upradio.nl/johanderksen/feed/johan/"]
   },
   "classicnl": {
     "displayorder": 91,

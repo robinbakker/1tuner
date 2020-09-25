@@ -103,20 +103,53 @@ module.exports = async function() {
       .replace(/^-+/, '') // Trim - from start of text
       .replace(/-+$/, ''); // Trim - from end of text
   };
-  await fetch('https://raw.githubusercontent.com/robinbakker/1tuner/master/assets/data/podcasts.json', {
+
+  let podcastDataUrl = 'https://raw.githubusercontent.com/robinbakker/1tuner/master/assets/data/podcasts.json';
+
+  // FIXME: move this to a better place... :/
+  require('dotenv').config();
+  if (process.env.FIREBASE_LOGIN_URL && process.env.FIREBASE_LOGIN_URL!=='https://example.com') {
+    const firebaseAuth = await fetch(process.env.FIREBASE_LOGIN_URL, {
+      body: JSON.stringify({
+        email: process.env.FIREBASE_USER_EMAIL,
+        password: process.env.FIREBASE_USER_PASSWORD,
+        returnSecureToken: true
+      }),
+      method: 'POST'
+    });
+    const firebaseAuthResult = await firebaseAuth.json();
+    const firebaseAuthToken = firebaseAuthResult.idToken;
+    podcastDataUrl = `${process.env.FIREBASE_URL}/podcasts.json?auth=${firebaseAuthToken}`;
+  }
+
+  await fetch(podcastDataUrl, {
     method: 'get'
   }).then((resp) => resp.json()).then(function(data) {
-    for (let item in data.podcasts) {
-      let pc = data.podcasts[item];
+    let keyArray = Object.keys(data);
+    let newDataArray =[];
+    for (let i=0; i<keyArray.length; i++) {
+      let pc = data[keyArray[i]];
       urlArray.push({
-        url: '/podcast/' + slugify(pc.name) + '/' + Buffer.from(pc.feedUrl).toString('base64'),
-        title: pc.name,
+        url: '/podcast/' + slugify(pc.title) + '/' + Buffer.from(pc.feedUrl).toString('base64'),
+        title: pc.title,
         subtitle: 'Podcast | 1tuner',
-        description: 'Listen now to ' + pc.name + ' at 1tuner.com',
-        logo: pc.artworkUrl,
+        description: 'Listen now to ' + pc.title + ' at 1tuner.com',
+        logo: pc.logo,
         data: pc
       });
+      newDataArray.push(pc)
     }
+    // urlArray.push({
+    //   url: '/assets/data/podcasts.json',
+    //   data: {
+    //       podcasts = newDataArray
+    //     }
+    // });
+    // const data = JSON.stringify({
+    //   podcasts = newDataArray
+    // });
+    // console.log(data);
+    // fs.writeFileSync('./assets/data/podcasts.json', data);
   });
   return urlArray;
 };
