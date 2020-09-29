@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import style from './style';
+import { route } from 'preact-router';
 import { Link } from 'preact-router/match';
 import Loader from '../../components/loader';
 import Header from '../../components/header';
@@ -71,8 +72,8 @@ export default class Podcast extends Component {
 		}
 		if (loadXml) {
 			this.loadXmlFeed(podcastInfo, AFeedUrl, 'https://dented-radiosaurus.glitch.me/?url=' + AFeedUrl);
-		}
-		return podcastInfo;
+    }
+    return podcastInfo;
 	}
 
 	loadXmlFeed = (APodcastInfo, AFeedUrl, AAlternativeFeedUrl) => {
@@ -93,6 +94,9 @@ export default class Podcast extends Component {
 			podcastInfo.description	= description;
 			podcastInfo.logo = self.getArtworkUrl(xmlDoc);
 			podcastInfo.episodes = self.getFeedEpisodeArray(podcastInfo, xmlDoc);
+			if (self.props.name === 'by-url' && self.props.feedcode && podcastInfo.name) {
+				route('/podcast/' + slugify(podcastInfo.name) + '/' + self.props.feedcode);
+			}
 			self.setState({
 				podcastInfo: podcastInfo,
 				isLoading: false

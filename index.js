@@ -77,7 +77,8 @@ export default class App extends Component {
     let stationList = AppVersion !== userVersion ? await this.loadStationList() : this.state.stationList || await get('station-list') || await this.loadStationList();
     stationList = this.removeOldStationsFromList(stationList);
     let stationPodcastList = AppVersion !== userVersion ? await this.loadStationPodcastList() : await get('station-podcast-list') || await this.loadStationPodcastList();
-		let listeningMode = await get('lm') || 0;
+    this.updatePodcastImageProperties(stationPodcastList);
+    let listeningMode = await get('lm') || 0;
 
 		let station = await get('station');
 		let legacyPlaylist = await get('planning');
@@ -85,7 +86,8 @@ export default class App extends Component {
 			del('planning');
 		}
 		let playlist = legacyPlaylist || await get('playlist');
-		let podcastList = await get('podcast-list');
+    let podcastList = await get('podcast-list');
+    this.updatePodcastImageProperties(podcastList);
     let lastStationList = await get('last-station-list') || this.getLastStationList(stationList);
     lastStationList = this.removeOldStationsFromList(lastStationList);
 		let featured = this.loadFeatured(stationList);
@@ -663,6 +665,17 @@ export default class App extends Component {
 				this.saveLocal();
 			});
 		}
+  }
+
+  updatePodcastImageProperties = (APodcastList) => {
+    for(let i=0;i<APodcastList.length;i++) {
+      if(!APodcastList[i].logo) {
+        APodcastList[i].logo = APodcastList[i].artworkUrl;
+      }
+      if(!APodcastList[i].logo600 && APodcastList[i].artworkUrl600) {
+        APodcastList[i].logo600 = APodcastList[i].artworkUrl600;
+      }
+    }
   }
 
   removeOldStationsFromList = (AStationList) => {

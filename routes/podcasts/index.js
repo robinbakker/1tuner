@@ -1,8 +1,9 @@
 import { h, Component } from 'preact';
+import { Link } from 'preact-router/match';
 import style from './style';
 import PodcastList from '../../components/podcastlist';
 import Header from '../../components/header';
-import { getUrlQueryParameterByName, setDocumentMetaTags } from '../../utils/misc';
+import { isValidUrl, getUrlQueryParameterByName, setDocumentMetaTags } from '../../utils/misc';
 
 export default class Podcasts extends Component {
 	constructor(props) {
@@ -10,7 +11,8 @@ export default class Podcasts extends Component {
 		this.state = {
       docTitle: 'Podcasts',
       docDescription: 'Find podcasts at 1tuner.com',
-			searchQuery: null,
+      searchQuery: null,
+      searchIsUrl: false,
 			searchTimer: 0,
 			lastSearchResult: null,
 			podcastList: null,
@@ -33,9 +35,11 @@ export default class Podcasts extends Component {
 					break;
 				}
 			}
-		}
+    }
+    let q = searchQuery || this.props.searchQuery;
 		this.setState({
-			searchQuery: searchQuery || this.props.searchQuery,
+      searchQuery: q,
+      searchIsUrl: isValidUrl(q),
 			lastSearchResult: this.props.lastSearchResult,
 			podcastList: this.props.podcastList,
 			featuredPodcastList: featuredPodcastList
@@ -65,7 +69,11 @@ export default class Podcasts extends Component {
 	findPodcasts = () => {
 		if (!this.state.searchQuery) {
 			return;
-		}
+    }
+    if (isValidUrl(this.state.searchQuery)) {
+      this.setState({searchIsUrl:true});
+      return;
+    }
     let self = this;
     if (this.props.settings && this.props.settings.experimental && this.props.settings.experimental.podcastindex) {
       fetch('https://podcastindex.robinbakker.workers.dev', {
@@ -74,7 +82,7 @@ export default class Podcasts extends Component {
       }).then((resp) => resp.json())
       .then(function(data) {
         if (!data || !data.feeds || !data.feeds.length) {
-          self.setState({ errorMessage: 'Sorry, nothing found for "' + self.state.searchQuery + '"... 😥 Maybe you can try to change your search query?' })
+          self.setState({searchIsUrl: false, errorMessage: 'Sorry, nothing found for "' + self.state.searchQuery + '"... 😥 Maybe you can try to change your search query?' })
           return;
         }
         let newState = [];
@@ -89,16 +97,16 @@ export default class Podcasts extends Component {
           });
         }
         self.props.latestPodcastSearchResult(self.state.searchQuery, newState);
-        self.setState({lastSearchResult: newState, errorMessage: null})
+        self.setState({searchIsUrl: false, lastSearchResult: newState, errorMessage: null})
       }).catch(err => {
-        self.setState({lastSearchResult: null, errorMessage:'🎇 BANG! - That\'s an error... Sorry! Please try again or rephrase your search query.'})
+        self.setState({searchIsUrl: false, lastSearchResult: null, errorMessage:'🎇 BANG! - That\'s an error... Sorry! Please try again or rephrase your search query.'})
         console.log(err);
       });
     } else {
       fetch(`https://itunes.apple.com/search?term=${this.state.searchQuery}&media=podcast`).then((resp) => resp.json())
       .then(function(data) {
         if (!data || !data.results ||  !data.results.length) {
-          self.setState({ errorMessage: 'Sorry, nothing found for "' + self.state.searchQuery + '"... 😥 Maybe you can try to change your search query?' })
+          self.setState({searchIsUrl: false, errorMessage: 'Sorry, nothing found for "' + self.state.searchQuery + '"... 😥 Maybe you can try to change your search query?' })
           return;
         }
         let newState = [];
@@ -113,9 +121,9 @@ export default class Podcasts extends Component {
           });
         }
         self.props.latestPodcastSearchResult(self.state.searchQuery, newState);
-        self.setState({lastSearchResult: newState, errorMessage: null})
+        self.setState({searchIsUrl: false, lastSearchResult: newState, errorMessage: null})
       }).catch(err => {
-        self.setState({lastSearchResult: null, errorMessage:'🎇 BANG! - That\'s an error... Sorry! Please try again or rephrase your search query.'})
+        self.setState({searchIsUrl: false, lastSearchResult: null, errorMessage:'🎇 BANG! - That\'s an error... Sorry! Please try again or rephrase your search query.'})
         console.log(err);
       });
     }
@@ -125,7 +133,7 @@ export default class Podcasts extends Component {
 		let timer = this.state.searchTimer;
 		clearTimeout(timer);
 		this.props.latestPodcastSearchResult('', null);
-		this.setState({searchQuery:'', lastSearchResult: null, errorMessage: null, searchTimer:0});
+		this.setState({searchIsUrl: false, searchQuery:'', lastSearchResult: null, errorMessage: null, searchTimer:0});
 	}
 
 	setSearchInputBlur = () => {
@@ -145,9 +153,9 @@ export default class Podcasts extends Component {
 			e.preventDefault();
 		}
 		return false;
-	}
+  }
 
-	render({},{docTitle, docDescription, searchQuery, lastSearchResult, errorMessage, podcastList, featuredPodcastList}) {
+	render({},{docTitle, docDescription, searchQuery, searchIsUrl, lastSearchResult, errorMessage, podcastList, featuredPodcastList}) {
 		return (
 			<div class={'page-container'}>
 			<Header title={docTitle} sharetext={this.state.docDescription} />
@@ -159,8 +167,11 @@ export default class Podcasts extends Component {
 					<button class={'btn-search-reset'} onClick={this.resetSearchQuery.bind(this)} type="reset">Reset</button>
 				</form>
 				<div>
-				{searchQuery && searchQuery.length ?
-					<PodcastList podcastList={lastSearchResult} errorMessage={errorMessage} limitCount={100} />
+        {searchQuery && searchQuery.length ?
+          <div>
+            {searchIsUrl ? <p>🔗 This seems like a URL... <a href={'/podcast/by-url/' + btoa(searchQuery)} class="btn">Load podcast by URL?</a></p> : null }
+          <PodcastList podcastList={lastSearchResult} errorMessage={errorMessage} limitCount={100} />
+        </div>
 					:
 					null
 				}

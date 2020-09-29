@@ -139,17 +139,6 @@ module.exports = async function() {
       });
       newDataArray.push(pc)
     }
-    // urlArray.push({
-    //   url: '/assets/data/podcasts.json',
-    //   data: {
-    //       podcasts = newDataArray
-    //     }
-    // });
-    // const data = JSON.stringify({
-    //   podcasts = newDataArray
-    // });
-    // console.log(data);
-    // fs.writeFileSync('./assets/data/podcasts.json', data);
   });
   return urlArray;
 };
