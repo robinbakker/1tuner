@@ -668,6 +668,7 @@ export default class App extends Component {
   }
 
   updatePodcastImageProperties = (APodcastList) => {
+    if(!APodcastList) return;
     for(let i=0;i<APodcastList.length;i++) {
       if(!APodcastList[i].logo) {
         APodcastList[i].logo = APodcastList[i].artworkUrl;
