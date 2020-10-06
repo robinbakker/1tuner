@@ -1523,5 +1523,19 @@
       }
     ],
     "website": "https://www.classic.nl"
+  },
+  "eftelingkidsradio": {
+    "displayorder": 92,
+    "genres": ["kids"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/EftelingRadio",
+    "name": "Efteling Kids Radio",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "https://ice.cr5.streamzilla.xlcdn.com:8000/sz=efteling=hdstream"
+      }
+    ],
+    "website": "https://www.efteling.com/nl/kids/radio"
   }
 }
