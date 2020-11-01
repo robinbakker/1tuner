@@ -100,5 +100,8 @@
   },
   "kids" : {
     "name" : "Kids"
+  },
+  "indie" : {
+    "name" : "Indie"
   }
 }

@@ -1,5 +1,5 @@
 main.settings {
-	padding: 0 1.5rem 10rem 1.5rem;
+	padding: 0 1.5rem 13rem 1.5rem;
 	background-color: var(--background-color);
 }
 .smallish {
@@ -23,5 +23,5 @@ main.settings {
 	margin-top: 1.2rem;
 }
 .selecttheme label {
-	margin: 0;	
+	margin: 0;
 }

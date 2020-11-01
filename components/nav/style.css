@@ -105,6 +105,7 @@ img.userphoto {
     top: 0;
     bottom: auto;
     padding-bottom: 0;
+    z-index: 100;
 	}
 	.nav-list {
 		margin-top:1.7rem;

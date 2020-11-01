@@ -4,20 +4,20 @@ import AudioPlayerSource from '../audioplayersource';
 const RECONNECT_TIMEOUT = 1000;
 const RECONNECT_MAXTRIES = 120;
 
-export default class AudioPlayer extends Component {  
+export default class AudioPlayer extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       isPlaying: false,
       promiseIsPlaying:false,
       mediaid: '',
       errorMessage: null,
-      srcItems:[],
-      sources:[],
+      srcItems: [],
+      sources: [],
       callbackId: -1,
       reconnectTimerWorker: null,
-      reconnectTriesCount:0,
+      reconnectTriesCount: 0,
       usePause: false,
       isCasting: false
     };
@@ -53,53 +53,77 @@ export default class AudioPlayer extends Component {
         if (AUsePause && ASecondsElapsed) {
           resumeAtSeconds = ASecondsElapsed;
         }
-        self.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds); 
-      });      
+        self.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds);
+      });
     } else {
       if (this.state.usePause != AUsePause) {
         this.setState({usePause: AUsePause}, () => {
-          self.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds); 
+          self.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds);
         });
       } else {
-        self.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds); 
+        self.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds);
       }
     }
   }
 
-  seekAudio = (ASeconds) => {
+  seekAudio = (ASeconds, AIsElapsedTime) => {
     if (!ASeconds) {
       return;
     }
     if (this.state.isCasting) {
-      let request = new chrome.cast.media.SeekRequest();
-      if (request) {
-        request.currentTime = AResumeAtSeconds;
-        request.resumeState = chrome.cast.media.ResumeState.PLAYBACK_START;
-        session.media[0].seek(request,
-        ()=>{console.log('seek success')},
-        ()=>{console.log('seek error')});
+      // let request = new chrome.cast.media.SeekRequest();
+      // if (request) {
+      //   if (AIsElapsedTime) {
+      //     request.currentTime = ASeconds;
+      //   } else {
+      //     request.currentTime += ASeconds;
+      //   }
+      //   request.resumeState = chrome.cast.media.ResumeState.PLAYBACK_START;
+      //   let castSession = window && !(typeof cast === 'undefined') ? cast.framework.CastContext.getInstance().getCurrentSession() : null;
+      //   if (castSession) {
+      //     castSession.media[0].seek(request,
+      //     ()=>{console.log('seek success')},
+      //     ()=>{console.log('seek error')});
+      //   }
+      // }
+      var player = new cast.framework.RemotePlayer();
+      var controller = new cast.framework.RemotePlayerController(player);
+      debugger;
+      if (controller) {
+        if (AIsElapsedTime) {
+          player.currentTime = ASeconds;
+        } else {
+          player.currentTime += ASeconds;
+        }
+        controller.seek();
       }
     } else {
       let audioPL = document.getElementById('audioPlay');
-      if (ASeconds < 0) {
-        ASeconds = Math.abs(ASeconds);
-        if (audioPL.currentTime<=ASeconds) {
-          audioPL.currentTime = 0;
-        } else {
-          audioPL.currentTime -= ASeconds;
+      if (AIsElapsedTime) {
+        if (ASeconds<audioPL) {
+          audioPL.currentTime = ASeconds;
         }
       } else {
-        if (audioPL.currentTime >= audioPL.duration - ASeconds) {
-          audioPL.currentTime = audioPL.duration-.1;
+        if (ASeconds < 0) {
+          ASeconds = Math.abs(ASeconds);
+          if (audioPL.currentTime<=ASeconds) {
+            audioPL.currentTime = 0;
+          } else {
+            audioPL.currentTime -= ASeconds;
+          }
         } else {
-          audioPL.currentTime += ASeconds;
+          if (audioPL.currentTime >= audioPL.duration - ASeconds) {
+            audioPL.currentTime = audioPL.duration-.1;
+          } else {
+            audioPL.currentTime += ASeconds;
+          }
         }
       }
     }
   }
-  
-  componentDidMount() {	
-    this.props.onRef(this);	
+
+  componentDidMount() {
+    this.props.onRef(this);
     var self = this;
     if (typeof window !== 'undefined') {
       window.addEventListener('offline', function() { self.handleAudioError(); });
@@ -107,6 +131,10 @@ export default class AudioPlayer extends Component {
   }
 
   setReconnectTimer = () => {
+    if (this.state.usePause) {
+      this.killReconnectTimer();
+      return; // We don't want to reconnect in case of a podcast episode (for now)
+    }
     let thisTimerWorker = this.state.reconnectTimerWorker;
     if (thisTimerWorker) {
       return; //Worker is running, return
@@ -136,7 +164,7 @@ export default class AudioPlayer extends Component {
     let triesCount = this.state.reconnectTriesCount + 1;
     if (triesCount >= RECONNECT_MAXTRIES) {
       self.killReconnectTimer();
-      self.checkAudio(false);      
+      self.checkAudio(false);
     } else {
       this.setState({
         reconnectTriesCount: triesCount
@@ -153,9 +181,9 @@ export default class AudioPlayer extends Component {
         reconnectTimerWorker: null,
         reconnectTriesCount: 0
       });
-    }    
+    }
   }
-  
+
   checkAudio = (AIsPlaying, AMediaPlayingID, AResumeAtSeconds) => {
     let mediaPlayingID = AMediaPlayingID ? AMediaPlayingID : this.props.mediaid;
     let isSameMedia = this.state.mediaid == mediaPlayingID;
@@ -180,7 +208,6 @@ export default class AudioPlayer extends Component {
     let isOffline = ('onLine' in navigator && !navigator.onLine);
     if (isOffline) {
       // Makes no sense to checkAudio/reconnect now... Try again later
-      //console.log('checkAudio: offline, try again later');
       this.setReconnectTimer();
       this.setState({
         errorMessage: {
@@ -190,7 +217,7 @@ export default class AudioPlayer extends Component {
         }
       }, () => {
         self.props.hasError(self.state.errorMessage);
-      });      
+      });
       return;
     }
     this.killReconnectTimer();
@@ -234,19 +261,19 @@ export default class AudioPlayer extends Component {
       audioPL.removeAttribute('src');
       audioPL.load();
       if (AResumeAtSeconds) {
-        if (isCasting) {
-          let castSession = window && !(typeof cast === 'undefined') ? cast.framework.CastContext.getInstance().getCurrentSession() : null;
-          var request = new chrome.cast.media.SeekRequest();
-          if (request && castSession) {
-            request.currentTime = AResumeAtSeconds;
-            request.resumeState = chrome.cast.media.ResumeState.PLAYBACK_START;            
-            castSession.media[0].seek(request,
-            ()=>{console.log("seek success")},
-            ()=>{console.log("seek error")});
-          }
-        } else {
-          this.seekAudio(AResumeAtSeconds);
-        }
+        // if (isCasting) {
+        //   let castSession = window && !(typeof cast === 'undefined') ? cast.framework.CastContext.getInstance().getCurrentSession() : null;
+        //   var request = new chrome.cast.media.SeekRequest();
+        //   if (request && castSession) {
+        //     request.currentTime = AResumeAtSeconds;
+        //     request.resumeState = chrome.cast.media.ResumeState.PLAYBACK_START;
+        //     castSession.media[0].seek(request,
+        //     ()=>{console.log('seek success')},
+        //     ()=>{console.log('seek error')});
+        //   }
+        // } else {
+          this.seekAudio(AResumeAtSeconds, true);
+        //}
       }
     } else {
       this.handleLoadedData();
@@ -287,20 +314,20 @@ export default class AudioPlayer extends Component {
         });
       }
     }
-    this.startMediaSession();    
+    this.startMediaSession();
   }
 
   startMediaSession = () =>  {
     if ('mediaSession' in navigator) {
       let logoSource = {};
       let mLogo = this.props.medialogo;
-      if (typeof mLogo === 'undefined' || (typeof mLogo !== 'undefined' && mLogo.indexOf('data')==0)) { 
+      if (typeof mLogo === 'undefined' || (typeof mLogo !== 'undefined' && mLogo.indexOf('data')==0)) {
         logoSource = { src: 'https://1tuner.com/assets/icons/icon-512x512.png', type: 'image/png' };
       } else {
         let imgType = 'image/png';
         if (mLogo.indexOf('.svg') > 0) {
           imgType = 'image/svg+xml';
-        } else if (mLogo.indexOf('.jpg')>0) {
+        } else if (mLogo.indexOf('.jpg') > 0) {
           imgType = 'image/jpg';
         }
         logoSource = { src: mLogo,  type: imgType };
@@ -357,6 +384,7 @@ export default class AudioPlayer extends Component {
           message: 'An unknown source error occured.',
           source: '' //this.props.source
         };
+        console.log('handleAudioError: unknown error 1');
       }
     } else {
       switch (e.target.error.code) {
@@ -364,42 +392,45 @@ export default class AudioPlayer extends Component {
           Error = {
             code: e.target.error.code,
             message: 'You aborted the playback?',
-            source: '' //this.props.source
+            source: ''
           };
+          console.log(`handleAudioError: ${e.target.error.code}`);
           break;
         case e.target.error.MEDIA_ERR_NETWORK:
           Error = {
             code: e.target.error.code,
-            message:'A network error caused the audio download to fail.',
-            source: '' //this.props.source 
+            message: 'A network error caused the audio download to fail.',
+            source: ''
           };
           this.setReconnectTimer();
-          console.log('handleAudioError: network error, try again later');
+          console.log(`handleAudioError: ${e.target.error.code}`);
           break;
         case e.target.error.MEDIA_ERR_DECODE:
         case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
           Error = {
             code: e.target.error.code,
-            message:'The audio could not be played. Will try another source.',
-            source: '' //this.props.source 
+            message: 'The audio could not be played. Will try another source.',
+            source: ''
           };
+          console.log(`handleAudioError: ${e.target.error.code}`);
           break;
         default:
           Error = {
             code: e.target.error.code,
-            message:'An unknown error occurred.',
-            source: '' //this.props.source 
+            message: 'An unknown error occurred.',
+            source: ''
           };
+          console.log('handleAudioError: unknown error 2');
           break;
       }
     }
     if (Error != null) {
       this.setState({
-        isPlaying: Error && Error.code == 1000, // try playing state for offline mode 
+        isPlaying: Error && Error.code == 1000, // try playing state for offline mode
         errorMessage: Error
       }, () => {
         this.props.hasError(Error);
-      });      
+      });
     }
   }
 

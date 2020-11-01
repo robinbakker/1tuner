@@ -69,7 +69,7 @@ export default class FilterPanel extends Component {
 			this.props.setLanguageList(resultArray);
 		}
 	}
-	
+
 	toggleFilterPanel = (e) => {
 		if (e && e.target && e.target.id=='filtercontainer') {
 			if (this.props.showFilterPanel) {
@@ -84,7 +84,7 @@ export default class FilterPanel extends Component {
 			let allLanguagesSelected = this.props.languageList && langSelectedCount === this.props.languageList.length;
 			return (
 				<div id="filtercontainer" onClick={this.toggleFilterPanel.bind(this)} class={style['filter-panel-container'] + ' ' + (this.props.showFilterPanel ? style['filter-panel-container--show'] : '')}>
-				<div class={style['filter-panel'] + ' ' + (this.props.showFilterPanel ? style['filter-panel--show'] : '')}>
+				<div class={style['filter-panel'] + ' panel-end ' + (this.props.showFilterPanel ? style['filter-panel--show'] : '')}>
 					<div class={style['filter-panel-item']}>
 						<h4 class={style['filter-panel-item__title']}>Regions</h4>
 						<div class={style['filter-panel-item__content']}>

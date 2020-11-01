@@ -24,7 +24,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-	text-shadow: 0 .1rem .1rem rgba(0,0,0,0.1);
 }
 .header-btn {
 	display: block;

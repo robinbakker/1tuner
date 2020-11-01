@@ -2,7 +2,7 @@
 	padding: 0 1.5rem .5rem;
 }
 main.podcast {
-	padding: 0 1.5rem 10rem 1.5rem;
+	padding: 0 1.5rem 11rem 1.5rem;
 	background-color: var(--background-color);
 	position: relative;
 	display: flex;
@@ -80,7 +80,7 @@ img.artwork {
 }
 .end h1 {
 	line-height: 1.2;
-	margin-bottom: 1rem; 
+	margin-bottom: 1rem;
 }
 .end h1 small {
 	margin-top: .2rem;
@@ -100,16 +100,16 @@ img.artwork {
 	background-color: rgba(0,0,0,.05);
 }
 button.btn--play-episode {
-	height: 1.5rem;
-	width: 1.5rem;
+	height: 1.5rem !important;
+	width: 1.5rem !important;
 	padding: 0;
 	vertical-align: bottom;
-	margin-right: .4rem;
+	margin-right: .4rem !important;
 	cursor: pointer;
 }
 button.btn--play-episode:after {
-	top:.4rem;
-	left:.5rem;
+	top:.4rem !important;
+  left:.5rem !important;
 }
 
 button.btnreload {
@@ -134,7 +134,7 @@ button.btnreload {
 }
 .reloadicon svg {
 	width: 100%;
-	height: 100%;		
+	height: 100%;
 }
 .reloadicon svg path {
 	fill: #fff;

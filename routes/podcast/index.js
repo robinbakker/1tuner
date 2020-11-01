@@ -4,7 +4,7 @@ import { route } from 'preact-router';
 import { Link } from 'preact-router/match';
 import Loader from '../../components/loader';
 import Header from '../../components/header';
-import { isValidUrl, getUrlQueryParameterByName, removeHtml, getTimeFromSeconds, getTime, getFlagEmojiFromLanguage, setDocumentMetaTags, slugify } from '../../utils/misc';
+import { isValidUrl, getUrlQueryParameterByName, removeHtml, getTimeFromSeconds, getTime, getSecondsFromTime, getFlagEmojiFromLanguage, setDocumentMetaTags, slugify } from '../../utils/misc';
 
 export default class Podcast extends Component {
 	constructor(props) {
@@ -151,7 +151,8 @@ export default class Podcast extends Component {
 					url: encl[0].getAttribute('url'),
 					description: item.getElementsByTagName('itunes:subtitle')[0] ? item.getElementsByTagName('itunes:subtitle')[0].textContent : item.getElementsByTagName('description')[0].textContent,
 					pubDate: new Date(item.getElementsByTagName('pubDate')[0].childNodes[0].nodeValue),
-					duration: durationElm && durationElm.length ? this.getFeedEpisodeDuration(item.getElementsByTagName(durationKey)[0].innerHTML.split(':')) : ''
+          duration: durationElm && durationElm.length ? this.getFeedEpisodeDuration(durationElm[0].innerHTML.split(':')) : '',
+          durationSeconds: durationElm && durationElm.length ? getSecondsFromTime(durationElm[0].innerHTML) : 0
 				};
 				if(APodcastInfo && APodcastInfo.episodes) {
 					let oldEp = APodcastInfo.episodes.filter(ep => ep.secondsElapsed && ep.url === epItem.url);
@@ -167,10 +168,10 @@ export default class Podcast extends Component {
 	}
 
 	getFeedEpisodeDuration = (ADurationArr) => {
-		if(!ADurationArr || !ADurationArr.length) {
+		if (!ADurationArr || !ADurationArr.length) {
 			return '';
 		}
-		if(ADurationArr.length>=2) {
+		if (ADurationArr.length>=2) {
 			return getTime(ADurationArr[0], ADurationArr[1]);
 		} else {
 			return getTimeFromSeconds(ADurationArr[0] / 60);

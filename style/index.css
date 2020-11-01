@@ -10,9 +10,10 @@
 	--nav-background-color: #fff;
 	--nav-link-color: rgba(0,0,0,.75);
 	--preset-list-button-bg-color: #fff;
-	--header-background-color: rgb(231, 142, 0);
-	--header-background: radial-gradient(circle at bottom left, rgba(255,157,0,1) 0%, rgb(209, 129, 0) 100%);
-	--sub-header-background-color: rgba(122,122,122,.9);
+  --header-background-color: rgba(255, 255, 255, .9);
+  --header-text-color: var(--text-color);
+  --header-background: radial-gradient(circle at bottom left, rgba(255,157,0,1) 0%, rgb(209, 129, 0) 100%);
+  --sub-header-background-color: rgba(122,122,122,.9);
 	--footer-background-color:rgba(170,170,170,.75);
 	--footer-text-color: #fff;
 	--form-border-color: #cacaca;
@@ -36,8 +37,10 @@
 	--nav-background-color--dark-theme: #222;
 	--nav-link-color--dark-theme: rgba(255,255,255,.75);
 	--preset-list-button-bg-color--dark-theme: rgba(255,255,255,.1);
-	--sub-header-background-color--dark-theme: rgba(35, 35, 35, .9);
-	--footer-background-color--dark-theme: rgba(44,44,44,.9);
+  --header-background-color--dark-theme: rgba(44, 44, 44, .9);
+  --header-text-color--dark-theme: var(--text-color--dark-theme);
+  --sub-header-background-color--dark-theme: rgba(35, 35, 35, .9);
+	--footer-background-color--dark-theme: rgba(44, 44, 44, .9);
 	--form-border-color--dark-theme: #4e4e4e;
 	--filter-panel-bg-color--dark-theme: rgb(40, 40, 40);
 	--scrollbar-thumb-color--dark-theme: rgba(255,255,255,.1);
@@ -67,7 +70,9 @@
 	--nav-background-color: var(--nav-background-color--dark-theme);
 	--nav-link-color: var(--nav-link-color--dark-theme);
 	--preset-list-button-bg-color: var(--preset-list-button-bg-color--dark-theme);
-	--sub-header-background-color: var(--sub-header-background-color--dark-theme);
+  --header-background-color: var(--header-background-color--dark-theme);
+  --header-text-color: var(--header-text-color--dark-theme);
+  --sub-header-background-color: var(--sub-header-background-color--dark-theme);
 	--footer-background-color: var(--footer-background-color--dark-theme);
 	--form-border-color: var(--form-border-color--dark-theme);
 	--filter-panel-bg-color: var(--filter-panel-bg-color--dark-theme);
@@ -92,7 +97,9 @@
 		--nav-background-color: var(--nav-background-color--dark-theme);
 		--nav-link-color: var(--nav-link-color--dark-theme);
 		--preset-list-button-bg-color: var(--preset-list-button-bg-color--dark-theme);
-		--sub-header-background-color: var(--sub-header-background-color--dark-theme);
+    --header-background-color: var(--header-background-color--dark-theme);
+    --header-text-color: var(--header-text-color--dark-theme);
+    --sub-header-background-color: var(--sub-header-background-color--dark-theme);
 		--footer-background-color: var(--footer-background-color--dark-theme);
 		--form-border-color: var(--form-border-color--dark-theme);
 		--filter-panel-bg-color: var(--filter-panel-bg-color--dark-theme);
@@ -122,6 +129,10 @@ html, body {
 
 * {
 	box-sizing: border-box;
+}
+
+.has-expanded-footer {
+  overflow: hidden;
 }
 
 .search-focus #app > nav,
@@ -748,9 +759,10 @@ h1.main-title {
 }
 .has-header .app-header {
 	background-color: var(--header-background-color);
-	box-shadow: 0 0.2rem 0.5rem rgba(0,0,0,.1);
-	color: #fff;
-	fill: #fff;
+  box-shadow: 0 .2rem .5rem rgba(0,0,0,.1);
+  backdrop-filter: blur(.1rem);
+	color: var(--header-text-color);
+	fill: var(--header-text-color);
 }
 .app-header h1 {
 	opacity: 0;
@@ -762,9 +774,11 @@ h1.main-title {
 .app-header button {
 	transition: fill .2s ease-in-out;
 }
-.app-header--inverted button,
 .has-header .app-header button {
-	fill: #fff;
+	fill: var(--header-text-color);
+}
+.app-header--inverted button {
+  fill: #fff;
 }
 
 .cast-button {
@@ -851,7 +865,19 @@ h1.main-title {
 @media (min-width: 768px) {
 	body {
 		padding-left: 4.4rem;
-	}
+  }
+  .has-expanded-footer {
+    overflow: initial;
+  }
+  .has-expanded-footer #app {
+    padding-right: 22rem;
+  }
+  .has-expanded-footer .app-header {
+    width: calc(100% - 4.4rem - 22rem);
+  }
+  .has-expanded-footer .panel-end {
+    right: 22rem;
+  }
 	.search-focus #app > nav,
 	.search-focus #app > footer {
 		opacity: 1;

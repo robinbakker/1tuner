@@ -1229,7 +1229,7 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kinkdna","kink-nl","kink-distortion"],
+    "related": ["kinkdna","kink-nl","kink-indie","kink-distortion"],
     "podcasts": [
       "https://api.kink.nl/rss/dailykink",
       "https://api.kink.nl/rss/oeverloos"
@@ -1267,7 +1267,7 @@
     "displayorder": 77,
     "genres": ["alternative", "pop", "rock", "oldies"],
     "language": "nl",
-    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/kinkpuntnl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/nuopKINKDNA",
     "name": "KINK DNA",
     "streams": [
       {
@@ -1280,19 +1280,10 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kink","kink-nl","kink-distortion"],
+    "related": ["kink","kink-nl","kink-indie","kink-distortion"],
     "podcasts": [
       "https://api.kink.nl/rss/dailykink",
-      "https://api.kink.nl/rss/met-het-oor-op-morgen",
-      "https://api.kink.nl/rss/klub-kink",
-      "https://api.kink.nl/rss/the-heavy-show",
-      "https://api.kink.nl/rss/kink-distortion",
-      "https://api.kink.nl/rss/oeverloos",
-      "https://api.kink.nl/rss/outlaw-41",
-      "https://api.kink.nl/rss/release-rundown",
-      "https://api.kink.nl/rss/release-rundown2",
-      "https://api.kink.nl/rss/oeverloos",
-      "https://api.kink.nl/rss/st-pauls-boutique"
+      "https://api.kink.nl/rss/oeverloos"
     ]
   },
   "kink-distortion": {
@@ -1312,19 +1303,10 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kink","kinkdna","kink-nl"],
+    "related": ["kink","kinkdna","kink-nl","kink-indie"],
     "podcasts": [
-      "https://api.kink.nl/rss/kink-distortion",
       "https://api.kink.nl/rss/dailykink",
-      "https://api.kink.nl/rss/met-het-oor-op-morgen",
-      "https://api.kink.nl/rss/klub-kink",
-      "https://api.kink.nl/rss/the-heavy-show",
-      "https://api.kink.nl/rss/oeverloos",
-      "https://api.kink.nl/rss/outlaw-41",
-      "https://api.kink.nl/rss/release-rundown",
-      "https://api.kink.nl/rss/release-rundown2",
-      "https://api.kink.nl/rss/oeverloos",
-      "https://api.kink.nl/rss/st-pauls-boutique"
+      "https://api.kink.nl/rss/oeverloos"
     ]
   },
   "kink-nl": {
@@ -1344,19 +1326,10 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kink","kinkdna","kink-distortion"],
+    "related": ["kink","kinkdna","kink-indie","kink-distortion"],
     "podcasts": [
-      "https://api.kink.nl/rss/kink-distortion",
       "https://api.kink.nl/rss/dailykink",
-      "https://api.kink.nl/rss/met-het-oor-op-morgen",
-      "https://api.kink.nl/rss/klub-kink",
-      "https://api.kink.nl/rss/the-heavy-show",
-      "https://api.kink.nl/rss/oeverloos",
-      "https://api.kink.nl/rss/outlaw-41",
-      "https://api.kink.nl/rss/release-rundown",
-      "https://api.kink.nl/rss/release-rundown2",
-      "https://api.kink.nl/rss/oeverloos",
-      "https://api.kink.nl/rss/st-pauls-boutique"
+      "https://api.kink.nl/rss/oeverloos"
     ]
   },
   "lindaradio": {
@@ -1537,5 +1510,28 @@
       }
     ],
     "website": "https://www.efteling.com/nl/kids/radio"
+  },
+  "kink-indie": {
+    "displayorder": 93,
+    "genres": ["alternative", "pop", "rock", "indie"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/nuopKINKindie",
+    "name": "KINK INDIE",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINKINDIEAAC.aac"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINKINDIE.mp3"
+      }
+    ],
+    "website": "https://kink.nl",
+    "related": ["kink","kinkdna","kink-nl","kink-distortion"],
+    "podcasts": [
+      "https://api.kink.nl/rss/dailykink",
+      "https://api.kink.nl/rss/oeverloos"
+    ]
   }
 }

@@ -1,66 +1,98 @@
-export function getColorString(AString) {
-  if (!AString) {
+export function getColorString(text) {
+  if (!text) {
     return 'rgba(50,50,50,.75)';
   }
-  let idNrTxt = AString.split('').map(c => c.charCodeAt()).reduce((v1, v2) => v1 + v2)+'';
+  let idNrTxt = text.split('').map(c => c.charCodeAt()).reduce((v1, v2) => v1 + v2)+'';
   let offset = 140;
   let nr1 = parseInt(idNrTxt.substr(0,2));
   let nr2 = parseInt(idNrTxt.substr(-2));
-  let r=(offset+nr1-90), g=(offset-nr1+AString.length),b=(offset+nr2);
+  let r=(offset+nr1-90), g=(offset-nr1+text.length),b=(offset+nr2);
   return 'rgba('+r+','+g+','+b+',.75)';
 }
 
-export function getUrlQueryParameterByName(AName, AUrl) {
-  if(!AUrl || !AUrl.length) return;
-  AName = AName.replace(/[\[\]]/g, "\\$&");
-  if (AUrl[0]!='?' && AUrl[0]!='&') {
-    AUrl = '?' + AUrl;
+export function getUrlQueryParameterByName(name, url) {
+  if(!url || !url.length) return;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  if (url[0]!='?' && url[0]!='&') {
+    url = '?' + url;
   }
-  var regex = new RegExp("[?&]" + AName + "(=([^&#]*)|&|#|$)"),
-      results = regex.exec(AUrl);
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
   if (!results) return null;
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-export function isValidUrl(AStr) {
+export function isValidUrl(url) {
   var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
     '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
     '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
     '(\\:\\d+)?(\\/[-a-z\\d%_.~:+]*)*'+ // port and path
     '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-  return !!pattern.test(AStr);
+  return !!pattern.test(url);
 }
 
-export function removeHtml(AString) {
-  if (!AString) return null;
+export function removeHtml(text) {
+  if (!text) return null;
   var temporalDivElement = document.createElement('div');
-  temporalDivElement.innerHTML = AString;
+  temporalDivElement.innerHTML = text;
   return temporalDivElement.textContent || temporalDivElement.innerText || '';
 }
 
-export function getTime(APart1, APart2) {
-  if (!APart2) {
-    APart2 = 0;
-  }
-  APart1 += '';
-  APart2 += '';
-  return `${APart1.padStart(2,'0')}:${APart2.padStart(2,'0')}`
+export function getTime(part1, part2) {
+  if (!part2) part2 = 0;
+  part1 += '';
+  part2 += '';
+  return `${part1.padStart(2,'0')}:${part2.padStart(2,'0')}`
 }
 
-export function getTimeFromSeconds(ASeconds) {
-  if (!ASeconds) {
+export function getTimeFromSeconds(secs) {
+  if (!secs) {
     return getTime(0, 0);
   }
-  return getTime(Math.floor(ASeconds/60), Math.floor(ASeconds%60));
+  return getTime(Math.floor(secs/60), Math.floor(secs%60));
+}
+export function getSecondsFromTime(timeString) {
+  if (!timeString) return 0;
+  let partsArray = timeString.split(':');
+  if (partsArray.length==1) {
+    if(!isNaN(partsArray[0])) { // assume just seconds
+      return parseInt(partsArray[0]);
+    }
+    return 0;
+  }
+  let secs = 0;
+  if (partsArray.length==2) { // assume minutes:seconds
+    if(!isNaN(partsArray[0])) {
+      let mins = parseInt(partsArray[0]);
+      secs = mins > 0 ? mins*60 : 0;
+    }
+    if(!isNaN(partsArray[1])) {
+      secs += parseInt(partsArray[1]);
+    }
+    return secs;
+  }
+  if (partsArray.length==3) { // assume hours:minutes:seconds
+    if(!isNaN(partsArray[0])) {
+      let hrs = parseInt(partsArray[0]);
+      secs = hrs > 0 ? hrs*3600 : 0;
+    }
+    if(!isNaN(partsArray[1])) {
+      let mins = parseInt(partsArray[1]);
+      secs = mins > 0 ? mins*60 : 0;
+    }
+    if(!isNaN(partsArray[2])) {
+      secs += parseInt(partsArray[1]);
+    }
+    return secs;
+  }
+  return 0;
 }
 
-export function getFlagEmojiFromLanguage(ALanguageCode) {
-  let code = ALanguageCode;
-  if (!code) {
-    return '';
-  }
+export function getFlagEmojiFromLanguage(languageCode) {
+  let code = languageCode;
+  if (!code) return '';
   if (code.indexOf('-') != -1) {
     code = code.split('-')[1];
   }
@@ -74,9 +106,7 @@ export function getFlagEmojiFromLanguage(ALanguageCode) {
 }
 
 export function setDocumentMetaTags(title, description, image, url, hideUrl) {
-  if (typeof window === 'undefined') {
-    return;
-  }
+  if (typeof window === 'undefined') return;
   title = title || '1tuner';
   description = description || 'Listen to radio, podcasts and create playlists.';
   image = image || 'https://1tuner.com/assets/icons/icon-512x512.png';

@@ -31,7 +31,6 @@ export default class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			store: null,
 			listeningMode: 0,
 			featured: null,
 			station: null,
@@ -299,7 +298,7 @@ export default class App extends Component {
 	}
 
 	setPodcastEpisodeTimeElapsed = (AFeedUrl, AMediaUrl, ASeconds) => {
-		if(!AFeedUrl || !AMediaUrl || !ASeconds) {
+		if (!AFeedUrl || !AMediaUrl || !ASeconds) {
 			return;
 		}
 		let podcastList = this.state.podcastList;
@@ -709,26 +708,21 @@ export default class App extends Component {
 
 	initChromeCast = () => {
     if (window && !window.__onGCastApiAvailable) {
-      var s = document.createElement('script');
+      let s = document.createElement('script');
       s.setAttribute('src', 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1');
-      s.onload = this.castScriptLoaded;
       document.head.appendChild(s);
+      window['__onGCastApiAvailable'] = (isAvailable) => {
+        if (isAvailable) {
+          this.initializeCastApi();
+        }
+      };
     }
   }
 
-  castScriptLoaded = () => {
-    let self = this;
-    window['__onGCastApiAvailable'] = function(isAvailable) {
-      if (isAvailable) {
-        self.initializeCastApi();
-      }
-    };
-	}
-
 	initializeCastApi = () => {
+    if (typeof cast === 'undefined') return;
     cast.framework.CastContext.getInstance().setOptions({
       receiverApplicationId: '2CFD5B94',
-      //receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
       autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
     });
   }
