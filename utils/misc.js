@@ -56,33 +56,30 @@ export function getTimeFromSeconds(secs) {
 export function getSecondsFromTime(timeString) {
   if (!timeString) return 0;
   let partsArray = timeString.split(':');
-  if (partsArray.length==1) {
-    if(!isNaN(partsArray[0])) { // assume just seconds
-      return parseInt(partsArray[0]);
-    }
-    return 0;
+  if (partsArray.length === 1) {
+    return isNaN(partsArray[0]) ? 0 : parseInt(partsArray[0]); // assume just seconds
   }
   let secs = 0;
-  if (partsArray.length==2) { // assume minutes:seconds
-    if(!isNaN(partsArray[0])) {
+  if (partsArray.length === 2) { // assume minutes:seconds
+    if (!isNaN(partsArray[0])) {
       let mins = parseInt(partsArray[0]);
       secs = mins > 0 ? mins*60 : 0;
     }
-    if(!isNaN(partsArray[1])) {
+    if (!isNaN(partsArray[1])) {
       secs += parseInt(partsArray[1]);
     }
     return secs;
   }
-  if (partsArray.length==3) { // assume hours:minutes:seconds
-    if(!isNaN(partsArray[0])) {
+  if (partsArray.length === 3) { // assume hours:minutes:seconds
+    if (!isNaN(partsArray[0])) {
       let hrs = parseInt(partsArray[0]);
       secs = hrs > 0 ? hrs*3600 : 0;
     }
-    if(!isNaN(partsArray[1])) {
+    if (!isNaN(partsArray[1])) {
       let mins = parseInt(partsArray[1]);
-      secs = mins > 0 ? mins*60 : 0;
+      secs += mins > 0 ? mins*60 : 0;
     }
-    if(!isNaN(partsArray[2])) {
+    if (!isNaN(partsArray[2])) {
       secs += parseInt(partsArray[1]);
     }
     return secs;

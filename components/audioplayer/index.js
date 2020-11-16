@@ -71,24 +71,8 @@ export default class AudioPlayer extends Component {
       return;
     }
     if (this.state.isCasting) {
-      // let request = new chrome.cast.media.SeekRequest();
-      // if (request) {
-      //   if (AIsElapsedTime) {
-      //     request.currentTime = ASeconds;
-      //   } else {
-      //     request.currentTime += ASeconds;
-      //   }
-      //   request.resumeState = chrome.cast.media.ResumeState.PLAYBACK_START;
-      //   let castSession = window && !(typeof cast === 'undefined') ? cast.framework.CastContext.getInstance().getCurrentSession() : null;
-      //   if (castSession) {
-      //     castSession.media[0].seek(request,
-      //     ()=>{console.log('seek success')},
-      //     ()=>{console.log('seek error')});
-      //   }
-      // }
       var player = new cast.framework.RemotePlayer();
       var controller = new cast.framework.RemotePlayerController(player);
-      debugger;
       if (controller) {
         if (AIsElapsedTime) {
           player.currentTime = ASeconds;
@@ -100,9 +84,7 @@ export default class AudioPlayer extends Component {
     } else {
       let audioPL = document.getElementById('audioPlay');
       if (AIsElapsedTime) {
-        if (ASeconds<audioPL) {
-          audioPL.currentTime = ASeconds;
-        }
+        audioPL.currentTime = ASeconds;
       } else {
         if (ASeconds < 0) {
           ASeconds = Math.abs(ASeconds);
@@ -340,11 +322,28 @@ export default class AudioPlayer extends Component {
           logoSource
         ]
       });
-      navigator.mediaSession.setActionHandler('play', _ => this.mediaSessionPlay());
-      navigator.mediaSession.setActionHandler('pause', _ => this.mediaSessionPause());
-      //navigator.mediaSession.setActionHandler('stop', _ => self.mediaSessionStop());
-      navigator.mediaSession.setActionHandler('previoustrack', _ => this.mediaSessionPrev());
-      navigator.mediaSession.setActionHandler('nexttrack', _ => this.mediaSessionNext());
+      const actionHandlers = [
+        ['play',          () => { this.mediaSessionPlay() }],
+        ['pause',         () => { this.mediaSessionPause() }],
+        ['previoustrack', () => { this.mediaSessionPrev() }],
+        ['nexttrack',     () => { this.mediaSessionNext() }],
+        // //['stop',          () => { /* ... */ }],
+        // //['seekbackward',  (details) => { /* ... */ }],
+        // //['seekforward',   (details) => { /* ... */ }],
+        // ['seekto', (details) => { mediaSessionSeekTo(details) }], // Temp disabled
+      ];
+
+      for (const [action, handler] of actionHandlers) {
+        try {
+          if(action==='seekto' && !this.state.usePause) {
+            navigator.mediaSession.setActionHandler(action, null);
+          } else {
+            navigator.mediaSession.setActionHandler(action, handler);
+          }
+        } catch (error) {
+          console.log(`The media session action "${action}" is not supported yet.`);
+        }
+      }
     }
   }
 
@@ -365,6 +364,12 @@ export default class AudioPlayer extends Component {
   }
   mediaSessionNext = () => {
     this.props.handleMediaSessionEvent('next');
+  }
+  mediaSessionSeekTo = (details) => {
+    if (details.fastSeek) {
+      return;
+    }
+    this.seekAudio(details.seekTime, true);
   }
 
   handleAudioError = (e) => {

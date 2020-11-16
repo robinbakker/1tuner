@@ -234,10 +234,10 @@ export default class Footer extends Component {
   }
 
   getCurrentEpisode = (AEpisodeList) => {
-    if(!AEpisodeList || !AEpisodeList.length) {
+    if (!AEpisodeList || !AEpisodeList.length) {
       return null;
     }
-    for(let i=0;i<AEpisodeList.length; i++) {
+    for (let i=0; i<AEpisodeList.length; i++) {
       if(AEpisodeList[i].isPlaying) {
         return AEpisodeList[i];
       }
@@ -390,6 +390,7 @@ export default class Footer extends Component {
     }
     if (this.state.listeningMode == LM_Podcast) {
       let currentPodcast = this.props.podcast;
+      //debugger;
       let currentEpisode = this.getCurrentEpisode(currentPodcast.episodes);
       if (this.state.podcast && currentEpisode && this.state.mediaPlayingID != currentEpisode.url) {
         this.props.setPodcastEpisodeTimeElapsed(this.state.podcast.feedUrl, this.state.mediaPlayingID, this.state.elapsedtime);
@@ -488,8 +489,9 @@ export default class Footer extends Component {
       if (isPlayingOutcome != null) {
         isPlayingOutcome.isPlaying = AUserEvent ? userSetIsPlaying : isPlayingOutcome.isPlaying;
         isPlayingOutcome.audioSources = isPlayingOutcome.audioSources || self.state.audioSources;
-        isPlayingOutcome.mediaPlayingID = isPlayingOutcome.mediaPlayingID || self.state.mediaPlayingID
+        isPlayingOutcome.mediaPlayingID = isPlayingOutcome.mediaPlayingID || self.state.mediaPlayingID;
         isPlayingOutcome.duration = isPlayingOutcome.duration || 0;
+        //console.log('duration: ' + isPlayingOutcome.duration);
         isPlayingOutcome.elapsedtime = isPlayingOutcome.elapsedtime || 0;
         isPlayingOutcome.progressvalue = isPlayingOutcome.progressvalue || 0;
         isPlayingOutcome.media = isPlayingOutcome.media || self.state.media;
@@ -568,7 +570,7 @@ export default class Footer extends Component {
   changeProgress = (e) => {
     if (this.state.listeningMode === LM_Podcast) {
       this.setState({elapsedtime: e.target.value}, () => {
-        console.log('seekAudio: '+e.target.value);
+        //console.log(`seekAudio: ${e.target.value}`);
         this.child.seekAudio(e.target.value, true);
       });
     }
@@ -630,33 +632,33 @@ export default class Footer extends Component {
       (this.props.listeningMode == LM_Playlist && (!this.state.playlist || this.props.playlist.href != this.state.playlist.href))) {
       this.loadData();
     }
-    let footerModeStyle = 'footer--mode'+listeningMode;
-    let rewModeStyle = 'rew-button--mode'+listeningMode;
-    let playModeStyle = 'play-button--mode'+listeningMode;
-    let ffwModeStyle = 'ffw-button--mode'+listeningMode;
+    let footerModeStyle = `footer--mode${listeningMode}`;
+    let rewModeStyle = `rew-button--mode${listeningMode}`;
+    let playModeStyle = `play-button--mode${listeningMode}`;
+    let ffwModeStyle = `ffw-button--mode${listeningMode}`;
     return (
-			<footer class={style['footer'] + ' ' + style[footerModeStyle] + (isExpanded ? ' ' + style['footer--expanded'] : '') + ' ' + (listeningMode==LM_None ? style['footer--hidden'] : style['footer--visible'])} style={media.logoUrl ? 'background-image:url(' + media.logoUrl + ')':null}>
+			<footer class={`${style['footer']} ${style[footerModeStyle]}${isExpanded ? ' ' + style['footer--expanded'] : ''} ${listeningMode == LM_None ? style['footer--hidden'] : style['footer--visible']}`} style={media.logoUrl ? 'background-image:url(' + media.logoUrl + ')':null}>
 				{ listeningMode==LM_Podcast ?
-        <div class={style['footer__item'] + ' ' + style['footer__item--up-down']}>
+        <div class={`${style['footer__item']} ${style['footer__item--up-down']}`}>
           { isExpanded ?
-            <button className={style['expand-button'] + ' ' + style['expand-button--down']} title="Shrink" onClick={this.shrinkFooter.bind(this)}>Shrink</button> :
+            <button className={`${style['expand-button']} ${style['expand-button--down']}`} title="Shrink" onClick={this.shrinkFooter.bind(this)}>Shrink</button> :
             <button className={style['expand-button']} title="Expand" onClick={this.expandFooter.bind(this)}>Expand</button>
           }
         </div> : null }
-        <div class={style['footer__item'] + ' ' + style['footer__item--image']}>
+        <div class={`${style['footer__item']} ${style['footer__item--image']}`}>
           <img className={style.medialogo} src={media.logoUrl} alt={media.programInfo} />
         </div>
-        <div class={style['footer__item'] + ' ' + style['footer__item--audio']}>
-          <button className={style['rew-button'] + ' ' + style[rewModeStyle]} aria-label={'Rewind 10 seconds'} onClick={this.rewind.bind(this)} disabled={!isPlaying}>10s</button>
-          <button className={style['play-button'] + ' ' + style[playModeStyle] + ' ' + (isPlaying ? style['play-button--stop'] : style['play-button--play']) + ' ' + (isLoading ? style['play-button--loading'] : '')} onClick={this.playAudio.bind(this)} data-isplaying={isPlaying} id="icoAudioControl">{isPlaying ? 'Stop' : 'Play'}</button>
-          <button className={style['ffw-button'] + ' ' + style[ffwModeStyle]} aria-label={'Fast forward 30 seconds'} onClick={this.fastForward.bind(this)} disabled={!isPlaying}>30s</button>
+        <div class={`${style['footer__item']} ${style['footer__item--audio']}`}>
+          <button className={`${style['rew-button']} ${style[rewModeStyle]}`} aria-label={'Rewind 10 seconds'} onClick={this.rewind.bind(this)} disabled={!isPlaying}>10s</button>
+          <button className={`${style['play-button']} ${style[playModeStyle]} ${isPlaying ? style['play-button--stop'] : style['play-button--play']} ${isLoading ? style['play-button--loading'] : ''}`} onClick={this.playAudio.bind(this)} data-isplaying={isPlaying} id="icoAudioControl">{isPlaying ? 'Stop' : 'Play'}</button>
+          <button className={`${style['ffw-button']} ${style[ffwModeStyle]}`} aria-label={'Fast forward 30 seconds'} onClick={this.fastForward.bind(this)} disabled={!isPlaying}>30s</button>
           <AudioPlayer onRef={ref => (this.child = ref)} isPlaying={isPlaying} timeUpdate={this.timeUpdate} dataLoaded={this.dataLoaded.bind(this)} handleMediaSessionEvent={this.handleMediaSessionEvent} mediatitle={media.name} mediaartist={media.programInfo} medialogo={media.logoUrl} hasError={this.audioError} mediaid={mediaPlayingID} sources={audioSources} />
           { listeningMode==LM_Podcast && isExpanded && duration ? <input type="range" onChange={this.changeProgress.bind(this)} class={style['audio-range']} value={elapsedtime} step={1} max={duration} /> : null}
           { listeningMode==LM_Podcast ? <progress id="audioProgress" class={style['audio-progress']} value={(duration ? elapsedtime : progressvalue)} step={(duration ? '1' : '.1')} max={duration || 1}></progress> : null }
           { listeningMode==LM_Podcast ? <div id="audioElapsedTime" class={style.elapsed}>{elapsedtimeText}</div> : null }
-          <span class={style['audio-error'] + (audioError && audioError.message ? ' ' + style['audio-error--active'] : '')}>{(audioError && audioError.message ? audioError.message : '')}</span>
+          <span class={style['audio-error'] + (audioError && audioError.message ? ` ${style['audio-error--active']}` : '')}>{(audioError && audioError.message ? audioError.message : '')}</span>
         </div>
-        <div class={style['footer__item'] + ' ' + style['footer__item--info']}>
+        <div class={`${style['footer__item']} ${style['footer__item--info']}`}>
           <h3><Link href={media.link} class={style['footer__link']} title={'Info'}>{media.name}</Link></h3>
           <p>
             {media.programInfo}
@@ -664,11 +666,11 @@ export default class Footer extends Component {
           </p>
         </div>
         {settings && settings.experimental && settings.experimental.chromecast ?
-          <div class={style['footer__item'] + ' ' + style['footer__item--chromecast']}>
+          <div class={`${style['footer__item']} ${style['footer__item--chromecast']}`}>
             <google-cast-launcher></google-cast-launcher>
           </div>
         : null }
-        <div class={style['footer__item'] + ' ' + style['footer__item--close']}>
+        <div class={`${style['footer__item']} ${style['footer__item--close']}`}>
           <button className={style['close-button']} title="Close" onClick={this.closeFooter.bind(this)}>Close</button>
         </div>
 			</footer>

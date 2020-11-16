@@ -143,7 +143,8 @@ export default class Podcast extends Component {
 			let encl = item.getElementsByTagName('enclosure');
 			if (encl.length) {
 				let durationKey = item.getElementsByTagName('itunes:duration').length ? 'itunes:duration' : 'duration';
-				let durationElm = item.getElementsByTagName(durationKey);
+        let durationElm = item.getElementsByTagName(durationKey);
+        //console.log(`item ${i}: ${durationElm && durationElm.length ? durationElm[0].innerHTML + ' secs:' + getSecondsFromTime(durationElm[0].innerHTML) : 'no-duration'}`);
 				let epItem = {
 					title: item.getElementsByTagName('title')[0].childNodes[0].nodeValue,
 					length: encl[0].getAttribute('length'),
