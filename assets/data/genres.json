@@ -1,107 +1,107 @@
 {
-  "alternative" : {
-    "name" : "Alternative"
+  "alternative": {
+    "name": "Alternative"
   },
-  "blues" : {
-    "name" : "Blues"
+  "blues": {
+    "name": "Blues"
   },
-  "classical" : {
-    "name" : "Classical"
+  "classical": {
+    "name": "Classical"
   },
-  "country" : {
-    "name" : "Country"
+  "country": {
+    "name": "Country"
   },
-  "dance" : {
-    "name" : "Dance"
+  "dance": {
+    "name": "Dance"
   },
-  "disco" : {
-    "name" : "Disco"
+  "disco": {
+    "name": "Disco"
   },
-  "electronic" : {
-    "name" : "Electronic"
+  "electronic": {
+    "name": "Electronic"
   },
-  "folk" : {
-    "name" : "Folk"
+  "folk": {
+    "name": "Folk"
   },
-  "funk" : {
-    "name" : "Funk"
+  "funk": {
+    "name": "Funk"
   },
-  "hiphop" : {
-    "name" : "Hip hop"
+  "hiphop": {
+    "name": "Hip hop"
   },
-  "jazz" : {
-    "name" : "Jazz"
+  "jazz": {
+    "name": "Jazz"
   },
-  "latin" : {
-    "name" : "Latin"
+  "latin": {
+    "name": "Latin"
   },
-  "local" : {
-    "name" : "Local"
+  "local": {
+    "name": "Local"
   },
-  "news" : {
-    "name" : "News"
+  "news": {
+    "name": "News"
   },
-  "nonstop" : {
-    "name" : "Non-stop"
+  "nonstop": {
+    "name": "Non-stop"
   },
-  "oldies" : {
-    "name" : "Oldies"
+  "oldies": {
+    "name": "Oldies"
   },
-  "pop" : {
-    "name" : "Pop"
+  "pop": {
+    "name": "Pop"
   },
-  "rap" : {
-    "name" : "Rap"
+  "rap": {
+    "name": "Rap"
   },
-  "rnb" : {
-    "name" : "R&B"
+  "rnb": {
+    "name": "R&B"
   },
-  "rock" : {
-    "name" : "Rock"
+  "rock": {
+    "name": "Rock"
   },
-  "soul" : {
-    "name" : "Soul"
+  "soul": {
+    "name": "Soul"
   },
-  "talk" : {
-    "name" : "Talk"
+  "talk": {
+    "name": "Talk"
   },
-  "reggae" : {
-    "name" : "Reggae"
+  "reggae": {
+    "name": "Reggae"
   },
-  "comedy" : {
-    "name" : "Comedy"
+  "comedy": {
+    "name": "Comedy"
   },
-  "drama" : {
-    "name" : "Drama"
+  "drama": {
+    "name": "Drama"
   },
-  "history" : {
-    "name" : "History"
+  "history": {
+    "name": "History"
   },
-  "metal" : {
-    "name" : "Metal"
+  "metal": {
+    "name": "Metal"
   },
-  "metalcore" : {
-    "name" : "Metalcore"
+  "metalcore": {
+    "name": "Metalcore"
   },
-  "hardrock" : {
-    "name" : "Hard rock"
+  "hardrock": {
+    "name": "Hard rock"
   },
-  "hardcore" : {
-    "name" : "Hardcore"
+  "hardcore": {
+    "name": "Hardcore"
   },
-  "punk" : {
-    "name" : "Punk"
+  "punk": {
+    "name": "Punk"
   },
-  "world" : {
-    "name" : "World"
+  "world": {
+    "name": "World"
   },
-  "beat" : {
-    "name" : "Beat"
+  "beat": {
+    "name": "Beat"
   },
-  "kids" : {
-    "name" : "Kids"
+  "kids": {
+    "name": "Kids"
   },
-  "indie" : {
-    "name" : "Indie"
+  "indie": {
+    "name": "Indie"
   }
 }

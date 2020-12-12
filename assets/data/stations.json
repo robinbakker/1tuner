@@ -21,7 +21,7 @@
     ],
     "website": "https://www.538.nl",
     "related": ["swijnenstal"],
-    "podcasts":["https://rss.art19.com/man-man-man-de-podcast"]
+    "podcasts": ["https://rss.art19.com/man-man-man-de-podcast"]
   },
   "3fm": {
     "displayorder": 3,
@@ -41,7 +41,11 @@
     ],
     "website": "https://www.npo3fm.nl",
     "related": ["3fmalternative", "funx", "radio2"],
-    "podcasts": ["https://podcast.npo.nl/feed/vera-on-track.xml","https://podcast.npo.nl/feed/de-music-starts-here-podcast.xml","https://podcast.npo.nl/feed/apodcalypse.xml"]
+    "podcasts": [
+      "https://podcast.npo.nl/feed/vera-on-track.xml",
+      "https://podcast.npo.nl/feed/de-music-starts-here-podcast.xml",
+      "https://podcast.npo.nl/feed/apodcalypse.xml"
+    ]
   },
   "3fmalternative": {
     "displayorder": 38,
@@ -140,7 +144,7 @@
   },
   "bbcradio4": {
     "displayorder": 4,
-    "genres": ["talk","news","comedy","drama","history"],
+    "genres": ["talk", "news", "comedy", "drama", "history"],
     "language": "en-UK",
     "logosource": "https://static.bbci.co.uk/radio/109/1.96.20171025155453/img/logos/v2/bbc_radio_fourfm_alt_colour.svg",
     "name": "BBC Radio 4",
@@ -156,7 +160,11 @@
     ],
     "website": "https://www.bbc.co.uk/radio4",
     "related": ["bbcradio1", "bbcradio2", "bbcradio5live"],
-    "podcasts":["https://podcasts.files.bbci.co.uk/b006qykl.rss","https://podcasts.files.bbci.co.uk/p02pc9pj.rss","https://podcasts.files.bbci.co.uk/p02nrss1.rss"]
+    "podcasts": [
+      "https://podcasts.files.bbci.co.uk/b006qykl.rss",
+      "https://podcasts.files.bbci.co.uk/p02pc9pj.rss",
+      "https://podcasts.files.bbci.co.uk/p02nrss1.rss"
+    ]
   },
   "bbcradio5live": {
     "displayorder": 21,
@@ -201,7 +209,10 @@
       }
     ],
     "website": "https://www.bnr.nl",
-    "podcasts":["https://www.bnr.nl/podcast/newsroom?widget=rssfeed&view=podcastFeed","https://www.bnr.nl/podcast/de-technoloog?widget=rssfeed&view=podcastFeed"]
+    "podcasts": [
+      "https://www.bnr.nl/podcast/newsroom?widget=rssfeed&view=podcastFeed",
+      "https://www.bnr.nl/podcast/de-technoloog?widget=rssfeed&view=podcastFeed"
+    ]
   },
   "cadena100": {
     "displayorder": 30,
@@ -360,7 +371,7 @@
   },
   "msnbc": {
     "displayorder": 54,
-    "genres": ["news","talk"],
+    "genres": ["news", "talk"],
     "language": "en-US",
     "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/msnbc",
     "name": "MSNBC",
@@ -429,7 +440,10 @@
     ],
     "website": "https://www.robstenders.nl",
     "related": ["xxlstenders", "xxlblokhuis", "kxclassic"],
-    "podcasts": ["https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss","https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"]
+    "podcasts": [
+      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss",
+      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"
+    ]
   },
   "los40": {
     "displayorder": 29,
@@ -641,7 +655,7 @@
       }
     ],
     "website": "https://qmusic.nl",
-    "podcasts":["https://rss.art19.com/man-man-man-de-podcast"]
+    "podcasts": ["https://rss.art19.com/man-man-man-de-podcast"]
   },
   "qmusicbe": {
     "displayorder": 33,
@@ -683,7 +697,14 @@
     ],
     "website": "https://www.nporadio1.nl",
     "related": ["radio2", "3fm", "radio4", "radio5"],
-    "podcasts": ["https://podcast.npo.nl/feed/de-dag.xml","https://podcast.npo.nl/feed/met-het-oog-op-morgen.xml","https://podcast.npo.nl/feed/poen.xml","https://podcast.npo.nl/feed/de-man-en-de-maan.xml","https://podcast.npo.nl/feed/de-krokante-leesmap.xml","https://podcast.npo.nl/feed/kwaad-bloed.xml"]
+    "podcasts": [
+      "https://podcast.npo.nl/feed/de-dag.xml",
+      "https://podcast.npo.nl/feed/met-het-oog-op-morgen.xml",
+      "https://podcast.npo.nl/feed/poen.xml",
+      "https://podcast.npo.nl/feed/de-man-en-de-maan.xml",
+      "https://podcast.npo.nl/feed/de-krokante-leesmap.xml",
+      "https://podcast.npo.nl/feed/kwaad-bloed.xml"
+    ]
   },
   "radio3s": {
     "displayorder": 85,
@@ -753,7 +774,13 @@
     ],
     "website": "https://www.nporadio2.nl",
     "related": ["xxlstenders", "xxlblokhuis", "40upradio", "radio1", "3fm", "radio4", "radio5"],
-    "podcasts": ["https://podcast.npo.nl/feed/30-minuten-rauw.xml","https://podcast.npo.nl/feed/barts-classic-track.xml","https://podcast.npo.nl/feed/blokhuis-de-podcast.xml","https://podcast.npo.nl/feed/spijkers-met-koppen.xml","https://podcast.npo.nl/feed/de-albumshow.xml"]
+    "podcasts": [
+      "https://podcast.npo.nl/feed/30-minuten-rauw.xml",
+      "https://podcast.npo.nl/feed/barts-classic-track.xml",
+      "https://podcast.npo.nl/feed/blokhuis-de-podcast.xml",
+      "https://podcast.npo.nl/feed/spijkers-met-koppen.xml",
+      "https://podcast.npo.nl/feed/de-albumshow.xml"
+    ]
   },
   "radio4": {
     "displayorder": 16,
@@ -1138,7 +1165,10 @@
     ],
     "website": "https://www.robstenders.nl",
     "related": ["xxlblokhuis", "the-edge", "radio2", "kxclassic", "40upradio"],
-    "podcasts": ["https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss","https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"]
+    "podcasts": [
+      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss",
+      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"
+    ]
   },
   "z100ny": {
     "displayorder": 39,
@@ -1168,13 +1198,17 @@
     ],
     "website": "https://www.robstenders.nl",
     "related": ["xxlstenders", "the-edge", "radio2", "kxclassic"],
-    "podcasts": ["https://podcast.npo.nl/feed/blokhuis-de-podcast.xml","https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss","https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"]
+    "podcasts": [
+      "https://podcast.npo.nl/feed/blokhuis-de-podcast.xml",
+      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss",
+      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"
+    ]
   },
   "jointradioreggae": {
     "displayorder": 71,
     "genres": ["alternative", "reggae"],
     "language": "he-IL",
-    "logosource":"https://res.cloudinary.com/onetuner/image/facebook/jointradio",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/jointradio",
     "name": "Joint Radio Reggae",
     "streams": [
       {
@@ -1188,7 +1222,7 @@
     "displayorder": 72,
     "genres": ["dance", "trance"],
     "language": "he-IL",
-    "logosource":"https://res.cloudinary.com/onetuner/image/facebook/jointradio",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/jointradio",
     "name": "Joint Radio Beat",
     "streams": [
       {
@@ -1202,7 +1236,7 @@
     "displayorder": 73,
     "genres": ["blues"],
     "language": "he-IL",
-    "logosource":"https://res.cloudinary.com/onetuner/image/facebook/jointradio",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/jointradio",
     "name": "Joint Radio Blues",
     "streams": [
       {
@@ -1229,11 +1263,8 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kinkdna","kink-nl","kink-indie","kink-distortion"],
-    "podcasts": [
-      "https://api.kink.nl/rss/dailykink",
-      "https://api.kink.nl/rss/oeverloos"
-    ]
+    "related": ["kinkdna", "kink-nl", "kink-indie", "kink-distortion"],
+    "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
   },
   "arrow": {
     "displayorder": 75,
@@ -1280,11 +1311,8 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kink","kink-nl","kink-indie","kink-distortion"],
-    "podcasts": [
-      "https://api.kink.nl/rss/dailykink",
-      "https://api.kink.nl/rss/oeverloos"
-    ]
+    "related": ["kink", "kink-nl", "kink-indie", "kink-distortion"],
+    "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
   },
   "kink-distortion": {
     "displayorder": 86,
@@ -1303,11 +1331,8 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kink","kinkdna","kink-nl","kink-indie"],
-    "podcasts": [
-      "https://api.kink.nl/rss/dailykink",
-      "https://api.kink.nl/rss/oeverloos"
-    ]
+    "related": ["kink", "kinkdna", "kink-nl", "kink-indie"],
+    "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
   },
   "kink-nl": {
     "displayorder": 87,
@@ -1326,11 +1351,8 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kink","kinkdna","kink-indie","kink-distortion"],
-    "podcasts": [
-      "https://api.kink.nl/rss/dailykink",
-      "https://api.kink.nl/rss/oeverloos"
-    ]
+    "related": ["kink", "kinkdna", "kink-indie", "kink-distortion"],
+    "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
   },
   "lindaradio": {
     "displayorder": 78,
@@ -1345,7 +1367,11 @@
       }
     ],
     "website": "https://www.linda.nl/luister/",
-    "podcasts":["https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/ada937c2-d543-4239-aab1-aafd00f12a7d/podcast.rss","https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/401aeff9-7a6e-435f-9e8f-ab4800fc215c/podcast.rss","https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/0fe83a72-617f-4582-a282-ab0b01134269/podcast.rss"]
+    "podcasts": [
+      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/ada937c2-d543-4239-aab1-aafd00f12a7d/podcast.rss",
+      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/401aeff9-7a6e-435f-9e8f-ab4800fc215c/podcast.rss",
+      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/0fe83a72-617f-4582-a282-ab0b01134269/podcast.rss"
+    ]
   },
   "willy": {
     "displayorder": 79,
@@ -1360,7 +1386,7 @@
       }
     ],
     "website": "https://www.willy.radio",
-    "related": ["qmusicbe","joe"]
+    "related": ["qmusicbe", "joe"]
   },
   "joe": {
     "displayorder": 80,
@@ -1375,11 +1401,11 @@
       }
     ],
     "website": "https://joe.be",
-    "related": ["qmusicbe","willy"]
+    "related": ["qmusicbe", "willy"]
   },
   "foxnews": {
     "displayorder": 81,
-    "genres": ["news","talk"],
+    "genres": ["news", "talk"],
     "language": "en-US",
     "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/foxnews",
     "name": "FOX News Radio",
@@ -1393,7 +1419,7 @@
   },
   "concertzender": {
     "displayorder": 82,
-    "genres": ["classical","jazz","alternative","electronic"],
+    "genres": ["classical", "jazz", "alternative", "electronic"],
     "language": "nl",
     "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/Concertzender",
     "name": "Concertzender",
@@ -1407,7 +1433,7 @@
   },
   "npr": {
     "displayorder": 83,
-    "genres": ["news","talk"],
+    "genres": ["news", "talk"],
     "language": "en-US",
     "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/NPR",
     "name": "NPR",
@@ -1418,7 +1444,7 @@
       }
     ],
     "website": "https://www.npr.org",
-    "podcasts": ["https://www.npr.org/rss/podcast.php?id=510318","https://www.npr.org/rss/podcast.php?id=510343"]
+    "podcasts": ["https://www.npr.org/rss/podcast.php?id=510318", "https://www.npr.org/rss/podcast.php?id=510343"]
   },
   "ffh": {
     "displayorder": 84,
@@ -1469,7 +1495,7 @@
   },
   "40upradio": {
     "displayorder": 90,
-    "genres": ["pop","oldies","rock","blues"],
+    "genres": ["pop", "oldies", "rock", "blues"],
     "language": "nl",
     "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/40upradio",
     "name": "40UP Radio",
@@ -1528,10 +1554,7 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kink","kinkdna","kink-nl","kink-distortion"],
-    "podcasts": [
-      "https://api.kink.nl/rss/dailykink",
-      "https://api.kink.nl/rss/oeverloos"
-    ]
+    "related": ["kink", "kinkdna", "kink-nl", "kink-distortion"],
+    "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
   }
 }

@@ -1,10 +1,10 @@
-export function getScheduleQueryParamsAsString(ASchedule) {
-  let Result = '';
-  if (ASchedule) {
-    ASchedule.forEach(sd => {
-      Result += Result=='' ? '' : '&';
-      Result += 'h'+sd.startHour+'='+sd.station;
+export function getScheduleQueryParamsAsString(schedule) {
+  let result = '';
+  if (schedule) {
+    schedule.forEach((sd) => {
+      result += result == '' ? '' : '&';
+      result += `h${sd.startHour}=${sd.station}`;
     });
   }
-  return Result;
+  return result;
 }

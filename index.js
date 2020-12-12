@@ -22,114 +22,199 @@ import * as Languages from './assets/data/languages.json';
 import * as Featured from './assets/data/featured.json';
 
 let oldHistoryPushState = history.pushState;
-history.pushState = function() {
-	oldHistoryPushState.apply(this, arguments);
-	scrollTo(0, 0);
+history.pushState = function () {
+  oldHistoryPushState.apply(this, arguments);
+  scrollTo(0, 0);
 };
 
 export default class App extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			listeningMode: 0,
-			featured: null,
-			station: null,
-			stationList: null,
-			lastStationList: null,
-			presetStationList: null,
-			podcast: null,
-			podcastList: null,
-			stationPodcastList: null,
-			playlist: null,
-			playlists: null,
-			languageList: null,
-			settings: null,
-			showFilterPanel: false,
-			enableFilterPanel: false,
-			stationsLoading: false,
-			languagesLoading: false,
-			lastPodcastSearchQuery: null,
-			lastPodcastSearchResult: null,
-			version: AppVersion,
-			userVersion: null,
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      listeningMode: 0,
+      featured: null,
+      station: null,
+      stationList: null,
+      lastStationList: null,
+      presetStationList: null,
+      podcast: null,
+      podcastList: null,
+      stationPodcastList: null,
+      playlist: null,
+      playlists: null,
+      languageList: null,
+      settings: null,
+      showFilterPanel: false,
+      enableFilterPanel: false,
+      stationsLoading: false,
+      languagesLoading: false,
+      lastPodcastSearchQuery: null,
+      lastPodcastSearchResult: null,
+      version: AppVersion,
+      userVersion: null,
+    };
+  }
 
-	componentDidMount() {
-		this.loadData();
-		if (window) {
-			window.addEventListener('scroll', function() {
-				document.body.classList.toggle('has-header', window.scrollY > 40);
-			});
-		}
-	}
+  componentDidMount() {
+    this.loadData();
+    if (window) {
+      window.addEventListener('scroll', function () {
+        document.body.classList.toggle('has-header', window.scrollY > 40);
+      });
+    }
+  }
 
-	loadData = async () => {
-		let settings = await get('settings');
-		if (settings && settings.theme) {
-			document.body.setAttribute('data-theme', settings.theme);
-		}
-		if (settings && settings.experimental && settings.experimental.chromecast) {
-			this.initChromeCast();
-		}
-		let userVersion = await get('version');
-    let stationList = AppVersion !== userVersion ? await this.loadStationList() : this.state.stationList || await get('station-list') || await this.loadStationList();
+  loadData = async () => {
+    let settings = await get('settings');
+    if (settings && settings.theme) {
+      document.body.setAttribute('data-theme', settings.theme);
+    }
+    if (settings && settings.experimental && settings.experimental.chromecast) {
+      this.initChromeCast();
+    }
+    let userVersion = await get('version');
+    let stationList =
+      AppVersion !== userVersion
+        ? await this.loadStationList()
+        : this.state.stationList || (await get('station-list')) || (await this.loadStationList());
     stationList = this.removeOldStationsFromList(stationList);
-    let stationPodcastList = AppVersion !== userVersion ? await this.loadStationPodcastList() : await get('station-podcast-list') || await this.loadStationPodcastList();
+    let stationPodcastList =
+      AppVersion !== userVersion ? await this.loadStationPodcastList() : (await get('station-podcast-list')) || (await this.loadStationPodcastList());
     this.updatePodcastImageProperties(stationPodcastList);
-    let listeningMode = await get('lm') || 0;
+    let listeningMode = (await get('lm')) || 0;
 
-		let station = await get('station');
-		let legacyPlaylist = await get('planning');
-		if (legacyPlaylist) {
-			del('planning');
-		}
-		let playlist = legacyPlaylist || await get('playlist');
+    let station = await get('station');
+    let legacyPlaylist = await get('planning');
+    if (legacyPlaylist) {
+      del('planning');
+    }
+    let playlist = legacyPlaylist || (await get('playlist'));
     let podcastList = await get('podcast-list');
     this.updatePodcastImageProperties(podcastList);
-    let lastStationList = await get('last-station-list') || this.getLastStationList(stationList);
+    let lastStationList = (await get('last-station-list')) || this.getLastStationList(stationList);
     lastStationList = this.removeOldStationsFromList(lastStationList);
-		let featured = this.loadFeatured(stationList);
+    let featured = this.loadFeatured(stationList);
 
-		let languageList = this.state.languageList || await get('language-list') || this.loadLanguageList();
-		let legacyPlaylists = await get('planning-list');
-		if (legacyPlaylists && legacyPlaylists.length) {
-			del('planning-list');
-		}
-		let playlists = this.state.playlists || legacyPlaylists || await get('playlists') || this.loadPlaylists();
+    let languageList = this.state.languageList || (await get('language-list')) || this.loadLanguageList();
+    let legacyPlaylists = await get('planning-list');
+    if (legacyPlaylists && legacyPlaylists.length) {
+      del('planning-list');
+    }
+    let playlists = this.state.playlists || legacyPlaylists || (await get('playlists')) || this.loadPlaylists();
 
-		this.setState({
-			listeningMode: listeningMode,
-			userVersion: userVersion,
-			settings: settings,
-			station: station,
-			playlist: playlist,
-			playlists: playlists,
-			languageList: languageList,
-			podcastList: podcastList,
-			stationPodcastList: stationPodcastList,
-			stationList: stationList,
-			lastStationList: lastStationList,
-			presetStationList: JSON.parse(JSON.stringify(lastStationList)), // For now, we are filling the preset list with the previous last played station list
-			featured: featured
-		}, () => { this.saveLocal(true); });
-	}
+    this.setState(
+      {
+        listeningMode: listeningMode,
+        userVersion: userVersion,
+        settings: settings,
+        station: station,
+        playlist: playlist,
+        playlists: playlists,
+        languageList: languageList,
+        podcastList: podcastList,
+        stationPodcastList: stationPodcastList,
+        stationList: stationList,
+        lastStationList: lastStationList,
+        presetStationList: JSON.parse(JSON.stringify(lastStationList)), // For now, we are filling the preset list with the previous last played station list
+        featured: featured,
+      },
+      () => {
+        this.saveLocal(true);
+      }
+    );
+  };
 
-	render({}, {listeningMode, settings, languageList, station, stationList, lastStationList, stationPodcastList,
-			playlist, playlists, podcast, podcastList, featured, lastPodcastSearchQuery, lastPodcastSearchResult, version}) {
-		return (
+  render(
+    {},
+    {
+      listeningMode,
+      settings,
+      languageList,
+      station,
+      stationList,
+      lastStationList,
+      stationPodcastList,
+      playlist,
+      playlists,
+      podcast,
+      podcastList,
+      featured,
+      lastPodcastSearchQuery,
+      lastPodcastSearchResult,
+      version,
+    }
+  ) {
+    return (
       <div id="app">
         <Nav />
         <Router>
-          <Home path="/" stationList={lastStationList} playlists={playlists} podcastList={podcastList} featured={featured} changeStation={this.changeStation.bind(this)} changePlaylist={this.changePlaylist.bind(this)} />
-          <Stations path="/radio-stations" stationList={stationList} languageList={languageList} changeStation={this.changeStation.bind(this)} toggleFilterPanel={this.toggleFilterPanel.bind(this)} setLanguageList={this.setLanguageList.bind(this)} />
-          <Station path="/radio-station/:id?" stationList={stationList} podcastList={stationPodcastList} changeStation={this.changeStation.bind(this)} reloadStationList={this.reloadStationList.bind(this)} />
+          <Home
+            path="/"
+            stationList={lastStationList}
+            playlists={playlists}
+            podcastList={podcastList}
+            featured={featured}
+            changeStation={this.changeStation.bind(this)}
+            changePlaylist={this.changePlaylist.bind(this)}
+          />
+          <Stations
+            path="/radio-stations"
+            stationList={stationList}
+            languageList={languageList}
+            changeStation={this.changeStation.bind(this)}
+            toggleFilterPanel={this.toggleFilterPanel.bind(this)}
+            setLanguageList={this.setLanguageList.bind(this)}
+          />
+          <Station
+            path="/radio-station/:id?"
+            stationList={stationList}
+            podcastList={stationPodcastList}
+            changeStation={this.changeStation.bind(this)}
+            reloadStationList={this.reloadStationList.bind(this)}
+          />
           <Playlists path="/playlists" playlists={playlists} stationList={stationList} changePlaylist={this.changePlaylist.bind(this)} />
-          <Playlist path="/playlist/:name/:params?" playlists={playlists} stationList={stationList} addPlaylist={this.addPlaylist.bind(this)} deletePlaylist={this.deletePlaylist.bind(this)} changePlaylist={this.changePlaylist.bind(this)}/>
-          <PlaylistEdit path="/playlist-edit/:name?/:params?" playlists={playlists} languageList={languageList} stationList={stationList} addPlaylist={this.addPlaylist.bind(this)} resetPlaylists={this.resetPlaylists.bind(this)} />
-          <Podcasts path="/podcasts/:params?" latestPodcastSearchResult={this.latestPodcastSearchResult.bind(this)} settings={settings} searchQuery={lastPodcastSearchQuery} lastSearchResult={lastPodcastSearchResult} podcastList={podcastList} stationPodcastList={stationPodcastList} />
-          <Podcast path="/podcast/:name/:feedcode?/:params?" savePodcastHistory={this.savePodcastHistory.bind(this)} podcastList={podcastList} stationPodcastList={stationPodcastList} lastPodcastSearchResult={lastPodcastSearchResult} playEpisode={this.playPodcastEpisode.bind(this)} />
-          <Settings path="/settings/:params?" settings={settings} stationList={lastStationList} playlists={playlists} podcastList={podcastList} saveSettings={this.saveSettings.bind(this)} resetLocalPreferences={this.resetLocalPreferences.bind(this)} />
+          <Playlist
+            path="/playlist/:name/:params?"
+            playlists={playlists}
+            stationList={stationList}
+            addPlaylist={this.addPlaylist.bind(this)}
+            deletePlaylist={this.deletePlaylist.bind(this)}
+            changePlaylist={this.changePlaylist.bind(this)}
+          />
+          <PlaylistEdit
+            path="/playlist-edit/:name?/:params?"
+            playlists={playlists}
+            languageList={languageList}
+            stationList={stationList}
+            addPlaylist={this.addPlaylist.bind(this)}
+            resetPlaylists={this.resetPlaylists.bind(this)}
+          />
+          <Podcasts
+            path="/podcasts/:params?"
+            latestPodcastSearchResult={this.latestPodcastSearchResult.bind(this)}
+            settings={settings}
+            searchQuery={lastPodcastSearchQuery}
+            lastSearchResult={lastPodcastSearchResult}
+            podcastList={podcastList}
+            stationPodcastList={stationPodcastList}
+          />
+          <Podcast
+            path="/podcast/:name/:feedcode?/:params?"
+            savePodcastHistory={this.savePodcastHistory.bind(this)}
+            podcastList={podcastList}
+            stationPodcastList={stationPodcastList}
+            lastPodcastSearchResult={lastPodcastSearchResult}
+            playEpisode={this.playPodcastEpisode.bind(this)}
+          />
+          <Settings
+            path="/settings/:params?"
+            settings={settings}
+            stationList={lastStationList}
+            playlists={playlists}
+            podcastList={podcastList}
+            saveSettings={this.saveSettings.bind(this)}
+            resetLocalPreferences={this.resetLocalPreferences.bind(this)}
+          />
           <About path="/about" version={version} />
           <Redirect path="/planner" to="/playlists" />
           <Redirect path="/planning/:name/:params?" to="/playlist" />
@@ -138,575 +223,639 @@ export default class App extends Component {
           <Redirect path="/radio-station/kxclassicsedge" to="/radio-station/the-edge" />
           <Error type="404" default />
         </Router>
-        <Footer onRef={ref => (this.child = ref)} settings={settings} listeningMode={listeningMode} stationList={stationList} setListeningMode={this.setListeningMode.bind(this)} tuneToStation={this.tuneToStation.bind(this)} podcast={podcast} playlist={playlist} station={station} setPodcastEpisodeTimeElapsed={this.setPodcastEpisodeTimeElapsed.bind(this)} closeFooter={this.closeFooter.bind(this)} />
+        <Footer
+          onRef={(ref) => (this.child = ref)}
+          settings={settings}
+          listeningMode={listeningMode}
+          stationList={stationList}
+          setListeningMode={this.setListeningMode.bind(this)}
+          tuneToStation={this.tuneToStation.bind(this)}
+          podcast={podcast}
+          playlist={playlist}
+          station={station}
+          setPodcastEpisodeTimeElapsed={this.setPodcastEpisodeTimeElapsed.bind(this)}
+          closeFooter={this.closeFooter.bind(this)}
+        />
       </div>
-		);
-	}
-
-	saveLocal = (AInit) => {
-		if (typeof indexedDB !== 'undefined') {
-			set('lm', this.state.listeningMode);
-			set('settings', this.state.settings);
-			set('station', this.state.station);
-			set('playlist', this.state.playlist);
-			set('playlists', this.state.playlists);
-			set('podcast-list', this.state.podcastList);
-			set('station-podcast-list', this.state.stationPodcastList);
-			set('language-list', this.state.languageList);
-			if (this.state.lastStationList) {
-				set('last-station-list', this.state.lastStationList);
-			}
-			if (AInit) {
-				set('version', this.state.version);
-				set('station-list', this.state.stationList);
-				del('planning'); // legacy cleanup
-				del('planning-list'); // legacy cleanup
-			}
-		}
-	}
-
-	addToLastStationList = (AStation) => {
-		let lsIndex = -1;
-		let stationItem = null;
-		let lsArray = this.state.lastStationList;
-		if (lsArray) {
-			for (var i=0; i<lsArray.length; i++) {
-				if (lsArray[i].id == AStation) {
-					stationItem = lsArray[i];
-					lsIndex = i;
-					break;
-				}
-			}
-			if (lsIndex >= 0) {
-				lsArray.splice(lsIndex, 1);
-				lsArray.unshift(stationItem);
-				this.setState({lastStationList:lsArray}, () => {
-					this.saveLocal();
-				});
-				return;
-			}
-			if (this.state.stationList) {
-				for (var i=0; i<this.state.stationList.length; i++) {
-					if (this.state.stationList[i].id == AStation) {
-						stationItem = this.state.stationList[i];
-						break;
-					}
-				}
-				if (stationItem) {
-					lsArray.splice(lsIndex, 1);
-					lsArray.unshift(stationItem);
-					this.setState({lastStationList:lsArray}, () => {
-						this.saveLocal();
-					});
-				}
-			}
-		}
+    );
   }
+
+  saveLocal = (AInit) => {
+    if (typeof indexedDB !== 'undefined') {
+      set('lm', this.state.listeningMode);
+      set('settings', this.state.settings);
+      set('station', this.state.station);
+      set('playlist', this.state.playlist);
+      set('playlists', this.state.playlists);
+      set('podcast-list', this.state.podcastList);
+      set('station-podcast-list', this.state.stationPodcastList);
+      set('language-list', this.state.languageList);
+      if (this.state.lastStationList) {
+        set('last-station-list', this.state.lastStationList);
+      }
+      if (AInit) {
+        set('version', this.state.version);
+        set('station-list', this.state.stationList);
+        del('planning'); // legacy cleanup
+        del('planning-list'); // legacy cleanup
+      }
+    }
+  };
+
+  addToLastStationList = (AStation) => {
+    let lsIndex = -1;
+    let stationItem = null;
+    let lsArray = this.state.lastStationList;
+    if (lsArray) {
+      for (var i = 0; i < lsArray.length; i++) {
+        if (lsArray[i].id == AStation) {
+          stationItem = lsArray[i];
+          lsIndex = i;
+          break;
+        }
+      }
+      if (lsIndex >= 0) {
+        lsArray.splice(lsIndex, 1);
+        lsArray.unshift(stationItem);
+        this.setState({ lastStationList: lsArray }, () => {
+          this.saveLocal();
+        });
+        return;
+      }
+      if (this.state.stationList) {
+        for (var i = 0; i < this.state.stationList.length; i++) {
+          if (this.state.stationList[i].id == AStation) {
+            stationItem = this.state.stationList[i];
+            break;
+          }
+        }
+        if (stationItem) {
+          lsArray.splice(lsIndex, 1);
+          lsArray.unshift(stationItem);
+          this.setState({ lastStationList: lsArray }, () => {
+            this.saveLocal();
+          });
+        }
+      }
+    }
+  };
 
   setListeningMode = (AListeningMode) => {
-    this.setState({listeningMode:AListeningMode});
-  }
+    this.setState({ listeningMode: AListeningMode });
+  };
 
-	tuneToStation = (APrev) => {
-		let presetList = this.state.presetStationList;
-		let lastPlayedList = this.state.lastStationList;
-		if (!presetList || presetList.length < 2 || !lastPlayedList || lastPlayedList.length < 2) {
-			// something is wrong with the data, ignore tuning
-			return;
-		}
-		if (!this.state.station) {
-			this.changeStation(lastPlayedList[0].id, true);
-		}
-		let isFound = false;
-		for (let i=0; i<presetList.length; i++) {
-			if (presetList[i].id === this.state.station) {
-				let newIndex = APrev ? i-1 : i+1;
-				if (newIndex >= presetList.length) {
-					newIndex = 0;
-				} else if(newIndex < 0) {
-					newIndex = presetList.length-1;
-				}
-				this.changeStation(presetList[newIndex].id, true);
-				isFound = true;
-				break;
-			}
-		}
-		if (!isFound) {
-			let stationItem = null;
-			for (var i=0; i<this.state.stationList.length; i++) {
-				if (this.state.stationList[i].id == this.state.station) {
-					stationItem = this.state.stationList[i];
-					break;
-				}
-			}
-			if (stationItem) {
-				let insertIndex = 0;
-				for (let i=0; i<presetList.length; i++) {
-					// find the last played station in the presetlist, use this index for the insert
-					if (presetList[i].id === lastPlayedList[1].id) {
-						insertIndex = i+1;
-						if (insertIndex >= presetList.length) {
-							insertIndex = 0;
-						}
-						break;
-					}
-				}
-				presetList.splice(insertIndex, 0, stationItem);
-				let newIndex = APrev ? insertIndex-1 : insertIndex+1;
-				if (newIndex >= presetList.length) {
-					newIndex = 0;
-				} else if(newIndex < 0) {
-					newIndex = presetList.length-1;
-				}
-				this.setState({
-					presetStationList: presetList
-				}, () => {
-					this.changeStation(presetList[newIndex].id, true);
-				});
-			}
-		}
-	}
+  tuneToStation = (APrev) => {
+    let presetList = this.state.presetStationList;
+    let lastPlayedList = this.state.lastStationList;
+    if (!presetList || presetList.length < 2 || !lastPlayedList || lastPlayedList.length < 2) {
+      // something is wrong with the data, ignore tuning
+      return;
+    }
+    if (!this.state.station) {
+      this.changeStation(lastPlayedList[0].id, true);
+    }
+    let isFound = false;
+    for (let i = 0; i < presetList.length; i++) {
+      if (presetList[i].id === this.state.station) {
+        let newIndex = APrev ? i - 1 : i + 1;
+        if (newIndex >= presetList.length) {
+          newIndex = 0;
+        } else if (newIndex < 0) {
+          newIndex = presetList.length - 1;
+        }
+        this.changeStation(presetList[newIndex].id, true);
+        isFound = true;
+        break;
+      }
+    }
+    if (!isFound) {
+      let stationItem = null;
+      for (var i = 0; i < this.state.stationList.length; i++) {
+        if (this.state.stationList[i].id == this.state.station) {
+          stationItem = this.state.stationList[i];
+          break;
+        }
+      }
+      if (stationItem) {
+        let insertIndex = 0;
+        for (let i = 0; i < presetList.length; i++) {
+          // find the last played station in the presetlist, use this index for the insert
+          if (presetList[i].id === lastPlayedList[1].id) {
+            insertIndex = i + 1;
+            if (insertIndex >= presetList.length) {
+              insertIndex = 0;
+            }
+            break;
+          }
+        }
+        presetList.splice(insertIndex, 0, stationItem);
+        let newIndex = APrev ? insertIndex - 1 : insertIndex + 1;
+        if (newIndex >= presetList.length) {
+          newIndex = 0;
+        } else if (newIndex < 0) {
+          newIndex = presetList.length - 1;
+        }
+        this.setState(
+          {
+            presetStationList: presetList,
+          },
+          () => {
+            this.changeStation(presetList[newIndex].id, true);
+          }
+        );
+      }
+    }
+  };
 
-	changeStation = (AStation, AForcePlay) => {
-		if (typeof AStation !== 'undefined' && AStation !== this.state.station) {
-			this.addToLastStationList(AStation);
-			this.setState({
-				listeningMode: 1,
-				station: AStation,
-				playlist: null
-			}, () => {
-				this.saveLocal();
-			});
-		}
-		if (AForcePlay && this.child) {
-			this.child.forcePlay(AForcePlay);
-		}
-	}
+  changeStation = (AStation, AForcePlay) => {
+    if (typeof AStation !== 'undefined' && AStation !== this.state.station) {
+      this.addToLastStationList(AStation);
+      this.setState(
+        {
+          listeningMode: 1,
+          station: AStation,
+          playlist: null,
+        },
+        () => {
+          this.saveLocal();
+        }
+      );
+    }
+    if (AForcePlay && this.child) {
+      this.child.forcePlay(AForcePlay);
+    }
+  };
 
-	playPodcastEpisode = (APodcast, AForcePlay) => {
-		if (APodcast) {
-			this.setState({
-				listeningMode: 3,
-				podcast: APodcast
-			}, () => {
-				this.saveLocal();
-				if (AForcePlay && this.child) {
-					this.child.forcePlay(AForcePlay);
-				}
-			});
-		}
-	}
+  playPodcastEpisode = (APodcast, AForcePlay) => {
+    if (APodcast) {
+      this.setState(
+        {
+          listeningMode: 3,
+          podcast: APodcast,
+        },
+        () => {
+          this.saveLocal();
+          if (AForcePlay && this.child) {
+            this.child.forcePlay(AForcePlay);
+          }
+        }
+      );
+    }
+  };
 
-	setPodcastEpisodeTimeElapsed = (AFeedUrl, AMediaUrl, ASeconds) => {
-		if (!AFeedUrl || !AMediaUrl || !ASeconds) {
-			return;
-		}
-		let podcastList = this.state.podcastList;
-		for (let i=0; i<podcastList.length; i++) {
-			let podcast = podcastList[i];
-			if (!podcast || podcast.feedUrl!=AFeedUrl || !podcast.episodes || !podcast.episodes.length) {
-				continue;
-			}
-			for (let j=0; j<podcast.episodes.length; j++) {
-				if (podcast.episodes[j].url==AMediaUrl) {
-					podcast.episodes[j].secondsElapsed = ASeconds;
-					this.savePodcastHistory(podcast);
-					return;
-				}
-			}
-		}
-	}
+  setPodcastEpisodeTimeElapsed = (AFeedUrl, AMediaUrl, ASeconds) => {
+    if (!AFeedUrl || !AMediaUrl || !ASeconds) {
+      return;
+    }
+    let podcastList = this.state.podcastList;
+    for (let i = 0; i < podcastList.length; i++) {
+      let podcast = podcastList[i];
+      if (!podcast || podcast.feedUrl != AFeedUrl || !podcast.episodes || !podcast.episodes.length) {
+        continue;
+      }
+      for (let j = 0; j < podcast.episodes.length; j++) {
+        if (podcast.episodes[j].url == AMediaUrl) {
+          podcast.episodes[j].secondsElapsed = ASeconds;
+          this.savePodcastHistory(podcast);
+          return;
+        }
+      }
+    }
+  };
 
-	changePlaylist = (APlaylist, AForcePlay) => {
-		if (APlaylist && !this.state.playlist || (this.state.playlist && APlaylist.href !== this.state.playlist.href)) {
-			this.setState({
-				listeningMode: 2,
-				station: null,
-				playlist: APlaylist
-			}, () => {
-				this.saveLocal();
-			});
-		}
-		if (AForcePlay && this.child) {
-			this.child.forcePlay(AForcePlay);
-		}
-	}
+  changePlaylist = (APlaylist, AForcePlay) => {
+    if ((APlaylist && !this.state.playlist) || (this.state.playlist && APlaylist.href !== this.state.playlist.href)) {
+      this.setState(
+        {
+          listeningMode: 2,
+          station: null,
+          playlist: APlaylist,
+        },
+        () => {
+          this.saveLocal();
+        }
+      );
+    }
+    if (AForcePlay && this.child) {
+      this.child.forcePlay(AForcePlay);
+    }
+  };
 
-	toggleFilterPanel = () => {
-		var show = !this.state.showFilterPanel;
-		this.setState({showFilterPanel:show});
-	}
+  toggleFilterPanel = () => {
+    var show = !this.state.showFilterPanel;
+    this.setState({ showFilterPanel: show });
+  };
 
-	indexOfPlaylist = (APlaylistHref) => {
-		if (this.state.playlists) {
-			for (let i = 0; i < this.state.playlists.length; i++) {
-				if (this.state.playlists[i].href === APlaylistHref) {
-					return i;
-				}
-			}
-		}
-		return -1;
-	}
+  indexOfPlaylist = (APlaylistHref) => {
+    if (this.state.playlists) {
+      for (let i = 0; i < this.state.playlists.length; i++) {
+        if (this.state.playlists[i].href === APlaylistHref) {
+          return i;
+        }
+      }
+    }
+    return -1;
+  };
 
-	deletePlaylist = (APlaylistUrl) => {
-		APlaylistUrl = APlaylistUrl.substr(APlaylistUrl.indexOf('/playlist'));
-		let sList = this.state.playlists || [];
-		let puIndex = this.indexOfPlaylist(APlaylistUrl);
-		if (puIndex >= 0) {
-			sList.splice(puIndex, 1);
-			this.setState({
-				playlists: sList
-			}, () => {
-				this.saveLocal();
-			});
-		}
-	}
+  deletePlaylist = (APlaylistUrl) => {
+    APlaylistUrl = APlaylistUrl.substr(APlaylistUrl.indexOf('/playlist'));
+    let sList = this.state.playlists || [];
+    let puIndex = this.indexOfPlaylist(APlaylistUrl);
+    if (puIndex >= 0) {
+      sList.splice(puIndex, 1);
+      this.setState(
+        {
+          playlists: sList,
+        },
+        () => {
+          this.saveLocal();
+        }
+      );
+    }
+  };
 
-	addPlaylist = (APlaylist) => {
-		if (APlaylist && APlaylist.href) {
-			if (this.indexOfPlaylist(APlaylist.href)<0) {
-				let sList = this.state.playlists || [];
-				sList.push(APlaylist);
-				this.setState({
-					playlists: sList
-				}, () => {
-					this.saveLocal();
-				});
-			}
-		}
-	}
+  addPlaylist = (APlaylist) => {
+    if (APlaylist && APlaylist.href) {
+      if (this.indexOfPlaylist(APlaylist.href) < 0) {
+        let sList = this.state.playlists || [];
+        sList.push(APlaylist);
+        this.setState(
+          {
+            playlists: sList,
+          },
+          () => {
+            this.saveLocal();
+          }
+        );
+      }
+    }
+  };
 
-	resetPlaylists = () => {
-		if (this.state.playlists) {
-			this.setState({
-				playlists: null
-			});
-		}
-	}
+  resetPlaylists = () => {
+    if (this.state.playlists) {
+      this.setState({
+        playlists: null,
+      });
+    }
+  };
 
-	latestPodcastSearchResult = (ASearchQuery, ASearchResult) => {
-		this.setState({
-			lastPodcastSearchQuery: ASearchQuery,
-			lastPodcastSearchResult: ASearchResult
-		});
-	}
+  latestPodcastSearchResult = (ASearchQuery, ASearchResult) => {
+    this.setState({
+      lastPodcastSearchQuery: ASearchQuery,
+      lastPodcastSearchResult: ASearchResult,
+    });
+  };
 
-	saveSettings = (ASettings) => {
-		if(!ASettings) {
-			return;
-		}
-		this.setState({
-			settings: ASettings
-		}, () => {
-			this.saveLocal();
-		});
-	}
+  saveSettings = (ASettings) => {
+    if (!ASettings) {
+      return;
+    }
+    this.setState(
+      {
+        settings: ASettings,
+      },
+      () => {
+        this.saveLocal();
+      }
+    );
+  };
 
-	resetLocalPreferences = () =>{
-		if (typeof indexedDB !== 'undefined') {
-			clear().then(() => {
-				window.location.href = '/';
-			});
-		}
-	}
+  resetLocalPreferences = () => {
+    if (typeof indexedDB !== 'undefined') {
+      clear().then(() => {
+        window.location.href = '/';
+      });
+    }
+  };
 
-	savePodcastHistory = (APodcast) => {
-		if (!APodcast || !APodcast.feedUrl) {
-			return;
-		}
-		let podcastArray = this.state.podcastList || [];
-		let pcIndexArray = [];
-		for (let i=0; i<podcastArray.length; i++) {
-			if (podcastArray[i].feedUrl == APodcast.feedUrl) {
-				pcIndexArray.push(i);
-			}
-		}
-		if (pcIndexArray.length) {
-			pcIndexArray.forEach(function(pcIndex) {
-				podcastArray.splice(pcIndex, 1);
-			});
-		}
-		podcastArray.unshift(APodcast);
-		if (podcastArray.length>50) {
-			podcastArray.slice(0, 50);
-		}
-		this.setState({
-			podcastList: podcastArray
-		}, () => {
-			this.saveLocal();
-		});
-	}
+  savePodcastHistory = (APodcast) => {
+    if (!APodcast || !APodcast.feedUrl) {
+      return;
+    }
+    let podcastArray = this.state.podcastList || [];
+    let pcIndexArray = [];
+    for (let i = 0; i < podcastArray.length; i++) {
+      if (podcastArray[i].feedUrl == APodcast.feedUrl) {
+        pcIndexArray.push(i);
+      }
+    }
+    if (pcIndexArray.length) {
+      pcIndexArray.forEach(function (pcIndex) {
+        podcastArray.splice(pcIndex, 1);
+      });
+    }
+    podcastArray.unshift(APodcast);
+    if (podcastArray.length > 50) {
+      podcastArray.slice(0, 50);
+    }
+    this.setState(
+      {
+        podcastList: podcastArray,
+      },
+      () => {
+        this.saveLocal();
+      }
+    );
+  };
 
-	closeFooter = () => {
-		this.setState({
-			listeningMode: 0,
-			station: null,
-			playlist: null
-		}, () => {
-			this.saveLocal();
-			if (this.child) {
-				this.child.forcePlay(true);
-			}
-		});
-	}
+  closeFooter = () => {
+    this.setState(
+      {
+        listeningMode: 0,
+        station: null,
+        playlist: null,
+      },
+      () => {
+        this.saveLocal();
+        if (this.child) {
+          this.child.forcePlay(true);
+        }
+      }
+    );
+  };
 
-	loadLanguageList = () => {
-		let selectedLanguages = [];
-		if (typeof navigator !== 'undefined') {
-			if (navigator.languages) {
-				navigator.languages.forEach(e => selectedLanguages.push(e.toLowerCase()));
-			} else if (navigator.language){
-				selectedLanguages.push(navigator.language.toLowerCase());
-			}
-		}
-		let langItems = Languages;
-		if (langItems && langItems.default) {
-			langItems = langItems.default;
-		}
-		let langs = [];
-		for (let item in langItems) {
-			let country = langItems[item].country_en;
-			if (!country) country = langItems[item].country;
-			langs.push({
-				id: item,
-				abbr: langItems[item].abbr,
-				displayorder: langItems[item].displayorder,
-				name: langItems[item].name,
-				country: country,
-				flag: langItems[item].flag,
-				active: (selectedLanguages.indexOf(item.toLowerCase())!=-1),
-				preferred: (selectedLanguages.length && selectedLanguages[0]==item)
-			});
-		}
-		langs.sort(function(a, b) {
-			var startA = a.displayorder;
-			var startB = b.displayorder;
-			if (startA < startB) {
-				return -1;
-			}
-			if (startA > startB) {
-				return 1;
-			}
-			return 0;
-		});
-		return langs;
-  }
+  loadLanguageList = () => {
+    let selectedLanguages = [];
+    if (typeof navigator !== 'undefined') {
+      if (navigator.languages) {
+        navigator.languages.forEach((e) => selectedLanguages.push(e.toLowerCase()));
+      } else if (navigator.language) {
+        selectedLanguages.push(navigator.language.toLowerCase());
+      }
+    }
+    let langItems = Languages;
+    if (langItems && langItems.default) {
+      langItems = langItems.default;
+    }
+    let langs = [];
+    for (let item in langItems) {
+      let country = langItems[item].country_en;
+      if (!country) country = langItems[item].country;
+      langs.push({
+        id: item,
+        abbr: langItems[item].abbr,
+        displayorder: langItems[item].displayorder,
+        name: langItems[item].name,
+        country: country,
+        flag: langItems[item].flag,
+        active: selectedLanguages.indexOf(item.toLowerCase()) != -1,
+        preferred: selectedLanguages.length && selectedLanguages[0] == item,
+      });
+    }
+    langs.sort(function (a, b) {
+      var startA = a.displayorder;
+      var startB = b.displayorder;
+      if (startA < startB) {
+        return -1;
+      }
+      if (startA > startB) {
+        return 1;
+      }
+      return 0;
+    });
+    return langs;
+  };
 
   reloadStationList = async (AStationID) => {
     let newStationList = await this.loadStationList(true);
-    if (newStationList.some(item => item.id == AStationID)) {
-      this.setState({
-        stationList: newStationList
-      }, () => {
-        this.saveLocal(true);
-      });
+    if (newStationList.some((item) => item.id == AStationID)) {
+      this.setState(
+        {
+          stationList: newStationList,
+        },
+        () => {
+          this.saveLocal(true);
+        }
+      );
     } else {
       // show error page and quit
       window.location.href = window.location.origin + '/invalid-station-id/' + AStationID;
     }
-  }
+  };
 
-	loadStationList = async (forceReload) => {
-		let stationList = this.state.stationList;
-		if (!stationList || stationList.length == 0 || forceReload) {
-      let versionParam = ''+ (forceReload ? new Date().getTime() : AppVersion);
-			await fetch(window.location.origin + '/assets/data/stations.json?v=' + versionParam, {
-				method: 'get'
-			}).then((resp) => resp.json()).then(function(items) {
-				let newState = [];
-				for (let item in items) {
-					newState.push({
-						id: item,
-						name: items[item].name,
-						displayorder: items[item].displayorder,
-						logosource: items[item].logosource,
-						streams: items[item].streams,
-						website: items[item].website,
-						language: items[item].language,
-						genres: items[item].genres,
-						related: items[item].related,
-						podcasts: items[item].podcasts
-					});
-				}
-				newState.sort(function(a, b) {
-					var startA = a.displayorder;
-					var startB = b.displayorder;
-					if (startA < startB) {
-						return -1;
-					}
-					if (startA > startB) {
-						return 1;
-					}
-					return 0;
-				});
-				stationList = newState;
-			}).catch(function(err) {
-			  // Error :(
-				console.log(err);
-			});
-		}
-		return stationList;
-	}
-	loadStationPodcastList = async () => {
-		let stationPodcastList = this.state.stationPodcastList;
-		if (!stationPodcastList || stationPodcastList.length == 0) {
-			await fetch(window.location.origin + '/assets/data/podcasts.json?v=' + AppVersion, {
-				method: 'get'
-			}).then((resp) => resp.json()).then(function(data) {
-				let newState = [];
-				for (let item in data.podcasts) {
-					newState.push(data.podcasts[item]);
-				}
-				stationPodcastList = newState;
-			}).catch(function(err) {
-			  // Error :(
-				console.log(err);
-			});
-		}
-		return stationPodcastList;
-	}
-	loadFeatured = (AStationList) => {
-		let newFeatured = this.state.featured;
-		if (!newFeatured) {
-			let items = Featured.featured;
-			if (items && items.length) {
-				let newState = {
-					stationItem: this.getStation(items[0].station, AStationList),
-					description: items[0].description
-				}
-				newFeatured = newState;
-			}
-		}
-		return newFeatured;
-	}
-	loadPlaylists = () => {
-		return [{
-			href: '/playlist/Radio%202.5/?h0=3fm&h6=radio2&h9=3fm&h14=radio2&h18=3fm&h22=radio2',
-			name: 'Radio 2.5',
-			color: 'rgba(110, 156, 140, 0.75)',
-			schedule: [
-				{
-					'startHour': 0,
-					'endHour': 6,
-					'station': '3fm'
-				},
-				{
-					'startHour': 6,
-					'endHour': 9,
-					'station': 'radio2'
-				},
-				{
-					'startHour': 9,
-					'endHour': 14,
-					'station': '3fm'
-				},
-				{
-					'startHour': 14,
-					'endHour': 18,
-					'station': 'radio2'
-				},
-				{
-					'startHour': 18,
-					'endHour': 22,
-					'station': '3fm'
-				},
-				{
-					'startHour': 22,
-					'endHour': 24,
-					'station': 'radio2'
-				}
-			]
-		}];
-	}
+  loadStationList = async (forceReload) => {
+    let stationList = this.state.stationList;
+    if (!stationList || stationList.length == 0 || forceReload) {
+      let versionParam = '' + (forceReload ? new Date().getTime() : AppVersion);
+      await fetch(window.location.origin + '/assets/data/stations.json?v=' + versionParam, {
+        method: 'get',
+      })
+        .then((resp) => resp.json())
+        .then(function (items) {
+          let newState = [];
+          for (let item in items) {
+            newState.push({
+              id: item,
+              name: items[item].name,
+              displayorder: items[item].displayorder,
+              logosource: items[item].logosource,
+              streams: items[item].streams,
+              website: items[item].website,
+              language: items[item].language,
+              genres: items[item].genres,
+              related: items[item].related,
+              podcasts: items[item].podcasts,
+            });
+          }
+          newState.sort(function (a, b) {
+            var startA = a.displayorder;
+            var startB = b.displayorder;
+            if (startA < startB) {
+              return -1;
+            }
+            if (startA > startB) {
+              return 1;
+            }
+            return 0;
+          });
+          stationList = newState;
+        })
+        .catch(function (err) {
+          // Error :(
+          console.log(err);
+        });
+    }
+    return stationList;
+  };
+  loadStationPodcastList = async () => {
+    let stationPodcastList = this.state.stationPodcastList;
+    if (!stationPodcastList || stationPodcastList.length == 0) {
+      await fetch(window.location.origin + '/assets/data/podcasts.json?v=' + AppVersion, {
+        method: 'get',
+      })
+        .then((resp) => resp.json())
+        .then(function (data) {
+          let newState = [];
+          for (let item in data.podcasts) {
+            newState.push(data.podcasts[item]);
+          }
+          stationPodcastList = newState;
+        })
+        .catch(function (err) {
+          // Error :(
+          console.log(err);
+        });
+    }
+    return stationPodcastList;
+  };
+  loadFeatured = (AStationList) => {
+    let newFeatured = this.state.featured;
+    if (!newFeatured) {
+      let items = Featured.featured;
+      if (items && items.length) {
+        let newState = {
+          stationItem: this.getStation(items[0].station, AStationList),
+          description: items[0].description,
+        };
+        newFeatured = newState;
+      }
+    }
+    return newFeatured;
+  };
+  loadPlaylists = () => {
+    return [
+      {
+        href: '/playlist/Radio%202.5/?h0=3fm&h6=radio2&h9=3fm&h14=radio2&h18=3fm&h22=radio2',
+        name: 'Radio 2.5',
+        color: 'rgba(110, 156, 140, 0.75)',
+        schedule: [
+          {
+            startHour: 0,
+            endHour: 6,
+            station: '3fm',
+          },
+          {
+            startHour: 6,
+            endHour: 9,
+            station: 'radio2',
+          },
+          {
+            startHour: 9,
+            endHour: 14,
+            station: '3fm',
+          },
+          {
+            startHour: 14,
+            endHour: 18,
+            station: 'radio2',
+          },
+          {
+            startHour: 18,
+            endHour: 22,
+            station: '3fm',
+          },
+          {
+            startHour: 22,
+            endHour: 24,
+            station: 'radio2',
+          },
+        ],
+      },
+    ];
+  };
 
-	getStation = (AStation, AStationList) => {
-		let stationList = this.state.stationList || AStationList;
+  getStation = (AStation, AStationList) => {
+    let stationList = this.state.stationList || AStationList;
     if (!stationList || !stationList.length) {
       return null;
     }
     let Result = null;
-    for (let i=0; i<stationList.length; i++) {
+    for (let i = 0; i < stationList.length; i++) {
       if (stationList[i].id == AStation) {
         Result = stationList[i];
         break;
       }
     }
-		return Result;
-	}
+    return Result;
+  };
 
   setLanguageList = (ALanguageList) => {
-		if(ALanguageList) {
-			this.setState({
-				languageList: ALanguageList
-			}, () => {
-				this.saveLocal();
-			});
-		}
-	}
+    if (ALanguageList) {
+      this.setState(
+        {
+          languageList: ALanguageList,
+        },
+        () => {
+          this.saveLocal();
+        }
+      );
+    }
+  };
 
-	getLastStationList = (AStationList) => {
-		let stationList = AStationList || this.state.stationList;
-		if (!stationList) {
-			return;
-		}
-		let lastStations = [];
-		for (var i=0; i<10; i++) {
-			if (stationList.length <= i) break;
-			lastStations.push(stationList[i]);
-		}
-		return lastStations;
-	}
-	setPlaylists = (APlaylists) => {
-		if (APlaylists) {
-			this.setState({
-				playlists: APlaylists
-			}, () => {
-				this.saveLocal();
-			});
-		}
-  }
+  getLastStationList = (AStationList) => {
+    let stationList = AStationList || this.state.stationList;
+    if (!stationList) {
+      return;
+    }
+    let lastStations = [];
+    for (var i = 0; i < 10; i++) {
+      if (stationList.length <= i) break;
+      lastStations.push(stationList[i]);
+    }
+    return lastStations;
+  };
+  setPlaylists = (APlaylists) => {
+    if (APlaylists) {
+      this.setState(
+        {
+          playlists: APlaylists,
+        },
+        () => {
+          this.saveLocal();
+        }
+      );
+    }
+  };
 
   updatePodcastImageProperties = (APodcastList) => {
-    if(!APodcastList) return;
-    for(let i=0;i<APodcastList.length;i++) {
-      if(!APodcastList[i].logo) {
+    if (!APodcastList) return;
+    for (let i = 0; i < APodcastList.length; i++) {
+      if (!APodcastList[i].logo) {
         APodcastList[i].logo = APodcastList[i].artworkUrl;
       }
-      if(!APodcastList[i].logo600 && APodcastList[i].artworkUrl600) {
+      if (!APodcastList[i].logo600 && APodcastList[i].artworkUrl600) {
         APodcastList[i].logo600 = APodcastList[i].artworkUrl600;
       }
     }
-  }
+  };
 
   removeOldStationsFromList = (AStationList) => {
     let newList = AStationList;
-    if (AStationList.some(item => { return item.id === 'kxclassicsedge' || item.id === 'xxlbonanza'; })) {
+    if (
+      AStationList.some((item) => {
+        return item.id === 'kxclassicsedge' || item.id === 'xxlbonanza';
+      })
+    ) {
       // Temp fix to remove old stations
       newList = [];
-      for (let i=0; i<AStationList.length; i++) {
+      for (let i = 0; i < AStationList.length; i++) {
         if (AStationList[i].id !== 'kxclassicsedge' && AStationList[i].id !== 'xxlbonanza') {
           newList.push(AStationList[i]);
         }
       }
     }
-    if (AStationList.some(item => { return item.logosource.indexOf('https://avatars.io/') === 0 })) {
+    if (
+      AStationList.some((item) => {
+        return item.logosource.indexOf('https://avatars.io/') === 0;
+      })
+    ) {
       // Temp fix to remove avatars.io from cache
       newList = [];
-      for (let i=0; i<AStationList.length; i++) {
+      for (let i = 0; i < AStationList.length; i++) {
         let station = AStationList[i];
         if (station.logosource.indexOf('https://avatars.io/twitter/') === 0) {
-          station.logosource = station.logosource.replace('https://avatars.io/twitter/','https://res.cloudinary.com/onetuner/image/twitter_name/');
+          station.logosource = station.logosource.replace('https://avatars.io/twitter/', 'https://res.cloudinary.com/onetuner/image/twitter_name/');
         }
         if (station.logosource.indexOf('https://avatars.io/facebook/') === 0) {
-          station.logosource = station.logosource.replace('https://avatars.io/facebook/','https://res.cloudinary.com/onetuner/image/facebook/');
+          station.logosource = station.logosource.replace('https://avatars.io/facebook/', 'https://res.cloudinary.com/onetuner/image/facebook/');
         }
         newList.push(station);
       }
     }
     return newList;
-  }
+  };
 
-	initChromeCast = () => {
+  initChromeCast = () => {
     if (window && !window.__onGCastApiAvailable) {
       let s = document.createElement('script');
       s.setAttribute('src', 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1');
@@ -717,13 +866,13 @@ export default class App extends Component {
         }
       };
     }
-  }
+  };
 
-	initializeCastApi = () => {
+  initializeCastApi = () => {
     if (typeof cast === 'undefined') return;
     cast.framework.CastContext.getInstance().setOptions({
       receiverApplicationId: '2CFD5B94',
-      autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+      autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
     });
-  }
+  };
 }
