@@ -1,148 +1,150 @@
 .pageheader {
-	padding: 0 1.5rem .5rem;
+  padding: 0 1.5rem 0.5rem;
 }
 main.podcast {
-	padding: 0 1.5rem 11rem 1.5rem;
-	background-color: var(--background-color);
-	position: relative;
-	display: flex;
-	flex-wrap: wrap;
-	align-content: flex-start;
+  padding: 0 1.5rem 11rem 1.5rem;
+  background-color: var(--background-color);
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
 }
 main.podcast--empty {
-	display: block;
+  display: block;
 }
 .start {
-	display: flex;
-	margin-bottom: 1rem;
-	align-items: flex-start;
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: flex-start;
 }
 .end {
-	max-width: 100%;
-	word-break: normal;
-	display: block;
+  max-width: 100%;
+  word-break: normal;
+  display: block;
 }
 .description {
-	text-align: left;
-	margin-top: -.5rem;
-	padding: 0 0 0 1rem;
+  text-align: left;
+  margin-top: -0.5rem;
+  padding: 0 0 0 1rem;
 }
 p.descriptiontext {
-	padding: 0;
-	margin: 0;
+  padding: 0;
+  margin: 0;
 }
 p.reloadbutton {
-	display: flex;
-	align-items: center;
-	transform: scale(.75);
+  display: flex;
+  align-items: center;
+  transform: scale(0.75);
   transform-origin: left;
-	flex: 1 0 0;
+  flex: 1 0 0;
 }
 img.artwork {
-	max-width: 5rem;
-	width:auto;
-	height: auto;
-	flex: 0 1 0;
+  max-width: 5rem;
+  width: auto;
+  height: auto;
+  flex: 0 1 0;
 }
 .pubdate {
-	display: block;
-	color: #999;
-	font-size: .8rem;
+  display: block;
+  color: #999;
+  font-size: 0.8rem;
 }
 @media (min-width: 768px) {
-	main.podcast {
-		display:block;
-	}
-	.start {
-		display:block;
-		max-width: 20vw;
-		flex-basis: 20vw;
-		position: sticky;
-		top: 5rem;
-		text-align: left;
-		float:left;
-	}
-	.end {
-		max-width: 75vw;
-		padding-left: calc(20vw + 2rem);
-	}
-	img.artwork {
-		width:100%;
-		max-width: unset;
-		height: auto;
-	}
-	.description {
-		padding: 1rem 0 0 0;
-	}
-	p.reloadbutton {
-		transform: scale(1);
-	}
+  main.podcast {
+    display: block;
+  }
+  .start {
+    display: block;
+    max-width: 20vw;
+    flex-basis: 20vw;
+    position: sticky;
+    top: 5rem;
+    text-align: left;
+    float: left;
+  }
+  .end {
+    max-width: 75vw;
+    padding-left: calc(20vw + 2rem);
+  }
+  img.artwork {
+    width: 100%;
+    max-width: unset;
+    height: auto;
+  }
+  .description {
+    padding: 1rem 0 0 0;
+  }
+  p.reloadbutton {
+    transform: scale(1);
+  }
 }
 .end h1 {
-	line-height: 1.2;
-	margin-bottom: 1rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
 }
 .end h1 small {
-	margin-top: .2rem;
+  margin-top: 0.2rem;
 }
 
 .podcast-episode__list {
-	margin: 0;
-	padding: 0;
-	list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 .podcast-episode__item {
-	margin-bottom: 1rem;
-	padding: .5rem 1rem;
-	word-wrap: break-word;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  word-wrap: break-word;
 }
 .podcast-episode__item--is-playing {
-	background-color: rgba(0,0,0,.05);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 button.btn--play-episode {
-	height: 1.5rem !important;
-	width: 1.5rem !important;
-	padding: 0;
-	vertical-align: bottom;
-	margin-right: .4rem !important;
-	cursor: pointer;
+  height: 1.5rem !important;
+  width: 1.5rem !important;
+  padding: 0;
+  vertical-align: bottom;
+  margin-right: 0.4rem !important;
+  cursor: pointer;
 }
 button.btn--play-episode:after {
-	top:.4rem !important;
-  left:.5rem !important;
+  top: 0.4rem !important;
+  left: 0.5rem !important;
 }
 
 button.btnreload {
-	padding: 0;
-	position: absolute;
+  padding: 0;
+  position: absolute;
 }
 .modifieddate {
-	padding: 0 1rem 0 2rem;
-	height: 2rem;
-	border-radius: 3rem;
-	margin-left: .5rem;
-	background: var(--filter-panel-bg-color);
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	line-height: 2rem;
+  padding: 0 1rem 0 2rem;
+  height: 2rem;
+  border-radius: 3rem;
+  margin-left: 0.5rem;
+  background: var(--filter-panel-bg-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 2rem;
 }
 .reloadicon {
-	display: flex;
-	width: 2rem;
-	height: 100%;
+  display: flex;
+  width: 2rem;
+  height: 100%;
 }
 .reloadicon svg {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 }
 .reloadicon svg path {
-	fill: #fff;
+  fill: #fff;
 }
 .reloadicon.loading {
-	animation: rotate 1.5s linear infinite;
+  animation: rotate 1.5s linear infinite;
 }
 
 @keyframes rotate {
-  100% { transform: rotate(360deg); }
+  100% {
+    transform: rotate(360deg);
+  }
 }

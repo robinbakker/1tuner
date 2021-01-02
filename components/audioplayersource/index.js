@@ -4,8 +4,8 @@ export default class AudioPlayerSource extends Component {
   constructor(props) {
     super(props);
   }
-  
-	render() {
+
+  render() {
     let urlSrc, urlDataSrc;
     if (this.props.isPlaying || this.props.usePause) {
       urlSrc = this.props.source.url;
@@ -14,8 +14,6 @@ export default class AudioPlayerSource extends Component {
       urlDataSrc = this.props.source.url;
       urlSrc = '';
     }
-    return (
-			<source src={urlSrc} data-src={urlDataSrc} type={this.props.source.mimetype} />
-		);
-	}
+    return <source src={urlSrc} data-src={urlDataSrc} type={this.props.source.mimetype} />;
+  }
 }

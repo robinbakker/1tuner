@@ -5,16 +5,16 @@ export default class DropDown extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id:null,
+      id: null,
       value: null,
-      optionList: null
-    }
+      optionList: null,
+    };
   }
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.setState({ value: e.target.value });
     this.props.valueChanged(e.target.value);
-  }
+  };
 
   componentDidMount() {
     if (!this.state.id && this.props.id) {
@@ -25,26 +25,28 @@ export default class DropDown extends Component {
   loadData = () => {
     let value = this.state.value;
     let optionList = this.state.value;
-    if (typeof this.props.initialValue !== 'undefined' && (this.state.value==null || this.state.value!=this.props.initialValue)) {
+    if (typeof this.props.initialValue !== 'undefined' && (this.state.value == null || this.state.value != this.props.initialValue)) {
       value = this.props.initialValue;
     }
     if ((!this.state.optionList || !this.state.optionList.length) && this.props.optionList && this.props.optionList.length) {
       optionList = this.props.optionList;
     }
     this.setState({
-      value: value, 
-      optionList: optionList 
+      value: value,
+      optionList: optionList,
     });
-  }
-  
-	render({label}, {id, value, optionList}) {
+  };
+
+  render({ label }, { id, value, optionList }) {
     if (optionList) {
       return (
         <label class={style['dd-container'] + ' label-container'}>
-          {label ? <span class={style['dd-label-text'] +' label-text'}>{label}</span> : null }
+          {label ? <span class={style['dd-label-text'] + ' label-text'}>{label}</span> : null}
           <select id={id} class={style['dd-select'] + ' dropdown'} value={value} onChange={this.handleChange}>
-            {optionList.map(optionItem => (
-              <option value={optionItem.value} selected={optionItem.value==value}>{optionItem.text}</option>
+            {optionList.map((optionItem) => (
+              <option value={optionItem.value} selected={optionItem.value == value}>
+                {optionItem.text}
+              </option>
             ))}
           </select>
         </label>
@@ -53,5 +55,5 @@ export default class DropDown extends Component {
       this.loadData();
       return null;
     }
-	}
+  }
 }

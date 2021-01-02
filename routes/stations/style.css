@@ -1,30 +1,30 @@
 main.stations {
-	padding: 0rem 1.5rem 11rem 1.5rem;
-	background-color: var(--background-color);
+  padding: 0rem 1.5rem 11rem 1.5rem;
+  background-color: var(--background-color);
 }
 button.btn--toggle-filter {
-	margin-top: 0;
-	padding-left: 2rem;
-	position: relative;
+  margin-top: 0;
+  padding-left: 2rem;
+  position: relative;
 }
 button.btn--toggle-filter:before {
-	content: '\20';
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='%23fff' d='M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z'/%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3C/svg%3E");
-	background-position: .6rem .4rem;
-	background-size: 1.2rem;
-	background-repeat: no-repeat;
-	display: inline-block;
-	width: 2rem;
-	height: 2rem;
-	position: absolute;
-	left:0;
-	top:0;
+  content: '\20';
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='%23fff' d='M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z'/%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3C/svg%3E");
+  background-position: 0.6rem 0.4rem;
+  background-size: 1.2rem;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 @media (min-width: 768px) {
-	button.btn--toggle-filter {
-		display: none;
-	}
-	main.stations {
-		padding-right: 17.5rem;
-	}
+  button.btn--toggle-filter {
+    display: none;
+  }
+  main.stations {
+    padding-right: 17.5rem;
+  }
 }

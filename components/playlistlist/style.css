@@ -1,27 +1,27 @@
 img.station-logo {
-	max-width: 100%;
-	vertical-align: middle;
-	mix-blend-mode: luminosity;
+  max-width: 100%;
+  vertical-align: middle;
+  mix-blend-mode: luminosity;
 }
 .station-list {
-	list-style: none;
-	margin:0;
-	padding:0;
-	flex: 1;
-	display: flex;
-	align-items: center;
-	align-content: center;
-	justify-content: flex-end;
-	flex-wrap: wrap;
-	position: absolute;
-	z-index: 0;
-	right: 0;
-	bottom: 0;
-	opacity: .2;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  position: absolute;
+  z-index: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.2;
 }
 .station-list__item {
-	flex:1;
-	max-width: 20%;
-	min-width: 1rem;
-	margin: .1rem .6rem;
+  flex: 1;
+  max-width: 20%;
+  min-width: 1rem;
+  margin: 0.1rem 0.6rem;
 }

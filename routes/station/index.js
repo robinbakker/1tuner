@@ -2,184 +2,193 @@ import { h, Component } from 'preact';
 import style from './style';
 import Loader from '../../components/loader';
 import Header from '../../components/header';
+import SocialLinkList from '../../components/sociallinklist';
 import StationList from '../../components/stationlist';
 import PodcastList from '../../components/podcastlist';
 import { Link } from 'preact-router/match';
 import { getFlagEmojiFromLanguage, setDocumentMetaTags } from '../../utils/misc';
 
 export default class Station extends Component {
-	constructor(props) {
+  constructor(props) {
     super(props);
-		this.state = {
+    this.state = {
       docTitle: 'Radio Station',
       docDescription: 'Listen now at 1tuner.com',
-			currentStation: null,
-			relatedStationList: [],
-			podcastList: []
-		};
-	}
+      currentStation: null,
+      relatedStationList: [],
+      podcastList: [],
+    };
+  }
 
-	getStation = (AStation) => {
+  getStation = (AStation) => {
     if (!AStation || !this.props.stationList || !this.props.stationList.length) {
       return null;
-		}
+    }
     let Result = null;
-		let stationList = this.props.stationList;
-    for (let i=0; i < stationList.length; i++) {
+    let stationList = this.props.stationList;
+    for (let i = 0; i < stationList.length; i++) {
       if (stationList[i].id == AStation) {
-				Result = stationList[i];
+        Result = stationList[i];
         break;
       }
-		}
-		return Result;
-	}
+    }
+    return Result;
+  };
 
-	getSameGenreStations = (AStation) => {
+  getSameGenreStations = (AStation) => {
     if (!AStation.genres || !Array.isArray(AStation.genres) || !this.props.stationList || !this.props.stationList.length) {
       return null;
-		}
-		let genreArrayString = JSON.stringify(AStation.genres.sort());
+    }
+    let genreArrayString = JSON.stringify(AStation.genres.sort());
     let result = [];
-		let stationList = this.props.stationList;
+    let stationList = this.props.stationList;
     for (let i = 0; i < stationList.length; i++) {
-			if (stationList[i].id==AStation.id) {
-				continue;
-			}
-			let thisStationGenres = stationList[i].genres;
-      if (thisStationGenres && Array.isArray(thisStationGenres)) {
-				if (JSON.stringify(thisStationGenres.sort()) === genreArrayString) {
-					result.push(stationList[i]);
-				}
+      if (stationList[i].id == AStation.id) {
+        continue;
       }
-		}
-		return result;
-	}
+      let thisStationGenres = stationList[i].genres;
+      if (thisStationGenres && Array.isArray(thisStationGenres)) {
+        if (JSON.stringify(thisStationGenres.sort()) === genreArrayString) {
+          result.push(stationList[i]);
+        }
+      }
+    }
+    return result;
+  };
 
-	changeStation = (AStationID) => {
-		let stationID = AStationID;
-		if (typeof stationID !== 'string') {
-			stationID = this.state.currentStation.id;
-		}
-		this.props.changeStation(stationID, true);
-	}
+  changeStation = (AStationID) => {
+    let stationID = AStationID;
+    if (typeof stationID !== 'string') {
+      stationID = this.state.currentStation.id;
+    }
+    this.props.changeStation(stationID, true);
+  };
 
-	getPodcast = (AFeedUrl) => {
-		for (let i = 0; i < this.props.podcastList.length; i++) {
-			if (this.props.podcastList[i].feedUrl == AFeedUrl) {
-				return this.props.podcastList[i];
-			}
-		}
-		return null;
-	}
+  getPodcast = (AFeedUrl) => {
+    for (let i = 0; i < this.props.podcastList.length; i++) {
+      if (this.props.podcastList[i].feedUrl == AFeedUrl) {
+        return this.props.podcastList[i];
+      }
+    }
+    return null;
+  };
 
-	loadData = () => {
+  loadData = () => {
     let station = this.getStation(this.props.id);
-		if (station) {
+    if (station) {
       setDocumentMetaTags(station.name + ' | ' + this.state.docTitle, this.state.docDescription, station.logosource);
-		} else {
+    } else {
       setDocumentMetaTags();
       // that's weird, station couldn't be found... Try to reload?
       this.props.reloadStationList(this.props.id);
       return;
     }
-		var podcastList = [];
-		if (station.podcasts && station.podcasts.length && this.props.podcastList && this.props.podcastList.length) {
-			for (let i = 0; i < station.podcasts.length; i++) {
-				let podcastItem = this.getPodcast(station.podcasts[i]);
-				if (podcastItem) {
-				  podcastList.push(podcastItem);
-				}
-			}
-		}
-		let relatedStationList = this.getSameGenreStations(station) || [];
-		let self = this;
-		if (station.related && station.related.length) {
-			station.related.forEach(function(stationid) {
-				if (!relatedStationList.filter(relStation => relStation.id==stationid).length) {
-					relatedStationList.push(self.getStation(stationid));
-				}
-			});
-		}
-		if (relatedStationList && relatedStationList.length) {
-			relatedStationList.sort(function(keyA, keyB) {
-				if (keyA.language==keyB.language) {
-					return 0;
-				}
-				if (keyA.language==station.language) {
-					return -1;
-				}
-				if (keyB.language==station.language) {
-					return 1;
-				}
-				return 0;
-			});
-		}
-		this.setState({currentStation: station, relatedStationList: relatedStationList, podcastList: podcastList});
-	}
+    var podcastList = [];
+    if (station.podcasts && station.podcasts.length && this.props.podcastList && this.props.podcastList.length) {
+      for (let i = 0; i < station.podcasts.length; i++) {
+        let podcastItem = this.getPodcast(station.podcasts[i]);
+        if (podcastItem) {
+          podcastList.push(podcastItem);
+        }
+      }
+    }
+    let relatedStationList = this.getSameGenreStations(station) || [];
+    let self = this;
+    if (station.related && station.related.length) {
+      station.related.forEach(function (stationid) {
+        if (!relatedStationList.filter((relStation) => relStation.id == stationid).length) {
+          relatedStationList.push(self.getStation(stationid));
+        }
+      });
+    }
+    if (relatedStationList && relatedStationList.length) {
+      relatedStationList.sort(function (keyA, keyB) {
+        if (keyA.language == keyB.language) {
+          return 0;
+        }
+        if (keyA.language == station.language) {
+          return -1;
+        }
+        if (keyB.language == station.language) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+    this.setState({ currentStation: station, relatedStationList: relatedStationList, podcastList: podcastList });
+  };
 
-	render({id,stationList},{currentStation,relatedStationList,podcastList,docTitle,docDescription}) {
-		if (currentStation && currentStation.id==id) {
-			return (
-				<div class={'page-container'}>
-				<Header title={currentStation.name} inverted={true} sharetext={docDescription} />
-				<main class={'content ' + (style.station)}>
-					<header class={style.header} style={'background-image:url(' + currentStation.logosource +')'}>
-						<div class={style['header__bg-image-container']}>
-							<img class={style['header__bg-image']} alt={currentStation.name} src={currentStation.logosource} />
-						</div>
-						<div class={style['header__content']}>
-							<div class={style['header__title']}>
-								<img class={style['header__image']} alt={currentStation.name} src={currentStation.logosource} />
-								<h1 class={'main-title main-title--inverted'}>{currentStation.name}
-								<small class={'main-subtitle main-subtitle--inverted'}>{getFlagEmojiFromLanguage(currentStation.language)} Radio station</small></h1>
-							</div>
-							{currentStation.website ?
-							<p><a href={currentStation.website} class={'link--inverted'} target={'_blank'} rel={'noopener'}>{currentStation.website}</a></p>
-							:
-							null }
-						</div>
-						<div class={'btn-container ' + style['header__button']}>
-							<button onClick={this.changeStation.bind(this)} class={'btn btn--play btn--big'}>Listen now</button>
-						</div>
-					</header>
-					{podcastList && podcastList.length ?
-						<article class={'content__section ' + style.related}>
-							<header class={'section-header'}>
-								<h3 class={'section-title'}>Podcasts</h3>
-								<Link href={'/podcasts/?q=' + currentStation.name} native class="btn btn--secondary btn--float-right">More</Link>
-							</header>
-							<div>
-								<PodcastList podcastList={podcastList} limitCount={20} horizontal={true} small={true} />
-							</div>
-						</article>
-						: null
-					}
-					{relatedStationList && relatedStationList.length ?
-						<article class={'content__section ' + style.related}>
-							<header class={'section-header'}>
-								<h3 class={'section-title'}>Suggested stations</h3>
-							</header>
-							<div>
-								<StationList stationList={relatedStationList} useLinksOnly={true} horizontal={true} small={true} changeStation={this.changeStation.bind(this)} limitCount={10}  />
-							</div>
-						</article>
-						: null
-					}
-				</main>
-				</div>
-			);
-		} else {
-			if (stationList && stationList.length) {
-				this.loadData();
-			}
-			return(
-				<div class={'page-container'}>
-				<Header title={docTitle} />
-				<main class={'content content--is-loading ' + (style.station)}>
-					<Loader />
-				</main>
-				</div>
-			);
-		}
-	}
+  render({ id, stationList }, { currentStation, relatedStationList, podcastList, docTitle, docDescription }) {
+    if (currentStation && currentStation.id == id) {
+      return (
+        <div class={'page-container'}>
+          <Header title={currentStation.name} inverted={true} sharetext={docDescription} />
+          <main class={'content ' + style.station}>
+            <header class={style.header} style={'background-image:url(' + currentStation.logosource + ')'}>
+              <div class={style['header__bg-image-container']}>
+                <img class={style['header__bg-image']} alt={currentStation.name} src={currentStation.logosource} />
+              </div>
+              <div class={style['header__content']}>
+                <div class={style['header__title']}>
+                  <img class={style['header__image']} alt={currentStation.name} src={currentStation.logosource} />
+                  <h1 class={'main-title main-title--inverted'}>
+                    {currentStation.name}
+                    <small class={'main-subtitle main-subtitle--inverted'}>{getFlagEmojiFromLanguage(currentStation.language)} Radio station</small>
+                  </h1>
+                </div>
+                <SocialLinkList websiteUrl={currentStation.website} items={currentStation.social} />
+              </div>
+              <div class={'btn-container ' + style['header__button']}>
+                <button onClick={this.changeStation.bind(this)} class={'btn btn--play btn--big'}>
+                  Listen now
+                </button>
+              </div>
+            </header>
+            {podcastList && podcastList.length ? (
+              <article class={'content__section ' + style.related}>
+                <header class={'section-header'}>
+                  <h3 class={'section-title'}>Podcasts</h3>
+                  <Link href={'/podcasts/?q=' + currentStation.name} native class="btn btn--secondary btn--float-right">
+                    More
+                  </Link>
+                </header>
+                <div>
+                  <PodcastList podcastList={podcastList} limitCount={20} horizontal={true} small={true} />
+                </div>
+              </article>
+            ) : null}
+            {relatedStationList && relatedStationList.length ? (
+              <article class={'content__section ' + style.related}>
+                <header class={'section-header'}>
+                  <h3 class={'section-title'}>Suggested stations</h3>
+                </header>
+                <div>
+                  <StationList
+                    stationList={relatedStationList}
+                    useLinksOnly={true}
+                    horizontal={true}
+                    small={true}
+                    changeStation={this.changeStation.bind(this)}
+                    limitCount={10}
+                  />
+                </div>
+              </article>
+            ) : null}
+          </main>
+        </div>
+      );
+    } else {
+      if (stationList && stationList.length) {
+        this.loadData();
+      }
+      return (
+        <div class={'page-container'}>
+          <Header title={docTitle} />
+          <main class={'content content--is-loading ' + style.station}>
+            <Loader />
+          </main>
+        </div>
+      );
+    }
+  }
 }

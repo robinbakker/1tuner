@@ -5,25 +5,30 @@ export default class HourDropDown extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hourItems:[],
-    }
+      hourItems: [],
+    };
   }
 
-  componentDidMount() {	
+  componentDidMount() {
     let hours = [];
-		for(let h=0; h<=24; h++) {
-			hours.push({value:h, text:h});
-		}
-		this.setState({ hourItems: hours });
+    for (let h = 0; h <= 24; h++) {
+      hours.push({ value: h, text: h });
+    }
+    this.setState({ hourItems: hours });
   }
 
-  valueChanged = e => {
+  valueChanged = (e) => {
     this.props.valueChanged(e);
-  }
-  
-	render() {
+  };
+
+  render() {
     return (
-      <DropDown label={this.props.label} initialValue={this.props.hour} optionList={this.state.hourItems} valueChanged={this.valueChanged.bind(this)} />
+      <DropDown
+        label={this.props.label}
+        initialValue={this.props.hour}
+        optionList={this.state.hourItems}
+        valueChanged={this.valueChanged.bind(this)}
+      />
     );
-	}
+  }
 }

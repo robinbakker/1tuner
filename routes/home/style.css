@@ -9,45 +9,45 @@ main.home {
   background-size: cover;
   display: block;
   text-align: left;
-  box-shadow: 0 .2rem .5rem rgba(0,0,0,.1);
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 .home-header-logo {
   flex: 0 1 0;
   width: 33%;
   max-width: 10rem;
   height: auto;
-  margin: 1.2rem 0 .8rem 1.2rem;
+  margin: 1.2rem 0 0.8rem 1.2rem;
 }
 .about-link {
-  color:#999;
+  color: #999;
 }
 .featured-info {
-  margin-left:1.5rem;
-  flex:1 0 0;
+  margin-left: 1.5rem;
+  flex: 1 0 0;
 }
 h4.featured-title {
-  margin:0;
+  margin: 0;
 }
 p.featured-description {
-  margin:0;
+  margin: 0;
 }
 
 @-webkit-keyframes animIn {
   0% {
     transform: translateX(-100px);
     opacity: 0;
-    border-color:#f00;
+    border-color: #f00;
   }
 
   50% {
     opacity: 1;
-    border-color:#fff;
+    border-color: #fff;
   }
 
   100% {
     transform: translateX(100px);
     opacity: 0;
-    border-color:#f00;
+    border-color: #f00;
   }
 }
 
@@ -55,12 +55,12 @@ p.featured-description {
   0% {
     transform: translateX(-150px);
     opacity: 0;
-    border-color:#fff;
+    border-color: #fff;
   }
 
   50% {
     opacity: 1;
-    border-color:#fff;
+    border-color: #fff;
   }
 
   100% {

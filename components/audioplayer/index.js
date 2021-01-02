@@ -10,7 +10,7 @@ export default class AudioPlayer extends Component {
 
     this.state = {
       isPlaying: false,
-      promiseIsPlaying:false,
+      promiseIsPlaying: false,
       mediaid: '',
       errorMessage: null,
       srcItems: [],
@@ -19,7 +19,7 @@ export default class AudioPlayer extends Component {
       reconnectTimerWorker: null,
       reconnectTriesCount: 0,
       usePause: false,
-      isCasting: false
+      isCasting: false,
     };
   }
 
@@ -43,21 +43,24 @@ export default class AudioPlayer extends Component {
           srcItems.push(<AudioPlayerSource isPlaying={AIsPlaying} usePause={AUsePause} source={source} />);
         });
       }
-      this.setState({
-        sources: ASrcs,
-        srcItems: srcItems,
-        errorMessage: null,
-        usePause: AUsePause
-      }, () => {
-        self.props.hasError(null);
-        if (AUsePause && ASecondsElapsed) {
-          resumeAtSeconds = ASecondsElapsed;
+      this.setState(
+        {
+          sources: ASrcs,
+          srcItems: srcItems,
+          errorMessage: null,
+          usePause: AUsePause,
+        },
+        () => {
+          self.props.hasError(null);
+          if (AUsePause && ASecondsElapsed) {
+            resumeAtSeconds = ASecondsElapsed;
+          }
+          self.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds);
         }
-        self.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds);
-      });
+      );
     } else {
       if (this.state.usePause != AUsePause) {
-        this.setState({usePause: AUsePause}, () => {
+        this.setState({ usePause: AUsePause }, () => {
           self.checkAudio(AIsPlaying, AMediaIDPlaying, resumeAtSeconds);
         });
       } else {
@@ -88,27 +91,29 @@ export default class AudioPlayer extends Component {
       } else {
         if (ASeconds < 0) {
           ASeconds = Math.abs(ASeconds);
-          if (audioPL.currentTime<=ASeconds) {
+          if (audioPL.currentTime <= ASeconds) {
             audioPL.currentTime = 0;
           } else {
             audioPL.currentTime -= ASeconds;
           }
         } else {
           if (audioPL.currentTime >= audioPL.duration - ASeconds) {
-            audioPL.currentTime = audioPL.duration-.1;
+            audioPL.currentTime = audioPL.duration - 0.1;
           } else {
             audioPL.currentTime += ASeconds;
           }
         }
       }
     }
-  }
+  };
 
   componentDidMount() {
     this.props.onRef(this);
     var self = this;
     if (typeof window !== 'undefined') {
-      window.addEventListener('offline', function() { self.handleAudioError(); });
+      window.addEventListener('offline', function () {
+        self.handleAudioError();
+      });
     }
   }
 
@@ -121,25 +126,27 @@ export default class AudioPlayer extends Component {
     if (thisTimerWorker) {
       return; //Worker is running, return
     }
-    let self= this;
-    if (window.Worker && thisTimerWorker==null) {
+    let self = this;
+    if (window.Worker && thisTimerWorker == null) {
       try {
         thisTimerWorker = new Worker('/assets/workers/timer.js');
         thisTimerWorker.postMessage(RECONNECT_TIMEOUT);
-        thisTimerWorker.addEventListener('message', function(AMessage) { self.handleMessageFromTimerWorker(AMessage, self); });
+        thisTimerWorker.addEventListener('message', function (AMessage) {
+          self.handleMessageFromTimerWorker(AMessage, self);
+        });
         self.setState({
           reconnectTimerWorker: thisTimerWorker,
-          reconnectTriesCount: 0
+          reconnectTriesCount: 0,
         });
-      } catch(error) {
+      } catch (error) {
         console.log(error);
         self.setState({
           reconnectTimerWorker: null,
-          reconnectTriesCount: 0
+          reconnectTriesCount: 0,
         });
       }
     }
-  }
+  };
 
   handleMessageFromTimerWorker = (AMessage, ASelfRef) => {
     let self = ASelfRef || this;
@@ -149,11 +156,11 @@ export default class AudioPlayer extends Component {
       self.checkAudio(false);
     } else {
       this.setState({
-        reconnectTriesCount: triesCount
+        reconnectTriesCount: triesCount,
       });
       self.checkAudio(true);
     }
-  }
+  };
 
   killReconnectTimer = () => {
     let thisTimerWorker = this.state.reconnectTimerWorker;
@@ -161,10 +168,10 @@ export default class AudioPlayer extends Component {
       thisTimerWorker.terminate();
       this.setState({
         reconnectTimerWorker: null,
-        reconnectTriesCount: 0
+        reconnectTriesCount: 0,
       });
     }
-  }
+  };
 
   checkAudio = (AIsPlaying, AMediaPlayingID, AResumeAtSeconds) => {
     let mediaPlayingID = AMediaPlayingID ? AMediaPlayingID : this.props.mediaid;
@@ -187,19 +194,22 @@ export default class AudioPlayer extends Component {
       return; // Nothing changed
     }
     let self = this;
-    let isOffline = ('onLine' in navigator && !navigator.onLine);
+    let isOffline = 'onLine' in navigator && !navigator.onLine;
     if (isOffline) {
       // Makes no sense to checkAudio/reconnect now... Try again later
       this.setReconnectTimer();
-      this.setState({
-        errorMessage: {
-          code: 1000,
-          message: 'Offline',
-          source: ''
+      this.setState(
+        {
+          errorMessage: {
+            code: 1000,
+            message: 'Offline',
+            source: '',
+          },
+        },
+        () => {
+          self.props.hasError(self.state.errorMessage);
         }
-      }, () => {
-        self.props.hasError(self.state.errorMessage);
-      });
+      );
       return;
     }
     this.killReconnectTimer();
@@ -208,7 +218,7 @@ export default class AudioPlayer extends Component {
       return;
     }
     let errorMessage = this.state.errorMessage;
-    if (!AIsPlaying || mediaPlayingID!=this.props.mediaid || errorMessage!=null || castSessionChanged) {
+    if (!AIsPlaying || mediaPlayingID != this.props.mediaid || errorMessage != null || castSessionChanged) {
       if (!audioPL.paused) {
         audioPL.pause();
       }
@@ -234,7 +244,7 @@ export default class AudioPlayer extends Component {
           isPlaying: AIsPlaying,
           mediaid: mediaPlayingID,
           errorMessage: errorMessage,
-          isCasting: isCasting
+          isCasting: isCasting,
         });
         return;
       }
@@ -254,56 +264,63 @@ export default class AudioPlayer extends Component {
         //     ()=>{console.log('seek error')});
         //   }
         // } else {
-          this.seekAudio(AResumeAtSeconds, true);
+        this.seekAudio(AResumeAtSeconds, true);
         //}
       }
     } else {
       this.handleLoadedData();
     }
-    if(isCasting && this.state.sources.length) {
+    if (isCasting && this.state.sources.length) {
       // Play on Chromecast
       const mediaInfo = new chrome.cast.media.MediaInfo(this.state.sources[0].url, this.state.sources[0].mimetype);
       mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
       mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
       mediaInfo.metadata.title = this.props.mediatitle || this.props.mediaartist;
-      mediaInfo.metadata.images = [
-        {'url':this.props.medialogo || 'https://1tuner.com/assets/icons/icon-512x512.png'}
-      ];
+      mediaInfo.metadata.images = [{ url: this.props.medialogo || 'https://1tuner.com/assets/icons/icon-512x512.png' }];
 
       var request = new chrome.cast.media.LoadRequest(mediaInfo);
       castSession.loadMedia(request).then(
-        function() { console.log('Load succeed'); },
-        function(errorCode) { console.log('Error code: ' + errorCode); debugger; console.log(castSession); });
+        function () {
+          console.log('Load succeed');
+        },
+        function (errorCode) {
+          console.log('Error code: ' + errorCode);
+          debugger;
+          console.log(castSession);
+        }
+      );
     } else {
       let playPromise = audioPL.play();
       if (playPromise !== undefined) {
-        playPromise.then(_ => {
-          // Automatic playback started! // Show playing UI.
-          self.setState({
-            isPlaying: true,
-            promiseIsPlaying: true,
-            errorMessage: null,
-            mediaid: mediaPlayingID
+        playPromise
+          .then((_) => {
+            // Automatic playback started! // Show playing UI.
+            self.setState({
+              isPlaying: true,
+              promiseIsPlaying: true,
+              errorMessage: null,
+              mediaid: mediaPlayingID,
+            });
+          })
+          .catch(() => {
+            // Auto-play was prevented // Show paused UI.
+            self.setState({
+              isPlaying: false,
+              promiseIsPlaying: false,
+              errorMessage: null,
+              mediaid: mediaPlayingID,
+            });
           });
-        }).catch(() => {
-          // Auto-play was prevented // Show paused UI.
-          self.setState({
-            isPlaying: false,
-            promiseIsPlaying:false,
-            errorMessage: null,
-            mediaid: mediaPlayingID
-          });
-        });
       }
     }
     this.startMediaSession();
-  }
+  };
 
-  startMediaSession = () =>  {
+  startMediaSession = () => {
     if ('mediaSession' in navigator) {
       let logoSource = {};
       let mLogo = this.props.medialogo;
-      if (typeof mLogo === 'undefined' || (typeof mLogo !== 'undefined' && mLogo.indexOf('data')==0)) {
+      if (typeof mLogo === 'undefined' || (typeof mLogo !== 'undefined' && mLogo.indexOf('data') == 0)) {
         logoSource = { src: 'https://1tuner.com/assets/icons/icon-512x512.png', type: 'image/png' };
       } else {
         let imgType = 'image/png';
@@ -312,21 +329,39 @@ export default class AudioPlayer extends Component {
         } else if (mLogo.indexOf('.jpg') > 0) {
           imgType = 'image/jpg';
         }
-        logoSource = { src: mLogo,  type: imgType };
+        logoSource = { src: mLogo, type: imgType };
       }
       navigator.mediaSession.metadata = new MediaMetadata({
         title: this.props.mediatitle,
         artist: this.props.mediaartist,
         album: this.props.mediaid,
-        artwork: [
-          logoSource
-        ]
+        artwork: [logoSource],
       });
       const actionHandlers = [
-        ['play',          () => { this.mediaSessionPlay() }],
-        ['pause',         () => { this.mediaSessionPause() }],
-        ['previoustrack', () => { this.mediaSessionPrev() }],
-        ['nexttrack',     () => { this.mediaSessionNext() }],
+        [
+          'play',
+          () => {
+            this.mediaSessionPlay();
+          },
+        ],
+        [
+          'pause',
+          () => {
+            this.mediaSessionPause();
+          },
+        ],
+        [
+          'previoustrack',
+          () => {
+            this.mediaSessionPrev();
+          },
+        ],
+        [
+          'nexttrack',
+          () => {
+            this.mediaSessionNext();
+          },
+        ],
         // //['stop',          () => { /* ... */ }],
         // //['seekbackward',  (details) => { /* ... */ }],
         // //['seekforward',   (details) => { /* ... */ }],
@@ -335,7 +370,7 @@ export default class AudioPlayer extends Component {
 
       for (const [action, handler] of actionHandlers) {
         try {
-          if(action==='seekto' && !this.state.usePause) {
+          if (action === 'seekto' && !this.state.usePause) {
             navigator.mediaSession.setActionHandler(action, null);
           } else {
             navigator.mediaSession.setActionHandler(action, handler);
@@ -345,32 +380,32 @@ export default class AudioPlayer extends Component {
         }
       }
     }
-  }
+  };
 
   mediaSessionPlay = () => {
     this.props.handleMediaSessionEvent('play');
     navigator.mediaSession.playbackState = 'playing';
-  }
+  };
   mediaSessionPause = () => {
     this.props.handleMediaSessionEvent('pause');
     navigator.mediaSession.playbackState = 'paused';
-  }
+  };
   mediaSessionStop = () => {
     this.props.handleMediaSessionEvent('stop');
     navigator.mediaSession.playbackState = 'none';
-  }
+  };
   mediaSessionPrev = () => {
     this.props.handleMediaSessionEvent('prev');
-  }
+  };
   mediaSessionNext = () => {
     this.props.handleMediaSessionEvent('next');
-  }
+  };
   mediaSessionSeekTo = (details) => {
     if (details.fastSeek) {
       return;
     }
     this.seekAudio(details.seekTime, true);
-  }
+  };
 
   handleAudioError = (e) => {
     let Error = null;
@@ -379,7 +414,7 @@ export default class AudioPlayer extends Component {
         Error = {
           code: 1000,
           message: 'Offline',
-          source: ''
+          source: '',
         };
         this.setReconnectTimer();
         console.log('handleAudioError: offline, try again later');
@@ -387,7 +422,7 @@ export default class AudioPlayer extends Component {
         Error = {
           code: 0,
           message: 'An unknown source error occured.',
-          source: '' //this.props.source
+          source: '', //this.props.source
         };
         console.log('handleAudioError: unknown error 1');
       }
@@ -397,7 +432,7 @@ export default class AudioPlayer extends Component {
           Error = {
             code: e.target.error.code,
             message: 'You aborted the playback?',
-            source: ''
+            source: '',
           };
           console.log(`handleAudioError: ${e.target.error.code}`);
           break;
@@ -405,7 +440,7 @@ export default class AudioPlayer extends Component {
           Error = {
             code: e.target.error.code,
             message: 'A network error caused the audio download to fail.',
-            source: ''
+            source: '',
           };
           this.setReconnectTimer();
           console.log(`handleAudioError: ${e.target.error.code}`);
@@ -415,7 +450,7 @@ export default class AudioPlayer extends Component {
           Error = {
             code: e.target.error.code,
             message: 'The audio could not be played. Will try another source.',
-            source: ''
+            source: '',
           };
           console.log(`handleAudioError: ${e.target.error.code}`);
           break;
@@ -423,33 +458,43 @@ export default class AudioPlayer extends Component {
           Error = {
             code: e.target.error.code,
             message: 'An unknown error occurred.',
-            source: ''
+            source: '',
           };
           console.log('handleAudioError: unknown error 2');
           break;
       }
     }
     if (Error != null) {
-      this.setState({
-        isPlaying: Error && Error.code == 1000, // try playing state for offline mode
-        errorMessage: Error
-      }, () => {
-        this.props.hasError(Error);
-      });
+      this.setState(
+        {
+          isPlaying: Error && Error.code == 1000, // try playing state for offline mode
+          errorMessage: Error,
+        },
+        () => {
+          this.props.hasError(Error);
+        }
+      );
     }
-  }
+  };
 
   timeUpdate = (AEvent) => {
     this.props.timeUpdate(AEvent.currentTarget);
-  }
+  };
 
   handleLoadedData = () => {
     this.props.dataLoaded();
-  }
+  };
 
-	render() {
+  render() {
     return (
-      <audio id="audioPlay" onLoadedData={this.handleLoadedData.bind(this)} ontimeupdate={this.timeUpdate.bind(this)} onerror={this.handleAudioError.bind(this)}>{this.state.srcItems}</audio>
-		);
-	}
+      <audio
+        id="audioPlay"
+        onLoadedData={this.handleLoadedData.bind(this)}
+        ontimeupdate={this.timeUpdate.bind(this)}
+        onerror={this.handleAudioError.bind(this)}
+      >
+        {this.state.srcItems}
+      </audio>
+    );
+  }
 }

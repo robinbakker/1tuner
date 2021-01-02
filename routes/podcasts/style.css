@@ -1,8 +1,8 @@
 main.podcasts {
-	padding: 0 1.5rem 20rem 1.5rem;
-	background-color: var(--background-color);
+  padding: 0 1.5rem 20rem 1.5rem;
+  background-color: var(--background-color);
 }
 .section {
-	margin-left: -1.5rem;
-	margin-right: -1.5rem;
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
 }

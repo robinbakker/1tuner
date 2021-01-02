@@ -652,6 +652,7 @@ export default class App extends Component {
               streams: items[item].streams,
               website: items[item].website,
               language: items[item].language,
+              social: items[item].social,
               genres: items[item].genres,
               related: items[item].related,
               podcasts: items[item].podcasts,
