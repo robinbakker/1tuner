@@ -585,12 +585,15 @@ button.btn-search-reset:after {
   height: 1.8rem;
   display: flex;
 }
-header .social-list a {
-  color: #fff;
+.social-list a {
+  color: var(--text-color);
 }
-header .social-list a svg {
+.social-list a svg {
   width: 1rem;
   height: auto;
+}
+header .social-list a {
+  color: #fff;
 }
 .social-link--website {
   margin-right: 0.5rem;

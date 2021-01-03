@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import style from './style';
 import { route } from 'preact-router';
 import { Link } from 'preact-router/match';
+import SocialLinkList from '../../components/sociallinklist';
 import Loader from '../../components/loader';
 import Header from '../../components/header';
 import {
@@ -265,6 +266,7 @@ export default class Podcast extends Component {
               {podcastInfo.name}
               <small class={'main-subtitle main-subtitle--loud'}>{getFlagEmojiFromLanguage(podcastInfo.language)} Podcast</small>
             </h1>
+            <SocialLinkList websiteUrl={podcastInfo.website} items={podcastInfo.social} />
           </div>
           <main class={'content ' + style.podcast}>
             <div class={style.start}>

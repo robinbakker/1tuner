@@ -1172,7 +1172,13 @@
         "url": "https://www.radioveronica.nl/radioveronicaplayer/radioveronica.asx"
       }
     ],
-    "website": "http://www.radioveronica.nl"
+    "website": "http://www.radioveronica.nl",
+    "social": [
+      { "title": "@radioveronica", "type": "twitter", "account": "radioveronica", "url": "http://twitter.com/radioveronica" },
+      { "title": "@RadioVeronica", "type": "facebook", "account": "RadioVeronica", "url": "https://facebook.com/RadioVeronica" },
+      { "title": "@radioveronica", "type": "instagram", "account": "radioveronica", "url": "http://instagram.com/radioveronica" },
+      { "title": "RadioVeronica", "type": "youtube", "account": "RadioVeronica", "url": "http://www.youtube.com/user/RadioVeronica" }
+    ]
   },
   "vrtradio1": {
     "displayorder": 31,
@@ -1190,7 +1196,8 @@
         "url": "http://icecast.vrtcdn.be/radio1-high.mp3"
       }
     ],
-    "website": "https://radio1.be"
+    "website": "https://radio1.be",
+    "social": [{ "title": "@radio1be", "type": "twitter", "account": "radio1be", "url": "https://twitter.com/radio1be" }]
   },
   "vrtstubru": {
     "displayorder": 32,
@@ -1208,7 +1215,8 @@
         "url": "http://icecast.vrtcdn.be/stubru-high.mp3"
       }
     ],
-    "website": "https://stubru.be"
+    "website": "https://stubru.be",
+    "social": [{ "title": "@stubru", "type": "twitter", "account": "stubru", "url": "https://twitter.com/stubru" }]
   },
   "wdr1live": {
     "displayorder": 23,
@@ -1279,7 +1287,8 @@
         "url": "ttp://c5icyelb.prod.playlists.ihrhls.com/1469_icy"
       }
     ],
-    "website": "https://z100.iheart.com"
+    "website": "https://z100.iheart.com",
+    "social": [{ "title": "@Z100NewYork", "type": "twitter", "account": "Z100NewYork", "url": "https://twitter.com/Z100NewYork" }]
   },
   "xxlblokhuis": {
     "displayorder": 70,
@@ -1313,7 +1322,8 @@
         "url": "http://star.jointil.net/proxy/jrn_reggae?mp=/stream"
       }
     ],
-    "website": "https://www.jointil.com"
+    "website": "https://www.jointil.com",
+    "social": [{ "title": "@jointradio", "type": "facebook", "account": "jointradio", "url": "https://facebook.com/jointradio" }]
   },
   "jointradiobeat": {
     "displayorder": 72,
@@ -1327,7 +1337,8 @@
         "url": "http://star.jointil.net/proxy/jrn_beat?mp=/stream"
       }
     ],
-    "website": "https://www.jointil.com"
+    "website": "https://www.jointil.com",
+    "social": [{ "title": "@jointradio", "type": "facebook", "account": "jointradio", "url": "https://facebook.com/jointradio" }]
   },
   "jointradioblues": {
     "displayorder": 73,
@@ -1341,7 +1352,8 @@
         "url": "http://star.jointil.net/proxy/jrn_blues?mp=/stream"
       }
     ],
-    "website": "https://www.jointil.com"
+    "website": "https://www.jointil.com",
+    "social": [{ "title": "@jointradio", "type": "facebook", "account": "jointradio", "url": "https://facebook.com/jointradio" }]
   },
   "kink": {
     "displayorder": 74,
@@ -1361,7 +1373,13 @@
     ],
     "website": "https://kink.nl",
     "related": ["kinkdna", "kink-nl", "kink-indie", "kink-distortion"],
-    "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
+    "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"],
+    "social": [
+      { "title": "@kinkpuntnl", "type": "twitter", "account": "kinkpuntnl", "url": "https://twitter.com/kinkpuntnl" },
+      { "title": "@kinkpuntnl", "type": "instagram", "account": "kinkpuntnl", "url": "https://www.instagram.com/kinkpuntnl" },
+      { "title": "@KINKpuntnl", "type": "facebook", "account": "KINKpuntnl", "url": "https://www.facebook.com/KINKpuntnl" },
+      { "title": "KINKpuntnl", "type": "youtube", "account": "KINKpuntnl", "url": "https://www.youtube.com/c/KINKpuntnl" }
+    ]
   },
   "arrow": {
     "displayorder": 75,
@@ -1375,7 +1393,8 @@
         "url": "https://stream.gal.io/arrow"
       }
     ],
-    "website": "https://www.arrow.nl"
+    "website": "https://www.arrow.nl",
+    "social": [{ "title": "@arrowCLrock", "type": "twitter", "account": "arrowCLrock", "url": "https://twitter.com/arrowCLrock" }]
   },
   "hotdanceradio": {
     "displayorder": 76,
@@ -1389,7 +1408,8 @@
         "url": "http://listen.hotdanceradio.com"
       }
     ],
-    "website": "https://www.hotdanceradio.com"
+    "website": "https://www.hotdanceradio.com",
+    "social": [{ "title": "@hotdanceradio", "type": "twitter", "account": "hotdanceradio", "url": "https://twitter.com/hotdanceradio" }]
   },
   "kinkdna": {
     "displayorder": 77,
@@ -1468,7 +1488,8 @@
       "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/ada937c2-d543-4239-aab1-aafd00f12a7d/podcast.rss",
       "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/401aeff9-7a6e-435f-9e8f-ab4800fc215c/podcast.rss",
       "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/0fe83a72-617f-4582-a282-ab0b01134269/podcast.rss"
-    ]
+    ],
+    "social": [{ "title": "@lindanieuws", "type": "twitter", "account": "lindanieuws", "url": "https://twitter.com/lindanieuws" }]
   },
   "willy": {
     "displayorder": 79,
@@ -1483,7 +1504,8 @@
       }
     ],
     "website": "https://www.willy.radio",
-    "related": ["qmusicbe", "joe"]
+    "related": ["qmusicbe", "joe"],
+    "social": [{ "title": "@willy_radio", "type": "twitter", "account": "willy_radio", "url": "https://twitter.com/willy_radio" }]
   },
   "joe": {
     "displayorder": 80,
@@ -1498,7 +1520,8 @@
       }
     ],
     "website": "https://joe.be",
-    "related": ["qmusicbe", "willy"]
+    "related": ["qmusicbe", "willy"],
+    "social": [{ "title": "@joe.alltheway", "type": "facebook", "account": "joe.alltheway", "url": "https://facebook.com/joe.alltheway" }]
   },
   "foxnews": {
     "displayorder": 81,
@@ -1512,7 +1535,8 @@
         "url": "http://tunein.streamguys1.com/foxnews"
       }
     ],
-    "website": "https://radio.foxnews.com"
+    "website": "https://radio.foxnews.com",
+    "social": [{ "title": "@foxnews", "type": "twitter", "account": "foxnews", "url": "https://twitter.com/foxnews" }]
   },
   "concertzender": {
     "displayorder": 82,
@@ -1526,7 +1550,8 @@
         "url": "https://streams.greenhost.nl:8006/live"
       }
     ],
-    "website": "https://www.concertzender.nl"
+    "website": "https://www.concertzender.nl",
+    "social": [{ "title": "@Concertzender", "type": "twitter", "account": "Concertzender", "url": "https://twitter.com/Concertzender" }]
   },
   "npr": {
     "displayorder": 83,
@@ -1541,7 +1566,8 @@
       }
     ],
     "website": "https://www.npr.org",
-    "podcasts": ["https://www.npr.org/rss/podcast.php?id=510318", "https://www.npr.org/rss/podcast.php?id=510343"]
+    "podcasts": ["https://www.npr.org/rss/podcast.php?id=510318", "https://www.npr.org/rss/podcast.php?id=510343"],
+    "social": [{ "title": "@NPR", "type": "twitter", "account": "NPR", "url": "https://twitter.com/NPR" }]
   },
   "ffh": {
     "displayorder": 84,
@@ -1559,7 +1585,8 @@
         "url": "https://mp3.ffh.de/radioffh/hqlivestream.aac"
       }
     ],
-    "website": "https://www.ffh.de"
+    "website": "https://www.ffh.de",
+    "social": [{ "title": "@ffhde", "type": "twitter", "account": "ffhde", "url": "https://twitter.com/ffhde" }]
   },
   "wanderingsheep-jazz-cafe": {
     "displayorder": 88,
@@ -1588,7 +1615,8 @@
       }
     ],
     "website": "http://www.swijnenstal.nl",
-    "related": ["538"]
+    "related": ["538"],
+    "social": [{ "title": "@swijnenstal", "type": "twitter", "account": "swijnenstal", "url": "https://twitter.com/swijnenstal" }]
   },
   "40upradio": {
     "displayorder": 90,
@@ -1604,7 +1632,8 @@
     ],
     "website": "https://40upradio.nl",
     "related": ["radio2", "kxclassic", "xxlstenders"],
-    "podcasts": ["https://40upradio.nl/johanderksen/feed/johan/"]
+    "podcasts": ["https://40upradio.nl/johanderksen/feed/johan/"],
+    "social": [{ "title": "@40upradio", "type": "twitter", "account": "40upradio", "url": "https://twitter.com/40upradio" }]
   },
   "classicnl": {
     "displayorder": 91,
@@ -1618,7 +1647,8 @@
         "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/CLASSICFM.mp3"
       }
     ],
-    "website": "https://www.classic.nl"
+    "website": "https://www.classic.nl",
+    "social": [{ "title": "@classicnlradio", "type": "twitter", "account": "classicnlradio", "url": "https://twitter.com/classicnlradio" }]
   },
   "eftelingkidsradio": {
     "displayorder": 92,
@@ -1632,7 +1662,8 @@
         "url": "https://ice.cr5.streamzilla.xlcdn.com:8000/sz=efteling=hdstream"
       }
     ],
-    "website": "https://www.efteling.com/nl/kids/radio"
+    "website": "https://www.efteling.com/nl/kids/radio",
+    "social": [{ "title": "@EftelingRadio", "type": "twitter", "account": "EftelingRadio", "url": "https://twitter.com/EftelingRadio" }]
   },
   "kink-indie": {
     "displayorder": 93,
