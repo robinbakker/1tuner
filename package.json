@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "1tuner",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "1 web app to listen to audio streams and auto-switch",
   "author": "Robin Bakker",
   "license": "MIT",
@@ -25,7 +25,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "idb-keyval": "^3.2.0",
-    "preact": "^10.5.9",
+    "preact": "^10.5.11",
     "preact-router": "^3.2.1"
   },
   "prettier": {
