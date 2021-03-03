@@ -644,6 +644,7 @@ header .social-list a {
   width: 6rem;
   height: 6rem;
   margin: 1rem;
+  aspect-ratio: 1 / 1;
 }
 a.preset-list__link {
   display: none;
@@ -658,6 +659,7 @@ a.preset-list__link {
   justify-content: center;
   width: 7rem;
   height: 7rem;
+  aspect-ratio: 1 / 1;
   border-radius: 0.2rem;
   margin: 0;
   padding: 0;
@@ -882,7 +884,7 @@ h1.main-title {
   width: 5rem;
 }
 .preset-list--page .button__text {
-  display: none;
+  opacity: 0;
 }
 .preset-list--page .button__image {
   margin-top: 0;
@@ -895,6 +897,7 @@ h1.main-title {
   line-height: 1.2;
   padding: 0 1rem;
   max-height: 5rem;
+  max-width: 10rem;
   overflow: hidden;
   position: relative;
 }

@@ -43,7 +43,7 @@ export default class StationItem extends Component {
                 (this.props.small ? ' preset-list__button--small' : '') +
                 (this.props.stationItem.logosource ? '' : ' icon--station')
               }
-              style={this.props.stationItem.logosource ? '' : getColorString(this.props.stationItem.id)}
+              style={this.props.stationItem.logosource ? '' : `background-color: ${getColorString(this.props.stationItem.id)}`}
             >
               {this.props.stationItem.logosource ? (
                 <div class="button__image-container">

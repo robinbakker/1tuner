@@ -16,7 +16,7 @@
     "extends": "eslint-config-synacor"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
+    "eslint": "^7.21.0",
     "if-env": "^1.0.4",
     "preact-cli": "^3.0.5",
     "preact-render-to-string": "^5.1.12"
@@ -24,8 +24,8 @@
   "dependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
-    "idb-keyval": "^3.2.0",
-    "preact": "^10.5.11",
+    "idb-keyval": "^5.0.4",
+    "preact": "^10.5.12",
     "preact-router": "^3.2.1"
   },
   "prettier": {

@@ -120,17 +120,23 @@ export default class Station extends Component {
 
   render({ id, stationList }, { currentStation, relatedStationList, podcastList, docTitle, docDescription }) {
     if (currentStation && currentStation.id == id) {
+      const hasPodcasts = podcastList && podcastList.length;
+      const hasRelatedStations = relatedStationList && relatedStationList.length;
       return (
         <div class={'page-container'}>
           <Header title={currentStation.name} inverted={true} sharetext={docDescription} />
           <main class={'content ' + style.station}>
-            <header class={style.header} style={'background-image:url(' + currentStation.logosource + ')'}>
+            <header class={style.header} style={currentStation.logosource ? 'background-image:url(' + currentStation.logosource + ')' : ''}>
               <div class={style['header__bg-image-container']}>
-                <img class={style['header__bg-image']} alt={currentStation.name} src={currentStation.logosource} />
+                {currentStation.logosource ? (
+                  <img class={style['header__bg-image']} alt={currentStation.name} src={currentStation.logosource} />
+                ) : null}
               </div>
               <div class={style['header__content']}>
                 <div class={style['header__title']}>
-                  <img class={style['header__image']} alt={currentStation.name} src={currentStation.logosource} />
+                  {currentStation.logosource ? (
+                    <img class={style['header__image']} alt={currentStation.name} src={currentStation.logosource} />
+                  ) : null}
                   <h1 class={'main-title main-title--inverted'}>
                     {currentStation.name}
                     <small class={'main-subtitle main-subtitle--inverted'}>{getFlagEmojiFromLanguage(currentStation.language)} Radio station</small>
@@ -144,7 +150,7 @@ export default class Station extends Component {
                 </button>
               </div>
             </header>
-            {podcastList && podcastList.length ? (
+            {hasPodcasts ? (
               <article class={'content__section ' + style.related}>
                 <header class={'section-header'}>
                   <h3 class={'section-title'}>Podcasts</h3>
@@ -157,7 +163,7 @@ export default class Station extends Component {
                 </div>
               </article>
             ) : null}
-            {relatedStationList && relatedStationList.length ? (
+            {hasRelatedStations ? (
               <article class={'content__section ' + style.related}>
                 <header class={'section-header'}>
                   <h3 class={'section-title'}>Suggested stations</h3>
@@ -171,6 +177,16 @@ export default class Station extends Component {
                     changeStation={this.changeStation.bind(this)}
                     limitCount={10}
                   />
+                </div>
+              </article>
+            ) : null}
+            {!hasPodcasts && !hasRelatedStations ? (
+              <article class={'content__section ' + style.related}>
+                <header class={'section-header'}>
+                  <h3 class={'section-title'}>More information</h3>
+                </header>
+                <div class="section-featured">
+                  <p class="disabled">We don't have more information about {currentStation.name} right now...</p>
                 </div>
               </article>
             ) : null}

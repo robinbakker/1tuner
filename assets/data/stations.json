@@ -749,7 +749,7 @@
     "displayorder": 5,
     "genres": ["news", "talk"],
     "language": "nl",
-    "logosource": "https://www.nporadio1.nl/templates/perfecttemplate/images/logo-npo-radio1.png",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/NPORadio1",
     "name": "NPO Radio 1",
     "streams": [
       {
@@ -770,6 +770,12 @@
       "https://podcast.npo.nl/feed/de-man-en-de-maan.xml",
       "https://podcast.npo.nl/feed/de-krokante-leesmap.xml",
       "https://podcast.npo.nl/feed/kwaad-bloed.xml"
+    ],
+    "social": [
+      { "title": "@NPORadio1", "type": "twitter", "account": "NPORadio1", "url": "https://twitter.com/NPORadio1" },
+      { "title": "@nporadio1", "type": "instagram", "account": "nporadio1", "url": "http://instagram.com/nporadio1" },
+      { "title": "@NPORadio1", "type": "facebook", "account": "NPORadio1", "url": "https://facebook.com/NPORadio1" },
+      { "title": "radio1nl", "type": "youtube", "account": "radio1nl", "url": "https://www.youtube.com/user/radio1nl" }
     ]
   },
   "radio3s": {
@@ -880,7 +886,7 @@
     "displayorder": 14,
     "genres": ["oldies"],
     "language": "nl",
-    "logosource": "https://www.nporadio5.nl/templates/radio5/images/logo-radio5.svg",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/nporadio5",
     "name": "NPO Radio 5",
     "streams": [
       {
@@ -889,7 +895,13 @@
       }
     ],
     "website": "https://www.nporadio5.nl",
-    "related": ["radio1", "radio2", "3fm", "radio4"]
+    "related": ["radio1", "radio2", "3fm", "radio4"],
+    "social": [
+      { "title": "@nporadio5", "type": "twitter", "account": "nporadio5", "url": "https://twitter.com/nporadio5" },
+      { "title": "@nporadio5", "type": "instagram", "account": "nporadio5", "url": "https://www.instagram.com/" },
+      { "title": "@NPORadio5", "type": "facebook", "account": "NPORadio5", "url": "https://www.facebook.com/NPORadio5" },
+      { "title": "radio5nl", "type": "youtube", "account": "radio5nl", "url": "https://www.youtube.com/radio5nl" }
+    ]
   },
   "radiomirchi": {
     "displayorder": 57,
