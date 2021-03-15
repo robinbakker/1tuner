@@ -67,7 +67,7 @@ export default class About extends Component {
           <h2 class={style['content-title']}>Who?</h2>
           <p>
             This is a little side project from{' '}
-            <a href="https://twitter.com/robinbakker" target="_blank" rel="noopener">
+            <a href="https://robinbakker.nl" target="_blank" rel="noopener me">
               Robin Bakker
             </a>
             . Read more:{' '}
