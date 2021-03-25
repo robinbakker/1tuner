@@ -27,8 +27,8 @@ export default class StationItem extends Component {
             >
               {this.props.stationItem.logosource ? (
                 <div class="button__image-container">
-                  <img class="button__image button__image--bg" alt={this.props.stationItem.name} src={this.props.stationItem.logosource} />
-                  <img class="button__image" alt={this.props.stationItem.name} src={this.props.stationItem.logosource} />
+                  <img class="button__image button__image--bg" alt={this.props.stationItem.name} loading="lazy" width="64" height="64" src={this.props.stationItem.logosource} />
+                  <img class="button__image" alt={this.props.stationItem.name} loading="lazy" width="64" height="64" src={this.props.stationItem.logosource} />
                 </div>
               ) : null}
               <span class={'button__text' + (this.props.stationItem.logosource ? '' : ' button__text--inverted')}>{this.props.stationItem.name}</span>
@@ -47,8 +47,8 @@ export default class StationItem extends Component {
             >
               {this.props.stationItem.logosource ? (
                 <div class="button__image-container">
-                  <img class="button__image button__image--bg" alt={this.props.stationItem.name} src={this.props.stationItem.logosource} />
-                  <img class="button__image" alt={this.props.stationItem.name} src={this.props.stationItem.logosource} />
+                  <img class="button__image button__image--bg" alt={this.props.stationItem.name} loading="lazy" width="64" height="64" src={this.props.stationItem.logosource} />
+                  <img class="button__image" alt={this.props.stationItem.name} loading="lazy" width="64" height="64" src={this.props.stationItem.logosource} />
                 </div>
               ) : null}
               <span class={'button__text' + (this.props.stationItem.logosource ? '' : ' button__text--inverted')}>{this.props.stationItem.name}</span>

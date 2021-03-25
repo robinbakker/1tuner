@@ -703,7 +703,7 @@ export default class Footer extends Component {
           </div>
         ) : null}
         <div class={`${style['footer__item']} ${style['footer__item--image']}`}>
-          <img className={style.medialogo} src={media.logoUrl} alt={media.programInfo} />
+          <img className={style.medialogo} loading="lazy" width="64" height="64" src={media.logoUrl} alt={media.programInfo} />
         </div>
         <div class={`${style['footer__item']} ${style['footer__item--audio']}`}>
           <button

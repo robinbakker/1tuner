@@ -20,8 +20,8 @@ export default class PodcastItem extends Component {
           >
             {podcastItem.logo ? (
               <div class="button__image-container">
-                <img class={'button__image button__image--bg'} alt={podcastItem.name} src={podcastItem.logo} />
-                <img class={'button__image'} alt={podcastItem.name} src={podcastItem.logo} />
+                <img class={'button__image button__image--bg'} loading="lazy" width="64" height="64" alt={podcastItem.name} src={podcastItem.logo} />
+                <img class={'button__image'} loading="lazy" width="64" height="64" alt={podcastItem.name} src={podcastItem.logo} />
               </div>
             ) : null}
             <span class={'button__text' + (podcastItem.logo ? '' : ' button__text--inverted')}>{podcastItem.name}</span>

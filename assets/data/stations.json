@@ -33,7 +33,7 @@
     "displayorder": 3,
     "genres": ["pop", "rock"],
     "language": "nl",
-    "logosource": "https://www.npo3fm.nl/templates/npo3fm/images/logo-npo3fm.png",
+    "logosource": "https://www.npo3fm.nl/svg/npo_3fm_logo.svg",
     "name": "NPO 3FM",
     "streams": [
       {
@@ -1185,6 +1185,7 @@
       }
     ],
     "website": "http://www.radioveronica.nl",
+    "related": ["xxlstenders", "the-edge", "kxclassic"],
     "social": [
       { "title": "@radioveronica", "type": "twitter", "account": "radioveronica", "url": "http://twitter.com/radioveronica" },
       { "title": "@RadioVeronica", "type": "facebook", "account": "RadioVeronica", "url": "https://facebook.com/RadioVeronica" },
