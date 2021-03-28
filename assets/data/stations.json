@@ -63,7 +63,7 @@
     "displayorder": 38,
     "genres": ["alternative", "pop", "rock"],
     "language": "nl",
-    "logosource": "https://www.npo3fm.nl/templates/npo3fm/images/logo-npo3fm.png",
+    "logosource": "https://www.npo3fm.nl/svg/npo_3fm_logo.svg",
     "name": "NPO 3FM Alternative",
     "streams": [
       {
@@ -131,7 +131,7 @@
     "streams": [
       {
         "mimetype": "audio/mpeg",
-        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p"
+        "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one"
       }
     ],
     "website": "https://www.bbc.co.uk/radio1",
@@ -146,11 +146,7 @@
     "streams": [
       {
         "mimetype": "audio/mpeg",
-        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio2_mf_p"
-      },
-      {
-        "mimetype": "audio/aac",
-        "url": "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_med/llnw/bbc_radio_two.m3u8"
+        "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_two"
       }
     ],
     "website": "https://www.bbc.co.uk/radio2",
@@ -165,11 +161,7 @@
     "streams": [
       {
         "mimetype": "audio/mpeg",
-        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_p"
-      },
-      {
-        "mimetype": "application/vnd.apple.mpegurl",
-        "url": "http://open.live.bbc.co.uk/mediaselector/5/select/version/2.0/mediaset/apple-ipad-hls/vpid/bbc_radio_fourfm/format/pls.pls"
+        "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_fourfm"
       }
     ],
     "website": "https://www.bbc.co.uk/radio4",
@@ -189,7 +181,7 @@
     "streams": [
       {
         "mimetype": "audio/mpeg",
-        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio5live_mf_p"
+        "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_five_live_online_nonuk"
       }
     ],
     "website": "https://www.bbc.co.uk/5live",
@@ -245,7 +237,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://195.55.74.212/cope/cadena100.mp3"
+        "url": "https://cadena100-cope.flumotion.com/chunks.m3u8"
       }
     ],
     "website": "https://www.cadena100.es",
@@ -260,7 +252,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://stream1.chantefrance.com/Chante_France"
+        "url": "https://chantefrance.ice.infomaniak.ch/chantefrance-128.mp3"
       }
     ],
     "website": "https://www.chantefrance.com",
