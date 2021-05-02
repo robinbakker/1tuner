@@ -1,5 +1,4 @@
 import { h, Component } from 'preact';
-import { Link } from 'preact-router/match';
 import style from './style';
 import PodcastList from '../../components/podcastlist';
 import Header from '../../components/header';

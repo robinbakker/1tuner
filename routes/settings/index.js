@@ -57,7 +57,7 @@ export default class Settings extends Component {
     this.setChromecastSupport(true);
     ev.preventDefault();
   };
-  disableChromecastSupport = (ev) => {
+  disableChromecastSupport = (ev) => {  
     this.setChromecastSupport(false);
     ev.preventDefault();
   };
@@ -80,9 +80,9 @@ export default class Settings extends Component {
       themeOption = themeValue;
     }
     let enableChromecast =
-      enableChromecastValue || (this.props.settings && this.props.settings.experimental && this.props.settings.experimental.chromecast);
+      enableChromecastValue || (typeof enableChromecastValue !== 'boolean' && this.props.settings && this.props.settings.experimental && this.props.settings.experimental.chromecast);
     let enablePodcastindex =
-      enablePodcastindexSearchValue || (this.props.settings && this.props.settings.experimental && this.props.settings.experimental.podcastindex);
+      enablePodcastindexSearchValue || (typeof enablePodcastindexSearchValue !== 'boolean' && this.props.settings && this.props.settings.experimental && this.props.settings.experimental.podcastindex);
     let settings = {
       theme: themeOption,
       experimental: {
