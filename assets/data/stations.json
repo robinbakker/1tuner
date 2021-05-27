@@ -1061,7 +1061,7 @@
     "displayorder": 11,
     "genres": ["nonstop", "pop"],
     "language": "nl",
-    "logosource": "https://www.skyradio.nl/static/media/logo_skyradio.0a6171df.svg",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/skyradio101fm",
     "name": "Sky Radio",
     "streams": [
       {
@@ -1164,7 +1164,7 @@
     "displayorder": 6,
     "genres": ["oldies", "pop", "rock"],
     "language": "nl",
-    "logosource": "https://www.radioveronica.nl/images/logo_radio-veronica.svg",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/radioveronica",
     "name": "Radio Veronica",
     "streams": [
       {
