@@ -1073,7 +1073,13 @@
         "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SKYRADIOAAC.aac"
       }
     ],
-    "website": "https://www.skyradio.nl"
+    "website": "https://www.skyradio.nl",
+    "social": [
+      { "title": "@skyradio101fm", "type": "twitter", "account": "skyradio101fm", "url": "https://twitter.com/skyradio101fm" },
+      { "title": "@skyradio101fm", "type": "instagram", "account": "skyradio101fm", "url": "https://www.instagram.com/skyradio101fm" },
+      { "title": "@SkyRadio", "type": "facebook", "account": "SkyRadio", "url": "https://www.facebook.com/SkyRadio" },
+      { "title": "Sky Radio", "type": "youtube", "account": "skyradio101fm", "url": "https://www.youtube.com/user/skyradio101fm" }
+    ]
   },
   "skyrock": {
     "displayorder": 46,
