@@ -11,10 +11,6 @@
         "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO538.mp3"
       },
       {
-        "mimetype": "audio/mp3",
-        "url": "https://18973.live.streamtheworld.com/RADIO538.mp3"
-      },
-      {
         "mimetype": "audio/aac",
         "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO538AAC.aac"
       }
@@ -282,7 +278,7 @@
     "streams": [
       {
         "mimetype": "audio/mpeg",
-        "url": "http://media-ice.musicradio.com/ClassicFMMP3.m3u"
+        "url": "https://media-ice.musicradio.com/ClassicFMMP3.m3u"
       }
     ],
     "website": "https://www.classicfm.com",
@@ -312,7 +308,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://ais.rtl.fr/fun-1-44-128"
+        "url": "https://ais.rtl.fr/fun-1-44-128"
       }
     ],
     "website": "https://www.funradio.fr",
@@ -349,7 +345,7 @@
     "streams": [
       {
         "mimetype": "audio/mpeg",
-        "url": "http://hot108jamz.hot108.com:4040/;stream.nsv"
+        "url": "https://hot108jamz.hot108.com/;stream.nsv"
       }
     ],
     "website": "https://hot108.com",
@@ -364,7 +360,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://server-23.stream-server.nl:8438/;listen.pls_"
+        "url": "https://server-23.stream-server.nl:8438/;listen.pls_"
       }
     ],
     "website": "https://www.indiexl.nl"
@@ -407,7 +403,7 @@
     "streams": [
       {
         "mimetype": "audio/mpeg",
-        "url": "http://tunein.streamguys1.com/msnbc-free"
+        "url": "https://tunein.streamguys1.com/msnbc-free"
       }
     ],
     "website": "https://www.msnbc.com",
@@ -491,7 +487,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://19993.live.streamtheworld.com/LOS40.mp3"
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/LOS40.mp3"
       }
     ],
     "website": "https://los40.com",
@@ -525,7 +521,7 @@
       },
       {
         "mimetype": "audio/mp3",
-        "url": "http://icecast.vrtcdn.be/mnm-high.mp3"
+        "url": "https://icecast.vrtcdn.be/mnm-high.mp3"
       }
     ],
     "website": "https://mnm.be",
@@ -540,7 +536,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://direct.mouv.fr/live/mouv-midfi.mp3"
+        "url": "https://direct.mouv.fr/live/mouv-midfi.mp3"
       }
     ],
     "website": "https://www.mouv.fr",
@@ -555,10 +551,10 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://astro1.rastream.com/myfm"
+        "url": "https://astro1.rastream.com/myfm"
       }
     ],
-    "website": "http://myfmindia.com",
+    "website": "https://myfmindia.com",
     "social": [{ "title": "@MYFMIndia", "type": "twitter", "account": "MYFMIndia", "url": "https://twitter.com/MYFMIndia" }]
   },
   "nostalgieeu": {
@@ -765,7 +761,7 @@
     ],
     "social": [
       { "title": "@NPORadio1", "type": "twitter", "account": "NPORadio1", "url": "https://twitter.com/NPORadio1" },
-      { "title": "@nporadio1", "type": "instagram", "account": "nporadio1", "url": "http://instagram.com/nporadio1" },
+      { "title": "@nporadio1", "type": "instagram", "account": "nporadio1", "url": "https://instagram.com/nporadio1" },
       { "title": "@NPORadio1", "type": "facebook", "account": "NPORadio1", "url": "https://facebook.com/NPORadio1" },
       { "title": "radio1nl", "type": "youtube", "account": "radio1nl", "url": "https://www.youtube.com/user/radio1nl" }
     ]
@@ -1037,7 +1033,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://streaming.radio.rtl.fr/rtl2-1-44-128"
+        "url": "https://streaming.radio.rtl.fr/rtl2-1-44-128"
       }
     ],
     "website": "https://www.rtl2.fr"
@@ -1051,7 +1047,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://streaming.radio.rtl.fr/rtl-1-44-128"
+        "url": "https://streaming.radio.rtl.fr/rtl-1-44-128"
       }
     ],
     "website": "https://www.rtl.fr",
@@ -1182,10 +1178,10 @@
         "url": "https://www.radioveronica.nl/radioveronicaplayer/radioveronica.asx"
       }
     ],
-    "website": "http://www.radioveronica.nl",
+    "website": "https://www.radioveronica.nl",
     "related": ["xxlstenders", "the-edge", "kxclassic"],
     "social": [
-      { "title": "@radioveronica", "type": "twitter", "account": "radioveronica", "url": "http://twitter.com/radioveronica" },
+      { "title": "@radioveronica", "type": "twitter", "account": "radioveronica", "url": "https://twitter.com/radioveronica" },
       { "title": "@RadioVeronica", "type": "facebook", "account": "RadioVeronica", "url": "https://facebook.com/RadioVeronica" },
       { "title": "@radioveronica", "type": "instagram", "account": "radioveronica", "url": "http://instagram.com/radioveronica" },
       { "title": "RadioVeronica", "type": "youtube", "account": "RadioVeronica", "url": "http://www.youtube.com/user/RadioVeronica" }
@@ -1204,7 +1200,7 @@
       },
       {
         "mimetype": "audio/mp3",
-        "url": "http://icecast.vrtcdn.be/radio1-high.mp3"
+        "url": "https://icecast.vrtcdn.be/radio1-high.mp3"
       }
     ],
     "website": "https://radio1.be",
@@ -1223,7 +1219,7 @@
       },
       {
         "mimetype": "audio/mp3",
-        "url": "http://icecast.vrtcdn.be/stubru-high.mp3"
+        "url": "https://icecast.vrtcdn.be/stubru-high.mp3"
       }
     ],
     "website": "https://stubru.be",
@@ -1238,11 +1234,11 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://www.listenlive.eu/streams/germany/de_wdr1live_128.m3u"
+        "url": "https://wdr-1live-live.icecastssl.wdr.de/wdr/1live/live/mp3/128/stream.mp3"
       },
       {
-        "mimetype": "audio/aac",
-        "url": "https://1liveuni-lh.akamaihd.net/i/1LIVE_HDS@179577/index_1_a-p.m3u8"
+        "mimetype": "audio/mpeg",
+        "url": "https://1liveuni-lh.akamaihd.net/i/1LIVE_HDS@179577/master.m3u8"
       }
     ],
     "website": "https://www1.wdr.de/radio/1live",
@@ -1416,7 +1412,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://listen.hotdanceradio.com"
+        "url": "https://listen.hotdanceradio.com"
       }
     ],
     "website": "https://www.hotdanceradio.com",
@@ -1543,7 +1539,7 @@
     "streams": [
       {
         "mimetype": "audio/mpeg",
-        "url": "http://tunein.streamguys1.com/foxnews"
+        "url": "https://tunein.streamguys1.com/foxnews"
       }
     ],
     "website": "https://radio.foxnews.com",
@@ -1625,7 +1621,7 @@
         "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/TLPSTR07.mp3"
       }
     ],
-    "website": "http://www.swijnenstal.nl",
+    "website": "https://www.swijnenstal.nl",
     "related": ["538"],
     "social": [{ "title": "@swijnenstal", "type": "twitter", "account": "swijnenstal", "url": "https://twitter.com/swijnenstal" }]
   },

@@ -858,6 +858,7 @@ export default class App extends Component {
 
   initChromeCast = () => {
     if (window && !window.__onGCastApiAvailable) {
+      console.log('initChromeCast');
       let s = document.createElement('script');
       s.setAttribute('src', 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1');
       document.head.appendChild(s);
@@ -871,6 +872,7 @@ export default class App extends Component {
 
   initializeCastApi = () => {
     if (typeof cast === 'undefined') return;
+    console.log('initializeCastApi');
     cast.framework.CastContext.getInstance().setOptions({
       receiverApplicationId: '2CFD5B94',
       autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,

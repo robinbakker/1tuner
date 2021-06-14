@@ -31,6 +31,7 @@ export default class AudioPlayer extends Component {
     let self = this;
     let mediaPlaying = this.state.mediaid;
     let resumeAtSeconds = 0;
+    console.log('audioplayer method');
     if (AIsPlaying && (mediaPlaying != AMediaIDPlaying || !this.state.srcItems.length)) {
       let srcItems = [];
       if (ASrcs && ASrcs.length) {
@@ -181,6 +182,7 @@ export default class AudioPlayer extends Component {
     let castSessionChanged = false;
     if (castSession == null) {
       castSessionChanged = isCasting; // no castSession, but has isCasting flag
+      this.setState({ isCasting: false });
     } else {
       let sessionState = castSession.getSessionState();
       if (sessionState === cast.framework.SessionState.SESSION_STARTED || sessionState === cast.framework.SessionState.SESSION_RESUMED) {
@@ -252,20 +254,9 @@ export default class AudioPlayer extends Component {
     if (!this.state.usePause || !isSameMedia) {
       audioPL.removeAttribute('src');
       audioPL.load();
+      debugger;
       if (AResumeAtSeconds) {
-        // if (isCasting) {
-        //   let castSession = window && !(typeof cast === 'undefined') ? cast.framework.CastContext.getInstance().getCurrentSession() : null;
-        //   var request = new chrome.cast.media.SeekRequest();
-        //   if (request && castSession) {
-        //     request.currentTime = AResumeAtSeconds;
-        //     request.resumeState = chrome.cast.media.ResumeState.PLAYBACK_START;
-        //     castSession.media[0].seek(request,
-        //     ()=>{console.log('seek success')},
-        //     ()=>{console.log('seek error')});
-        //   }
-        // } else {
         this.seekAudio(AResumeAtSeconds, true);
-        //}
       }
     } else {
       this.handleLoadedData();

@@ -45,8 +45,7 @@ export default class Footer extends Component {
       elapsedtime: 0,
       elapsedtimeText: '',
       progressvalue: 0,
-      chromeCastSession: null,
-      chromeCastScriptLoadStep: 0,
+      castSessionChanged: false,
     };
   }
 
@@ -394,6 +393,11 @@ export default class Footer extends Component {
   };
 
   changeAudio = (AUserSetIsPlaying) => {
+    let castSession = window && !(typeof cast === 'undefined') ? cast.framework.CastContext.getInstance().getCurrentSession() : null;
+    let isCastingChange = (castSession && !this.state.castSessionChanged) || (!castSession && this.state.castSessionChanged);
+    if (isCastingChange) {
+      this.setState({ castSessionChanged: true });
+    }
     if (
       this.props.listeningMode != this.state.listeningMode ||
       (this.state.listeningMode == LM_Playlist && !this.state.station) ||
@@ -411,10 +415,10 @@ export default class Footer extends Component {
       let currentPodcast = this.props.podcast;
       //debugger;
       let currentEpisode = this.getCurrentEpisode(currentPodcast.episodes);
-      if (this.state.podcast && currentEpisode && this.state.mediaPlayingID != currentEpisode.url) {
+      if (this.state.podcast && currentEpisode && (this.state.mediaPlayingID != currentEpisode.url || isCastingChange)) {
         this.props.setPodcastEpisodeTimeElapsed(this.state.podcast.feedUrl, this.state.mediaPlayingID, this.state.elapsedtime);
       }
-      let playingOutcome = this.state.isPlaying || this.state.mediaPlayingID != currentEpisode.url;
+      let playingOutcome = this.state.isPlaying || this.state.mediaPlayingID != currentEpisode.url || isCastingChange;
       return {
         isPlaying: playingOutcome,
         podcast: currentPodcast,
@@ -667,7 +671,6 @@ export default class Footer extends Component {
       elapsedtime,
       elapsedtimeText,
       audioError,
-      chromeCastScriptLoadStep,
     }
   ) {
     if (
