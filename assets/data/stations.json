@@ -1627,7 +1627,7 @@
   },
   "40upradio": {
     "displayorder": 90,
-    "genres": ["pop", "oldies", "rock", "blues"],
+    "genres": ["pop", "oldies", "rock", "blues", "americana"],
     "language": "nl",
     "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/40upradio",
     "name": "40UP Radio",
@@ -1691,5 +1691,44 @@
     "website": "https://kink.nl",
     "related": ["kink", "kinkdna", "kink-nl", "kink-distortion"],
     "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
+  },
+  "grollo-radio": {
+    "displayorder": 94,
+    "genres": ["americana", "blues", "rock", "country", "soul"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/grollooradio",
+    "name": "Grolloo Radio",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://uk1.streamingpulse.com/ssl/grollooradio"
+      }
+    ],
+    "website": "https://grollooradio.nl",
+    "related": ["40upradio", "radio2", "kxclassic", "xxlblokhuis", "xxlstenders"],
+    "social": [
+      { "title": "@grollooradio", "type": "twitter", "account": "grollooradio", "url": "https://twitter.com/grollooradio" },
+      { "title": "@grollooradio", "type": "instagram", "account": "grollooradio", "url": "https://www.instagram.com/grollooradio" },
+      { "title": "@grollooradio", "type": "facebook", "account": "grollooradio", "url": "https://www.facebook.com/grollooradio" }
+    ]
+  },
+  "ouifm": {
+    "displayorder": 95,
+    "genres": ["pop", "rock", "oldies", "alternative"],
+    "language": "fr",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/ouifm",
+    "name": "OUI FM",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://stream.ouifm.fr/ouifm-high.mp3"
+      }
+    ],
+    "website": "https://www.ouifm.fr",
+    "social": [
+      { "title": "@ouifm", "type": "twitter", "account": "ouifm", "url": "https://twitter.com/ouifm" },
+      { "title": "@ouifm", "type": "instagram", "account": "ouifm", "url": "https://www.instagram.com/ouifm" },
+      { "title": "@radioouifm", "type": "facebook", "account": "radioouifm", "url": "https://www.facebook.com/radioouifm" }
+    ]
   }
 }

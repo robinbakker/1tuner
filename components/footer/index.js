@@ -501,6 +501,7 @@ export default class Footer extends Component {
     let self = ASelfRef || this;
     let userSetIsPlaying = null;
     let wasPlaying = self.state.isPlaying;
+    //console.log(`playAudio ${self.state.isPlaying}`);
     if (AUserEvent) {
       userSetIsPlaying = !wasPlaying;
       if (wasPlaying && self.state.listeningMode == LM_Podcast && self.state.podcast) {

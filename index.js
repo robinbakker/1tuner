@@ -876,6 +876,7 @@ export default class App extends Component {
     cast.framework.CastContext.getInstance().setOptions({
       receiverApplicationId: '2CFD5B94',
       autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
+      androidReceiverCompatible: true,
     });
   };
 }

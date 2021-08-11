@@ -31,7 +31,8 @@ export default class AudioPlayer extends Component {
     let self = this;
     let mediaPlaying = this.state.mediaid;
     let resumeAtSeconds = 0;
-    console.log('audioplayer method');
+    //let resumeAtSeconds = ASecondsElapsed;
+    //console.log('audioplayer method');
     if (AIsPlaying && (mediaPlaying != AMediaIDPlaying || !this.state.srcItems.length)) {
       let srcItems = [];
       if (ASrcs && ASrcs.length) {

@@ -103,5 +103,8 @@
   },
   "indie": {
     "name": "Indie"
+  },
+  "americana": {
+    "name": "Americana"
   }
 }
