@@ -827,7 +827,7 @@
     "displayorder": 2,
     "genres": ["oldies", "pop", "rock"],
     "language": "nl",
-    "logosource": "https://www.nporadio2.nl/templates/nporadio2/assets/images/logo-radio2.svg",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/nporadio2",
     "name": "NPO Radio 2",
     "streams": [
       {
@@ -859,7 +859,7 @@
     "displayorder": 16,
     "genres": ["classical"],
     "language": "nl",
-    "logosource": "https://www.nporadio4.nl/templates/nporadio4default/images/logo-radio4.png",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/nporadio4",
     "name": "NPO Radio 4",
     "streams": [
       {
@@ -868,7 +868,13 @@
       }
     ],
     "website": "https://www.nporadio4.nl",
-    "related": ["radio1", "radio2", "3fm", "radio5"]
+    "related": ["radio1", "radio2", "3fm", "radio5"],
+    "social": [
+      { "title": "@nporadio4", "type": "twitter", "account": "nporadio4", "url": "https://twitter.com/nporadio4" },
+      { "title": "@nporadio4", "type": "instagram", "account": "nporadio4", "url": "https://www.instagram.com/nporadio4" },
+      { "title": "@nporadio4", "type": "facebook", "account": "nporadio4", "url": "https://www.facebook.com/nporadio4" },
+      { "title": "nporadio4", "type": "youtube", "account": "nporadio4", "url": "https://www.youtube.com/nporadio4" }
+    ]
   },
   "radio5": {
     "displayorder": 14,
@@ -886,7 +892,7 @@
     "related": ["radio1", "radio2", "3fm", "radio4"],
     "social": [
       { "title": "@nporadio5", "type": "twitter", "account": "nporadio5", "url": "https://twitter.com/nporadio5" },
-      { "title": "@nporadio5", "type": "instagram", "account": "nporadio5", "url": "https://www.instagram.com/" },
+      { "title": "@nporadio5", "type": "instagram", "account": "nporadio5", "url": "https://www.instagram.com/nporadio5" },
       { "title": "@NPORadio5", "type": "facebook", "account": "NPORadio5", "url": "https://www.facebook.com/NPORadio5" },
       { "title": "radio5nl", "type": "youtube", "account": "radio5nl", "url": "https://www.youtube.com/radio5nl" }
     ]
