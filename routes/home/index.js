@@ -20,6 +20,19 @@ export default class Home extends Component {
     this.props.changePlaylist(APlaylist, true);
   };
 
+  LoadingElement = ({ title }) => {
+    return (
+      <article class={'content__section'}>
+        <header class={'section-header'}>
+          <h3 class={'section-title'}>{title}</h3>
+        </header>
+        <div class={'section-main'}>
+          <Loader />
+        </div>
+      </article>
+    );
+  };
+
   render({ stationList, podcastList, playlists, featured }, {}) {
     return (
       <main class={'content ' + style.home}>
@@ -49,7 +62,9 @@ export default class Home extends Component {
               <PodcastList podcastList={podcastList} limitCount={5} horizontal={true} small={true} />
             </div>
           </article>
-        ) : null}
+        ) : (
+          <this.LoadingElement title="Podcasts" />
+        )}
         {playlists ? (
           <article class={'content__section content__section--playlists'}>
             <header class={'section-header'}>
@@ -62,7 +77,9 @@ export default class Home extends Component {
               <PlaylistList playlists={playlists} changePlaylist={this.changePlaylist.bind(this)} horizontal={true} small={true} />
             </div>
           </article>
-        ) : null}
+        ) : (
+          <this.LoadingElement title="Playlists" />
+        )}
         {featured && featured.stationItem ? (
           <article class={'content__section content__section--featured'}>
             <header class={'section-header'}>
@@ -82,12 +99,7 @@ export default class Home extends Component {
             </div>
           </article>
         ) : (
-          <article class={'content__section content__section--featured'}>
-            <h3 class={'section-title'}>Featured</h3>
-            <div class={'section-featured'}>
-              <Loader />
-            </div>
-          </article>
+          <this.LoadingElement title="Featured" />
         )}
         <article>
           <header class={'section-header'}>

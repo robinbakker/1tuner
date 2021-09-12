@@ -66,6 +66,7 @@ export default class App extends Component {
 
   loadData = async () => {
     let settings = await get('settings');
+    console.log('loadData()');
     if (settings && settings.theme) {
       document.body.setAttribute('data-theme', settings.theme);
     }
@@ -91,8 +92,10 @@ export default class App extends Component {
     let playlist = legacyPlaylist || (await get('playlist'));
     let podcastList = await get('podcast-list');
     this.updatePodcastImageProperties(podcastList);
+
     let lastStationList = (await get('last-station-list')) || this.getLastStationList(stationList);
     lastStationList = this.removeOldStationsFromList(lastStationList);
+    this.updateStationImageProperties(stationList, lastStationList);
     let featured = this.loadFeatured(stationList);
 
     let languageList = this.state.languageList || (await get('language-list')) || this.loadLanguageList();
@@ -816,6 +819,16 @@ export default class App extends Component {
       }
       if (!APodcastList[i].logo600 && APodcastList[i].artworkUrl600) {
         APodcastList[i].logo600 = APodcastList[i].artworkUrl600;
+      }
+    }
+  };
+
+  updateStationImageProperties = (ABaseStationList, AStationListSelection) => {
+    if (!ABaseStationList || !AStationListSelection) return;
+    for (let i = 0; i < AStationListSelection.length; i++) {
+      const lookupItem = ABaseStationList.find((s) => s.id === AStationListSelection[i].id);
+      if (lookupItem) {
+        AStationListSelection[i].logosource = lookupItem.logosource;
       }
     }
   };
