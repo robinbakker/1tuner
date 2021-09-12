@@ -23,25 +23,6 @@ export default class Podcasts extends Component {
   componentDidMount() {
     setDocumentMetaTags(this.state.docTitle, this.state.docDescription);
     let searchQuery = getUrlQueryParameterByName('q', window.location.href.split('/?')[1]);
-    let featuredPodcastList = [];
-    if (this.props.stationPodcastList) {
-      let featuredFeeds = [
-        'https://rss.art19.com/the-daily',
-        'https://rss.art19.com/vandaag',
-        'https://rss.art19.com/een-podcast-over-media',
-        'https://podcasts.files.bbci.co.uk/p089sfrz.rss',
-        'https://rss.art19.com/man-man-man-de-podcast',
-        'https://podcast.npo.nl/feed/de-krokante-leesmap.xml',
-      ];
-      for (let i = 0; i < this.props.stationPodcastList.length; i++) {
-        if (featuredFeeds.indexOf(this.props.stationPodcastList[i].feedUrl) !== -1) {
-          featuredPodcastList.push(this.props.stationPodcastList[i]);
-        }
-        if (featuredPodcastList.length === featuredFeeds.length) {
-          break;
-        }
-      }
-    }
     let q = searchQuery || this.props.searchQuery;
     this.setState(
       {
@@ -49,7 +30,7 @@ export default class Podcasts extends Component {
         searchIsUrl: isValidUrl(q),
         lastSearchResult: this.props.lastSearchResult,
         podcastList: this.props.podcastList,
-        featuredPodcastList: featuredPodcastList,
+        featuredPodcastList: this.props.featuredPodcastList,
       },
       () => {
         if (searchQuery) {

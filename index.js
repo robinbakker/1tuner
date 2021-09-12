@@ -65,15 +65,14 @@ export default class App extends Component {
   }
 
   loadData = async () => {
-    let settings = await get('settings');
-    console.log('loadData()');
+    const settings = await get('settings');
     if (settings && settings.theme) {
       document.body.setAttribute('data-theme', settings.theme);
     }
     if (settings && settings.experimental && settings.experimental.chromecast) {
       this.initChromeCast();
     }
-    let userVersion = await get('version');
+    const userVersion = await get('version');
     let stationList =
       AppVersion !== userVersion
         ? await this.loadStationList()
@@ -82,28 +81,29 @@ export default class App extends Component {
     let stationPodcastList =
       AppVersion !== userVersion ? await this.loadStationPodcastList() : (await get('station-podcast-list')) || (await this.loadStationPodcastList());
     this.updatePodcastImageProperties(stationPodcastList);
-    let listeningMode = (await get('lm')) || 0;
+    const listeningMode = (await get('lm')) || 0;
 
-    let station = await get('station');
+    const station = await get('station');
     let legacyPlaylist = await get('planning');
     if (legacyPlaylist) {
       del('planning');
     }
-    let playlist = legacyPlaylist || (await get('playlist'));
-    let podcastList = await get('podcast-list');
+    const playlist = legacyPlaylist || (await get('playlist'));
+    const featuredPodcastList = this.loadDefaultPodcasts(stationPodcastList);
+    let podcastList = (await get('podcast-list')) || featuredPodcastList;
     this.updatePodcastImageProperties(podcastList);
 
     let lastStationList = (await get('last-station-list')) || this.getLastStationList(stationList);
     lastStationList = this.removeOldStationsFromList(lastStationList);
     this.updateStationImageProperties(stationList, lastStationList);
-    let featured = this.loadFeatured(stationList);
+    const featured = this.loadFeatured(stationList);
 
-    let languageList = this.state.languageList || (await get('language-list')) || this.loadLanguageList();
-    let legacyPlaylists = await get('planning-list');
+    const languageList = this.state.languageList || (await get('language-list')) || this.loadLanguageList();
+    const legacyPlaylists = await get('planning-list');
     if (legacyPlaylists && legacyPlaylists.length) {
       del('planning-list');
     }
-    let playlists = this.state.playlists || legacyPlaylists || (await get('playlists')) || this.loadPlaylists();
+    const playlists = this.state.playlists || legacyPlaylists || (await get('playlists')) || this.loadPlaylists();
 
     this.setState(
       {
@@ -118,6 +118,7 @@ export default class App extends Component {
         stationPodcastList: stationPodcastList,
         stationList: stationList,
         lastStationList: lastStationList,
+        featuredPodcastList: featuredPodcastList,
         presetStationList: JSON.parse(JSON.stringify(lastStationList)), // For now, we are filling the preset list with the previous last played station list
         featured: featured,
       },
@@ -142,6 +143,7 @@ export default class App extends Component {
       podcast,
       podcastList,
       featured,
+      featuredPodcastList,
       lastPodcastSearchQuery,
       lastPodcastSearchResult,
       version,
@@ -199,7 +201,7 @@ export default class App extends Component {
             searchQuery={lastPodcastSearchQuery}
             lastSearchResult={lastPodcastSearchResult}
             podcastList={podcastList}
-            stationPodcastList={stationPodcastList}
+            featuredPodcastList={featuredPodcastList}
           />
           <Podcast
             path="/podcast/:name/:feedcode?/:params?"
@@ -716,6 +718,26 @@ export default class App extends Component {
     }
     return newFeatured;
   };
+  loadDefaultPodcasts = (APodcastDataList) => {
+    if (!APodcastDataList) {
+      return [];
+    }
+    let featuredPodcastList = [];
+    const featuredFeeds = [
+      'https://feeds.simplecast.com/54nAGcIl',
+      'https://feeds.megaphone.fm/fullsend',
+      'https://rss.art19.com/vandaag',
+      'https://anchor.fm/s/21c734c4/podcast/rss',
+      'https://rss.art19.com/een-podcast-over-media',
+    ];
+    for (let i = 0; i < featuredFeeds.length; i++) {
+      const lookupItem = APodcastDataList.find((p) => p.feedUrl === featuredFeeds[i]);
+      if (lookupItem) {
+        featuredPodcastList.push(lookupItem);
+      }
+    }
+    return JSON.parse(JSON.stringify(featuredPodcastList));
+  };
   loadPlaylists = () => {
     return [
       {
@@ -871,7 +893,7 @@ export default class App extends Component {
 
   initChromeCast = () => {
     if (window && !window.__onGCastApiAvailable) {
-      console.log('initChromeCast');
+      //console.log('initChromeCast');
       let s = document.createElement('script');
       s.setAttribute('src', 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1');
       document.head.appendChild(s);
@@ -885,7 +907,7 @@ export default class App extends Component {
 
   initializeCastApi = () => {
     if (typeof cast === 'undefined') return;
-    console.log('initializeCastApi');
+    //console.log('initializeCastApi');
     cast.framework.CastContext.getInstance().setOptions({
       receiverApplicationId: '2CFD5B94',
       autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
