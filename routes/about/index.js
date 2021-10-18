@@ -57,9 +57,9 @@ export default class About extends Component {
               search functionality.
             </li>
             <li>
-              If needed, the podcast RSS feed will be requested via a pass-through website, currently at{' '}
-              <a href="https://dented-radiosaurus.glitch.me" target="_blank" rel="noopener">
-                Glitch
+              If needed, the podcast RSS feed will be requested via a pass-through website, currently via a{' '}
+              <a href="https://www.cloudflare.com" target="_blank" rel="noopener">
+                Cloudflare Worker
               </a>
               .
             </li>

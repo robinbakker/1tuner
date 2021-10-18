@@ -82,15 +82,16 @@ export default class Podcast extends Component {
       };
     }
     if (loadXml) {
-      this.loadXmlFeed(podcastInfo, AFeedUrl, 'https://dented-radiosaurus.glitch.me/?url=' + AFeedUrl);
+      this.loadXmlFeed(podcastInfo, AFeedUrl);
     }
     return podcastInfo;
   };
 
-  loadXmlFeed = (APodcastInfo, AFeedUrl, AAlternativeFeedUrl) => {
+  loadXmlFeed = (APodcastInfo, AFeedUrl, AFetchOptions) => {
     let self = this;
     let podcastInfo = APodcastInfo || this.state.podcastInfo || {};
-    fetch(AFeedUrl)
+    let fetchOptions = AFetchOptions || {};
+    fetch(AFeedUrl, fetchOptions)
       .then((resp) => (resp.ok ? resp.text() : Promise.reject(resp)))
       .then((str) => new window.DOMParser().parseFromString(str, 'text/xml'))
       .then((xmlDoc) => {
@@ -117,8 +118,15 @@ export default class Podcast extends Component {
         self.props.savePodcastHistory(podcastInfo);
       })
       .catch((err) => {
-        if (AAlternativeFeedUrl) {
-          self.loadXmlFeed(podcastInfo, AAlternativeFeedUrl);
+        if (!AFetchOptions) {
+          // Probably a CORS issue, try again via our special request worker
+          self.loadXmlFeed(podcastInfo, 'https://request.robinbakker.workers.dev', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/text',
+            },
+            body: AFeedUrl,
+          });
         } else {
           self.setState({ errorMessage: "⚡KA-POW! - That's an error... Sorry! Please try again later, or another podcast maybe?" });
         }

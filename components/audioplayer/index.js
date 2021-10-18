@@ -255,7 +255,7 @@ export default class AudioPlayer extends Component {
     if (!this.state.usePause || !isSameMedia) {
       audioPL.removeAttribute('src');
       audioPL.load();
-      debugger;
+      //debugger;
       if (AResumeAtSeconds) {
         this.seekAudio(AResumeAtSeconds, true);
       }
@@ -277,7 +277,7 @@ export default class AudioPlayer extends Component {
         },
         function (errorCode) {
           console.log('Error code: ' + errorCode);
-          debugger;
+          //debugger;
           console.log(castSession);
         }
       );
