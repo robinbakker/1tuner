@@ -38,13 +38,13 @@ export default class Podcast extends Component {
     }
     let loadXml = true;
     let podcastInfo = this.state.podcastInfo;
-    let podcastSearchResult = this.props.lastPodcastSearchResult;
-    let stationPodcastList = this.props.stationPodcastList;
-    let podcastList = this.props.podcastList;
+    const podcastSearchResult = this.props.lastPodcastSearchResult;
+    const stationPodcastList = this.props.stationPodcastList;
+    const podcastList = this.props.podcastList;
     if (!podcastInfo && podcastList) {
       for (let i = 0; i < podcastList.length; i++) {
         if (podcastList[i].feedUrl == AFeedUrl) {
-          let dateNowMs = new Date().getTime();
+          const dateNowMs = new Date().getTime();
           podcastInfo = podcastList[i];
           if (podcastInfo.modified && (dateNowMs - podcastInfo.modified.getTime()) / 3600000 < 24) {
             loadXml = false;
@@ -88,10 +88,9 @@ export default class Podcast extends Component {
   };
 
   loadXmlFeed = (APodcastInfo, AFeedUrl, AFetchOptions) => {
-    let self = this;
-    let podcastInfo = APodcastInfo || this.state.podcastInfo || {};
-    let fetchOptions = AFetchOptions || {};
-    fetch(AFeedUrl, fetchOptions)
+    const self = this;
+    const podcastInfo = APodcastInfo || this.state.podcastInfo || {};
+    fetch(AFeedUrl, AFetchOptions || {})
       .then((resp) => (resp.ok ? resp.text() : Promise.reject(resp)))
       .then((str) => new window.DOMParser().parseFromString(str, 'text/xml'))
       .then((xmlDoc) => {
@@ -101,7 +100,7 @@ export default class Podcast extends Component {
         podcastInfo.feedUrl = podcastInfo.feedUrl || AFeedUrl;
         podcastInfo.modified = new Date();
         podcastInfo.name = xmlDoc.getElementsByTagName('channel')[0].getElementsByTagName('title')[0].childNodes[0].nodeValue;
-        let description =
+        const description =
           xmlDoc.getElementsByTagName('channel')[0].getElementsByTagName('description')[0].childNodes[0].wholeText ||
           xmlDoc.getElementsByTagName('channel')[0].getElementsByTagName('description')[0].childNodes[0].nodeValue;
         podcastInfo.language = xmlDoc.getElementsByTagName('channel')[0].getElementsByTagName('language')[0].childNodes[0].nodeValue;
@@ -161,13 +160,12 @@ export default class Podcast extends Component {
   getFeedEpisodeArray = (APodcastInfo, AXmlDoc) => {
     let itemArray = [];
     for (let i = 0; i < AXmlDoc.getElementsByTagName('item').length; i++) {
-      let item = AXmlDoc.getElementsByTagName('item')[i];
-      let encl = item.getElementsByTagName('enclosure');
+      const item = AXmlDoc.getElementsByTagName('item')[i];
+      const encl = item.getElementsByTagName('enclosure');
       if (encl.length) {
-        let durationKey = item.getElementsByTagName('itunes:duration').length ? 'itunes:duration' : 'duration';
-        let durationElm = item.getElementsByTagName(durationKey);
-        //console.log(`item ${i}: ${durationElm && durationElm.length ? durationElm[0].innerHTML + ' secs:' + getSecondsFromTime(durationElm[0].innerHTML) : 'no-duration'}`);
-        let epItem = {
+        const durationKey = item.getElementsByTagName('itunes:duration').length ? 'itunes:duration' : 'duration';
+        const durationElm = item.getElementsByTagName(durationKey);
+        const epItem = {
           title: item.getElementsByTagName('title')[0].childNodes[0].nodeValue,
           length: encl[0].getAttribute('length'),
           type: encl[0].getAttribute('type'),
@@ -180,10 +178,10 @@ export default class Podcast extends Component {
           durationSeconds: durationElm && durationElm.length ? getSecondsFromTime(durationElm[0].innerHTML) : 0,
         };
         if (APodcastInfo && APodcastInfo.episodes) {
-          let oldEp = APodcastInfo.episodes.filter((ep) => ep.secondsElapsed && ep.url === epItem.url);
-          if (oldEp.length) {
-            epItem.isPlaying = oldEp[0].isPlaying;
-            epItem.secondsElapsed = oldEp[0].secondsElapsed;
+          const oldEp = APodcastInfo.episodes.find((ep) => ep.secondsElapsed && ep.url === epItem.url);
+          if (oldEp) {
+            epItem.isPlaying = oldEp.isPlaying;
+            epItem.secondsElapsed = oldEp.secondsElapsed;
           }
         }
         itemArray.push(epItem);
@@ -205,13 +203,9 @@ export default class Podcast extends Component {
 
   playEpisode = (e) => {
     if (this.state.podcastInfo && this.state.podcastInfo.episodes) {
-      let podcast = this.state.podcastInfo;
+      const podcast = this.state.podcastInfo;
       for (let i = 0; i < podcast.episodes.length; i++) {
-        if (podcast.episodes[i].url == e.target.getAttribute('data-href')) {
-          podcast.episodes[i].isPlaying = true;
-        } else {
-          podcast.episodes[i].isPlaying = false;
-        }
+        podcast.episodes[i].isPlaying = podcast.episodes[i].url == e.target.getAttribute('data-href');
       }
       this.props.playEpisode(podcast, true);
       this.setState({
@@ -232,8 +226,8 @@ export default class Podcast extends Component {
     if (!podcastInfo) {
       setDocumentMetaTags(this.props.name + ' | ' + docTitle, docDescription);
       if (!isLoading && typeof window !== 'undefined') {
-        let urlParam = feedcode ? atob(feedcode) : null;
-        let feedUrl = urlParam || getUrlQueryParameterByName('feedurl', window.location.href.split('/?')[1]);
+        const urlParam = feedcode ? atob(feedcode) : null;
+        const feedUrl = urlParam || getUrlQueryParameterByName('feedurl', window.location.href.split('/?')[1]);
         this.getPodcast(feedUrl);
       }
       return (
@@ -307,6 +301,7 @@ export default class Podcast extends Component {
             <div class={style.end}>
               {podcastInfo.episodes ? (
                 <div>
+                  <LastPlayed episode={podcastInfo.episodes.find((ep) => ep.isPlaying && ep.secondsElapsed)} onClick={this.playEpisode.bind(this)} />
                   <ul class={style['podcast-episode__list']}>
                     {podcastInfo.episodes.map((ep) => (
                       <li class={style['podcast-episode__item'] + (ep.isPlaying ? ' ' + style['podcast-episode__item--is-playing'] : '')}>
@@ -347,3 +342,18 @@ export default class Podcast extends Component {
     }
   }
 }
+
+const LastPlayed = (props) => {
+  console.log(props.episode);
+  return props.episode ? (
+    <div class={style.lastPlayed}>
+      <div class={style.lastPlayedButton}>
+        <button data-href={props.episode.url} onClick={(e) => props.onClick(e)} class={'btn btn--secondary btn--play'}></button>
+      </div>
+      <div class={style.lastPlayedText}>
+        <h4>{props.episode.title} </h4>
+        <p>({props.episode.duration + '  - played ' + getTimeFromSeconds(props.episode.secondsElapsed)})</p>
+      </div>
+    </div>
+  ) : null;
+};
