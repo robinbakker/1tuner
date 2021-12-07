@@ -725,7 +725,6 @@ export default class App extends Component {
     let featuredPodcastList = [];
     const featuredFeeds = [
       'https://feeds.simplecast.com/54nAGcIl',
-      'https://feeds.megaphone.fm/fullsend',
       'https://rss.art19.com/vandaag',
       'https://anchor.fm/s/21c734c4/podcast/rss',
       'https://rss.art19.com/een-podcast-over-media',

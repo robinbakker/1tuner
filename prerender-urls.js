@@ -143,6 +143,10 @@ module.exports = async function () {
             console.log('podcast data error', pc);
             continue;
           }
+          if (pc.feedUrl.indexOf('https://feeds.megaphone.fm/fullsend') !== -1) {
+            // DMCA Takedown Request
+            continue;
+          }
           urlArray.push({
             url: '/podcast/' + slugify(pc.title) + '/' + Buffer.from(pc.feedUrl).toString('base64'),
             title: pc.title,

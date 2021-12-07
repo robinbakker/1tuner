@@ -16,7 +16,7 @@
     "extends": "eslint-config-synacor"
   },
   "devDependencies": {
-    "eslint": "^8.4.0",
+    "eslint": "^8.4.1",
     "if-env": "^1.0.4",
     "normalize-url": "^7.0.2",
     "postcss": "^8.4.4",

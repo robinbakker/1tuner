@@ -5,6 +5,7 @@ import { Link } from 'preact-router/match';
 import SocialLinkList from '../../components/sociallinklist';
 import Loader from '../../components/loader';
 import Header from '../../components/header';
+import LastPlayedPodcastEpisode from '../../components/lastplayedpodcastepisode';
 import {
   isValidUrl,
   getUrlQueryParameterByName,
@@ -34,6 +35,11 @@ export default class Podcast extends Component {
     AFeedUrl = AFeedUrl ? decodeURIComponent(AFeedUrl) : null;
     if (!AFeedUrl || !isValidUrl(AFeedUrl)) {
       this.setState({ errorMessage: 'Error: The feed url is invalid.' });
+      return null;
+    }
+    if (AFeedUrl.indexOf('https://feeds.megaphone.fm/fullsend') !== -1) {
+      // DMCA Takedown Request
+      this.setState({ errorMessage: 'Error: The feed url is invalid (DMCA Takedown Request).' });
       return null;
     }
     let loadXml = true;
@@ -301,7 +307,10 @@ export default class Podcast extends Component {
             <div class={style.end}>
               {podcastInfo.episodes ? (
                 <div>
-                  <LastPlayed episode={podcastInfo.episodes.find((ep) => ep.isPlaying && ep.secondsElapsed)} onClick={this.playEpisode.bind(this)} />
+                  {/* <LastPlayedPodcastEpisode
+                    episode={podcastInfo.episodes.find((ep) => ep.isPlaying && ep.secondsElapsed)}
+                    onClick={this.playEpisode.bind(this)}
+                  ></LastPlayedPodcastEpisode> */}
                   <ul class={style['podcast-episode__list']}>
                     {podcastInfo.episodes.map((ep) => (
                       <li class={style['podcast-episode__item'] + (ep.isPlaying ? ' ' + style['podcast-episode__item--is-playing'] : '')}>
@@ -342,18 +351,3 @@ export default class Podcast extends Component {
     }
   }
 }
-
-const LastPlayed = (props) => {
-  console.log(props.episode);
-  return props.episode ? (
-    <div class={style.lastPlayed}>
-      <div class={style.lastPlayedButton}>
-        <button data-href={props.episode.url} onClick={(e) => props.onClick(e)} class={'btn btn--secondary btn--play'}></button>
-      </div>
-      <div class={style.lastPlayedText}>
-        <h4>{props.episode.title} </h4>
-        <p>({props.episode.duration + '  - played ' + getTimeFromSeconds(props.episode.secondsElapsed)})</p>
-      </div>
-    </div>
-  ) : null;
-};
