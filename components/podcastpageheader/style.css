@@ -1,0 +1,128 @@
+.header {
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+img.artwork {
+  max-width: 5rem;
+  width: auto;
+  height: auto;
+  flex: 0 1 0;
+  display: block;
+}
+.lastPlayed {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 0 1rem 1rem 0;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-basis: calc(100% - 5rem);
+  flex-wrap: no-wrap;
+  margin: 0 0 1rem 0;
+  align-items: center;
+  height: 5rem;
+  overflow: hidden;
+  justify-content: space-between;
+}
+.duration {
+  font-size: 0.8rem;
+}
+.lastPlayedButton {
+  width: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.lastPlayedButton button {
+  margin-right: 0 !important;
+}
+.lastPlayedText h4,
+.lastPlayedText p {
+  margin: 0;
+}
+.description {
+  text-align: left;
+  margin-top: -0.5rem;
+  padding: 0 0 0 1rem;
+  flex-basis: calc(100% - 5rem);
+}
+p.descriptiontext {
+  padding: 0;
+  margin: 0;
+}
+button.btnreload {
+  padding: 0;
+  position: absolute;
+}
+p.reloadbutton {
+  display: flex;
+  align-items: center;
+  transform: scale(0.75);
+  transform-origin: left;
+  flex: 1 0 0;
+  padding-left: 1rem;
+}
+.modifieddate {
+  padding: 0 1rem 0 2rem;
+  height: 2rem;
+  border-radius: 3rem;
+  margin-left: 0.5rem;
+  background: var(--filter-panel-bg-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 2rem;
+}
+.reloadicon {
+  display: flex;
+  width: 2rem;
+  height: 100%;
+}
+.reloadicon svg {
+  width: 100%;
+  height: 100%;
+}
+.reloadicon svg path {
+  fill: #fff;
+}
+.reloadicon.loading {
+  animation: rotate 1.5s linear infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (min-width: 768px) {
+  .header {
+    display: block;
+    max-width: 20vw;
+    flex-basis: 20vw;
+    position: sticky;
+    top: 5rem;
+    text-align: left;
+    float: left;
+  }
+  img.artwork {
+    width: 100%;
+    max-width: unset;
+    height: auto;
+  }
+  .lastPlayed {
+    display: flex;
+    flex-basis: 100%;
+    height: auto;
+    padding-top: 1rem;
+    border-radius: 0 0 1rem 1rem;
+  }
+  .description {
+    padding: 1rem 0 0 0;
+  }
+
+  p.reloadbutton {
+    transform: scale(1);
+    padding-left: 0;
+  }
+}

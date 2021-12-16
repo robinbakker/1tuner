@@ -41,6 +41,7 @@ export default class Footer extends Component {
       media: MEDIA_EMPTY,
       timerWorker: null,
       audioError: null,
+      playBackRate: 1,
       duration: 0,
       elapsedtime: 0,
       elapsedtimeText: '',
@@ -603,7 +604,6 @@ export default class Footer extends Component {
   changeProgress = (e) => {
     if (this.state.listeningMode === LM_Podcast) {
       this.setState({ elapsedtime: e.target.value }, () => {
-        //console.log(`seekAudio: ${e.target.value}`);
         this.child.seekAudio(e.target.value, true);
       });
     }
@@ -672,6 +672,7 @@ export default class Footer extends Component {
       elapsedtime,
       elapsedtimeText,
       audioError,
+      playBackRate,
     }
   ) {
     if (
@@ -748,9 +749,27 @@ export default class Footer extends Component {
             hasError={this.audioError}
             mediaid={mediaPlayingID}
             sources={audioSources}
+            playBackRate={playBackRate}
           />
           {listeningMode == LM_Podcast && isExpanded && duration ? (
             <input type="range" onChange={this.changeProgress.bind(this)} class={style['audio-range']} value={elapsedtime} step={1} max={duration} />
+          ) : null}
+          {listeningMode == LM_Podcast && isExpanded && duration ? (
+            <input
+              type="number"
+              step="0.50"
+              value={playBackRate}
+              max={2}
+              onClick={() => {
+                console.log('click playBackRate');
+                let newPlayBackRate = playBackRate + 0.5;
+                if (newPlayBackRate > 2) newPlayBackRate = 0.5;
+                this.setState({ playBackRate: newPlayBackRate }, () => {
+                  this.child.setPlaybackRate(playBackRate);
+                });
+              }}
+              disabled
+            />
           ) : null}
           {listeningMode == LM_Podcast ? (
             <progress

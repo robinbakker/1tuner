@@ -331,6 +331,21 @@ button.btn-search-reset:after {
   transition: opacity ease-in-out 0.2s;
   cursor: pointer;
 }
+.btn--naked {
+  color: var(--text-color);
+  text-transform: unset;
+  font: inherit;
+  background: transparent;
+  text-shadow: none;
+  border: none;
+  border-radius: unset;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+.btn--naked:hover {
+  color: var(--text-color) !important;
+}
 .btn--big {
   font-size: 1rem;
 }
@@ -363,7 +378,8 @@ button.btn-search-reset:after {
   padding-left: 2rem;
   padding-right: 1rem;
 }
-.btn--play:after {
+.button__icon--play::after,
+.btn--play::after {
   content: '\20';
   display: block;
   top: 0.6rem;
@@ -373,12 +389,13 @@ button.btn-search-reset:after {
   border-top: 0.35rem solid transparent;
   border-bottom: 0.35rem solid transparent;
 }
-.btn--play.btn--big:after {
+.btn--play.btn--big::after {
   top: 0.85rem;
 }
 .btn--play.btn--big:hover {
   opacity: 1;
 }
+.button__icon--play,
 .btn--secondary.btn--play {
   width: 3rem;
   height: 3rem;
@@ -388,9 +405,38 @@ button.btn-search-reset:after {
   overflow: hidden;
   outline: none;
 }
-.btn--secondary.btn--play:after {
+.btn--secondary.btn--play::after {
   top: 1rem;
   left: 1.25rem;
+  border-left: 0.75rem solid var(--color-secondary);
+  border-top: 0.5rem solid transparent;
+  border-bottom: 0.5rem solid transparent;
+}
+.btn--naked .button__icon--play {
+  text-indent: -30rem;
+  font-size: 0.1rem;
+  height: 2rem;
+  width: 2rem;
+  flex: 0 0 2rem;
+  padding: 0;
+  background: transparent;
+  /* color: #fff;
+  background: var(--color-main);
+  background: radial-gradient(circle at bottom left, rgb(255, 120, 0) 2%, rgba(255, 157, 0, 1) 80%);
+  border: 0.05rem solid transparent; */
+  margin-right: 0.5rem;
+  cursor: pointer;
+  border-radius: 100%;
+  overflow: hidden;
+  opacity: 0.75;
+  border: 0.05rem solid var(--form-border-color);
+}
+.btn--naked:hover .button__icon--play {
+  opacity: 1;
+}
+.button__icon--play::after {
+  top: 0.45rem;
+  left: 0.7rem;
   border-left: 0.75rem solid var(--color-secondary);
   border-top: 0.5rem solid transparent;
   border-bottom: 0.5rem solid transparent;
@@ -749,6 +795,26 @@ a.preset-list__link {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.btn--naked .button__icon {
+  display: inline-block;
+  position: relative;
+}
+.btn--naked .button__text {
+  color: var(--text-color);
+  position: static;
+  padding: 0 0.25rem 0 0;
+  line-height: 1.2;
+  font-size: 1rem;
+  font-weight: normal;
+  text-align: left;
+  width: auto;
+  white-space: normal;
+  overflow: visible;
+  align-self: flex-start;
+}
+.btn--naked b.button__text {
+  font-weight: bold;
 }
 .preset-list__button:hover .button__text {
   color: var(--text-link);

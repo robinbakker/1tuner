@@ -71,13 +71,18 @@ export default class AudioPlayer extends Component {
     }
   }
 
+  setPlaybackRate = (ARate) => {
+    const audioPL = document.getElementById('audioPlay');
+    audioPL.playbackRate = ARate;
+  };
+
   seekAudio = (ASeconds, AIsElapsedTime) => {
     if (!ASeconds) {
       return;
     }
     if (this.state.isCasting) {
-      var player = new cast.framework.RemotePlayer();
-      var controller = new cast.framework.RemotePlayerController(player);
+      const player = new cast.framework.RemotePlayer();
+      const controller = new cast.framework.RemotePlayerController(player);
       if (controller) {
         if (AIsElapsedTime) {
           player.currentTime = ASeconds;
@@ -87,7 +92,7 @@ export default class AudioPlayer extends Component {
         controller.seek();
       }
     } else {
-      let audioPL = document.getElementById('audioPlay');
+      const audioPL = document.getElementById('audioPlay');
       if (AIsElapsedTime) {
         audioPL.currentTime = ASeconds;
       } else {
