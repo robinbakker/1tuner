@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import style from './style';
 import { removeHtml, getTimeFromSeconds } from '../../utils/misc';
+import EpisodeButton from '../episodebutton';
 
 export default class PodcastPageHeader extends Component {
   constructor(props) {
@@ -11,17 +12,16 @@ export default class PodcastPageHeader extends Component {
     return (
       <div class={style.header}>
         <img class={style.artwork} src={logo} alt={podcastName} />
-        {lastPlayedEpisode ? (
-          <div class={style.lastPlayed}>
-            <div class={style.lastPlayedText}>
-              <h4>{lastPlayedEpisode.title} </h4>
-              <p class={style.duration}>({lastPlayedEpisode.duration + '  - played ' + getTimeFromSeconds(lastPlayedEpisode.secondsElapsed)})</p>
-            </div>
-            <div class={style.lastPlayedButton}>
-              <button data-href={lastPlayedEpisode.url} onClick={onLastPlayedClick} class={'btn btn--secondary btn--play'}></button>
-            </div>
-          </div>
-        ) : null}
+        <EpisodeButton episode={lastPlayedEpisode} featured={true} onClick={onLastPlayedClick} />
+        {/* // <div class={style.lastPlayed}>
+          //   <div class={style.lastPlayedText}>
+          //     <h4>{lastPlayedEpisode.title} </h4>
+          //     <p class={style.duration}>({lastPlayedEpisode.duration + '  - played ' + getTimeFromSeconds(lastPlayedEpisode.secondsElapsed)})</p>
+          //   </div>
+          //   <div class={style.lastPlayedButton}>
+          //     <button data-href={lastPlayedEpisode.url} onClick={onLastPlayedClick} class={'btn btn--secondary btn--play'}></button>
+          //   </div>
+          // </div> */}
         <div class={style.description}>
           <p class={style.descriptiontext}>{removeHtml(description)}</p>
         </div>

@@ -19,7 +19,7 @@ main.home {
   margin: 1.2rem 0 0.8rem 1.2rem;
 }
 .about-link {
-  color: #999;
+  color: var(--subtitle-color);
 }
 .featured-info {
   margin-left: 1.5rem;

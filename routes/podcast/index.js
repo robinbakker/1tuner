@@ -6,6 +6,7 @@ import SocialLinkList from '../../components/sociallinklist';
 import Loader from '../../components/loader';
 import Header from '../../components/header';
 import PodcastPageHeader from '../../components/podcastpageheader';
+import EpisodeButton from '../../components/episodebutton';
 import {
   isValidUrl,
   getUrlQueryParameterByName,
@@ -293,19 +294,7 @@ export default class Podcast extends Component {
                   <ul class={style['podcast-episode__list']}>
                     {podcastInfo.episodes.map((ep) => (
                       <li class={style['podcast-episode__item'] + (ep.isPlaying ? ' ' + style['podcast-episode__item--is-playing'] : '')}>
-                        <button class="btn btn--naked" data-href={ep.url} onClick={this.playEpisode.bind(this)}>
-                          <span class="button__icon button__icon--play">Play</span>
-                          <span class="button__text">
-                            <b>{ep.title}</b>{' '}
-                            <span>
-                              ({ep.duration}
-                              {ep.secondsElapsed ? ' - played ' + getTimeFromSeconds(ep.secondsElapsed) : ''})
-                            </span>
-                            {typeof ep.pubDate === 'object' ? (
-                              <span class={style.pubdate}>{ep.pubDate.toLocaleDateString(undefined, { dateStyle: 'full' })}</span>
-                            ) : null}
-                          </span>
-                        </button>
+                        <EpisodeButton episode={ep} onEpisodeClick={this.playEpisode} />
                         {removeHtml(ep.description)}
                       </li>
                     ))}

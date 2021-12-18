@@ -11,34 +11,8 @@ img.artwork {
   flex: 0 1 0;
   display: block;
 }
-.lastPlayed {
-  background-color: rgba(0, 0, 0, 0.05);
-  border-radius: 0 1rem 1rem 0;
-  padding: 0.75rem 1rem;
-  display: flex;
-  flex-basis: calc(100% - 5rem);
-  flex-wrap: no-wrap;
-  margin: 0 0 1rem 0;
-  align-items: center;
-  height: 5rem;
-  overflow: hidden;
-  justify-content: space-between;
-}
 .duration {
   font-size: 0.8rem;
-}
-.lastPlayedButton {
-  width: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.lastPlayedButton button {
-  margin-right: 0 !important;
-}
-.lastPlayedText h4,
-.lastPlayedText p {
-  margin: 0;
 }
 .description {
   text-align: left;
@@ -110,17 +84,9 @@ p.reloadbutton {
     max-width: unset;
     height: auto;
   }
-  .lastPlayed {
-    display: flex;
-    flex-basis: 100%;
-    height: auto;
-    padding-top: 1rem;
-    border-radius: 0 0 1rem 1rem;
-  }
   .description {
     padding: 1rem 0 0 0;
   }
-
   p.reloadbutton {
     transform: scale(1);
     padding-left: 0;

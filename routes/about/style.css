@@ -4,7 +4,7 @@ main.about {
 }
 .smallish {
   font-size: 0.8rem;
-  color: #999;
+  color: var(--subtitle-color);
 }
 .content-title {
   font-size: 1.2rem;
