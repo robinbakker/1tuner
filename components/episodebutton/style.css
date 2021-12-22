@@ -18,11 +18,16 @@
   justify-content: space-between;
 }
 @media (max-width: 767px) {
-  .featuredText {
-    position: relative;
+  .featuredText span.played {
+    font-size: 0.8rem;
+    margin: 0.3rem 0;
   }
+  .featured span.featuredText {
+    position: relative;
+    overflow: hidden;
+  }
+  .featuredText span.played,
   .featuredText b {
-    width: 40%;
     display: block;
     white-space: nowrap;
     overflow: hidden;

@@ -541,6 +541,9 @@ span.button__icon--play::after {
 .margin--right {
   margin-right: 1rem;
 }
+.margin--vertical {
+  margin: 0.5rem 0;
+}
 .btn--float-right {
   float: right;
 }

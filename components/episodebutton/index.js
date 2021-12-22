@@ -15,7 +15,7 @@ export default class EpisodeButton extends Component {
       <button class={`btn btn--naked${featured ? ` ${style.featured}` : ''}`} data-href={episode.url} onClick={onEpisodeClick}>
         <span class={`button__text${featured ? ` ${style.featuredText}` : ''}`}>
           <b>{episode.title}</b>{' '}
-          <span>
+          <span class={style.played}>
             ({episode.duration}
             {episode.secondsElapsed ? ' - played ' + getTimeFromSeconds(episode.secondsElapsed) : ''})
           </span>

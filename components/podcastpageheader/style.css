@@ -3,6 +3,7 @@
   margin-bottom: 1rem;
   align-items: flex-start;
   flex-wrap: wrap;
+  max-width: 100%;
 }
 img.artwork {
   max-width: 5rem;
@@ -16,7 +17,7 @@ img.artwork {
 }
 .description {
   text-align: left;
-  margin-top: -0.5rem;
+  margin-top: -0.3rem;
   padding: 0 0 0 1rem;
   flex-basis: calc(100% - 5rem);
 }

@@ -754,23 +754,6 @@ export default class Footer extends Component {
           {listeningMode == LM_Podcast && isExpanded && duration ? (
             <input type="range" onChange={this.changeProgress.bind(this)} class={style['audio-range']} value={elapsedtime} step={1} max={duration} />
           ) : null}
-          {listeningMode == LM_Podcast && isExpanded && duration ? (
-            <input
-              type="number"
-              step="0.50"
-              value={playBackRate}
-              max={2}
-              onClick={() => {
-                console.log('click playBackRate');
-                let newPlayBackRate = playBackRate + 0.5;
-                if (newPlayBackRate > 2) newPlayBackRate = 0.5;
-                this.setState({ playBackRate: newPlayBackRate }, () => {
-                  this.child.setPlaybackRate(playBackRate);
-                });
-              }}
-              disabled
-            />
-          ) : null}
           {listeningMode == LM_Podcast ? (
             <progress
               id="audioProgress"
@@ -784,6 +767,21 @@ export default class Footer extends Component {
             <div id="audioElapsedTime" class={style.elapsed}>
               {elapsedtimeText}
             </div>
+          ) : null}
+          {listeningMode == LM_Podcast && isExpanded && duration ? (
+            <button
+              class={`${style['audio-playbackrate']} btn btn--right`}
+              disabled={!isPlaying}
+              onClick={() => {
+                let newPlayBackRate = playBackRate + 0.25;
+                if (newPlayBackRate > 2) newPlayBackRate = 0.5;
+                this.setState({ playBackRate: newPlayBackRate }, () => {
+                  this.child.setPlaybackRate(newPlayBackRate);
+                });
+              }}
+            >
+              {playBackRate}x
+            </button>
           ) : null}
           <span class={style['audio-error'] + (audioError && audioError.message ? ` ${style['audio-error--active']}` : '')}>
             {audioError && audioError.message ? audioError.message : ''}

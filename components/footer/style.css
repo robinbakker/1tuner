@@ -464,6 +464,19 @@ input[type='range']::-webkit-slider-thumb {
 .audio-progress::-moz-progress-value {
   background-color: var(--color-main);
 }
+button.audio-playbackrate {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+  transition: opacity 0.2s ease-in-out;
+  text-shadow: 0 0.1rem 0.1rem rgb(0 0 0 / 10%);
+  margin-bottom: 1rem;
+  padding: 0.4rem 0.8rem;
+  text-transform: none;
+}
+button.audio-playbackrate[disabled] {
+  opacity: 0.5;
+}
 .audio-error {
   position: absolute;
   color: var(--color-main);
