@@ -12,7 +12,7 @@ export default class PodcastPageHeader extends Component {
     return (
       <div class={style.header}>
         <img class={style.artwork} src={logo} alt={podcastName} />
-        <EpisodeButton episode={lastPlayedEpisode} featured={true} onClick={onLastPlayedClick} />
+        <EpisodeButton episode={lastPlayedEpisode} featured={true} onEpisodeClick={onLastPlayedClick} />
         <div class={style.description}>
           <p class={style.descriptiontext}>{removeHtml(description)}</p>
         </div>

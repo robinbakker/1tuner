@@ -283,7 +283,7 @@ export default class Podcast extends Component {
               logo={podcastInfo.logo600 ? podcastInfo.logo600 : podcastInfo.logo}
               lastPlayedEpisode={{ ...podcastInfo }?.episodes?.find((ep) => ep.isPlaying && ep.secondsElapsed)}
               description={podcastInfo.description}
-              onLastPlayedClick={this.playEpisode.bind(this)}
+              onLastPlayedClick={this.playEpisode}
               lastUpdated={podcastInfo.modified}
               onReloadClick={this.reloadFeed.bind(this)}
               isReloading={isLoading}
