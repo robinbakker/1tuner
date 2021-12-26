@@ -296,6 +296,7 @@
         "url": "https://direct.francemusique.fr/live/francemusique-midfi.mp3"
       }
     ],
+    "related": ["fip"],
     "website": "https://www.francemusique.fr",
     "social": [{ "title": "@francemusique", "type": "twitter", "account": "francemusique", "url": "https://twitter.com/francemusique" }]
   },
@@ -1735,6 +1736,27 @@
       { "title": "@ouifm", "type": "twitter", "account": "ouifm", "url": "https://twitter.com/ouifm" },
       { "title": "@ouifm", "type": "instagram", "account": "ouifm", "url": "https://www.instagram.com/ouifm" },
       { "title": "@radioouifm", "type": "facebook", "account": "radioouifm", "url": "https://www.facebook.com/radioouifm" }
+    ]
+  },
+  "fip": {
+    "displayorder": 96,
+    "genres": ["chanson", "classical", "jazz", "rock", "blues", "world", "filmmusic"],
+    "language": "fr",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/fipradio",
+    "name": "FIP",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://direct.francemusique.fr/live/fip-midfi.mp3"
+      }
+    ],
+    "website": "https://www.fip.fr",
+    "related": ["francemusique"],
+    "social": [
+      { "title": "@fipradio", "type": "twitter", "account": "fipradio", "url": "https://twitter.com/fipradio" },
+      { "title": "@fipradio", "type": "instagram", "account": "fipradio", "url": "https://www.instagram.com/fipradio" },
+      { "title": "@fipradio", "type": "facebook", "account": "fipradio", "url": "https://www.facebook.com/fipradio" },
+      { "title": "FIP", "type": "youtube", "account": "radiofrance", "url": "https://www.youtube.com/channel/UCFLkFeQEuU9CHQISq_rp0_Q" }
     ]
   }
 }

@@ -106,5 +106,11 @@
   },
   "americana": {
     "name": "Americana"
+  },
+  "chanson": {
+    "name": "Chanson"
+  },
+  "filmmusic": {
+    "name": "Film music"
   }
 }
