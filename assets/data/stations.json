@@ -1746,6 +1746,10 @@
     "name": "FIP",
     "streams": [
       {
+        "mimetype": "audio/aac",
+        "url": "https://icecast.radiofrance.fr/fip-hifi.aac"
+      },
+      {
         "mimetype": "audio/mp3",
         "url": "https://direct.francemusique.fr/live/fip-midfi.mp3"
       }
