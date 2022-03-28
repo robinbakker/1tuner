@@ -16,12 +16,12 @@
     "extends": "eslint-config-synacor"
   },
   "devDependencies": {
-    "eslint": "^8.9.0",
+    "eslint": "^8.12.0",
     "if-env": "^1.0.4",
     "normalize-url": "^7.0.3",
-    "postcss": "^8.4.6",
+    "postcss": "^8.4.12",
     "preact-cli": "^3.3.5",
-    "preact-render-to-string": "^5.1.19"
+    "preact-render-to-string": "^5.1.20"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
