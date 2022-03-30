@@ -27,7 +27,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.0",
     "idb-keyval": "^6.1.0",
-    "preact": "^10.6.6",
+    "preact": "^10.7.0",
     "preact-router": "^4.0.1"
   },
   "prettier": {

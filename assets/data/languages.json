@@ -105,5 +105,14 @@
     "flag": "🇮🇱",
     "name": "עִבְרִית",
     "name_en": "Hebrew"
+  },
+  "uk": {
+    "abbr": "UA",
+    "country": "Україна",
+    "country_en": "Ukraine",
+    "displayorder": 13,
+    "flag": "🇺🇦",
+    "name": "украї́нська мо́ва",
+    "name_en": "Ukrainian"
   }
 }

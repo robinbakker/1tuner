@@ -1333,7 +1333,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://star.jointil.net/proxy/jrn_reggae?mp=/stream"
+        "url": "https://polaris.dribb.com/proxy/jrn_reggae?mp=/stream"
       }
     ],
     "website": "https://www.jointil.com",
@@ -1348,7 +1348,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://star.jointil.net/proxy/jrn_beat?mp=/stream"
+        "url": "https://polaris.dribb.com/proxy/jrn_beat?mp=/stream"
       }
     ],
     "website": "https://www.jointil.com",
@@ -1363,7 +1363,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://star.jointil.net/proxy/jrn_blues?mp=/stream"
+        "url": "https://polaris.dribb.com/proxy/jrn_blues?mp=/stream"
       }
     ],
     "website": "https://www.jointil.com",
@@ -1761,6 +1761,87 @@
       { "title": "@fipradio", "type": "instagram", "account": "fipradio", "url": "https://www.instagram.com/fipradio" },
       { "title": "@fipradio", "type": "facebook", "account": "fipradio", "url": "https://www.facebook.com/fipradio" },
       { "title": "FIP", "type": "youtube", "account": "radiofrance", "url": "https://www.youtube.com/channel/UCFLkFeQEuU9CHQISq_rp0_Q" }
+    ]
+  },
+  "radiopyatnica": {
+    "displayorder": 97,
+    "genres": ["pop"],
+    "language": "uk",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/radiopyatnica",
+    "name": "Радио Пятница",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://cast.radiogroup.com.ua/radiopyatnica320"
+      }
+    ],
+    "website": "https://radiopyatnica.com.ua",
+    "social": [{ "title": "@radiopyatnica", "type": "facebook", "account": "radiopyatnica", "url": "https://www.facebook.com/radiopyatnica" }]
+  },
+  "hitfm": {
+    "displayorder": 98,
+    "genres": ["pop"],
+    "language": "uk",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/hitfm.ua",
+    "name": "Хіт FM",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://online.hitfm.ua/HitFM_Ukr"
+      }
+    ],
+    "website": "https://www.hitfm.ua",
+    "social": [{ "title": "@hitfm.ua", "type": "facebook", "account": "hitfm.ua", "url": "https://www.facebook.com/hitfm.ua" }]
+  },
+  "kissfmua": {
+    "displayorder": 99,
+    "genres": ["dance", "pop"],
+    "language": "uk",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/kissfmua",
+    "name": "KISS FM UKRAINE",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://online.kissfm.ua/KissFM_Ukr_HD"
+      }
+    ],
+    "website": "https://www.kissfm.ua",
+    "social": [
+      { "title": "@kissfm_ua", "type": "instagram", "account": "kissfm_ua", "url": "https://www.instagram.com/kissfm_ua" },
+      { "title": "@kissfmua", "type": "facebook", "account": "kissfmua", "url": "https://www.facebook.com/kissfmua" }
+    ]
+  },
+  "ukrradio": {
+    "displayorder": 100,
+    "genres": ["news", "talk"],
+    "language": "uk",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/ukrainianradio",
+    "name": "Українське радіо",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://radio.ukr.radio/ur1-ck-mp3"
+      }
+    ],
+    "website": "http://ukr.radio",
+    "social": [{ "title": "@ukrainianradio", "type": "facebook", "account": "ukrainianradio", "url": "https://www.facebook.com/ukrainianradio" }]
+  },
+  "powerfmua": {
+    "displayorder": 101,
+    "genres": ["hiphop", "pop", "rnb"],
+    "language": "uk",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/powerfmua",
+    "name": "POWER FM Ukraine",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://cast.radiogroup.com.ua/powerfm96.aac"
+      }
+    ],
+    "website": "https://www.powerfm.ua/",
+    "social": [
+      { "title": "@powerfmua", "type": "instagram", "account": "powerfmua", "url": "https://www.instagram.com/powerfmua" },
+      { "title": "@powerfmua", "type": "facebook", "account": "powerfmua", "url": "https://www.facebook.com/powerfmua" }
     ]
   }
 }
