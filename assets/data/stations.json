@@ -1808,7 +1808,8 @@
     "website": "https://www.kissfm.ua",
     "social": [
       { "title": "@kissfm_ua", "type": "instagram", "account": "kissfm_ua", "url": "https://www.instagram.com/kissfm_ua" },
-      { "title": "@kissfmua", "type": "facebook", "account": "kissfmua", "url": "https://www.facebook.com/kissfmua" }
+      { "title": "@kissfmua", "type": "facebook", "account": "kissfmua", "url": "https://www.facebook.com/kissfmua" },
+      { "title": "@kissfm.ua", "type": "tiktok", "account": "@kissfm.ua", "url": "https://www.tiktok.com/@kissfm.ua" }
     ]
   },
   "ukrradio": {

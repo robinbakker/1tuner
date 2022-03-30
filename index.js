@@ -98,7 +98,8 @@ export default class App extends Component {
     this.updateStationImageProperties(stationList, lastStationList);
     const featured = this.loadFeatured(stationList);
 
-    const languageList = this.state.languageList || (await get('language-list')) || this.loadLanguageList();
+    const languageList =
+      AppVersion !== userVersion ? this.loadLanguageList() : this.state.languageList || (await get('language-list')) || this.loadLanguageList();
     const legacyPlaylists = await get('planning-list');
     if (legacyPlaylists && legacyPlaylists.length) {
       del('planning-list');
