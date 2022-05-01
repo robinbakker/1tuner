@@ -1386,7 +1386,7 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kinkdna", "kink-nl", "kink-indie", "kink-distortion"],
+    "related": ["kinkclassics", "kink-nl", "kink-indie", "kink-distortion", "k-rock-nl"],
     "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"],
     "social": [
       { "title": "@kinkpuntnl", "type": "twitter", "account": "kinkpuntnl", "url": "https://twitter.com/kinkpuntnl" },
@@ -1425,12 +1425,12 @@
     "website": "https://www.hotdanceradio.com",
     "social": [{ "title": "@hotdanceradio", "type": "twitter", "account": "hotdanceradio", "url": "https://twitter.com/hotdanceradio" }]
   },
-  "kinkdna": {
+  "kinkclassics": {
     "displayorder": 77,
     "genres": ["alternative", "pop", "rock", "oldies"],
     "language": "nl",
-    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/nuopKINKDNA",
-    "name": "KINK DNA",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/kinkclassics",
+    "name": "KINK Classics",
     "streams": [
       {
         "mimetype": "audio/aac",
@@ -1441,9 +1441,13 @@
         "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINK_DNA.mp3"
       }
     ],
-    "website": "https://kink.nl",
-    "related": ["kink", "kink-nl", "kink-indie", "kink-distortion"],
-    "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
+    "website": "https://kinkclassics.nl",
+    "related": ["kink", "k-rock-nl", "kink-nl", "kink-indie", "kink-distortion"],
+    "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"],
+    "social": [
+      { "title": "@kinkclassics", "type": "twitter", "account": "kinkclassics", "url": "https://twitter.com/kinkclassics" },
+      { "title": "@KINKCLASSICS", "type": "facebook", "account": "KINKCLASSICS", "url": "https://www.facebook.com/KINKCLASSICS" }
+    ]
   },
   "kink-distortion": {
     "displayorder": 86,
@@ -1462,7 +1466,7 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kink", "kinkdna", "kink-nl", "kink-indie"],
+    "related": ["kink", "kinkclassics", "kink-nl", "kink-indie"],
     "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
   },
   "kink-nl": {
@@ -1482,7 +1486,7 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kink", "kinkdna", "kink-indie", "kink-distortion"],
+    "related": ["kink", "kinkclassics", "kink-indie", "kink-distortion"],
     "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
   },
   "lindaradio": {
@@ -1696,7 +1700,7 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kink", "kinkdna", "kink-nl", "kink-distortion"],
+    "related": ["kink", "kinkclassics", "kink-nl", "kink-distortion"],
     "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
   },
   "grollo-radio": {
@@ -1843,6 +1847,71 @@
     "social": [
       { "title": "@powerfmua", "type": "instagram", "account": "powerfmua", "url": "https://www.instagram.com/powerfmua" },
       { "title": "@powerfmua", "type": "facebook", "account": "powerfmua", "url": "https://www.facebook.com/powerfmua" }
+    ]
+  },
+  "joe-nl": {
+    "displayorder": 102,
+    "genres": ["oldies", "pop", "rock"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/joe.alltheway",
+    "name": "Joe",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://icecast-qmusicnl-cdp.triple-it.nl/Joe_nl_high.aac"
+      }
+    ],
+    "website": "https://joe.nl",
+    "related": ["qmusic"]
+  },
+  "k-rock-nl": {
+    "displayorder": 103,
+    "genres": ["oldies", "pop", "rock"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/krocknl",
+    "name": "ꓘ-ROCK",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KROCKAAC.aac"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KROCK.mp3"
+      }
+    ],
+    "website": "https://k-rock.nl",
+    "related": ["kink", "kinkclassics", "kink-nl"],
+    "social": [
+      { "title": "@krocknl", "type": "twitter", "account": "krocknl", "url": "https://twitter.com/krocknl" },
+      { "title": "@KROCKNL", "type": "facebook", "account": "KROCKNL", "url": "https://www.facebook.com/KROCKNL" },
+      { "title": "@krocknl", "type": "instagram", "account": "krocknl", "url": "https://www.instagram.com/krocknl" }
+    ]
+  },
+  "grandprixradio": {
+    "displayorder": 104,
+    "genres": ["sports", "pop", "dance"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/grandprixradio",
+    "name": "Grand Prix Radio",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/GRAND_PRIX_RADIOAAC.aac"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/GRAND_PRIX_RADIO.mp3"
+      }
+    ],
+    "website": "https://grandprixradio.nl",
+    "podcasts": [
+      "https://www.omnycontent.com/d/playlist/b1bf52d9-afd9-4f91-8d1c-ad41011d80b8/17e206b5-df7a-4fa8-84ac-ad42007f38ea/0b3d4b44-a7f7-4c68-ab56-ad42007f3901/podcast.rss"
+    ],
+    "social": [
+      { "title": "@grandprixradio", "type": "twitter", "account": "grandprixradio", "url": "https://twitter.com/grandprixradio" },
+      { "title": "@grandprixradio", "type": "facebook", "account": "grandprixradio", "url": "https://www.facebook.com/grandprixradio" },
+      { "title": "@grandprixradio", "type": "instagram", "account": "grandprixradio", "url": "https://www.instagram.com/grandprixradio" }
     ]
   }
 }

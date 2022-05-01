@@ -227,6 +227,7 @@ export default class App extends Component {
           <Redirect path="/planning-edit/:name/:params?" to="/playlist-edit" />
           <Redirect path="/radio-station/xxlbonanza" to="/radio-station/xxlstenders" />
           <Redirect path="/radio-station/kxclassicsedge" to="/radio-station/the-edge" />
+          <Redirect path="/radio-station/kinkdna" to="/radio-station/kinkclassics" />
           <Error type="404" default />
         </Router>
         <Footer
@@ -859,13 +860,13 @@ export default class App extends Component {
     let newList = AStationList;
     if (
       AStationList.some((item) => {
-        return item.id === 'kxclassicsedge' || item.id === 'xxlbonanza';
+        return item.id === 'kxclassicsedge' || item.id === 'xxlbonanza' || item.id === 'kinkdna';
       })
     ) {
       // Temp fix to remove old stations
       newList = [];
       for (let i = 0; i < AStationList.length; i++) {
-        if (AStationList[i].id !== 'kxclassicsedge' && AStationList[i].id !== 'xxlbonanza') {
+        if (AStationList[i].id !== 'kxclassicsedge' && AStationList[i].id !== 'xxlbonanza' && AStationList[i].id !== 'kinkdna') {
           newList.push(AStationList[i]);
         }
       }
