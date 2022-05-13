@@ -1512,7 +1512,7 @@
   "willy": {
     "displayorder": 79,
     "genres": ["rock", "alternative", "oldies"],
-    "language": "nl-be",
+    "language": "nl-BE",
     "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/willy_radio",
     "name": "Willy",
     "streams": [
@@ -1528,7 +1528,7 @@
   "joe": {
     "displayorder": 80,
     "genres": ["pop"],
-    "language": "nl-be",
+    "language": "nl-BE",
     "logosource": "https://res.cloudinary.com/onetuner/image/facebook/joe.alltheway",
     "name": "Joe",
     "streams": [
