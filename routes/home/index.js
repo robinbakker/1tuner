@@ -37,7 +37,7 @@ export default class Home extends Component {
     return (
       <main class={'content ' + style.home}>
         <div class={style['home-header']}>
-          <img class={style['home-header-logo']} src="/assets/logo-text-white.svg" alt="1tuner" />
+          <img class={style['home-header-logo']} width="160" height="58" src="/assets/logo-text-white.svg" alt="1tuner" />
         </div>
         <article class={'content__section content__section--stations'}>
           <header class={'section-header'}>

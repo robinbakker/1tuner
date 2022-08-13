@@ -1333,7 +1333,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "https://polaris.dribb.com/proxy/jrn_reggae?mp=/stream"
+        "url": "https://jointil.com/stream-reggae"
       }
     ],
     "website": "https://www.jointil.com",
@@ -1348,7 +1348,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "https://polaris.dribb.com/proxy/jrn_beat?mp=/stream"
+        "url": "https://jointil.com/stream-beat"
       }
     ],
     "website": "https://www.jointil.com",
@@ -1363,7 +1363,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "https://polaris.dribb.com/proxy/jrn_blues?mp=/stream"
+        "url": "https://jointil.com/stream-blues"
       }
     ],
     "website": "https://www.jointil.com",
