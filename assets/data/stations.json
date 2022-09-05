@@ -1913,5 +1913,105 @@
       { "title": "@grandprixradio", "type": "facebook", "account": "grandprixradio", "url": "https://www.facebook.com/grandprixradio" },
       { "title": "@grandprixradio", "type": "instagram", "account": "grandprixradio", "url": "https://www.instagram.com/grandprixradio" }
     ]
+  },
+  "somafm-groove-salad": {
+    "displayorder": 105,
+    "genres": ["electro", "world", "beat", "electronic"],
+    "language": "en",
+    "logosource": "https://somafm.com/img3/groovesalad-400.png",
+    "name": "SomaFM Groove Salad",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://ice1.somafm.com/groovesalad-128-aac"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://ice2.somafm.com/groovesalad-128-aac"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://ice2.somafm.com/groovesalad-128-mp3"
+      }
+    ],
+    "website": "https://somafm.com/groovesalad",
+    "related": ["somafm-indie-pop-rocks", "somafm-groove-salad-classic", "somafm-live"],
+    "social": [
+      { "title": "@somafm", "type": "twitter", "account": "somafm", "url": "https://twitter.com/somafm" },
+      { "title": "@somafm_official", "type": "instagram", "account": "somafm_official", "url": "https://www.instagram.com/somafm_official" }
+    ]
+  },
+  "somafm-indie-pop-rocks": {
+    "displayorder": 106,
+    "genres": ["indie", "rock", "pop"],
+    "language": "en",
+    "logosource": "https://somafm.com/img3/indiepop-400.png",
+    "name": "SomaFM Indie Pop Rocks!",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://ice1.somafm.com/indiepop-128-aac"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://ice2.somafm.com/indiepop-128-aac"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://ice2.somafm.com/indiepop-128-mp3"
+      }
+    ],
+    "website": "https://somafm.com/indiepop",
+    "related": ["somafm-groove-salad", "somafm-groove-salad-classic", "somafm-live"],
+    "social": [
+      { "title": "@somafm", "type": "twitter", "account": "somafm", "url": "https://twitter.com/somafm" },
+      { "title": "@somafm_official", "type": "instagram", "account": "somafm_official", "url": "https://www.instagram.com/somafm_official" }
+    ]
+  },
+  "somafm-groove-salad-classic": {
+    "displayorder": 107,
+    "genres": ["electro", "world", "beat", "electronic", "oldies"],
+    "language": "en",
+    "logosource": "https://somafm.com/img3/gsclassic400.jpg",
+    "name": "SomaFM Groove Salad Classic",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://ice1.somafm.com/gsclassic-128-aac"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://ice2.somafm.com/gsclassic-128-mp3"
+      }
+    ],
+    "website": "https://somafm.com/gsclassic",
+    "related": ["somafm-indie-pop-rocks", "somafm-groove-salad", "somafm-live"],
+    "social": [
+      { "title": "@somafm", "type": "twitter", "account": "somafm", "url": "https://twitter.com/somafm" },
+      { "title": "@somafm_official", "type": "instagram", "account": "somafm_official", "url": "https://www.instagram.com/somafm_official" }
+    ]
+  },
+  "somafm-live": {
+    "displayorder": 108,
+    "genres": ["electro", "world", "beat", "electronic", "pop", "indie"],
+    "language": "en",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/somafm",
+    "name": "SomaFM Live",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://ice1.somafm.com/live-128-aac"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://ice1.somafm.com/live-128-mp3"
+      }
+    ],
+    "website": "https://somafm.com/live",
+    "related": ["somafm-indie-pop-rocks", "somafm-groove-salad-classic", "somafm-groove-salad"],
+    "social": [
+      { "title": "@somafm", "type": "twitter", "account": "somafm", "url": "https://twitter.com/somafm" },
+      { "title": "@somafm_official", "type": "instagram", "account": "somafm_official", "url": "https://www.instagram.com/somafm_official" }
+    ]
   }
 }
