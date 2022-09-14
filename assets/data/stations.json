@@ -2013,5 +2013,24 @@
       { "title": "@somafm", "type": "twitter", "account": "somafm", "url": "https://twitter.com/somafm" },
       { "title": "@somafm_official", "type": "instagram", "account": "somafm_official", "url": "https://www.instagram.com/somafm_official" }
     ]
+  },
+  "vintage-obscura-radio": {
+    "displayorder": 109,
+    "genres": ["oldies", "indie", "alternative"],
+    "language": "en",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/vintage_obscura",
+    "name": "Vintage Obscura Radio",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://radio.vintageobscura.net/stream"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://radio.vintageobscura.net/stream.m3u"
+      }
+    ],
+    "website": "https://vintageobscura.net",
+    "social": [{ "title": "@vintage_obscura", "type": "twitter", "account": "vintage_obscura", "url": "https://twitter.com/vintage_obscura" }]
   }
 }

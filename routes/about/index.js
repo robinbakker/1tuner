@@ -71,7 +71,7 @@ export default class About extends Component {
               Robin Bakker
             </a>
             . Read more:{' '}
-            <a href="https://medium.com/@robinbakker/creating-a-web-app-as-side-project-2b8f96a44893" rel="noopener" target="_blank">
+            <a href="https://robinbakker.nl/en/blog/creating-a-web-app-as-side-project" rel="noopener" target="_blank">
               Creating a web app as side project
             </a>
             . You can find 1tuner at{' '}
