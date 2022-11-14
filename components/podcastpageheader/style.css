@@ -61,10 +61,10 @@ p.reloadbutton {
   fill: #fff;
 }
 .reloadicon.loading {
-  animation: rotate 1.5s linear infinite;
+  animation: reloadRotate 1.5s linear infinite;
 }
 
-@keyframes rotate {
+@keyframes reloadRotate {
   100% {
     transform: rotate(360deg);
   }
