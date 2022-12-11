@@ -13,10 +13,10 @@
     "dev": "preact watch --template template.html"
   },
   "devDependencies": {
-    "eslint": "^8.27.0",
+    "eslint": "^8.29.0",
     "if-env": "^1.0.4",
     "normalize-url": "^8.0.0",
-    "postcss": "8.4.19",
+    "postcss": "8.4.20",
     "preact-cli": "^3.4.1",
     "preact-render-to-string": "^5.2.6"
   },
