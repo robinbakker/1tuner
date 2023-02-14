@@ -1,0 +1,21 @@
+{
+  "_chunk-af3a19ca.js": {
+    "file": "assets/chunk-af3a19ca.js"
+  },
+  "node_modules/vite-plugin-ssr/dist/esm/client/entry.js": {
+    "file": "assets/entry-server-routing.6588572b.js",
+    "imports": [
+      "_chunk-af3a19ca.js"
+    ],
+    "isEntry": true,
+    "src": "node_modules/vite-plugin-ssr/dist/esm/client/entry.js"
+  },
+  "node_modules/vite-plugin-ssr/dist/esm/client/router/entry.js": {
+    "file": "assets/entry-client-routing.9483bc03.js",
+    "imports": [
+      "_chunk-af3a19ca.js"
+    ],
+    "isEntry": true,
+    "src": "node_modules/vite-plugin-ssr/dist/esm/client/router/entry.js"
+  }
+}

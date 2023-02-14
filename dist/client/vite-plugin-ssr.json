@@ -1,0 +1,8 @@
+{
+  "version": "0.4.77",
+  "usesClientRouter": false,
+  "manifestKeyMap": {},
+  "baseServer": "/",
+  "baseAssets": "/",
+  "includeAssetsImportedByServer": false
+}

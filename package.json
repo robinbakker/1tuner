@@ -1,30 +1,32 @@
 {
   "private": true,
   "name": "1tuner",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "1 web app to listen to audio streams and auto-switch",
   "author": "Robin Bakker",
   "license": "MIT",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
-    "build": "preact build --prerenderUrls ./prerender-urls.js --template template.html",
-    "serve": "preact build && preact serve",
-    "dev": "preact watch --template template.html"
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "dev": "vite"
   },
   "devDependencies": {
-    "eslint": "^8.29.0",
+    "@preact/preset-vite": "^2.5.0",
+    "eslint": "^8.34.0",
     "if-env": "^1.0.4",
     "normalize-url": "^8.0.0",
-    "postcss": "8.4.20",
-    "preact-cli": "^3.4.1",
-    "preact-render-to-string": "^5.2.6"
+    "postcss": "8.4.21",
+    "preact-render-to-string": "^5.2.6",
+    "vite": "^4.1.1",
+    "vite-plugin-ssr": "^0.4.82"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "idb-keyval": "^6.2.0",
-    "preact": "^10.11.3",
+    "preact": "^10.12.1",
     "preact-router": "^4.1.0"
   },
   "prettier": {

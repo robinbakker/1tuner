@@ -1,0 +1,21 @@
+.background {
+  background: center no-repeat url(bg.jpg);
+  background-size: cover;
+}
+
+.logo {
+  background-image: url(logo.png);
+}
+
+.progressBar {
+  background-color: #ff6000;
+}
+
+/* .splash {
+  background-image: url(splash.png);
+} */
+/* 
+.watermark {
+  background-image: url(watermark.png);
+  background-size: 57px 57px;
+} */
