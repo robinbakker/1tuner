@@ -6,9 +6,9 @@ A web app to listen to online radio. Also, create your own daily schedule (plann
 
 📻 Listen now at [1tuner.com](https://1tuner.com)
 
-📖 See also [Creating a web app as side project](https://medium.com/@robinbakker/creating-a-web-app-as-side-project-2b8f96a44893) and [Updating my web app side project](https://medium.com/@robinbakker/updating-my-web-app-side-project-3963d818226)
+📖 See also [Creating a web app as side project](https://robinbakker.nl/en/blog/creating-a-web-app-as-side-project/) and [Updating my web app side project](https://robinbakker.nl/en/blog/updating-my-web-app-side-project/)
 
-🚀 Built with [Preact](https://github.com/developit/preact) - using [Preact CLI](https://github.com/developit/preact-cli)
+🚀 Built with [Preact](https://github.com/preactjs/preact) - using [Preact CLI](https://github.com/preactjs/preact-cli)
 
 ## License
 

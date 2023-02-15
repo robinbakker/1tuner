@@ -42,7 +42,7 @@
       }
     ],
     "website": "https://www.npo3fm.nl",
-    "related": ["3fmalternative", "funx", "radio2"],
+    "related": ["3fmalternative", "funx", "radio2", "radio1"],
     "podcasts": [
       "https://podcast.npo.nl/feed/vera-on-track.xml",
       "https://podcast.npo.nl/feed/de-music-starts-here-podcast.xml",
@@ -208,7 +208,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "https://icecast-bnr-cdp.triple-it.nl/bnr_mp3_128_03"
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/BNR_NIEUWSRADIO.mp3"
       }
     ],
     "website": "https://www.bnr.nl",
@@ -361,7 +361,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "https://server-23.stream-server.nl:8438/;listen.pls_"
+        "url": "https://server-23.stream-server.nl:18438/;1"
       }
     ],
     "website": "https://www.indiexl.nl"
@@ -453,30 +453,11 @@
       }
     ],
     "website": "https://www.kxclassics.nl",
-    "related": ["the-edge", "xxlstenders", "xxlblokhuis", "40upradio"],
+    "related": ["xxlstenders", "xxlblokhuis", "kinkclassics", "40upradio"],
     "social": [
       { "title": "@KXclassics", "type": "twitter", "account": "KXclassics", "url": "https://twitter.com/KXclassics" },
       { "title": "@kxclassicscom", "type": "instagram", "account": "kxclassicscom", "url": "https://www.instagram.com/kxclassicscom" },
       { "title": "@KXclassics", "type": "facebook", "account": "KXclassics", "url": "https://www.facebook.com/KXclassics" }
-    ]
-  },
-  "the-edge": {
-    "displayorder": 8,
-    "genres": ["alternative", "rock", "pop", "oldies"],
-    "language": "nl",
-    "logosource": "https://images.ctfassets.net/avx85g85supt/6cTZbrKq9wyFbbnrWfIcM1/69a61413afae04f858cde9bc0bceb330/2020-Stenders-Blokhuis-Tiles-edge.jpg?f=center&fit=fill&w=270&q=90&fm=png",
-    "name": "The Edge",
-    "streams": [
-      {
-        "mimetype": "audio/mpeg",
-        "url": "https://mcp-1.streampanel.nl:8020/edgeclassics_mp3"
-      }
-    ],
-    "website": "https://www.robstenders.nl",
-    "related": ["xxlstenders", "xxlblokhuis", "kxclassic"],
-    "podcasts": [
-      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss",
-      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"
     ]
   },
   "los40": {
@@ -691,15 +672,11 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://icecast-qmusic.cdp.triple-it.nl/Qmusic_nl_live_96.mp3"
+        "url": "https://icecast-qmusicnl-cdp.triple-it.nl/Qmusic_nl_live_96.mp3"
       },
       {
         "mimetype": "audio/aac",
-        "url": "http://icecast-qmusic.cdp.triple-it.nl/Qmusic_nl_live_32.aac"
-      },
-      {
-        "mimetype": "audio/ogg",
-        "url": "http://icecast-qmusic.cdp.triple-it.nl/Qmusic_nl_live_64.ogg"
+        "url": "https://icecast-qmusicnl-cdp.triple-it.nl/Qmusic_nl_live_high.aac"
       }
     ],
     "website": "https://qmusic.nl",
@@ -1148,7 +1125,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "https://stream01.sublimefm.nl/SublimeFM_mp3"
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SUBLIME.mp3"
       }
     ],
     "website": "https://sublime.nl",
@@ -1163,7 +1140,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "http://2.trafficstream.nl/traffic_main.mp3"
+        "url": "https://streaming.hofhosting.nl/proxy/traffic_main?mp=/stream"
       }
     ],
     "website": "https://www.trafficradio.nl",
@@ -1186,7 +1163,7 @@
       }
     ],
     "website": "https://www.radioveronica.nl",
-    "related": ["xxlstenders", "the-edge", "kxclassic"],
+    "related": ["xxlstenders", "kxclassic"],
     "social": [
       { "title": "@radioveronica", "type": "twitter", "account": "radioveronica", "url": "https://twitter.com/radioveronica" },
       { "title": "@RadioVeronica", "type": "facebook", "account": "RadioVeronica", "url": "https://facebook.com/RadioVeronica" },
@@ -1283,7 +1260,7 @@
       }
     ],
     "website": "https://www.robstenders.nl",
-    "related": ["xxlblokhuis", "the-edge", "radio2", "kxclassic", "40upradio"],
+    "related": ["xxlblokhuis", "radio2", "kxclassic", "40upradio"],
     "podcasts": [
       "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss",
       "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"
@@ -1317,7 +1294,7 @@
       }
     ],
     "website": "https://www.robstenders.nl",
-    "related": ["xxlstenders", "the-edge", "radio2", "kxclassic"],
+    "related": ["xxlstenders", "radio2", "kxclassic"],
     "podcasts": [
       "https://podcast.npo.nl/feed/blokhuis-de-podcast.xml",
       "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss",
@@ -1386,7 +1363,7 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kinkclassics", "kink-nl", "kink-indie", "kink-distortion", "k-rock-nl"],
+    "related": ["kinkclassics", "kink-distortion", "k-rock-nl"],
     "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"],
     "social": [
       { "title": "@kinkpuntnl", "type": "twitter", "account": "kinkpuntnl", "url": "https://twitter.com/kinkpuntnl" },
@@ -1442,7 +1419,7 @@
       }
     ],
     "website": "https://kinkclassics.nl",
-    "related": ["kink", "k-rock-nl", "kink-nl", "kink-indie", "kink-distortion"],
+    "related": ["kink", "k-rock-nl", "kxclassic", "kink-distortion"],
     "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"],
     "social": [
       { "title": "@kinkclassics", "type": "twitter", "account": "kinkclassics", "url": "https://twitter.com/kinkclassics" },
@@ -1466,27 +1443,7 @@
       }
     ],
     "website": "https://kink.nl",
-    "related": ["kink", "kinkclassics", "kink-nl", "kink-indie"],
-    "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
-  },
-  "kink-nl": {
-    "displayorder": 87,
-    "genres": ["alternative", "pop", "rock"],
-    "language": "nl",
-    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/kinkpuntnl",
-    "name": "KINK NL",
-    "streams": [
-      {
-        "mimetype": "audio/aac",
-        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINKNLAAC.aac"
-      },
-      {
-        "mimetype": "audio/mp3",
-        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINKNL.mp3"
-      }
-    ],
-    "website": "https://kink.nl",
-    "related": ["kink", "kinkclassics", "kink-indie", "kink-distortion"],
+    "related": ["kink", "kinkclassics"],
     "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
   },
   "lindaradio": {
@@ -1494,11 +1451,15 @@
     "genres": ["pop", "talk"],
     "language": "nl",
     "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/lindanieuws",
-    "name": "LINDA.radio",
+    "name": "LINDA.lievelings",
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/TLPSTR10.mp3"
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/JUKE_S02.mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/JUKE_S02AAC.aac"
       }
     ],
     "website": "https://www.linda.nl/luister/",
@@ -1645,12 +1606,11 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "https://40upstream.live-streams.nl/40up1"
+        "url": "https://stream.40upradio.nl/40up"
       }
     ],
     "website": "https://40upradio.nl",
     "related": ["radio2", "kxclassic", "xxlstenders"],
-    "podcasts": ["https://40upradio.nl/johanderksen/feed/johan/"],
     "social": [{ "title": "@40upradio", "type": "twitter", "account": "40upradio", "url": "https://twitter.com/40upradio" }]
   },
   "classicnl": {
@@ -1682,26 +1642,6 @@
     ],
     "website": "https://www.efteling.com/nl/kids/radio",
     "social": [{ "title": "@EftelingRadio", "type": "twitter", "account": "EftelingRadio", "url": "https://twitter.com/EftelingRadio" }]
-  },
-  "kink-indie": {
-    "displayorder": 93,
-    "genres": ["alternative", "pop", "rock", "indie"],
-    "language": "nl",
-    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/nuopKINKindie",
-    "name": "KINK INDIE",
-    "streams": [
-      {
-        "mimetype": "audio/aac",
-        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINKINDIEAAC.aac"
-      },
-      {
-        "mimetype": "audio/mp3",
-        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINKINDIE.mp3"
-      }
-    ],
-    "website": "https://kink.nl",
-    "related": ["kink", "kinkclassics", "kink-nl", "kink-distortion"],
-    "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"]
   },
   "grollo-radio": {
     "displayorder": 94,
@@ -1881,7 +1821,7 @@
       }
     ],
     "website": "https://k-rock.nl",
-    "related": ["kink", "kinkclassics", "kink-nl"],
+    "related": ["kink", "kinkclassics"],
     "social": [
       { "title": "@krocknl", "type": "twitter", "account": "krocknl", "url": "https://twitter.com/krocknl" },
       { "title": "@KROCKNL", "type": "facebook", "account": "KROCKNL", "url": "https://www.facebook.com/KROCKNL" },

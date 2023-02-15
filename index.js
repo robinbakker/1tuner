@@ -729,7 +729,7 @@ export default class App extends Component {
       'https://feeds.simplecast.com/54nAGcIl',
       'https://rss.art19.com/vandaag',
       'https://anchor.fm/s/21c734c4/podcast/rss',
-      'https://rss.art19.com/een-podcast-over-media',
+      'https://podcast.npo.nl/feed/de-dag.xml',
     ];
     for (let i = 0; i < featuredFeeds.length; i++) {
       const lookupItem = APodcastDataList.find((p) => p.feedUrl === featuredFeeds[i]);
@@ -858,18 +858,14 @@ export default class App extends Component {
 
   removeOldStationsFromList = (AStationList) => {
     let newList = AStationList;
+    const removeStationIDList = ['kxclassicsedge', 'xxlbonanza', 'kinkdna', 'kink-nl', 'kink-indie', 'the-edge'];
     if (
       AStationList.some((item) => {
-        return item.id === 'kxclassicsedge' || item.id === 'xxlbonanza' || item.id === 'kinkdna';
+        return removeStationIDList.indexOf(item.id) !== -1;
       })
     ) {
       // Temp fix to remove old stations
-      newList = [];
-      for (let i = 0; i < AStationList.length; i++) {
-        if (AStationList[i].id !== 'kxclassicsedge' && AStationList[i].id !== 'xxlbonanza' && AStationList[i].id !== 'kinkdna') {
-          newList.push(AStationList[i]);
-        }
-      }
+      newList = [...AStationList].filter((s) => removeStationIDList.indexOf(s.id) === -1);
     }
     if (
       AStationList.some((item) => {
