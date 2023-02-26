@@ -858,7 +858,7 @@ export default class App extends Component {
 
   removeOldStationsFromList = (AStationList) => {
     let newList = AStationList;
-    const removeStationIDList = ['kxclassicsedge', 'xxlbonanza', 'kinkdna', 'kink-nl', 'kink-indie', 'the-edge'];
+    const removeStationIDList = ['kxclassicsedge', 'xxlbonanza', 'xxlblokhuis', 'kinkdna', 'kink-nl', 'kink-indie', 'the-edge'];
     if (
       AStationList.some((item) => {
         return removeStationIDList.indexOf(item.id) !== -1;

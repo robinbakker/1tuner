@@ -42,7 +42,7 @@
       }
     ],
     "website": "https://www.npo3fm.nl",
-    "related": ["3fmalternative", "funx", "radio2", "radio1"],
+    "related": ["npokx", "funx", "radio2", "radio1"],
     "podcasts": [
       "https://podcast.npo.nl/feed/vera-on-track.xml",
       "https://podcast.npo.nl/feed/de-music-starts-here-podcast.xml",
@@ -54,25 +54,6 @@
       { "title": "@radio3fm", "type": "facebook", "account": "radio3fm", "url": "https://www.facebook.com/radio3fm" },
       { "title": "3FM", "type": "youtube", "account": "3fm", "url": "https://www.youtube.com/user/3fm" }
     ]
-  },
-  "3fmalternative": {
-    "displayorder": 38,
-    "genres": ["alternative", "pop", "rock"],
-    "language": "nl",
-    "logosource": "https://www.npo3fm.nl/svg/npo_3fm_logo.svg",
-    "name": "NPO 3FM Alternative",
-    "streams": [
-      {
-        "mimetype": "audio/mpeg",
-        "url": "https://icecast.omroep.nl/3fm-alternative-mp3"
-      },
-      {
-        "mimetype": "audio/aac",
-        "url": "https://icecast.omroep.nl/3fm-alternative-aac"
-      }
-    ],
-    "website": "https://www.npo3fm.nl",
-    "related": ["3fm"]
   },
   "antennebayern": {
     "displayorder": 27,
@@ -328,7 +309,7 @@
       }
     ],
     "website": "https://www.funx.nl",
-    "related": ["3fm"],
+    "related": ["3fm", "npokx"],
     "social": [
       { "title": "@funx", "type": "twitter", "account": "funx", "url": "https://twitter.com/funx" },
       { "title": "@funxfm", "type": "instagram", "account": "funxfm", "url": "https://www.instagram.com/funxfm" },
@@ -453,7 +434,7 @@
       }
     ],
     "website": "https://www.kxclassics.nl",
-    "related": ["xxlstenders", "xxlblokhuis", "kinkclassics", "40upradio"],
+    "related": ["xxlstenders", "kinkclassics", "40upradio"],
     "social": [
       { "title": "@KXclassics", "type": "twitter", "account": "KXclassics", "url": "https://twitter.com/KXclassics" },
       { "title": "@kxclassicscom", "type": "instagram", "account": "kxclassicscom", "url": "https://www.instagram.com/kxclassicscom" },
@@ -818,7 +799,7 @@
       }
     ],
     "website": "https://www.nporadio2.nl",
-    "related": ["xxlstenders", "xxlblokhuis", "40upradio", "radio1", "3fm", "radio4", "radio5"],
+    "related": ["xxlstenders", "40upradio", "radio1", "3fm", "radio4", "radio5"],
     "podcasts": [
       "https://podcast.npo.nl/feed/30-minuten-rauw.xml",
       "https://podcast.npo.nl/feed/barts-classic-track.xml",
@@ -1260,7 +1241,7 @@
       }
     ],
     "website": "https://www.robstenders.nl",
-    "related": ["xxlblokhuis", "radio2", "kxclassic", "40upradio"],
+    "related": ["radio2", "kxclassic", "40upradio"],
     "podcasts": [
       "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss",
       "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"
@@ -1280,26 +1261,6 @@
     ],
     "website": "https://z100.iheart.com",
     "social": [{ "title": "@Z100NewYork", "type": "twitter", "account": "Z100NewYork", "url": "https://twitter.com/Z100NewYork" }]
-  },
-  "xxlblokhuis": {
-    "displayorder": 70,
-    "genres": ["alternative", "pop", "rock", "soul", "jazz"],
-    "language": "nl",
-    "logosource": "https://images.ctfassets.net/avx85g85supt/7gpBPoztJoK3OgfBUgXVcm/81790f2c2f790d1ac2e408c6935027ae/2020-Stenders-Blokhuis-Tiles-xxlblokhuis.jpg?f=center&fit=fill&w=250&q=90&h=250",
-    "name": "XXL Blokhuis",
-    "streams": [
-      {
-        "mimetype": "audio/mp3",
-        "url": "https://mcp-1.streampanel.nl:8020/blokhuis_mp3"
-      }
-    ],
-    "website": "https://www.robstenders.nl",
-    "related": ["xxlstenders", "radio2", "kxclassic"],
-    "podcasts": [
-      "https://podcast.npo.nl/feed/blokhuis-de-podcast.xml",
-      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss",
-      "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"
-    ]
   },
   "jointradioreggae": {
     "displayorder": 71,
@@ -1656,7 +1617,7 @@
       }
     ],
     "website": "https://grollooradio.nl",
-    "related": ["40upradio", "radio2", "kxclassic", "xxlblokhuis", "xxlstenders"],
+    "related": ["40upradio", "radio2", "kxclassic", "xxlstenders"],
     "social": [
       { "title": "@grollooradio", "type": "twitter", "account": "grollooradio", "url": "https://twitter.com/grollooradio" },
       { "title": "@grollooradio", "type": "instagram", "account": "grollooradio", "url": "https://www.instagram.com/grollooradio" },
@@ -1972,5 +1933,29 @@
     ],
     "website": "https://vintageobscura.net",
     "social": [{ "title": "@vintage_obscura", "type": "twitter", "account": "vintage_obscura", "url": "https://twitter.com/vintage_obscura" }]
+  },
+  "npokx": {
+    "displayorder": 110,
+    "genres": ["alternative", "pop", "rock"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/NPO_KX",
+    "name": "NPO KX",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "https://icecast.omroep.nl/3fm-serioustalent-mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "https://icecast.omroep.nl/3fm-serioustalent-aac"
+      }
+    ],
+    "website": "https://npokx.nl",
+    "social": [
+      { "title": "@NPO_KX", "type": "twitter", "account": "NPO_KX", "url": "https://twitter.com/NPO_KX" },
+      { "title": "@npokx", "type": "instagram", "account": "npokx", "url": "https://www.instagram.com/npokx" },
+      { "title": "@NPOKX", "type": "facebook", "account": "NPOKX", "url": "https://www.facebook.com/NPOKX" }
+    ],
+    "related": ["3fm"]
   }
 }
