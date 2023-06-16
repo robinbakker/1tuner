@@ -1367,8 +1367,8 @@
     "displayorder": 77,
     "genres": ["alternative", "pop", "rock", "oldies"],
     "language": "nl",
-    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/kinkclassics",
-    "name": "KINK Classics",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/KINK80s",
+    "name": "KINK 80's",
     "streams": [
       {
         "mimetype": "audio/aac",
@@ -1383,8 +1383,9 @@
     "related": ["kink", "k-rock-nl", "kxclassic", "kink-distortion"],
     "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"],
     "social": [
-      { "title": "@kinkclassics", "type": "twitter", "account": "kinkclassics", "url": "https://twitter.com/kinkclassics" },
-      { "title": "@KINKCLASSICS", "type": "facebook", "account": "KINKCLASSICS", "url": "https://www.facebook.com/KINKCLASSICS" }
+      { "title": "@KINK80s", "type": "twitter", "account": "KINK80s", "url": "https://twitter.com/KINK80s" },
+      { "title": "@kink80s", "type": "instagram", "account": "kink80s", "url": "https://instagram.com/kink80s" },
+      { "title": "@KINK80snl", "type": "facebook", "account": "KINK80snl", "url": "https://www.facebook.com/KINK80snl" }
     ]
   },
   "kink-distortion": {
@@ -1957,5 +1958,50 @@
       { "title": "@NPOKX", "type": "facebook", "account": "NPOKX", "url": "https://www.facebook.com/NPOKX" }
     ],
     "related": ["3fm"]
+  },
+  "nostalgienl": {
+    "displayorder": 111,
+    "genres": ["oldies", "pop"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/NostalgieNL",
+    "name": "Nostalgie",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/NOSTALGIENL.aac"
+      },
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/NOSTALGIENL.mp3"
+      }
+    ],
+    "website": "https://nostalgie.nl",
+    "social": [
+      { "title": "@NostalgieNL", "type": "twitter", "account": "NostalgieNL", "url": "https://twitter.com/NostalgieNL" },
+      { "title": "@nl.nostalgie", "type": "instagram", "account": "nl.nostalgie", "url": "https://www.instagram.com/nl.nostalgie" },
+      {
+        "title": "@Nostalgie.WhatAFeelingNL",
+        "type": "facebook",
+        "account": "Nostalgie.WhatAFeelingNL",
+        "url": "https://www.facebook.com/Nostalgie.WhatAFeelingNL"
+      }
+    ],
+    "related": ["sublimefm"]
+  },
+  "vintageveronica": {
+    "displayorder": 112,
+    "genres": ["oldies", "pop", "rock"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/radioveronica",
+    "name": "vintage",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SRGSTR09.mp3"
+      }
+    ],
+    "website": "https://www.radioveronica.nl/veronica-vintage",
+    "related": ["veronica"],
+    "social": [{ "title": "@radioveronica", "type": "twitter", "account": "radioveronica", "url": "https://twitter.com/radioveronica" }]
   }
 }
