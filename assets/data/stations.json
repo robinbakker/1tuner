@@ -1967,10 +1967,6 @@
     "name": "Nostalgie",
     "streams": [
       {
-        "mimetype": "audio/aac",
-        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/NOSTALGIENL.aac"
-      },
-      {
         "mimetype": "audio/mp3",
         "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/NOSTALGIENL.mp3"
       }

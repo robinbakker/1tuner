@@ -13,19 +13,19 @@
     "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider preact watch --template template.html"
   },
   "devDependencies": {
-    "eslint": "^8.44.0",
+    "eslint": "^8.48.0",
     "if-env": "^1.0.4",
     "normalize-url": "^8.0.0",
-    "postcss": "8.4.24",
-    "preact-cli": "^3.4.6",
-    "preact-render-to-string": "^6.1.0"
+    "postcss": "8.4.29",
+    "preact-cli": "^3.5.0",
+    "preact-render-to-string": "^6.2.1"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "idb-keyval": "^6.2.1",
-    "preact": "^10.15.1",
-    "preact-router": "^4.1.1"
+    "preact": "^10.17.1",
+    "preact-router": "^4.1.2"
   },
   "prettier": {
     "trailingComma": "es5",
