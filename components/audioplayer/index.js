@@ -31,8 +31,6 @@ export default class AudioPlayer extends Component {
     let self = this;
     let mediaPlaying = this.state.mediaid;
     let resumeAtSeconds = 0;
-    //let resumeAtSeconds = ASecondsElapsed;
-    //console.log('audioplayer method');
     if (AIsPlaying && (mediaPlaying != AMediaIDPlaying || !this.state.srcItems.length)) {
       let srcItems = [];
       if (ASrcs && ASrcs.length) {
@@ -260,7 +258,6 @@ export default class AudioPlayer extends Component {
     if (!this.state.usePause || !isSameMedia) {
       audioPL.removeAttribute('src');
       audioPL.load();
-      //debugger;
       if (AResumeAtSeconds) {
         this.seekAudio(AResumeAtSeconds, true);
       }
@@ -282,7 +279,6 @@ export default class AudioPlayer extends Component {
         },
         function (errorCode) {
           console.log('Error code: ' + errorCode);
-          //debugger;
           console.log(castSession);
         }
       );
