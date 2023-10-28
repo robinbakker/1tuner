@@ -107,8 +107,8 @@
     "name": "BBC Radio 1",
     "streams": [
       {
-        "mimetype": "audio/mpeg",
-        "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one"
+        "mimetype": "audio/aac",
+        "url": "https://as-hls-ww-live.akamaized.net/pool_904/live/ww/bbc_radio_one/bbc_radio_one.isml/bbc_radio_one-audio=320000.m3u8"
       }
     ],
     "website": "https://www.bbc.co.uk/radio1",
@@ -122,8 +122,8 @@
     "name": "BBC Radio 2",
     "streams": [
       {
-        "mimetype": "audio/mpeg",
-        "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_two"
+        "mimetype": "audio/aac",
+        "url": "https://as-hls-ww-live.akamaized.net/pool_904/live/ww/bbc_radio_two/bbc_radio_two.isml/bbc_radio_two-audio=320000.m3u8"
       }
     ],
     "website": "https://www.bbc.co.uk/radio2",
@@ -137,8 +137,8 @@
     "name": "BBC Radio 4",
     "streams": [
       {
-        "mimetype": "audio/mpeg",
-        "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_fourfm"
+        "mimetype": "audio/aac",
+        "url": "https://as-hls-ww-live.akamaized.net/pool_904/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio=320000.m3u8"
       }
     ],
     "website": "https://www.bbc.co.uk/radio4",
@@ -157,8 +157,8 @@
     "name": "BBC Radio 5 Live",
     "streams": [
       {
-        "mimetype": "audio/mpeg",
-        "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_five_live_online_nonuk"
+        "mimetype": "audio/aac",
+        "url": "https://as-hls-ww-live.akamaized.net/pool_904/live/ww/bbc_radio_five_live/bbc_radio_five_live.isml/bbc_radio_five_live-audio=320000.m3u8"
       }
     ],
     "website": "https://www.bbc.co.uk/5live",
