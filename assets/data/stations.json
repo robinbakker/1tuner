@@ -2013,5 +2013,46 @@
       }
     ],
     "website": "https://www.radio4all.nl"
+  },
+  "nposouljazz": {
+    "displayorder": 114,
+    "genres": ["soul", "jazz", "pop"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/nposouljazz",
+    "name": "NPO Soul & Jazz",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "http://icecast.omroep.nl/radio6-bb-mp3"
+      },
+      {
+        "mimetype": "audio/aac",
+        "url": "http://icecast.omroep.nl/radio6-bb-aac"
+      }
+    ],
+    "website": "https://www.nporadio2.nl/soulenjazz",
+    "related": ["radio2", "funx", "npoblend", "radio4"],
+    "social": [
+      { "title": "@nposouljazz", "type": "twitter", "account": "nposouljazz", "url": "https://twitter.com/nposouljazz" },
+      { "title": "@nposouljazz", "type": "instagram", "account": "nposouljazz", "url": "https://www.instagram.com/nposouljazz" },
+      { "title": "@nposouljazz", "type": "facebook", "account": "nposouljazz", "url": "https://www.facebook.com/nposouljazz" },
+      { "title": "Radio6NL", "type": "youtube", "account": "Radio6NL", "url": "https://youtube.com/Radio6NL" }
+    ]
+  },
+  "npoblend": {
+    "displayorder": 115,
+    "genres": ["hiphop", "pop", "rnb", "soul"],
+    "language": "nl",
+    "logosource": "https://over.npo.nl/storage/configurations/overnpo/images/npo_blend_primair_logo_colour_rgb.jpg",
+    "name": "NPO BLEND",
+    "streams": [
+      {
+        "mimetype": "audio/mpeg",
+        "url": "https://icecast.omroep.nl/npoblend-bb-mp3"
+      }
+    ],
+    "website": "https://over.npo.nl/npoblend/",
+    "related": ["3FM", "funx", "radio2", "nposouljazz"],
+    "social": [{ "title": "@npoblend", "type": "instagram", "account": "npoblend", "url": "https://www.instagram.com/npoblend" }]
   }
 }
