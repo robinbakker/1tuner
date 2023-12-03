@@ -136,8 +136,9 @@ module.exports = async function () {
       .then((resp) => resp.json())
       .then(function (data) {
         let keyArray = Object.keys(data);
+        keyArray.reverse();
         let newDataArray = [];
-        for (let i = 0; i < keyArray.length; i++) {
+        for (let i = 0; i < 500; i++) {
           let pc = data[keyArray[i]];
           if (!pc || !pc.feedUrl || !pc.title) {
             console.log('podcast data error', pc);

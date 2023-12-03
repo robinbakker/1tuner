@@ -2064,11 +2064,11 @@
     "streams": [
       {
         "mimetype": "audio/aac",
-        "url": "https://playerservices.streamtheworld.com/pls/KINK_90SAAC.pls"
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINK_90SAAC.aac"
       },
       {
         "mimetype": "audio/mp3",
-        "url": "https://playerservices.streamtheworld.com/pls/KINK_90S.pls"
+        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/KINK_90S.mp3"
       }
     ],
     "website": "https://kink.nl",
