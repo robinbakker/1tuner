@@ -2051,7 +2051,7 @@
         "url": "https://icecast.omroep.nl/npoblend-bb-mp3"
       }
     ],
-    "website": "https://over.npo.nl/npoblend/",
+    "website": "https://www.npoblend.nl",
     "related": ["3FM", "funx", "radio2", "nposouljazz"],
     "social": [{ "title": "@npoblend", "type": "instagram", "account": "npoblend", "url": "https://www.instagram.com/npoblend" }]
   },
@@ -2075,5 +2075,25 @@
     "related": ["kink", "kinkclassics", "kxclassic", "kink-distortion"],
     "podcasts": ["https://api.kink.nl/rss/dailykink"],
     "social": [{ "title": "@kinkpuntnl", "type": "twitter", "account": "kinkpuntnl", "url": "https://twitter.com/kinkpuntnl" }]
+  },
+  "allsportsradio": {
+    "displayorder": 117,
+    "genres": ["sports", "pop"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/sportsradionl",
+    "name": "ALLsportsradio",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://streaming.hofhosting.nl/proxy/allsports_main?mp=/stream"
+      }
+    ],
+    "website": "https://allsportsradio.nl",
+    "related": ["radio1"],
+    "social": [
+      { "title": "@sportsradionl", "type": "twitter", "account": "sportsradionl", "url": "https://twitter.com/sportsradionl" },
+      { "title": "@allsportsradio", "type": "instagram", "account": "allsportsradio", "url": "https://www.instagram.com/allsportsradio" },
+      { "title": "@allsportsradio", "type": "facebook", "account": "allsportsradio", "url": "https://www.facebook.com/allsportsradio" }
+    ]
   }
 }
