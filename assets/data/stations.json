@@ -818,7 +818,7 @@
     "displayorder": 16,
     "genres": ["classical"],
     "language": "nl",
-    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/npoklassiek",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/npoklassiek",
     "name": "NPO Klassiek",
     "streams": [
       {
@@ -826,7 +826,7 @@
         "url": "https://icecast.omroep.nl/radio4-bb-mp3"
       }
     ],
-    "website": "https://www.nporadio4.nl",
+    "website": "https://www.npoklassiek.nl",
     "related": ["radio1", "radio2", "3fm", "radio5", "nposouljazz"],
     "social": [
       { "title": "@npoklassiek", "type": "twitter", "account": "npoklassiek", "url": "https://twitter.com/npoklassiek" },
@@ -1939,7 +1939,7 @@
     "displayorder": 110,
     "genres": ["pop", "rock"],
     "language": "nl",
-    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/npocampus",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/npocampus",
     "name": "NPO Campus Radio",
     "streams": [
       {
@@ -2081,7 +2081,7 @@
     "displayorder": 117,
     "genres": ["sports", "pop"],
     "language": "nl",
-    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/sportsradionl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/allsportsradio",
     "name": "ALLsportsradio",
     "streams": [
       {
