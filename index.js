@@ -228,6 +228,7 @@ export default class App extends Component {
           <Redirect path="/radio-station/xxlbonanza" to="/radio-station/xxlstenders" />
           <Redirect path="/radio-station/kxclassicsedge" to="/radio-station/the-edge" />
           <Redirect path="/radio-station/kinkdna" to="/radio-station/kinkclassics" />
+          <Redirect path="/radio-station/npokx" to="/radio-station/npocampus" />
           <Error type="404" default />
         </Router>
         <Footer

@@ -42,7 +42,7 @@
       }
     ],
     "website": "https://www.npo3fm.nl",
-    "related": ["npokx", "funx", "radio2", "radio1"],
+    "related": ["npocampus", "funx", "radio2", "radio1"],
     "podcasts": [
       "https://podcast.npo.nl/feed/vera-on-track.xml",
       "https://podcast.npo.nl/feed/de-music-starts-here-podcast.xml",
@@ -309,7 +309,7 @@
       }
     ],
     "website": "https://www.funx.nl",
-    "related": ["3fm", "npokx"],
+    "related": ["3fm", "npoblend", "npocampus", "nposouljazz"],
     "social": [
       { "title": "@funx", "type": "twitter", "account": "funx", "url": "https://twitter.com/funx" },
       { "title": "@funxfm", "type": "instagram", "account": "funxfm", "url": "https://www.instagram.com/funxfm" },
@@ -818,8 +818,8 @@
     "displayorder": 16,
     "genres": ["classical"],
     "language": "nl",
-    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/nporadio4",
-    "name": "NPO Radio 4",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/npoklassiek",
+    "name": "NPO Klassiek",
     "streams": [
       {
         "mimetype": "audio/mp3",
@@ -827,12 +827,12 @@
       }
     ],
     "website": "https://www.nporadio4.nl",
-    "related": ["radio1", "radio2", "3fm", "radio5"],
+    "related": ["radio1", "radio2", "3fm", "radio5", "nposouljazz"],
     "social": [
-      { "title": "@nporadio4", "type": "twitter", "account": "nporadio4", "url": "https://twitter.com/nporadio4" },
-      { "title": "@nporadio4", "type": "instagram", "account": "nporadio4", "url": "https://www.instagram.com/nporadio4" },
-      { "title": "@nporadio4", "type": "facebook", "account": "nporadio4", "url": "https://www.facebook.com/nporadio4" },
-      { "title": "nporadio4", "type": "youtube", "account": "nporadio4", "url": "https://www.youtube.com/nporadio4" }
+      { "title": "@npoklassiek", "type": "twitter", "account": "npoklassiek", "url": "https://twitter.com/npoklassiek" },
+      { "title": "@npoklassiek", "type": "instagram", "account": "npoklassiek", "url": "https://www.instagram.com/npoklassiek" },
+      { "title": "@npoklassiek", "type": "facebook", "account": "npoklassiek", "url": "https://www.facebook.com/npoklassiek" },
+      { "title": "NPOKlassiek", "type": "youtube", "account": "NPOKlassiek", "url": "https://www.youtube.com/@NPOKlassiek" }
     ]
   },
   "radio5": {
@@ -1935,12 +1935,12 @@
     "website": "https://vintageobscura.net",
     "social": [{ "title": "@vintage_obscura", "type": "twitter", "account": "vintage_obscura", "url": "https://twitter.com/vintage_obscura" }]
   },
-  "npokx": {
+  "npocampus": {
     "displayorder": 110,
-    "genres": ["alternative", "pop", "rock"],
+    "genres": ["pop", "rock"],
     "language": "nl",
-    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/NPO_KX",
-    "name": "NPO KX",
+    "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/npocampus",
+    "name": "NPO Campus Radio",
     "streams": [
       {
         "mimetype": "audio/mpeg",
@@ -1951,13 +1951,14 @@
         "url": "https://icecast.omroep.nl/3fm-serioustalent-aac"
       }
     ],
-    "website": "https://npokx.nl",
+    "website": "https://www.npocampus.nl",
     "social": [
-      { "title": "@NPO_KX", "type": "twitter", "account": "NPO_KX", "url": "https://twitter.com/NPO_KX" },
-      { "title": "@npokx", "type": "instagram", "account": "npokx", "url": "https://www.instagram.com/npokx" },
-      { "title": "@NPOKX", "type": "facebook", "account": "NPOKX", "url": "https://www.facebook.com/NPOKX" }
+      { "title": "@npocampus", "type": "twitter", "account": "npocampus", "url": "https://twitter.com/npocampus" },
+      { "title": "@npocampus", "type": "instagram", "account": "npocampus", "url": "https://www.instagram.com/npocampus" },
+      { "title": "@npocampus", "type": "facebook", "account": "npocampus", "url": "https://www.facebook.com/npocampus" },
+      { "title": "npocampus3147", "type": "youtube", "account": "npocampus3147", "url": "https://www.youtube.com/@npocampus3147" }
     ],
-    "related": ["3fm"]
+    "related": ["3fm", "funx", "npoblend", "radio2", "radio4", "radio5"]
   },
   "nostalgienl": {
     "displayorder": 111,
