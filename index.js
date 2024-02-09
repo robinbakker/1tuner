@@ -84,11 +84,7 @@ export default class App extends Component {
     const listeningMode = (await get('lm')) || 0;
 
     const station = await get('station');
-    let legacyPlaylist = await get('planning');
-    if (legacyPlaylist) {
-      del('planning');
-    }
-    const playlist = legacyPlaylist || (await get('playlist'));
+    const playlist = await get('playlist');
     const featuredPodcastList = this.loadDefaultPodcasts(stationPodcastList);
     let podcastList = (await get('podcast-list')) || featuredPodcastList;
     this.updatePodcastImageProperties(podcastList);
@@ -100,11 +96,8 @@ export default class App extends Component {
 
     const languageList =
       AppVersion !== userVersion ? this.loadLanguageList() : this.state.languageList || (await get('language-list')) || this.loadLanguageList();
-    const legacyPlaylists = await get('planning-list');
-    if (legacyPlaylists && legacyPlaylists.length) {
-      del('planning-list');
-    }
-    const playlists = this.state.playlists || legacyPlaylists || (await get('playlists')) || this.loadPlaylists();
+
+    const playlists = this.state.playlists || (await get('playlists')) || this.loadPlaylists();
 
     this.setState(
       {
@@ -225,9 +218,6 @@ export default class App extends Component {
           <Redirect path="/planner" to="/playlists" />
           <Redirect path="/planning/:name/:params?" to="/playlist" />
           <Redirect path="/planning-edit/:name/:params?" to="/playlist-edit" />
-          <Redirect path="/radio-station/xxlbonanza" to="/radio-station/xxlstenders" />
-          <Redirect path="/radio-station/kxclassicsedge" to="/radio-station/the-edge" />
-          <Redirect path="/radio-station/kinkdna" to="/radio-station/kinkclassics" />
           <Redirect path="/radio-station/npokx" to="/radio-station/npocampus" />
           <Error type="404" default />
         </Router>
@@ -264,8 +254,6 @@ export default class App extends Component {
       if (AInit) {
         set('version', this.state.version);
         set('station-list', this.state.stationList);
-        del('planning'); // legacy cleanup
-        del('planning-list'); // legacy cleanup
       }
     }
   };
@@ -561,7 +549,7 @@ export default class App extends Component {
         podcastList: podcastArray,
       },
       () => {
-        this.saveLocal();
+        set('podcast-list', podcastArray);
       }
     );
   };
@@ -859,7 +847,7 @@ export default class App extends Component {
 
   removeOldStationsFromList = (AStationList) => {
     let newList = AStationList;
-    const removeStationIDList = ['kxclassicsedge', 'xxlbonanza', 'xxlblokhuis', 'kinkdna', 'kink-nl', 'kink-indie', 'the-edge'];
+    const removeStationIDList = ['kink-nl', 'kink-indie', 'the-edge'];
     if (
       AStationList.some((item) => {
         return removeStationIDList.indexOf(item.id) !== -1;

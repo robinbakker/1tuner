@@ -1584,7 +1584,7 @@
     "streams": [
       {
         "mimetype": "audio/mp3",
-        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/CLASSICFM.mp3"
+        "url": "https://classic.nl/streams/?s=main"
       }
     ],
     "website": "https://www.classic.nl",
