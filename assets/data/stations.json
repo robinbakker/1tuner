@@ -1572,7 +1572,7 @@
       }
     ],
     "website": "https://40upradio.nl",
-    "related": ["radio2", "kxclassic", "xxlstenders"],
+    "related": ["4ever49", "radio2", "kxclassic", "xxlstenders"],
     "social": [{ "title": "@40upradio", "type": "twitter", "account": "40upradio", "url": "https://twitter.com/40upradio" }]
   },
   "classicnl": {
@@ -2044,7 +2044,7 @@
     "displayorder": 115,
     "genres": ["hiphop", "pop", "rnb", "soul"],
     "language": "nl",
-    "logosource": "https://over.npo.nl/storage/configurations/overnpo/images/npo_blend_primair_logo_colour_rgb.jpg",
+    "logosource": "https://www.npoblend.nl/images/player-cover.webp",
     "name": "NPO BLEND",
     "streams": [
       {
@@ -2053,7 +2053,7 @@
       }
     ],
     "website": "https://www.npoblend.nl",
-    "related": ["3FM", "funx", "radio2", "nposouljazz"],
+    "related": ["3fm", "funx", "radio2", "nposouljazz"],
     "social": [{ "title": "@npoblend", "type": "instagram", "account": "npoblend", "url": "https://www.instagram.com/npoblend" }]
   },
   "kink90s": {
@@ -2095,6 +2095,26 @@
       { "title": "@sportsradionl", "type": "twitter", "account": "sportsradionl", "url": "https://twitter.com/sportsradionl" },
       { "title": "@allsportsradio", "type": "instagram", "account": "allsportsradio", "url": "https://www.instagram.com/allsportsradio" },
       { "title": "@allsportsradio", "type": "facebook", "account": "allsportsradio", "url": "https://www.facebook.com/allsportsradio" }
+    ]
+  },
+  "4ever49": {
+    "displayorder": 118,
+    "genres": ["oldies", "pop", "rock"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/radio4ever49",
+    "name": "4EVER49 Radio",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://mediaserv73.live-streams.nl:18002/stream"
+      }
+    ],
+    "website": "https://4ever49radio.nl",
+    "related": ["40upradio"],
+    "social": [
+      { "title": "@4ever49radio", "type": "youtube", "account": "4ever49radio", "url": "https://www.youtube.com/@4ever49radio" },
+      { "title": "@4ever49radio", "type": "instagram", "account": "4ever49radio", "url": "https://www.instagram.com/4ever49radio" },
+      { "title": "@radio4ever49", "type": "facebook", "account": "radio4ever49", "url": "https://www.facebook.com/radio4ever49" }
     ]
   }
 }
