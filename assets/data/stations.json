@@ -2001,19 +2001,19 @@
     "related": ["veronica"],
     "social": [{ "title": "@radioveronica", "type": "twitter", "account": "radioveronica", "url": "https://twitter.com/radioveronica" }]
   },
-  "radio4all": {
+  "yoursaferadio": {
     "displayorder": 113,
     "genres": ["talk"],
     "language": "nl",
-    "logosource": "https://www.radio4all.nl/images.v2/android-chrome-192x192.png",
-    "name": "Radio4All",
+    "logosource": "https://www.yoursaferadio.nl/images.v2/android-chrome-192x192.png",
+    "name": "Yoursafe Radio",
     "streams": [
       {
         "mimetype": "audio/mp3",
         "url": "https://streams.radiomast.io/7f5e877e-8c01-4a7b-9435-c8bfd21f25cc"
       }
     ],
-    "website": "https://www.radio4all.nl"
+    "website": "https://www.yoursaferadio.nl"
   },
   "nposouljazz": {
     "displayorder": 114,
