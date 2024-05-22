@@ -848,7 +848,7 @@ export default class App extends Component {
 
   removeOldStationsFromList = (AStationList) => {
     let newList = AStationList;
-    const removeStationIDList = ['kink-nl', 'kink-indie', 'the-edge'];
+    const removeStationIDList = ['kink-nl', 'kink-indie', 'the-edge', 'swijnenstal', 'k-rock-nl'];
     if (
       AStationList.some((item) => {
         return removeStationIDList.indexOf(item.id) !== -1;
@@ -856,24 +856,6 @@ export default class App extends Component {
     ) {
       // Temp fix to remove old stations
       newList = [...AStationList].filter((s) => removeStationIDList.indexOf(s.id) === -1);
-    }
-    if (
-      AStationList.some((item) => {
-        return item.logosource.indexOf('https://avatars.io/') === 0;
-      })
-    ) {
-      // Temp fix to remove avatars.io from cache
-      newList = [];
-      for (let i = 0; i < AStationList.length; i++) {
-        let station = AStationList[i];
-        if (station.logosource.indexOf('https://avatars.io/twitter/') === 0) {
-          station.logosource = station.logosource.replace('https://avatars.io/twitter/', 'https://res.cloudinary.com/onetuner/image/twitter_name/');
-        }
-        if (station.logosource.indexOf('https://avatars.io/facebook/') === 0) {
-          station.logosource = station.logosource.replace('https://avatars.io/facebook/', 'https://res.cloudinary.com/onetuner/image/facebook/');
-        }
-        newList.push(station);
-      }
     }
     return newList;
   };
