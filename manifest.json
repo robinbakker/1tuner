@@ -3,32 +3,39 @@
   "short_name": "1tuner",
   "description": "1 web app to listen to online radio",
   "start_url": "/?source=pwa",
+  "id": "/?homescreen=1",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#ebebeb",
   "theme_color": "#111111",
-  "icons": [{
-    "src": "/assets/icons/icon-192x192.png",
-    "type": "image/png",
-    "sizes": "192x192"
+  "launch_handler": {
+    "client_mode": ["focus-existing", "auto"]
   },
-  {
-    "src": "/assets/icons/icon-512x512.png",
-    "type": "image/png",
-    "sizes": "512x512"
-  },
-  {
-    "purpose": "maskable",
-    "src": "/assets/icons/icon-192x192-maskable.png",
-    "type": "image/png",
-    "sizes": "192x192"
-  },
-  {
-    "purpose": "maskable",
-    "src": "/assets/icons/icon-512x512-maskable.png",
-    "type": "image/png",
-    "sizes": "512x512"
-  }],
+  "icons": [
+    {
+      "src": "/assets/icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "purpose": "any",
+      "src": "/assets/icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "purpose": "maskable",
+      "src": "/assets/icons/icon-192x192-maskable.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "purpose": "maskable",
+      "src": "/assets/icons/icon-512x512-maskable.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
   "shortcuts": [
     {
       "name": "Stations",
@@ -80,5 +87,6 @@
       "type": "image/jpeg",
       "sizes": "750x1334"
     }
-  ]
+  ],
+  "categories": ["entertainment", "music", "news"]
 }
