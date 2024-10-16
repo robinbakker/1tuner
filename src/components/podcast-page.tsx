@@ -5,7 +5,7 @@ import { Podcast } from '@/lib/db';
 import { getSignature } from '@/lib/signature';
 import { stripHtml } from '@/lib/utils';
 import { XMLParser } from 'fast-xml-parser';
-import { Heart } from 'lucide-react';
+import { Heart } from 'lucide-preact';
 import { useRoute } from 'preact-iso';
 import { useEffect, useState } from 'preact/hooks';
 import {
@@ -17,9 +17,10 @@ import {
   unfollowPodcast,
   updatePodcast,
 } from '../lib/store';
+import { Loader } from './loader';
 import { Badge } from './ui/badge';
 
-export function PodcastPageComponent() {
+export function PodcastPage() {
   const { params } = useRoute();
   const [isLoading, setIsLoading] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -118,7 +119,7 @@ export function PodcastPageComponent() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   if (!podcast) {

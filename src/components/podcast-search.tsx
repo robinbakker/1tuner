@@ -6,11 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Podcast } from '@/lib/db';
 import { getSignature } from '@/lib/signature';
 import { normalizedUrlWithoutScheme, slugify, stripHtml } from '@/lib/utils';
-import { SearchIcon } from 'lucide-react';
+import { SearchIcon } from 'lucide-preact';
 import { useState } from 'preact/hooks';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../lib/store';
 
-export function PodcastSearchComponent() {
+export function PodcastSearch() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Podcast[]>([]);
   const [isLoading, setIsLoading] = useState(false);

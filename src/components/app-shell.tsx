@@ -1,7 +1,7 @@
 'use client';
 
 import { headerTitle } from '@/lib/store';
-import { ArrowLeft, Headphones, Home, Radio, Settings, Share2 } from 'lucide-react';
+import { ArrowLeft, Headphones, Home, Radio, Settings, Share2 } from 'lucide-preact';
 import { ComponentChildren } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 
@@ -9,7 +9,7 @@ interface AppShellProps {
   children: ComponentChildren;
 }
 
-export function AppShellComponent({ children }: AppShellProps) {
+export function AppShell({ children }: AppShellProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const menuItems = [
     { name: 'Home', href: '/', icon: Home },
