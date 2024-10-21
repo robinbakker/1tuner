@@ -267,6 +267,7 @@ export default class Podcast extends Component {
         podcastInfo.logo600 ? podcastInfo.logo600 : podcastInfo.logo,
         (window ? window.location.origin : '') + '/podcast/' + slugify(podcastInfo.name) + '/' + btoa(podcastInfo.feedUrl)
       );
+      const lastPlayedEpisode = podcastInfo.episodes ? podcastInfo.episodes.find((ep) => !!ep.isPlaying && !!ep.secondsElapsed) : undefined;
       return (
         <div class={'page-container'}>
           <Header title={podcastInfo.name} sharetext={'Listen to this podcast at 1tuner.com'} />
@@ -281,7 +282,7 @@ export default class Podcast extends Component {
             <PodcastPageHeader
               podcastName={podcastInfo.name}
               logo={podcastInfo.logo600 ? podcastInfo.logo600 : podcastInfo.logo}
-              lastPlayedEpisode={{ ...podcastInfo }?.episodes?.find((ep) => ep.isPlaying && ep.secondsElapsed)}
+              lastPlayedEpisode={lastPlayedEpisode}
               description={podcastInfo.description}
               onLastPlayedClick={this.playEpisode}
               lastUpdated={podcastInfo.modified}

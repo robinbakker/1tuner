@@ -6,7 +6,6 @@ export default class EpisodeButton extends Component {
   constructor(props) {
     super(props);
   }
-
   render({ episode, onEpisodeClick, featured }) {
     if (!episode) {
       return null;

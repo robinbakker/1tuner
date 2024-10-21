@@ -58,7 +58,7 @@
     "displayorder": 27,
     "genres": ["local", "news", "pop"],
     "language": "de",
-    "logosource": "https://www.antenne.de/assets/templates/antenne-de/img/logo-antenne-de-header-2.svg",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/antennebayern",
     "name": "Antenne Bayern",
     "streams": [
       {
@@ -66,7 +66,13 @@
         "url": "https://mp3channels.webradio.de/antenne"
       }
     ],
-    "website": "https://www.antenne.de"
+    "website": "https://www.antenne.de",
+    "social": [
+      { "title": "@antennebayern", "type": "instagram", "account": "antennebayern", "url": "https://www.instagram.com/antennebayern" },
+      { "title": "@antennebayern", "type": "facebook", "account": "antennebayern", "url": "https://www.facebook.com/antennebayern" },
+      { "title": "@AntenneBayern", "type": "twitter", "account": "AntenneBayern", "url": "https://twitter.com/AntenneBayern" },
+      { "title": "AntenneBayern", "type": "youtube", "account": "AntenneBayern", "url": "https://www.youtube.com/user/AntenneBayern" }
+    ]
   },
   "banditrock": {
     "displayorder": 64,
@@ -870,7 +876,7 @@
     "displayorder": 25,
     "genres": ["dance", "local", "pop", "rock"],
     "language": "de",
-    "logosource": "https://radionrw.de/images/iface/rnrw_logo.png",
+    "logosource": "https://radionrw.de/assets/uploads/icon/favicon.svg",
     "name": "radio NRW",
     "streams": [
       {
@@ -966,23 +972,20 @@
     "displayorder": 49,
     "genres": ["pop"],
     "language": "pl",
-    "logosource": "https://www.rmf.fm/2018/img/logo-x2.png",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/rmffm",
     "name": "RMF FM",
     "streams": [
       {
-        "mimetype": "audio/mp3",
-        "url": "http://195.150.20.7:8000/rmf_fm"
-      },
-      {
-        "mimetype": "audio/mp3",
-        "url": "http://31.192.216.8:8000/rmf_fm"
-      },
-      {
-        "mimetype": "audio/mp3",
-        "url": "http://217.74.72.11:8000/rmf_fm"
+        "mimetype": "audio/mpeg",
+        "url": "https://rs101-krk.rmfstream.pl/RMFFM48"
       }
     ],
-    "website": "https://www.rmf.fm"
+    "website": "https://www.rmf.fm",
+    "social": [
+      { "title": "@radio_rmffm", "type": "instagram", "account": "radio_rmffm", "url": "https://www.instagram.com/radio_rmffm" },
+      { "title": "@rmffm", "type": "facebook", "account": "rmffm", "url": "https://www.facebook.com/rmffm" },
+      { "title": "radiormf", "type": "youtube", "account": "radiormf", "url": "https://www.youtube.com/radiormf" }
+    ]
   },
   "rtl2fr": {
     "displayorder": 28,
@@ -2003,7 +2006,7 @@
     "displayorder": 115,
     "genres": ["hiphop", "pop", "rnb", "soul"],
     "language": "nl",
-    "logosource": "https://www.npoblend.nl/images/player-cover.webp",
+    "logosource": "https://www.npoblend.nl/assets/images/blend/favicon/apple-touch-icon.png",
     "name": "NPO BLEND",
     "streams": [
       {
@@ -2013,7 +2016,10 @@
     ],
     "website": "https://www.npoblend.nl",
     "related": ["3fm", "funx", "radio2", "nposouljazz"],
-    "social": [{ "title": "@npoblend", "type": "instagram", "account": "npoblend", "url": "https://www.instagram.com/npoblend" }]
+    "social": [
+      { "title": "@npoblend", "type": "instagram", "account": "npoblend", "url": "https://www.instagram.com/npoblend" },
+      { "title": "@61552315091180", "type": "facebook", "account": "61552315091180", "url": "https://www.facebook.com/profile.php?id=61552315091180" }
+    ]
   },
   "kink90s": {
     "displayorder": 116,
