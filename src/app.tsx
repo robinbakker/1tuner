@@ -2,9 +2,9 @@ import { ErrorBoundary, LocationProvider, Route, Router } from 'preact-iso';
 import { useEffect } from 'preact/hooks';
 import './app.css';
 import { AppShell } from './components/app-shell';
+import { Homepage } from './components/homepage';
 import { PodcastPage } from './components/podcast-page';
 import { PodcastSearch } from './components/podcast-search';
-import { RadioStationPage } from './components/radio-station-page';
 import { RadioStationSearch } from './components/radio-station-search';
 import { DatabaseProvider } from './contexts/DatabaseContext';
 import { useDB } from './lib/db';
@@ -33,7 +33,7 @@ export function App() {
         <ErrorBoundary>
           <DatabaseProvider>
             <Router>
-              <Route path="/" component={RadioStationPage} />
+              <Route path="/" component={Homepage} />
               <Route path="/radio-stations" component={RadioStationSearch} />
               <Route path="/podcasts" component={PodcastSearch} />
               <Route path="/podcast/:name/:id" component={PodcastPage} />

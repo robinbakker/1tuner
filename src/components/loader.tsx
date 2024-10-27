@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'preact/hooks';
 
-export function Loader() {
+export const Loader = () => {
   const needleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,15 +27,15 @@ export function Loader() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="w-64 h-16 bg-gray-300 rounded-lg animate-pulse relative overflow-hidden">
+    <div class="flex items-center justify-center h-screen bg-gray-100">
+      <div class="w-64 h-16 bg-gray-300 rounded-lg animate-pulse relative overflow-hidden">
         <div
           ref={needleRef}
-          className="absolute top-0 bottom-0 w-0.5 bg-primary transform -translate-x-1/2"
+          class="absolute top-0 bottom-0 w-0.5 bg-primary transform -translate-x-1/2"
           style={{ left: '50%' }}
           aria-label="Tuning needle"
         />
       </div>
     </div>
   );
-}
+};

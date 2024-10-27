@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -71,7 +69,7 @@ export function PodcastSearch() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Podcasts</h1>
       <form onSubmit={handleSearch} className="mb-8">
         <div className="flex gap-2">
@@ -80,7 +78,7 @@ export function PodcastSearch() {
             placeholder="Search podcasts..."
             value={searchTerm}
             onChange={(e) => setSearchTerm((e.target as HTMLInputElement).value)}
-            className="flex-grow bg-white border-gray-300 focus:border-primary focus:ring-primary"
+            className="flex-grow bg-white border-gray-300 focus:ring-primary"
           />
           <Button type="submit" disabled={isLoading}>
             <SearchIcon className="h-4 w-4 mr-2" />

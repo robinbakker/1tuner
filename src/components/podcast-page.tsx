@@ -1,6 +1,5 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
+import { setAudioPlayer } from '@/lib/audio-store';
 import { Podcast } from '@/lib/db';
 import { getSignature } from '@/lib/signature';
 import { stripHtml } from '@/lib/utils';
@@ -127,13 +126,13 @@ export function PodcastPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <header className="mb-8 flex flex-col md:flex-row gap-6">
-        <img src={podcast.imageUrl} alt={`${podcast.title} Podcast`} width={200} height={200} className="w-48 h-48 rounded-lg" />
-        <div className="flex-1">
-          <h1 className="text-4xl font-bold mb-2">{podcast.title}</h1>
-          <p className="text-gray-600 mb-4">{stripHtml(podcast.description)}</p>
-          <div className="flex flex-wrap gap-2 mb-4">
+    <div class="container mx-auto p-4">
+      <header class="mb-8 flex flex-col md:flex-row gap-6">
+        <img src={podcast.imageUrl} alt={`${podcast.title} Podcast`} width={200} height={200} class="w-48 h-48 rounded-lg" />
+        <div class="flex-1">
+          <h1 class="text-4xl font-bold mb-2">{podcast.title}</h1>
+          <p class="text-gray-600 mb-4">{stripHtml(podcast.description)}</p>
+          <div class="flex flex-wrap gap-2 mb-4">
             {podcast?.categories?.map((category, index) => (
               <Badge key={index} variant="secondary">
                 {category}
@@ -141,23 +140,34 @@ export function PodcastPage() {
             ))}
           </div>
           <Button onClick={toggleFollow} variant={isFollowing ? 'secondary' : 'default'}>
-            <Heart className={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />
+            <Heart class={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />
             {isFollowing ? 'Following' : 'Follow'}
           </Button>
         </div>
       </header>
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Latest Episodes</h2>
-        <div className="space-y-6">
+        <div class="space-y-6">
           {podcast.episodes?.map((episode, i) => (
-            <div key={`ep-${episode.pubDate}-${i}`} className="border-b border-gray-200 pb-6">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-xl font-medium">{episode.title}</h3>
-                <span className="text-sm text-gray-500">{episode.duration}</span>
+            <div key={`ep-${episode.pubDate}-${i}`} class="border-b border-gray-200 pb-6">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-xl font-medium">{episode.title}</h3>
+                <span class="text-sm text-gray-500">{episode.duration}</span>
               </div>
-              <p className="text-gray-600 mb-4">{stripHtml(episode.description)}</p>
-              <Button variant="outline" styleSize="sm">
-                {/*<Play className="mr-2 h-4 w-4" />*/}
+              <p class="text-gray-600 mb-4">{stripHtml(episode.description)}</p>
+              <Button
+                variant="outline"
+                styleSize="sm"
+                onClick={() => {
+                  console.log('click');
+                  setAudioPlayer({
+                    isPlaying: true,
+                    title: 'Episode Title',
+                    description: 'Podcast Name or Episode Description',
+                    imageUrl: 'https://example.com/podcast-image.jpg',
+                  });
+                }}
+              >
+                {/*<Play class="mr-2 h-4 w-4" />*/}
                 Play Episode
               </Button>
             </div>

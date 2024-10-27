@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Filter } from 'lucide-preact';
 import { useEffect, useState } from 'preact/hooks';
 import { RadioStation } from './types';
+import { Card, CardContent } from './ui/card';
 
 export function RadioStationSearch() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -69,13 +70,13 @@ export function RadioStationSearch() {
   };
 
   const FilterContent = () => (
-    <div className="bg-card rounded-lg p-4 shadow">
-      <h2 className="text-lg font-semibold mb-2">Filters</h2>
-      <div className="mb-4">
-        <h3 className="font-medium mb-2">Countries</h3>
+    <div class="bg-card rounded-lg p-4 shadow">
+      <h2 class="text-lg font-semibold mb-2">Filters</h2>
+      <div class="mb-4">
+        <h3 class="font-medium mb-2">Countries</h3>
         <ScrollArea className="h-40">
           {countries.map((country) => (
-            <div key={country} className="flex items-center space-x-2 mb-2">
+            <div key={country} class="flex items-center space-x-2 mb-2">
               <Checkbox
                 id={`country-${country}`}
                 checked={selectedCountries.includes(country)}
@@ -87,10 +88,10 @@ export function RadioStationSearch() {
         </ScrollArea>
       </div>
       <div>
-        <h3 className="font-medium mb-2">Genres</h3>
+        <h3 class="font-medium mb-2">Genres</h3>
         <ScrollArea className="h-40">
           {genres.map((genre) => (
-            <div key={genre} className="flex items-center space-x-2 mb-2">
+            <div key={genre} class="flex items-center space-x-2 mb-2">
               <Checkbox id={`genre-${genre}`} checked={selectedGenres.includes(genre)} onCheckedChange={() => handleGenreChange(genre)} />
               <Label for={`genre-${genre}`}>{genre}</Label>
             </div>
@@ -101,25 +102,26 @@ export function RadioStationSearch() {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Radio Stations</h1>
-      <div className="flex flex-col lg:flex-row gap-4">
-        <main className="flex-1 order-1 lg:order-1">
-          <div className="flex justify-between items-center mb-4">
+    <div class="container mx-auto p-4">
+      <h1 class="text-3xl font-bold mb-6">Radio stations</h1>
+      {/* <p class="text-lg font-bold mb-4">Listen to the radio 📻</p> */}
+      <div class="flex flex-col lg:flex-row gap-4">
+        <section class="flex-1 order-1 lg:order-1">
+          <div class="flex gap-2 mb-8">
             <Input
               type="search"
               placeholder="Search radio stations..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="max-w-sm"
+              className="bg-white border-gray-300 focus:ring-primary w-full"
             />
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant={activeFilterCount() > 0 ? 'default' : 'outline'} className="lg:hidden relative">
-                  <Filter className="mr-2 h-4 w-4" />
+                  <Filter class="mr-2 h-4 w-4" />
                   Filters
                   {activeFilterCount() > 0 && (
-                    <span className="absolute top-0 right-0 -mt-1 -mr-1 bg-primary text-primary-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    <span class="absolute top-0 right-0 -mt-1 -mr-1 bg-primary text-primary-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                       {activeFilterCount()}
                     </span>
                   )}
@@ -130,24 +132,28 @@ export function RadioStationSearch() {
               </SheetContent>
             </Sheet>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {filteredStations.map((station) => (
               <Button
                 key={station.id}
-                variant="outline"
-                className="flex flex-col items-center p-4 h-auto"
+                variant="ghost"
+                className="flex flex-col items-center p-2 h-auto"
                 onClick={() => console.log(`Clicked on ${station.name}`)}
               >
-                <img src={station.logo} alt={`${station.name} logo`} className="w-20 h-20 object-contain mb-2" />
-                <span className="text-center text-sm truncate w-full" title={station.name}>
-                  {station.name}
-                </span>
+                <Card class="w-[100px]">
+                  <CardContent class="p-2">
+                    <img src={station.logo} alt={`${station.name} logo`} class="w-20 h-20 object-contain mb-2" />
+                    <span class="text-center text-sm truncate w-full" title={station.name}>
+                      {station.name}
+                    </span>
+                  </CardContent>
+                </Card>
               </Button>
             ))}
           </div>
-        </main>
-        <aside className="w-full lg:w-1/4 order-2 lg:order-2 hidden lg:block overflow-y-auto">
-          <div className="h-full">
+        </section>
+        <aside class="w-full lg:w-1/4 order-2 lg:order-2 hidden lg:block overflow-y-auto">
+          <div class="h-full">
             <FilterContent />
           </div>
         </aside>

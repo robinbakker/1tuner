@@ -65,3 +65,37 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .maximize-enter {
+    transform: translateY(100%);
+  }
+
+  .maximize-enter-active {
+    transform: translateY(0);
+    transition: transform 300ms ease-in-out;
+  }
+
+  .maximize-exit {
+    transform: translateY(0);
+  }
+
+  .maximize-exit-active {
+    transform: translateY(100%);
+    transition: transform 300ms ease-in-out;
+  }
+
+  @screen md {
+    .maximize-enter {
+      transform: translateX(100%);
+    }
+
+    .maximize-enter-active {
+      transform: translateX(0);
+    }
+
+    .maximize-exit-active {
+      transform: translateX(100%);
+    }
+  }
+}
