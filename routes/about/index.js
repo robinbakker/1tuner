@@ -40,8 +40,14 @@ export default class About extends Component {
           <h2 class={style['content-title']}>Cookies, tracking, privacy...</h2>
           <p>I guess I'm not that much interested in you! However, to keep things functional:</p>
           <ul>
-            <li>I'm using Google Analytics to track the amount of visitors (anonimized IPs and no user tracking).</li>
             <li>Some basic information is stored in your browser for your preferences and to store your playlists.</li>
+            <li>
+              For visitor statistics I use{' '}
+              <a href="https://www.cloudflare.com/web-analytics" target="_blank" rel="noopener">
+                Cloudflare Web Analytics
+              </a>
+              . No personal data is shared or stored.
+            </li>
             <li>
               The audio and logos are loaded from the radio stations / podcast sources directly or via{' '}
               <a href="https://cloudinary.com" target="_blank" rel="noopener">
