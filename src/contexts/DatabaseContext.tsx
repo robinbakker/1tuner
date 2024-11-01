@@ -6,6 +6,10 @@ const DatabaseContext = createContext<ReturnType<typeof useDB> | null>(null);
 export function DatabaseProvider({ children }: { children: React.ReactNode }) {
   const db = useDB();
 
+  if (typeof window === 'undefined') {
+    return <>{children}</>;
+  }
+
   return <DatabaseContext.Provider value={db}>{children}</DatabaseContext.Provider>;
 }
 

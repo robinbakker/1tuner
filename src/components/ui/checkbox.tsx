@@ -1,9 +1,16 @@
-import { cn } from '@/lib/utils';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { CheckIcon } from '@radix-ui/react-icons';
-import { ComponentPropsWithoutRef, forwardRef } from 'preact/compat';
+import { ComponentProps } from 'preact';
+import { forwardRef } from 'preact/compat';
+import { cn } from '~/lib/utils';
 
-const Checkbox = forwardRef<ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>>(({ ...props }, ref) => (
+interface CheckboxProps extends ComponentProps<'input'> {
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  name?: string;
+}
+
+const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({ ...props }, ref) => (
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(

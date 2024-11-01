@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Podcast } from '@/lib/db';
-import { getSignature } from '@/lib/signature';
-import { normalizedUrlWithoutScheme, slugify, stripHtml } from '@/lib/utils';
 import { SearchIcon } from 'lucide-preact';
 import { useState } from 'preact/hooks';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
+import { Input } from '~/components/ui/input';
+import { Podcast } from '~/lib/db';
+import { getSignature } from '~/lib/signature';
+import { normalizedUrlWithoutScheme, slugify, stripHtml } from '~/lib/utils';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../lib/store';
 
 export function PodcastSearch() {
@@ -92,7 +92,7 @@ export function PodcastSearch() {
       ) : (
         <>
           {renderPodcastList(followedPodcasts.value, 'Following')}
-          {renderPodcastList(recentlyVisitedPodcasts.value, 'Recently visited')}
+          {renderPodcastList(recentlyVisitedPodcasts.value, 'Last visited')}
         </>
       )}
     </div>

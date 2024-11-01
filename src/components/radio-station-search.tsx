@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Filter } from 'lucide-preact';
 import { useEffect, useState } from 'preact/hooks';
+import { Button } from '~/components/ui/button';
+import { Checkbox } from '~/components/ui/checkbox';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet';
 import { RadioStation } from './types';
 import { Card, CardContent } from './ui/card';
 
@@ -112,7 +112,7 @@ export function RadioStationSearch() {
               type="search"
               placeholder="Search radio stations..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e: Event) => setSearchTerm((e.target as HTMLInputElement)?.value || '')}
               className="bg-white border-gray-300 focus:ring-primary w-full"
             />
             <Sheet>
@@ -134,12 +134,7 @@ export function RadioStationSearch() {
           </div>
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {filteredStations.map((station) => (
-              <Button
-                key={station.id}
-                variant="ghost"
-                className="flex flex-col items-center p-2 h-auto"
-                onClick={() => console.log(`Clicked on ${station.name}`)}
-              >
+              <a key={station.id} class="flex flex-col items-center p-2 h-auto" href={`/radio-station/${station.id}`}>
                 <Card class="w-[100px]">
                   <CardContent class="p-2">
                     <img src={station.logo} alt={`${station.name} logo`} class="w-20 h-20 object-contain mb-2" />
@@ -148,7 +143,7 @@ export function RadioStationSearch() {
                     </span>
                   </CardContent>
                 </Card>
-              </Button>
+              </a>
             ))}
           </div>
         </section>

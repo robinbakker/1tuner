@@ -34,25 +34,30 @@ interface MyDB extends DBSchema {
   };
 }
 
-const dbPromise = openDB<MyDB>('some.1tuner', 1, {
-  upgrade(db) {
-    db.createObjectStore('followedPodcasts');
-    db.createObjectStore('recentlyVisitedPodcasts');
-  },
-});
+const dbPromise =
+  typeof window !== 'undefined'
+    ? openDB<MyDB>('some.1tuner', 1, {
+        upgrade(db) {
+          db.createObjectStore('followedPodcasts');
+          db.createObjectStore('recentlyVisitedPodcasts');
+        },
+      })
+    : null;
 
 export async function loadStateFromDB() {
+  if (typeof window === 'undefined') return;
   const db = await dbPromise;
-  const followed = (await db.get('followedPodcasts', 'followedPodcasts')) || [];
-  const recent = (await db.get('recentlyVisitedPodcasts', 'recentlyVisitedPodcasts')) || [];
+  const followed = (await db?.get('followedPodcasts', 'followedPodcasts')) || [];
+  const recent = (await db?.get('recentlyVisitedPodcasts', 'recentlyVisitedPodcasts')) || [];
   followedPodcasts.value = followed;
   recentlyVisitedPodcasts.value = recent;
 }
 
 export async function saveStateToDB() {
+  if (typeof window === 'undefined') return;
   const db = await dbPromise;
-  await db.put('followedPodcasts', followedPodcasts.value, 'followedPodcasts');
-  await db.put('recentlyVisitedPodcasts', recentlyVisitedPodcasts.value, 'recentlyVisitedPodcasts');
+  await db?.put('followedPodcasts', followedPodcasts.value, 'followedPodcasts');
+  await db?.put('recentlyVisitedPodcasts', recentlyVisitedPodcasts.value, 'recentlyVisitedPodcasts');
 }
 
 export function useDB() {

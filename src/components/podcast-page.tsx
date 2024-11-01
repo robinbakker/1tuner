@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui/button';
-import { setAudioPlayer } from '@/lib/audio-store';
-import { Podcast } from '@/lib/db';
-import { getSignature } from '@/lib/signature';
-import { stripHtml } from '@/lib/utils';
 import { XMLParser } from 'fast-xml-parser';
 import { Heart } from 'lucide-preact';
 import { useRoute } from 'preact-iso';
 import { useEffect, useState } from 'preact/hooks';
+import { Button } from '~/components/ui/button';
+import { setAudioPlayer } from '~/lib/audio-store';
+import { Podcast } from '~/lib/db';
+import { getSignature } from '~/lib/signature';
+import { stripHtml } from '~/lib/utils';
 import {
   addToRecentlyVisited,
   followPodcast,

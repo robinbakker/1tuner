@@ -5,6 +5,7 @@ import { AppShell } from './components/app-shell';
 import { Homepage } from './components/homepage';
 import { PodcastPage } from './components/podcast-page';
 import { PodcastSearch } from './components/podcast-search';
+import { RadioStationPage } from './components/radio-station-page';
 import { RadioStationSearch } from './components/radio-station-search';
 import { DatabaseProvider } from './contexts/DatabaseContext';
 import { useDB } from './lib/db';
@@ -35,6 +36,7 @@ export function App() {
             <Router>
               <Route path="/" component={Homepage} />
               <Route path="/radio-stations" component={RadioStationSearch} />
+              <Route path="/radio-station/:id" component={RadioStationPage} />
               <Route path="/podcasts" component={PodcastSearch} />
               <Route path="/podcast/:name/:id" component={PodcastPage} />
             </Router>

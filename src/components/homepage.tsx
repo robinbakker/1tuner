@@ -1,5 +1,5 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Card, CardContent } from '~/components/ui/card';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 
 // Sample data (replace with your actual data fetching logic)
 const recentStations = [

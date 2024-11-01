@@ -1,9 +1,9 @@
-import { audioPlayer } from '@/lib/audio-store';
-import { headerTitle } from '@/lib/store';
-import { cn } from '@/lib/utils';
 import { ArrowLeft, Share2 } from 'lucide-preact';
 import { ComponentChildren } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
+import { audioPlayer } from '~/lib/audio-store';
+import { headerTitle } from '~/lib/store';
+import { cn } from '~/lib/utils';
 import { AudioPlayer } from './audio-player';
 
 interface AppShellProps {
@@ -54,7 +54,7 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white shadow-lg md:relative md:h-full md:w-20 md:flex-shrink-0">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white shadow-lg md:relative md:h-full md:w-20 md:flex-shrink-0">
         <ul class="flex h-16 items-center justify-around md:h-full md:flex-col md:justify-start md:py-4">
           <li class="w-full">
             <a href={`/`} class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200">
@@ -205,10 +205,10 @@ export function AppShell({ children }: AppShellProps) {
           </li>
         </ul>
       </nav>
-      <main class={cn('flex-1 overflow-auto', 'mb-36', 'md:mb-0', audioPlayer.value && 'md:mr-96')}>
+      <main class={cn('flex-1 overflow-auto', audioPlayer.value?.isMaximized && 'md:mr-96')}>
         {!!headerTitle.value && (
           <header
-            class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/20 backdrop-blur-md shadow-md' : 'bg-transparent'}`}
+            class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md' : 'bg-transparent'}`}
           >
             <div class="flex items-center justify-between p-4">
               <button onClick={handleBackClick} class="p-2 rounded-full hover:bg-gray-200 transition-colors duration-200">

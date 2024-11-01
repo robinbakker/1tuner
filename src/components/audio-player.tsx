@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils';
 import { ChevronDown, ChevronUp, Pause, Play } from 'lucide-preact';
+import { cn } from '~/lib/utils';
 import { audioPlayer, toggleMaximized } from '../lib/audio-store';
 
 export function AudioPlayer() {
@@ -9,18 +9,18 @@ export function AudioPlayer() {
     <div
       class={cn(
         'fixed transition-all duration-300 ease-in-out',
-        'h-20 bottom-16 left-0 right-0 z-40',
-        'md:right-0',
+        'h-20 bottom-16 right-0 z-40',
+        'md:right-0 w-full md:w-auto',
         audioPlayer.value.isMaximized
           ? ['h-[calc(100%-4rem)] top-0 bottom-16', 'md:h-full md:top-0 md:bottom-0 md:w-96']
-          : ['h-20', 'md:bottom-0 md:w-96'],
+          : ['h-20', 'md:bottom-0 md:right-0 md:left-20'],
       )}
     >
-      <div class={cn('h-full w-full bg-white/95 backdrop-blur-md', audioPlayer.value.isMaximized ? 'shadow-lg' : 'shadow-md')}>
+      <div class={cn('h-full w-full bg-white/33 backdrop-blur-md', audioPlayer.value.isMaximized ? 'shadow-lg' : 'shadow-md')}>
         {audioPlayer.value.isMaximized ? (
           // Maximized View Content
           <div class="h-full flex flex-col">
-            <div class="p-4 border-b">
+            <div class="p-4">
               <button onClick={() => toggleMaximized()} class="p-2 hover:bg-gray-200 rounded-full transition-colors float-right">
                 <ChevronDown class="h-6 w-6 text-gray-600" />
               </button>
@@ -39,6 +39,7 @@ export function AudioPlayer() {
 
                 <button
                   onClick={() => {
+                    if (!audioPlayer.value) return;
                     audioPlayer.value = {
                       ...audioPlayer.value,
                       isPlaying: !audioPlayer.value.isPlaying,
@@ -59,6 +60,7 @@ export function AudioPlayer() {
                 <img src={audioPlayer.value.imageUrl} alt="" class="h-full w-full object-cover rounded-md" />
                 <button
                   onClick={() => {
+                    if (!audioPlayer.value) return;
                     audioPlayer.value = {
                       ...audioPlayer.value,
                       isPlaying: !audioPlayer.value.isPlaying,
