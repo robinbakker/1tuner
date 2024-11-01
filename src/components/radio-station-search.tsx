@@ -1,65 +1,31 @@
 import { Filter } from 'lucide-preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useMemo, useState } from 'preact/hooks';
 import { Button } from '~/components/ui/button';
 import { Checkbox } from '~/components/ui/checkbox';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet';
-import { RadioStation } from './types';
+import { radioGenres, radioLanguages, radioStations } from '~/lib/store';
 import { Card, CardContent } from './ui/card';
 
 export function RadioStationSearch() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const [radioStations, setRadioStations] = useState<RadioStation[]>([]);
-  const [countries, setCountries] = useState<string[]>([]);
-  const [genres, setGenres] = useState<string[]>([]);
-
-  useEffect(() => {
-    Promise.all([
-      fetch('https://raw.githubusercontent.com/robinbakker/1tuner/refs/heads/main/assets/data/stations.json'),
-      fetch('https://raw.githubusercontent.com/robinbakker/1tuner/refs/heads/main/assets/data/genres.json'),
-      fetch('https://raw.githubusercontent.com/robinbakker/1tuner/refs/heads/main/assets/data/languages.json'),
-    ])
-      .then(([stationsResponse, genresResponse, languagesResponse]) =>
-        Promise.all([stationsResponse.json(), genresResponse.json(), languagesResponse.json()]),
-      )
-      .then(([stationsData, genresData, languagesData]) => {
-        const genreMap = Object.fromEntries(Object.entries(genresData).map(([key, value]: [string, any]) => [key, value.name]));
-        const languageMap = Object.fromEntries(Object.entries(languagesData).map(([key, value]: [string, any]) => [key, value.country]));
-
-        const stations: RadioStation[] = Object.entries(stationsData).map(([id, stationData]: [string, any]) => ({
-          id,
-          name: stationData.name,
-          logo: stationData.logosource || '/placeholder.svg?height=100&width=100',
-          language: languageMap[stationData.language] || stationData.language || 'Unknown',
-          genres: (stationData.genres || []).map((genre: string) => genreMap[genre] || genre),
-          streams: (stationData.streams || []).map((stream: any) => ({
-            mimetype: stream.mimetype,
-            url: stream.url,
-          })),
-        }));
-        setRadioStations(stations);
-
-        // Extract unique languages and genres
-        const uniqueLanguages = Array.from(new Set(stations.map((s) => s.language))).sort();
-        const uniqueGenres = Array.from(new Set(stations.flatMap((s) => s.genres))).sort();
-        setCountries(uniqueLanguages); // We keep the state name as 'countries' for consistency
-        setGenres(uniqueGenres);
-      })
-      .catch((error) => console.error('Error fetching data:', error));
-  }, []);
 
   const activeFilterCount = () => selectedCountries.length + selectedGenres.length;
 
-  const filteredStations = radioStations.filter((station) => {
-    const matchesSearch = station.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCountry = !selectedCountries.length || selectedCountries.includes(station.language);
-    const matchesGenre = !selectedGenres.length || selectedGenres.some((g) => station.genres.includes(g));
-    return matchesSearch && matchesCountry && matchesGenre;
-  });
+  const filteredStations = useMemo(
+    () =>
+      radioStations.value.filter((station) => {
+        const matchesSearch = station.name?.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesCountry = !selectedCountries.length || selectedCountries.includes(station.language);
+        const matchesGenre = !selectedGenres.length || selectedGenres.some((g) => station.genres.includes(g));
+        return matchesSearch && matchesCountry && matchesGenre;
+      }),
+    [selectedGenres, selectedCountries, searchTerm, radioStations.value],
+  );
 
   const handleCountryChange = (country: string) => {
     setSelectedCountries((prev) => (prev.includes(country) ? prev.filter((c) => c !== country) : [...prev, country]));
@@ -73,27 +39,31 @@ export function RadioStationSearch() {
     <div class="bg-card rounded-lg p-4 shadow">
       <h2 class="text-lg font-semibold mb-2">Filters</h2>
       <div class="mb-4">
-        <h3 class="font-medium mb-2">Countries</h3>
+        <h3 class="font-medium mb-2">Language</h3>
         <ScrollArea className="h-40">
-          {countries.map((country) => (
-            <div key={country} class="flex items-center space-x-2 mb-2">
+          {radioLanguages.value.map((country) => (
+            <div key={country.id} class="flex items-center space-x-2 mb-2">
               <Checkbox
-                id={`country-${country}`}
-                checked={selectedCountries.includes(country)}
-                onCheckedChange={() => handleCountryChange(country)}
+                id={`country-${country.id}`}
+                checked={selectedCountries.includes(country.id)}
+                onCheckedChange={() => handleCountryChange(country.id)}
               />
-              <Label for={`country-${country}`}>{country}</Label>
+              <Label for={`country-${country.id}`}>{country.name}</Label>
             </div>
           ))}
         </ScrollArea>
       </div>
       <div>
-        <h3 class="font-medium mb-2">Genres</h3>
+        <h3 class="font-medium mb-2">Genre</h3>
         <ScrollArea className="h-40">
-          {genres.map((genre) => (
-            <div key={genre} class="flex items-center space-x-2 mb-2">
-              <Checkbox id={`genre-${genre}`} checked={selectedGenres.includes(genre)} onCheckedChange={() => handleGenreChange(genre)} />
-              <Label for={`genre-${genre}`}>{genre}</Label>
+          {radioGenres.value.map((genre) => (
+            <div key={genre.id} class="flex items-center space-x-2 mb-2">
+              <Checkbox
+                id={`genre-${genre.id}`}
+                checked={selectedGenres.includes(genre.id)}
+                onCheckedChange={() => handleGenreChange(genre.id)}
+              />
+              <Label for={`genre-${genre.id}`}>{genre.name}</Label>
             </div>
           ))}
         </ScrollArea>
@@ -137,7 +107,7 @@ export function RadioStationSearch() {
               <a key={station.id} class="flex flex-col items-center p-2 h-auto" href={`/radio-station/${station.id}`}>
                 <Card class="w-[100px]">
                   <CardContent class="p-2">
-                    <img src={station.logo} alt={`${station.name} logo`} class="w-20 h-20 object-contain mb-2" />
+                    <img src={station.logosource} alt={`${station.name} logo`} class="w-20 h-20 object-contain mb-2" />
                     <span class="text-center text-sm truncate w-full" title={station.name}>
                       {station.name}
                     </span>

@@ -1,0 +1,160 @@
+{
+  "genres": [
+    {
+      "id": "alternative",
+      "name": "Alternative"
+    },
+    {
+      "id": "blues",
+      "name": "Blues"
+    },
+    {
+      "id": "classical",
+      "name": "Classical"
+    },
+    {
+      "id": "country",
+      "name": "Country"
+    },
+    {
+      "id": "dance",
+      "name": "Dance"
+    },
+    {
+      "id": "disco",
+      "name": "Disco"
+    },
+    {
+      "id": "electronic",
+      "name": "Electronic"
+    },
+    {
+      "id": "folk",
+      "name": "Folk"
+    },
+    {
+      "id": "funk",
+      "name": "Funk"
+    },
+    {
+      "id": "hiphop",
+      "name": "Hip hop"
+    },
+    {
+      "id": "jazz",
+      "name": "Jazz"
+    },
+    {
+      "id": "latin",
+      "name": "Latin"
+    },
+    {
+      "id": "local",
+      "name": "Local"
+    },
+    {
+      "id": "news",
+      "name": "News"
+    },
+    {
+      "id": "nonstop",
+      "name": "Non-stop"
+    },
+    {
+      "id": "oldies",
+      "name": "Oldies"
+    },
+    {
+      "id": "pop",
+      "name": "Pop"
+    },
+    {
+      "id": "rap",
+      "name": "Rap"
+    },
+    {
+      "id": "rnb",
+      "name": "R&B"
+    },
+    {
+      "id": "rock",
+      "name": "Rock"
+    },
+    {
+      "id": "soul",
+      "name": "Soul"
+    },
+    {
+      "id": "talk",
+      "name": "Talk"
+    },
+    {
+      "id": "reggae",
+      "name": "Reggae"
+    },
+    {
+      "id": "comedy",
+      "name": "Comedy"
+    },
+    {
+      "id": "drama",
+      "name": "Drama"
+    },
+    {
+      "id": "history",
+      "name": "History"
+    },
+    {
+      "id": "metal",
+      "name": "Metal"
+    },
+    {
+      "id": "metalcore",
+      "name": "Metalcore"
+    },
+    {
+      "id": "hardrock",
+      "name": "Hard rock"
+    },
+    {
+      "id": "hardcore",
+      "name": "Hardcore"
+    },
+    {
+      "id": "punk",
+      "name": "Punk"
+    },
+    {
+      "id": "world",
+      "name": "World"
+    },
+    {
+      "id": "beat",
+      "name": "Beat"
+    },
+    {
+      "id": "kids",
+      "name": "Kids"
+    },
+    {
+      "id": "indie",
+      "name": "Indie"
+    },
+    {
+      "id": "americana",
+      "name": "Americana"
+    },
+    {
+      "id": "chanson",
+      "name": "Chanson"
+    },
+    {
+      "id": "filmmusic",
+      "name": "Film music"
+    },
+    {
+      "id": "sports",
+      "name": "Sports"
+    }
+  ]
+}

@@ -7,11 +7,29 @@ import { PodcastPage } from './components/podcast-page';
 import { PodcastSearch } from './components/podcast-search';
 import { RadioStationPage } from './components/radio-station-page';
 import { RadioStationSearch } from './components/radio-station-search';
+import { Genre, Language, RadioStation } from './components/types';
 import { DatabaseProvider } from './contexts/DatabaseContext';
 import { useDB } from './lib/db';
+import { radioGenres, radioLanguages, radioStations } from './lib/store';
 
-export function App() {
+export function App({
+  stations,
+  genres,
+  languages,
+}: {
+  stations: RadioStation[];
+  genres: Genre[];
+  languages: Language[];
+}) {
   const db = useDB();
+
+  useEffect(() => {
+    if (!radioStations.value.length && stations?.length) {
+      radioStations.value = stations;
+      radioLanguages.value = languages;
+      radioGenres.value = genres;
+    }
+  }, [stations, genres, languages, radioStations.value, radioLanguages.value, radioGenres.value]);
 
   useEffect(() => {
     db.loadStateFromDB();

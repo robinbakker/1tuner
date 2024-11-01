@@ -1,65 +1,15 @@
 import { Bookmark, Facebook, Instagram, Play, Twitter, Youtube } from 'lucide-preact';
 import { useRoute } from 'preact-iso';
-import { useEffect, useState } from 'preact/hooks';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Toggle } from '~/components/ui/toggle';
-import { headerTitle } from '~/lib/store';
-import { Loader } from './loader';
-import { RadioStation, SocialAccountType } from './types';
+import { getRadioStation } from '~/lib/store';
+import { SocialAccountType } from './types';
 
 export function RadioStationPage() {
   const { params } = useRoute();
-  const [isLoading, setIsLoading] = useState(true);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [radioStation, setRadioStation] = useState<RadioStation>();
-
-  useEffect(() => {
-    const fetchRadioStationData = async () => {
-      if (!params.id) return;
-
-      setIsLoading(true);
-
-      Promise.all([
-        fetch('https://raw.githubusercontent.com/robinbakker/1tuner/refs/heads/main/assets/data/stations.json'),
-        fetch('https://raw.githubusercontent.com/robinbakker/1tuner/refs/heads/main/assets/data/genres.json'),
-        fetch('https://raw.githubusercontent.com/robinbakker/1tuner/refs/heads/main/assets/data/languages.json'),
-      ])
-        .then(([stationsResponse, genresResponse, languagesResponse]) =>
-          Promise.all([stationsResponse.json(), genresResponse.json(), languagesResponse.json()]),
-        )
-        .then(([stationsData, genresData, languagesData]) => {
-          const genreMap = Object.fromEntries(Object.entries(genresData).map(([key, value]: [string, any]) => [key, value.name]));
-          const languageMap = Object.fromEntries(Object.entries(languagesData).map(([key, value]: [string, any]) => [key, value.country]));
-
-          const stations: RadioStation[] = Object.entries(stationsData).map(([id, stationData]: [string, any]) => ({
-            id,
-            name: stationData.name,
-            logo: stationData.logosource || '/placeholder.svg?height=100&width=100',
-            language: languageMap[stationData.language] || stationData.language || 'Unknown',
-            genres: (stationData.genres || []).map((genre: string) => genreMap[genre] || genre),
-            socialAccounts: (stationData.social || []).map((social: any) => ({
-              title: social.title,
-              url: social.url,
-              type: social.type,
-              account: social.account,
-            })),
-            website: stationData.website,
-            streams: (stationData.streams || []).map((stream: any) => ({
-              mimetype: stream.mimetype,
-              url: stream.url,
-            })),
-          }));
-          const radioStationData = stations.find((station) => station.id === params.id);
-          setRadioStation(radioStationData);
-          setIsLoading(false);
-          headerTitle.value = radioStationData?.name || 'Radio station';
-        })
-        .catch((error) => console.error('Error fetching data:', error));
-    };
-
-    fetchRadioStationData();
-  }, [params.id]);
+  const radioStation = getRadioStation(params.id);
+  //const [isFollowing, setIsFollowing] = useState(false);
 
   const getSocialIcon = (type: SocialAccountType) => {
     switch (type) {
@@ -76,10 +26,6 @@ export function RadioStationPage() {
     }
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   if (!radioStation) {
     return <div>Radio station not found</div>;
   }
@@ -88,18 +34,23 @@ export function RadioStationPage() {
     <div class="min-h-screen">
       <header class="relative overflow-hidden bottom-16 bg-primary/10 py-16 -skew-y-3 transform -mt-16 mb-8">
         <div class="absolute inset-0 z-0">
-          <img src={radioStation.logo} class="w-full filter blur-md opacity-50" />
+          <img src={radioStation.logosource} class="w-full filter blur-md opacity-50" />
         </div>
         <div class="container mx-auto px-4 skew-y-3 transform relative z-10">
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
             <div class="flex items-center space-x-4">
-              <img src={radioStation.logo} alt="Radio station logo" width={80} height={80} class="rounded-full" />
+              <img src={radioStation.logosource} alt="Radio station logo" width={80} height={80} class="rounded-full" />
               <div>
                 <h1 class="text-3xl font-bold text-primary">{radioStation.name}</h1>
                 <div class="flex space-x-2 mt-2">
-                  {radioStation.socialAccounts?.map((s) => {
+                  {radioStation.social?.map((s) => {
                     return (
-                      <a href={s.url} target="_blank" rel="noopener noreferrer" class="text-muted-foreground hover:text-primary">
+                      <a
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-muted-foreground hover:text-primary"
+                      >
                         {getSocialIcon(s.type)}
                       </a>
                     );
@@ -150,7 +101,8 @@ export function RadioStationPage() {
                     <div>
                       <h3 class="font-semibold line-clamp-2">Amazing Podcast Title That Might Be Long</h3>
                       <p class="text-sm text-muted-foreground line-clamp-2 mt-1">
-                        This is a brief description of the podcast. It might contain interesting details about the content.
+                        This is a brief description of the podcast. It might contain interesting details about the
+                        content.
                       </p>
                     </div>
                   </div>

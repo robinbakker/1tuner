@@ -8,7 +8,7 @@ import { Podcast } from '~/lib/db';
 import { getSignature } from '~/lib/signature';
 import { stripHtml } from '~/lib/utils';
 import {
-  addToRecentlyVisited,
+  addToRecentlyVisitedPodcast,
   followPodcast,
   getPodcast,
   headerTitle,
@@ -89,7 +89,7 @@ export function PodcastPage() {
 
       headerTitle.value = podcastData.title;
 
-      addToRecentlyVisited(podcastData);
+      addToRecentlyVisitedPodcast(podcastData);
       setPodcast(podcastData);
 
       if (isFollowedPodcast(params.id)) {
@@ -128,7 +128,13 @@ export function PodcastPage() {
   return (
     <div class="container mx-auto p-4">
       <header class="mb-8 flex flex-col md:flex-row gap-6">
-        <img src={podcast.imageUrl} alt={`${podcast.title} Podcast`} width={200} height={200} class="w-48 h-48 rounded-lg" />
+        <img
+          src={podcast.imageUrl}
+          alt={`${podcast.title} Podcast`}
+          width={200}
+          height={200}
+          class="w-48 h-48 rounded-lg"
+        />
         <div class="flex-1">
           <h1 class="text-4xl font-bold mb-2">{podcast.title}</h1>
           <p class="text-gray-600 mb-4">{stripHtml(podcast.description)}</p>
@@ -158,7 +164,6 @@ export function PodcastPage() {
                 variant="outline"
                 styleSize="sm"
                 onClick={() => {
-                  console.log('click');
                   setAudioPlayer({
                     isPlaying: true,
                     title: 'Episode Title',

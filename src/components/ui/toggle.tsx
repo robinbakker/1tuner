@@ -25,11 +25,12 @@ const toggleVariants = cva(
   },
 );
 
-const Toggle = forwardRef<HTMLDivElement, ComponentProps<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants>>(
-  ({ className, variant, size, ...props }, ref) => (
-    <TogglePrimitive.Root ref={ref} className={cn(toggleVariants({ variant, size, className }))} {...props} />
-  ),
-);
+const Toggle = forwardRef<
+  HTMLDivElement,
+  ComponentProps<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants>
+>(({ className, variant, size, ...props }, ref) => (
+  <TogglePrimitive.Root ref={ref} className={cn(toggleVariants({ variant, size, className }))} {...props} />
+));
 
 Toggle.displayName = TogglePrimitive.Root.displayName;
 

@@ -20,10 +20,30 @@ export interface SocialAccount {
 
 export interface RadioStation {
   id: string;
+  displayorder: number;
   name: string;
-  logo: string;
+  logosource: string;
   language: string;
   genres: string[];
   streams: Stream[];
-  socialAccounts?: SocialAccount[];
+  website?: string;
+  social?: SocialAccount[];
+  podcasts?: string[];
+  related?: string[];
+}
+
+export interface Language {
+  id: string;
+  abbr: string;
+  country: string;
+  country_en: string;
+  displayorder: number;
+  flag?: string;
+  name: string;
+  name_en: string;
+}
+
+export interface Genre {
+  id: string;
+  name: string;
 }

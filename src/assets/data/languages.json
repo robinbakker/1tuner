@@ -1,0 +1,133 @@
+{
+  "languages": [
+    {
+      "abbr": "DE",
+      "country": "Deutschland",
+      "country_en": "Germany",
+      "displayorder": 6,
+      "flag": "🇩🇪",
+      "name": "Deutsch",
+      "name_en": "German",
+      "id": "de"
+    },
+    {
+      "abbr": "EN",
+      "country": "Global (EN)",
+      "country_en": "Global (EN)",
+      "displayorder": 1,
+      "name": "English",
+      "name_en": "English",
+      "id": "en"
+    },
+    {
+      "abbr": "UK",
+      "country": "United Kingdom",
+      "country_en": "United Kingdom",
+      "displayorder": 2,
+      "flag": "🇬🇧",
+      "name": "English",
+      "name_en": "English",
+      "id": "en-UK"
+    },
+    {
+      "abbr": "US",
+      "country": "United States",
+      "country_en": "United States",
+      "displayorder": 3,
+      "flag": "🇺🇸",
+      "name": "English",
+      "name_en": "English",
+      "id": "en-US"
+    },
+    {
+      "abbr": "ES",
+      "country": "España",
+      "country_en": "Spain",
+      "displayorder": 9,
+      "flag": "🇪🇸",
+      "name": "Español",
+      "name_en": "Spanish",
+      "id": "es"
+    },
+    {
+      "abbr": "FR",
+      "country": "France",
+      "country_en": "France",
+      "displayorder": 7,
+      "flag": "🇫🇷",
+      "name": "Français",
+      "name_en": "French",
+      "id": "fr"
+    },
+    {
+      "abbr": "IN",
+      "country": "Bhārat",
+      "country_en": "India",
+      "displayorder": 11,
+      "flag": "🇮🇳",
+      "name": "Hindī",
+      "name_en": "Hindi",
+      "id": "hi"
+    },
+    {
+      "abbr": "NL",
+      "country": "Nederland",
+      "country_en": "The Netherlands",
+      "displayorder": 4,
+      "flag": "🇳🇱",
+      "name": "Nederlands",
+      "name_en": "Dutch",
+      "id": "nl"
+    },
+    {
+      "abbr": "BE",
+      "country": "België",
+      "country_en": "Belgium",
+      "displayorder": 5,
+      "flag": "🇧🇪",
+      "name": "Nederlands",
+      "name_en": "Dutch",
+      "id": "nl-BE"
+    },
+    {
+      "abbr": "PL",
+      "country": "Polska",
+      "country_en": "Poland",
+      "displayorder": 10,
+      "flag": "🇵🇱",
+      "name": "Polski",
+      "name_en": "Polish",
+      "id": "pl"
+    },
+    {
+      "abbr": "SE",
+      "country": "Sverige",
+      "country_en": "Sweden",
+      "displayorder": 8,
+      "flag": "🇸🇪",
+      "name": "Svenska",
+      "name_en": "Swedish",
+      "id": "sv-SE"
+    },
+    {
+      "abbr": "IL",
+      "country": "Israel",
+      "country_en": "Israel",
+      "displayorder": 12,
+      "flag": "🇮🇱",
+      "name": "עִבְרִית",
+      "name_en": "Hebrew",
+      "id": "he-IL"
+    },
+    {
+      "abbr": "UA",
+      "country": "Україна",
+      "country_en": "Ukraine",
+      "displayorder": 13,
+      "flag": "🇺🇦",
+      "name": "украї́нська мо́ва",
+      "name_en": "Ukrainian",
+      "id": "uk"
+    }
+  ]
+}
