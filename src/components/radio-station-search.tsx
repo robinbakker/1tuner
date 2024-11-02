@@ -39,16 +39,18 @@ export function RadioStationSearch() {
     <div class="bg-card rounded-lg p-4 shadow">
       <h2 class="text-lg font-semibold mb-2">Filters</h2>
       <div class="mb-4">
-        <h3 class="font-medium mb-2">Language</h3>
+        <h3 class="font-medium mb-2">Language/region</h3>
         <ScrollArea className="h-40">
-          {radioLanguages.value.map((country) => (
-            <div key={country.id} class="flex items-center space-x-2 mb-2">
+          {radioLanguages.value.map((l) => (
+            <div key={l.id} class="flex items-center space-x-2 mb-2">
               <Checkbox
-                id={`country-${country.id}`}
-                checked={selectedCountries.includes(country.id)}
-                onCheckedChange={() => handleCountryChange(country.id)}
+                id={`lang-${l.id}`}
+                checked={selectedCountries.includes(l.id)}
+                onCheckedChange={() => handleCountryChange(l.id)}
               />
-              <Label for={`country-${country.id}`}>{country.name}</Label>
+              <Label for={`lang-${l.id}`}>
+                {l.flag} {l.name}
+              </Label>
             </div>
           ))}
         </ScrollArea>

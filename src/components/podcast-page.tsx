@@ -8,7 +8,7 @@ import { Podcast } from '~/lib/db';
 import { getSignature } from '~/lib/signature';
 import { stripHtml } from '~/lib/utils';
 import {
-  addToRecentlyVisitedPodcast,
+  addRecentlyVisitedPodcast,
   followPodcast,
   getPodcast,
   headerTitle,
@@ -89,7 +89,7 @@ export function PodcastPage() {
 
       headerTitle.value = podcastData.title;
 
-      addToRecentlyVisitedPodcast(podcastData);
+      addRecentlyVisitedPodcast(podcastData);
       setPodcast(podcastData);
 
       if (isFollowedPodcast(params.id)) {

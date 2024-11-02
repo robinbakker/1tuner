@@ -4,25 +4,17 @@ import { genres } from './assets/data/genres.json';
 import { languages } from './assets/data/languages.json';
 import { stations } from './assets/data/stations.json';
 import { RadioStation } from './components/types.ts';
+import { radioGenres, radioLanguages, radioStations } from './lib/store.ts';
+
+// Make sure the radio signals are in the air before (pre)rendering :)
+radioStations.value = stations as RadioStation[];
+radioLanguages.value = languages;
+radioGenres.value = genres;
 
 if (typeof window !== 'undefined') {
-  hydrate(
-    <App stations={stations as RadioStation[]} genres={genres} languages={languages} />,
-    document.getElementById('app')!,
-  );
+  hydrate(<App />, document.getElementById('app')!);
 }
 
 export async function prerender() {
-  const { html, links: discoveredLinks } = await ssr(
-    <App stations={stations as RadioStation[]} genres={genres} languages={languages} />,
-  );
-
-  const extraLinks = stations.map((s) => {
-    return `/radio-station/${s.id}`;
-  });
-
-  return {
-    html: `${html}<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "30f87338881f4e7f8b7258541e15092f"}'></script>`,
-    links: new Set([...(discoveredLinks || []), ...extraLinks]),
-  };
+  return await ssr(<App />);
 }

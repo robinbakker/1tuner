@@ -1,27 +1,7 @@
 import { Card, CardContent } from '~/components/ui/card';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
-
-// Sample data (replace with your actual data fetching logic)
-const recentStations = [
-  { id: 1, name: 'Rock 101', image: '/placeholder.svg?height=80&width=80' },
-  { id: 2, name: 'Jazz FM', image: '/placeholder.svg?height=80&width=80' },
-  { id: 3, name: 'Classical Masters', image: '/placeholder.svg?height=80&width=80' },
-  { id: 4, name: 'Pop Hits', image: '/placeholder.svg?height=80&width=80' },
-  { id: 5, name: 'News 24/7', image: '/placeholder.svg?height=80&width=80' },
-];
-
-const recentPodcasts = [
-  { id: 1, name: 'True Crime Stories', image: '/placeholder.svg?height=80&width=80' },
-  { id: 2, name: 'Tech Talk Weekly', image: '/placeholder.svg?height=80&width=80' },
-  { id: 3, name: 'Mindfulness Meditation', image: '/placeholder.svg?height=80&width=80' },
-  { id: 4, name: 'History Uncovered', image: '/placeholder.svg?height=80&width=80' },
-  { id: 5, name: 'Science Today', image: '/placeholder.svg?height=80&width=80' },
-];
-
-const featuredItems = [
-  { id: 1, name: 'Summer Hits Playlist', image: '/placeholder.svg?height=200&width=400', type: 'playlist' },
-  { id: 2, name: 'Interview with Music Legend', image: '/placeholder.svg?height=200&width=400', type: 'podcast' },
-];
+import { getRecentlyVisitedRadioStations, recentlyVisitedPodcasts } from '~/lib/store';
+import { normalizedUrlWithoutScheme, slugify } from '~/lib/utils';
 
 export function Homepage() {
   return (
@@ -35,11 +15,11 @@ export function Homepage() {
         </div>
         <ScrollArea className="w-screen md:w-full whitespace-nowrap">
           <div class="flex w-max space-x-4 p-4">
-            {recentStations.map((station) => (
-              <a key={station.id} href={`/station/${station.id}`} class="shrink-0">
+            {getRecentlyVisitedRadioStations().map((station) => (
+              <a key={station.id} href={`/radio-station/${station.id}`} class="shrink-0">
                 <Card class="w-[100px]">
                   <CardContent class="p-2">
-                    <img src={station.image} alt={station.name} width={80} height={80} class="rounded-md mb-2" />
+                    <img src={station.logosource} alt={station.name} width={80} height={80} class="rounded-md mb-2" />
                     <p class="text-sm text-center truncate">{station.name}</p>
                   </CardContent>
                 </Card>
@@ -59,12 +39,16 @@ export function Homepage() {
         </div>
         <ScrollArea className="w-screen md:w-full whitespace-nowrap">
           <div class="flex w-max space-x-4 p-4">
-            {recentPodcasts.map((podcast) => (
-              <a key={podcast.id} href={`/podcast/${podcast.id}`} class="shrink-0">
+            {recentlyVisitedPodcasts.value.map((podcast) => (
+              <a
+                key={podcast.id}
+                href={`/podcast/${slugify(podcast.title)}/${btoa(normalizedUrlWithoutScheme(podcast.url))}`}
+                class="shrink-0"
+              >
                 <Card class="w-[100px]">
                   <CardContent class="p-2">
-                    <img src={podcast.image} alt={podcast.name} width={80} height={80} class="rounded-md mb-2" />
-                    <p class="text-sm text-center truncate">{podcast.name}</p>
+                    <img src={podcast.imageUrl} alt={podcast.title} width={80} height={80} class="rounded-md mb-2" />
+                    <p class="text-sm text-center truncate">{podcast.title}</p>
                   </CardContent>
                 </Card>
               </a>
@@ -74,7 +58,7 @@ export function Homepage() {
         </ScrollArea>
       </section>
 
-      <section class="px-4">
+      {/* <section class="px-4">
         <h2 class="text-2xl font-semibold mb-4">Featured</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           {featuredItems.map((item) => (
@@ -93,7 +77,7 @@ export function Homepage() {
             </a>
           ))}
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }

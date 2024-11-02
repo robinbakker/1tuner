@@ -1,15 +1,22 @@
 import { Bookmark, Facebook, Instagram, Play, Twitter, Youtube } from 'lucide-preact';
 import { useRoute } from 'preact-iso';
+import { useEffect, useState } from 'preact/hooks';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Toggle } from '~/components/ui/toggle';
-import { getRadioStation } from '~/lib/store';
+import {
+  addRecentlyVisitedRadioStation,
+  followRadioStation,
+  getRadioStation,
+  isFollowedRadioStation,
+  unfollowRadioStation,
+} from '~/lib/store';
 import { SocialAccountType } from './types';
 
 export function RadioStationPage() {
   const { params } = useRoute();
   const radioStation = getRadioStation(params.id);
-  //const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(isFollowedRadioStation(params.id));
 
   const getSocialIcon = (type: SocialAccountType) => {
     switch (type) {
@@ -26,9 +33,24 @@ export function RadioStationPage() {
     }
   };
 
+  const toggleFollow = () => {
+    if (!radioStation) return;
+
+    if (isFollowing) {
+      unfollowRadioStation(radioStation.id);
+    } else {
+      followRadioStation(radioStation.id);
+    }
+    setIsFollowing(!isFollowing);
+  };
+
   if (!radioStation) {
     return <div>Radio station not found</div>;
   }
+
+  useEffect(() => {
+    addRecentlyVisitedRadioStation(radioStation?.id);
+  }, [radioStation, addRecentlyVisitedRadioStation]);
 
   return (
     <div class="min-h-screen">
@@ -71,7 +93,7 @@ export function RadioStationPage() {
               </div>
             </div>
             <div class="flex items-center space-x-4">
-              <Toggle aria-label="Follow station">
+              <Toggle onClick={toggleFollow} aria-label="Follow station">
                 <Bookmark class="h-4 w-4 mr-2" />
                 Follow
               </Toggle>

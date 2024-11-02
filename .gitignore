@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 .aider*
 .env
+.firebase
+.firebaserc
+/firebase.json
