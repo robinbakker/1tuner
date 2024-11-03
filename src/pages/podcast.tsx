@@ -1,5 +1,5 @@
 import { XMLParser } from 'fast-xml-parser';
-import { Heart } from 'lucide-preact';
+import { Bookmark, Play } from 'lucide-preact';
 import { useRoute } from 'preact-iso';
 import { useEffect, useState } from 'preact/hooks';
 import { Button } from '~/components/ui/button';
@@ -7,6 +7,8 @@ import { setAudioPlayer } from '~/lib/audio-store';
 import { Podcast } from '~/lib/db';
 import { getSignature } from '~/lib/signature';
 import { stripHtml } from '~/lib/utils';
+import { Loader } from '../components/loader';
+import { Badge } from '../components/ui/badge';
 import {
   addRecentlyVisitedPodcast,
   followPodcast,
@@ -16,10 +18,8 @@ import {
   unfollowPodcast,
   updatePodcast,
 } from '../lib/store';
-import { Loader } from './loader';
-import { Badge } from './ui/badge';
 
-export function PodcastPage() {
+export const PodcastPage = () => {
   const { params } = useRoute();
   const [isLoading, setIsLoading] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -146,7 +146,7 @@ export function PodcastPage() {
             ))}
           </div>
           <Button onClick={toggleFollow} variant={isFollowing ? 'secondary' : 'default'}>
-            <Heart class={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />
+            <Bookmark class={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />
             {isFollowing ? 'Following' : 'Follow'}
           </Button>
         </div>
@@ -166,13 +166,15 @@ export function PodcastPage() {
                 onClick={() => {
                   setAudioPlayer({
                     isPlaying: true,
-                    title: 'Episode Title',
-                    description: 'Podcast Name or Episode Description',
-                    imageUrl: 'https://example.com/podcast-image.jpg',
+                    title: episode.title,
+                    description: podcast.title,
+                    imageUrl: podcast.imageUrl,
+                    streams: [{ mimetype: 'audio/mpeg', url: episode.audio }],
+                    pageLocation: `/podcast/${params.name}/${params.id}`,
                   });
                 }}
               >
-                {/*<Play class="mr-2 h-4 w-4" />*/}
+                <Play class="mr-2 h-4 w-4" />
                 Play Episode
               </Button>
             </div>
@@ -181,4 +183,4 @@ export function PodcastPage() {
       </section>
     </div>
   );
-}
+};

@@ -3,7 +3,7 @@ import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { getRecentlyVisitedRadioStations, recentlyVisitedPodcasts } from '~/lib/store';
 import { normalizedUrlWithoutScheme, slugify } from '~/lib/utils';
 
-export function Homepage() {
+export const Homepage = () => {
   return (
     <div class="container mx-auto px-0 py-8 overflow-x-hidden">
       <section class="mb-8">
@@ -80,4 +80,4 @@ export function Homepage() {
       </section> */}
     </div>
   );
-}
+};

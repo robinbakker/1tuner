@@ -8,7 +8,7 @@ import { getSignature } from '~/lib/signature';
 import { normalizedUrlWithoutScheme, slugify, stripHtml } from '~/lib/utils';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../lib/store';
 
-export function PodcastSearch() {
+export const PodcastsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Podcast[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,7 +54,11 @@ export function PodcastSearch() {
             >
               <Card className="transition-shadow hover:shadow-md">
                 <CardContent className="flex items-start space-x-4 p-4">
-                  <img src={podcast.imageUrl} alt={podcast.title} className="w-24 h-24 object-cover flex-shrink-0 rounded-md" />
+                  <img
+                    src={podcast.imageUrl}
+                    alt={podcast.title}
+                    className="w-24 h-24 object-cover flex-shrink-0 rounded-md"
+                  />
                   <div className="flex-1  min-w-0">
                     <h3 className="text-xl font-semibold mb-2 break-words group-hover:underline">{podcast.title}</h3>
                     <p className="text-sm text-gray-600 line-clamp-2">{stripHtml(podcast.description)}</p>
@@ -97,4 +101,4 @@ export function PodcastSearch() {
       )}
     </div>
   );
-}
+};

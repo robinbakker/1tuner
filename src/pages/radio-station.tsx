@@ -3,17 +3,19 @@ import { useRoute } from 'preact-iso';
 import { useEffect, useState } from 'preact/hooks';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
-import { Toggle } from '~/components/ui/toggle';
+import { setAudioPlayer } from '~/lib/audio-store';
 import {
   addRecentlyVisitedRadioStation,
   followRadioStation,
   getRadioStation,
   isFollowedRadioStation,
+  radioGenres,
+  radioStations,
   unfollowRadioStation,
 } from '~/lib/store';
-import { SocialAccountType } from './types';
+import { SocialAccountType } from '../components/types';
 
-export function RadioStationPage() {
+export const RadioStationPage = () => {
   const { params } = useRoute();
   const radioStation = getRadioStation(params.id);
   const [isFollowing, setIsFollowing] = useState(isFollowedRadioStation(params.id));
@@ -44,6 +46,10 @@ export function RadioStationPage() {
     setIsFollowing(!isFollowing);
   };
 
+  useEffect(() => {
+    setIsFollowing(isFollowedRadioStation(params.id));
+  }, [setIsFollowing, isFollowedRadioStation, params.id]);
+
   if (!radioStation) {
     return <div>Radio station not found</div>;
   }
@@ -54,37 +60,39 @@ export function RadioStationPage() {
 
   return (
     <div class="min-h-screen">
-      <header class="relative overflow-hidden bottom-16 bg-primary/10 py-16 -skew-y-3 transform -mt-16 mb-8">
+      <header class="relative overflow-hidden -ml-4 -mr-4 px-4 bg-primary/20 py-16 -skew-y-3 transform -mt-16 mb-8">
         <div class="absolute inset-0 z-0">
           <img src={radioStation.logosource} class="w-full filter blur-md opacity-50" />
         </div>
-        <div class="container mx-auto px-4 skew-y-3 transform relative z-10">
+        <div class="container mx-auto px-4 pt-6 skew-y-3 transform relative z-10">
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
             <div class="flex items-center space-x-4">
               <img src={radioStation.logosource} alt="Radio station logo" width={80} height={80} class="rounded-full" />
               <div>
-                <h1 class="text-3xl font-bold text-primary">{radioStation.name}</h1>
-                <div class="flex space-x-2 mt-2">
-                  {radioStation.social?.map((s) => {
-                    return (
-                      <a
-                        href={s.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="text-muted-foreground hover:text-primary"
-                      >
-                        {getSocialIcon(s.type)}
-                      </a>
-                    );
-                  })}
-                </div>
+                <h1 class="text-3xl font-bold text-white drop-shadow">{radioStation.name}</h1>
+                {!!radioStation.social?.length && (
+                  <div class="flex opacity-60 space-x-2 my-2">
+                    {radioStation.social?.map((s) => {
+                      return (
+                        <a
+                          href={s.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="text-white drop-shadow hover:text-black"
+                        >
+                          {getSocialIcon(s.type)}
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
                 {!!radioStation.website && (
                   <p>
                     <a
                       href={radioStation.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-muted-foreground hover:text-primary"
+                      class="text-white hover:text-black drop-shadow"
                     >
                       {radioStation.website}
                     </a>
@@ -93,12 +101,24 @@ export function RadioStationPage() {
               </div>
             </div>
             <div class="flex items-center space-x-4">
-              <Toggle onClick={toggleFollow} aria-label="Follow station">
-                <Bookmark class="h-4 w-4 mr-2" />
-                Follow
-              </Toggle>
-              <Button styleSize="lg" class="rounded-full">
-                <Play class="h-6 w-6" />
+              <Button onClick={toggleFollow} variant={isFollowing ? 'ghost' : 'secondary'}>
+                <Bookmark class={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />
+                {isFollowing ? 'Following' : 'Follow'}
+              </Button>
+              <Button
+                onClick={() => {
+                  setAudioPlayer({
+                    isPlaying: true,
+                    title: radioStation.name,
+                    description: '',
+                    imageUrl: radioStation.logosource,
+                    streams: radioStation.streams,
+                    pageLocation: `/radio-station/${radioStation.id}`,
+                  });
+                }}
+                class="rounded-full px-4"
+              >
+                <Play class="h-5 w-5" />
               </Button>
             </div>
           </div>
@@ -106,7 +126,7 @@ export function RadioStationPage() {
       </header>
 
       <main class="container mx-auto px-4 py-8">
-        <section class="mb-12">
+        {/* <section class="mb-12">
           <h2 class="text-2xl font-semibold mb-4">Related Podcasts</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((podcast) => (
@@ -132,29 +152,40 @@ export function RadioStationPage() {
               </Card>
             ))}
           </div>
-        </section>
+        </section> */}
 
-        <section>
-          <h2 class="text-2xl font-semibold mb-4">Related Radio Stations</h2>
-          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map((station) => (
-              <Card key={station}>
-                <CardContent class="p-4 flex flex-col items-center text-center">
-                  <img
-                    src={`/placeholder.svg?height=100&width=100&text=Station ${station}`}
-                    alt={`Station ${station}`}
-                    width={100}
-                    height={100}
-                    class="rounded-full mb-2"
-                  />
-                  <h3 class="font-semibold">Radio Station {station}</h3>
-                  <p class="text-sm text-muted-foreground mt-1">Genre</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
+        {!!radioStation.related?.length && (
+          <section>
+            <h2 class="text-2xl font-semibold mb-4">Related</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {radioStations.value
+                .filter((rs) => radioStation.related?.includes(rs.id))
+                .map((s) => (
+                  <a
+                    key={`related-${s.id}`}
+                    class="flex flex-col items-center p-2 h-auto"
+                    href={`/radio-station/${s.id}`}
+                  >
+                    <Card class="w-[100px]">
+                      <CardContent class="p-2">
+                        <img src={s.logosource} alt={`${s.name} logo`} class="w-20 h-20 object-contain mb-2" />
+                        <h3 class="text-center text-sm truncate w-full" title={s.name}>
+                          {s.name}
+                        </h3>
+                        <p class="text-sm text-muted-foreground mt-1">
+                          {radioGenres.value
+                            .filter((rg) => s.genres.includes(rg.id))
+                            .map((rg) => rg.name)
+                            .join(', ')}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </a>
+                ))}
+            </div>
+          </section>
+        )}
       </main>
     </div>
   );
-}
+};

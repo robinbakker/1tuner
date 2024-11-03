@@ -1,11 +1,14 @@
 import { signal } from '@preact/signals';
+import { Stream } from '~/components/types';
 
 interface AudioPlayerState {
   isPlaying: boolean;
   isMaximized: boolean;
   title: string;
-  description: string;
+  description?: string;
   imageUrl: string;
+  streams: Stream[];
+  pageLocation: string;
 }
 
 export const audioPlayer = signal<AudioPlayerState | null>(null);
@@ -13,7 +16,7 @@ export const audioPlayer = signal<AudioPlayerState | null>(null);
 export function setAudioPlayer(state: Omit<AudioPlayerState, 'isMaximized'>) {
   audioPlayer.value = {
     ...state,
-    isMaximized: false,
+    isMaximized: !!audioPlayer.value?.isMaximized,
   };
 }
 

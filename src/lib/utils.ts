@@ -1,16 +1,16 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export function cn(...inputs: ClassValue[]) {
+export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
-}
+};
 
-export function normalizedUrlWithoutScheme(url: string): string {
+export const normalizedUrlWithoutScheme = (url: string): string => {
   return url ? url.replace(/^https?:\/\//, '').replace(/\/+$/, '') : '';
-}
+};
 
 // See https://gist.github.com/hagemann/382adfc57adbd5af078dc93feef01fe1
-export function slugify(text: string): string {
+export const slugify = (text: string): string => {
   const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
   const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------';
   const p = new RegExp(a.split('').join('|'), 'g');
@@ -25,10 +25,10 @@ export function slugify(text: string): string {
     .replace(/\-\-+/g, '-') // Replace multiple - with single -
     .replace(/^-+/, '') // Trim - from start of text
     .replace(/-+$/, ''); // Trim - from end of text
-}
+};
 
-export function stripHtml(html: string) {
-  const tmp = document.createElement('DIV');
+export const stripHtml = (html: string) => {
+  const tmp = document.createElement('div');
   tmp.innerHTML = html;
   return tmp.textContent || tmp.innerText || '';
-}
+};

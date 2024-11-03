@@ -7,9 +7,9 @@ import { Label } from '~/components/ui/label';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet';
 import { radioGenres, radioLanguages, radioStations } from '~/lib/store';
-import { Card, CardContent } from './ui/card';
+import { Card, CardContent } from '../components/ui/card';
 
-export function RadioStationSearch() {
+export const RadioStationsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
@@ -127,4 +127,4 @@ export function RadioStationSearch() {
       </div>
     </div>
   );
-}
+};

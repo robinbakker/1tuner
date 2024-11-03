@@ -25,7 +25,7 @@ export interface Episode {
   description: string;
   pubDate: string;
   duration: string;
-  audioUrl: string;
+  audio: string;
 }
 
 interface TunerDB extends DBSchema {
