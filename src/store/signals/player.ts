@@ -1,43 +1,29 @@
 import { signal } from '@preact/signals';
-import { Stream } from '~/store/types';
+import { PlayerState } from '~/store/types';
 
-interface AudioPlayerState {
-  isPlaying: boolean;
-  isMaximized: boolean;
-  title: string;
-  description?: string;
-  imageUrl: string;
-  streams: Stream[];
-  pageLocation: string;
-}
+export const playerState = signal<PlayerState | null>(null);
 
-export const audioPlayer = signal<AudioPlayerState | null>(null);
-
-export function setAudioPlayer(state: Omit<AudioPlayerState, 'isMaximized'>) {
-  audioPlayer.value = {
+export const setPlayerState = (state: Omit<PlayerState, 'isMaximized'>) => {
+  playerState.value = {
     ...state,
-    isMaximized: !!audioPlayer.value?.isMaximized,
+    isMaximized: !!playerState.value?.isMaximized,
   };
-}
+};
 
-export function clearAudioPlayer() {
-  audioPlayer.value = null;
-}
-
-export function togglePlayPause() {
-  if (audioPlayer.value) {
-    audioPlayer.value = {
-      ...audioPlayer.value,
-      isPlaying: !audioPlayer.value.isPlaying,
+export const togglePlayPause = () => {
+  if (playerState.value) {
+    playerState.value = {
+      ...playerState.value,
+      isPlaying: !playerState.value.isPlaying,
     };
   }
-}
+};
 
-export function toggleMaximized() {
-  if (audioPlayer.value) {
-    audioPlayer.value = {
-      ...audioPlayer.value,
-      isMaximized: !audioPlayer.value.isMaximized,
+export const togglePlayerMaximized = () => {
+  if (playerState.value) {
+    playerState.value = {
+      ...playerState.value,
+      isMaximized: !playerState.value.isMaximized,
     };
   }
-}
+};

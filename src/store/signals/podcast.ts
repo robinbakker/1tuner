@@ -1,5 +1,5 @@
 import { signal } from '@preact/signals';
-import { Podcast } from '../db/db';
+import { Podcast } from '../types';
 
 export const followedPodcasts = signal<Podcast[]>([]);
 export const recentlyVisitedPodcasts = signal<Podcast[]>([]);
@@ -13,6 +13,20 @@ export const updatePodcast = (updatedPodcast: Podcast) => {
   recentlyVisitedPodcasts.value = recentlyVisitedPodcasts.value.map((p) =>
     p.id === updatedPodcast.id ? updatedPodcast : p,
   );
+};
+
+export const updatePodcastEpisodeCurrentTime = (podcastID: string, episodeAudioUrl: string, currentTime: number) => {
+  const podcast = getPodcast(podcastID);
+  if (!podcast || !episodeAudioUrl) return;
+  updatePodcast({
+    ...podcast,
+    episodes: podcast.episodes?.map((episode) => {
+      if (episode.audio === episodeAudioUrl) {
+        return { ...episode, currentTime: currentTime };
+      }
+      return episode;
+    }),
+  });
 };
 
 export const addRecentlyVisitedPodcast = (podcast: Podcast) => {

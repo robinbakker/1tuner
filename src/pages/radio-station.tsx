@@ -3,7 +3,7 @@ import { useRoute } from 'preact-iso';
 import { useEffect, useState } from 'preact/hooks';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
-import { setAudioPlayer } from '~/store/signals/player';
+import { setPlayerState } from '~/store/signals/player';
 import {
   addRecentlyVisitedRadioStation,
   followRadioStation,
@@ -107,8 +107,9 @@ export const RadioStationPage = () => {
               </Button>
               <Button
                 onClick={() => {
-                  setAudioPlayer({
+                  setPlayerState({
                     isPlaying: true,
+                    contentID: radioStation.id,
                     title: radioStation.name,
                     description: '',
                     imageUrl: radioStation.logosource,

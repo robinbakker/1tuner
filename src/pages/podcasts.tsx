@@ -5,7 +5,7 @@ import { Card, CardContent } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { getSignature } from '~/lib/signature';
 import { normalizedUrlWithoutScheme, slugify, stripHtml } from '~/lib/utils';
-import { Podcast } from '~/store/db/db';
+import { Podcast } from '~/store/types';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../store/signals/podcast';
 
 export const PodcastsPage = () => {

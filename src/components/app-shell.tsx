@@ -2,7 +2,7 @@ import { ArrowLeft, Share2 } from 'lucide-preact';
 import { ComponentChildren } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { cn } from '~/lib/utils';
-import { audioPlayer } from '~/store/signals/player';
+import { playerState } from '~/store/signals/player';
 import { headerTitle } from '~/store/signals/ui';
 import { Player } from './player';
 
@@ -230,7 +230,7 @@ export function AppShell({ children }: AppShellProps) {
           </li>
         </ul>
       </nav>
-      <main class={cn('flex-1 overflow-auto', audioPlayer.value?.isMaximized && 'md:mr-96')}>
+      <main class={cn('flex-1 overflow-auto', playerState.value?.isMaximized && 'md:mr-96')}>
         {!!headerTitle.value && (
           <header
             class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md' : 'bg-transparent'}`}

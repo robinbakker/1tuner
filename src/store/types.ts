@@ -47,3 +47,37 @@ export interface Genre {
   id: string;
   name: string;
 }
+
+export interface Podcast {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  url: string;
+  feedUrl: string;
+  categories?: string[];
+  addedDate: number;
+  lastFetched: number;
+  episodes?: Episode[];
+}
+
+export interface Episode {
+  title: string;
+  description: string;
+  pubDate: string;
+  duration: string;
+  audio: string;
+  currentTime?: number;
+}
+
+export interface PlayerState {
+  isPlaying: boolean;
+  isMaximized: boolean;
+  contentID: string;
+  title: string;
+  description?: string;
+  imageUrl: string;
+  streams: Stream[];
+  pageLocation: string;
+  currentTime?: number;
+}

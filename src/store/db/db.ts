@@ -1,27 +1,8 @@
 import { DBSchema, openDB } from 'idb';
+import { playerState } from '../signals/player';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../signals/podcast';
 import { followedRadioStationIDs, recentlyVisitedRadioStationIDs } from '../signals/radio';
-
-export interface Podcast {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-  url: string;
-  feedUrl: string;
-  categories?: string[];
-  addedDate: number;
-  lastFetched: number;
-  episodes?: Episode[];
-}
-
-export interface Episode {
-  title: string;
-  description: string;
-  pubDate: string;
-  duration: string;
-  audio: string;
-}
+import { PlayerState, Podcast } from '../types';
 
 interface TunerDB extends DBSchema {
   followedPodcasts: {
@@ -40,16 +21,21 @@ interface TunerDB extends DBSchema {
     key: 'recentlyVisitedRadioStationIDs';
     value: string[];
   };
+  playerState: {
+    key: 'playerState';
+    value: PlayerState | null;
+  };
 }
 
 const dbPromise =
   typeof window !== 'undefined'
-    ? openDB<TunerDB>('some.1tuner', 1, {
+    ? openDB<TunerDB>('1tuner', 1, {
         upgrade(db) {
           db.createObjectStore('followedPodcasts');
           db.createObjectStore('recentlyVisitedPodcasts');
           db.createObjectStore('followedRadioStationIDs');
           db.createObjectStore('recentlyVisitedRadioStationIDs');
+          db.createObjectStore('playerState');
         },
       })
     : null;
@@ -57,14 +43,17 @@ const dbPromise =
 export async function loadStateFromDB() {
   if (typeof window === 'undefined') return;
   const db = await dbPromise;
-  const userPodcasts = (await db?.get('followedPodcasts', 'followedPodcasts')) || [];
-  const lastPodcasts = (await db?.get('recentlyVisitedPodcasts', 'recentlyVisitedPodcasts')) || [];
-  const userRadioStationIDs = (await db?.get('followedRadioStationIDs', 'followedRadioStationIDs')) || [];
-  const lastRadioStationIDs = (await db?.get('recentlyVisitedRadioStationIDs', 'recentlyVisitedRadioStationIDs')) || [];
-  followedPodcasts.value = userPodcasts;
-  recentlyVisitedPodcasts.value = lastPodcasts;
-  followedRadioStationIDs.value = userRadioStationIDs;
-  recentlyVisitedRadioStationIDs.value = lastRadioStationIDs;
+  const dbFollowedPodcasts = (await db?.get('followedPodcasts', 'followedPodcasts')) || [];
+  const dbRecentlyVisitedPodcasts = (await db?.get('recentlyVisitedPodcasts', 'recentlyVisitedPodcasts')) || [];
+  const dbFollowedRadioStationIDs = (await db?.get('followedRadioStationIDs', 'followedRadioStationIDs')) || [];
+  const dbRecentlyVisitedRadioStationIDs =
+    (await db?.get('recentlyVisitedRadioStationIDs', 'recentlyVisitedRadioStationIDs')) || [];
+  const dbPlayerState = (await db?.get('playerState', 'playerState')) || null;
+  followedPodcasts.value = dbFollowedPodcasts;
+  recentlyVisitedPodcasts.value = dbRecentlyVisitedPodcasts;
+  followedRadioStationIDs.value = dbFollowedRadioStationIDs;
+  recentlyVisitedRadioStationIDs.value = dbRecentlyVisitedRadioStationIDs;
+  playerState.value = dbPlayerState;
 }
 
 export async function saveStateToDB() {
@@ -78,6 +67,7 @@ export async function saveStateToDB() {
     recentlyVisitedRadioStationIDs.value,
     'recentlyVisitedRadioStationIDs',
   );
+  await db?.put('playerState', playerState.value, 'playerState');
 }
 
 export function useDB() {

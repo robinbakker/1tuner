@@ -5,9 +5,9 @@ import { useEffect, useState } from 'preact/hooks';
 import { Button } from '~/components/ui/button';
 import { getSignature } from '~/lib/signature';
 import { stripHtml } from '~/lib/utils';
-import { Podcast } from '~/store/db/db';
-import { setAudioPlayer } from '~/store/signals/player';
+import { setPlayerState } from '~/store/signals/player';
 import { headerTitle } from '~/store/signals/ui';
+import { Podcast } from '~/store/types';
 import { Loader } from '../components/loader';
 import { Badge } from '../components/ui/badge';
 import {
@@ -164,13 +164,15 @@ export const PodcastPage = () => {
                 variant="outline"
                 styleSize="sm"
                 onClick={() => {
-                  setAudioPlayer({
+                  setPlayerState({
                     isPlaying: true,
+                    contentID: params.id,
                     title: episode.title,
                     description: podcast.title,
                     imageUrl: podcast.imageUrl,
                     streams: [{ mimetype: 'audio/mpeg', url: episode.audio }],
                     pageLocation: `/podcast/${params.name}/${params.id}`,
+                    currentTime: episode.currentTime || 0,
                   });
                 }}
               >

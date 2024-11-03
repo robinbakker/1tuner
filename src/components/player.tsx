@@ -1,35 +1,45 @@
 import { ChevronDown, ChevronUp, FastForward, Pause, Play, Rewind, Timer, X } from 'lucide-preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { cn } from '~/lib/utils';
-import { audioPlayer, toggleMaximized } from '../store/signals/player';
+import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
+import { playerState, togglePlayerMaximized } from '../store/signals/player';
 
 export function Player() {
-  if (!audioPlayer.value) return null;
+  if (!playerState.value) return null;
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
-  const isPodcast = audioPlayer.value.pageLocation.startsWith('/podcast/');
+  const isPodcast = playerState.value.pageLocation.startsWith('/podcast/');
 
   useEffect(() => {
-    if (!audioRef.current || !audioPlayer.value || !audioPlayer.value.streams?.length) return;
+    if (!audioRef.current || !playerState.value || !playerState.value.streams?.length) return;
 
     // Only reload when streams actually change
     const currentSrc = audioRef.current.currentSrc;
-    const newSrc = audioPlayer.value.streams[0].url;
+    const newSrc = playerState.value.streams[0].url;
 
     if (!currentSrc || !currentSrc.includes(newSrc)) {
       audioRef.current.load();
     }
 
-    if (audioPlayer.value.isPlaying) {
+    if (playerState.value.currentTime) audioRef.current.currentTime = playerState.value.currentTime;
+
+    if (playerState.value.isPlaying) {
       audioRef.current.play();
     } else {
       audioRef.current.pause();
+      if (playerState.value.pageLocation.startsWith('/podcast/')) {
+        updatePodcastEpisodeCurrentTime(
+          playerState.value.contentID,
+          playerState.value.streams?.[0]?.url || '',
+          audioRef.current.currentTime,
+        );
+      }
     }
-  }, [audioPlayer.value.isPlaying, audioPlayer.value.streams]);
+  }, [playerState.value.isPlaying, playerState.value.streams]);
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -62,10 +72,10 @@ export function Player() {
   };
 
   const handlePlayPause = () => {
-    if (!audioPlayer.value) return;
-    audioPlayer.value = {
-      ...audioPlayer.value,
-      isPlaying: !audioPlayer.value.isPlaying,
+    if (!playerState.value) return;
+    playerState.value = {
+      ...playerState.value,
+      isPlaying: !playerState.value.isPlaying,
     };
   };
 
@@ -73,7 +83,7 @@ export function Player() {
     if (audioRef.current) {
       audioRef.current.pause();
     }
-    audioPlayer.value = null;
+    playerState.value = null;
   };
 
   const formatTime = (time: number) => {
@@ -96,13 +106,13 @@ export function Player() {
         'fixed transition-all duration-300 ease-in-out',
         'h-20 bottom-16 right-0 z-40',
         'md:right-0 w-full md:w-auto',
-        audioPlayer.value.isMaximized
+        playerState.value.isMaximized
           ? ['h-[calc(100%-4rem)] top-0 bottom-16', 'md:h-full md:top-0 md:bottom-0 md:w-96']
           : ['h-20', 'md:bottom-0 md:right-0 md:left-20'],
       )}
     >
       <audio ref={audioRef} preload="metadata">
-        {audioPlayer.value.streams.map((stream) => (
+        {playerState.value.streams.map((stream) => (
           <source key={stream.url} src={stream.url} type={stream.mimetype} />
         ))}
       </audio>
@@ -110,14 +120,17 @@ export function Player() {
       <div
         class={cn(
           'h-full w-full bg-white/66 backdrop-blur-md',
-          audioPlayer.value.isMaximized ? 'shadow-lg' : 'shadow-md',
+          playerState.value.isMaximized ? 'shadow-lg' : 'shadow-md',
         )}
       >
-        {audioPlayer.value.isMaximized ? (
+        {playerState.value.isMaximized ? (
           // Maximized View Content
           <div class="h-full flex flex-col">
             <div class="p-4 flex justify-between">
-              <button onClick={() => toggleMaximized()} class="p-2 hover:bg-gray-200 rounded-full transition-colors">
+              <button
+                onClick={() => togglePlayerMaximized()}
+                class="p-2 hover:bg-gray-200 rounded-full transition-colors"
+              >
                 <ChevronDown class="h-6 w-6 text-gray-600" />
               </button>
               <button onClick={handleClose} class="p-2 hover:bg-gray-200 rounded-full transition-colors">
@@ -127,13 +140,13 @@ export function Player() {
             <div class="flex-1 overflow-y-auto p-6">
               <div class="flex flex-col items-center space-y-6">
                 <div class="relative w-64 h-64 shadow-lg rounded-lg overflow-hidden">
-                  <img src={audioPlayer.value.imageUrl} alt="" class="w-full h-full object-cover" />
+                  <img src={playerState.value.imageUrl} alt="" class="w-full h-full object-cover" />
                 </div>
                 <div class="text-center w-full">
                   <h2 class="text-xl font-semibold text-gray-900">
-                    <a href={audioPlayer.value.pageLocation}>{audioPlayer.value.title}</a>
+                    <a href={playerState.value.pageLocation}>{playerState.value.title}</a>
                   </h2>
-                  <p class="text-sm text-gray-500 mt-2">{audioPlayer.value.description}</p>
+                  <p class="text-sm text-gray-500 mt-2">{playerState.value.description}</p>
                 </div>
                 {isPodcast && (
                   <>
@@ -151,7 +164,7 @@ export function Player() {
                         onClick={handlePlayPause}
                         class="p-4 bg-primary rounded-full hover:bg-primary/90 transition-colors"
                       >
-                        {audioPlayer.value.isPlaying ? (
+                        {playerState.value.isPlaying ? (
                           <Pause class="h-8 w-8 text-white" />
                         ) : (
                           <Play class="h-8 w-8 text-white" />
@@ -192,7 +205,7 @@ export function Player() {
                     onClick={handlePlayPause}
                     class="p-4 bg-primary rounded-full hover:bg-primary/90 transition-colors"
                   >
-                    {audioPlayer.value.isPlaying ? (
+                    {playerState.value.isPlaying ? (
                       <Pause class="h-8 w-8 text-white" />
                     ) : (
                       <Play class="h-8 w-8 text-white" />
@@ -222,18 +235,21 @@ export function Player() {
         ) : (
           // Minimized View
           <div class="flex items-center h-full px-4">
-            <button onClick={() => toggleMaximized()} class="mr-2 p-2 hover:bg-gray-200 rounded-full transition-colors">
+            <button
+              onClick={() => togglePlayerMaximized()}
+              class="mr-2 p-2 hover:bg-gray-200 rounded-full transition-colors"
+            >
               <ChevronUp class="h-6 w-6 text-gray-600" />
             </button>
 
             <div class="flex items-center flex-1 min-w-0">
               <div class="relative h-12 w-12 flex-shrink-0">
-                <img src={audioPlayer.value.imageUrl} alt="" class="h-full w-full object-cover rounded-md" />
+                <img src={playerState.value.imageUrl} alt="" class="h-full w-full object-cover rounded-md" />
                 <button
                   onClick={handlePlayPause}
                   class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-md hover:bg-black/50 transition-colors"
                 >
-                  {audioPlayer.value.isPlaying ? (
+                  {playerState.value.isPlaying ? (
                     <Pause class="h-6 w-6 text-white" />
                   ) : (
                     <Play class="h-6 w-6 text-white" />
@@ -244,9 +260,9 @@ export function Player() {
                 {' '}
                 <div class="flex-1">
                   <h3 class="text-sm font-medium text-gray-900 truncate">
-                    <a href={audioPlayer.value.pageLocation}>{audioPlayer.value.title}</a>
+                    <a href={playerState.value.pageLocation}>{playerState.value.title}</a>
                   </h3>
-                  <p class="text-xs text-gray-500 truncate">{audioPlayer.value.description}</p>
+                  <p class="text-xs text-gray-500 truncate">{playerState.value.description}</p>
                 </div>
                 {isPodcast && (
                   <>
