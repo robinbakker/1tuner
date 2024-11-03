@@ -27,6 +27,11 @@ export const addRecentlyVisitedRadioStation = (id: string | undefined) => {
   );
 };
 
+export const getRadioGenres = (): Genre[] =>
+  radioGenres.value
+    .filter((g) => radioStations.value.some((r) => r.genres.includes(g.id)))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
 export const followRadioStation = (id: string) => {
   if (!followedRadioStationIDs.value.some((s) => s === id)) {
     followedRadioStationIDs.value = [...followedRadioStationIDs.value, id];

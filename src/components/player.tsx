@@ -60,6 +60,63 @@ export function Player() {
     };
   }, []);
 
+  // Add new Media Session effect after the existing effects
+  useEffect(() => {
+    if (!audioRef.current || !playerState.value || typeof navigator.mediaSession === 'undefined') return;
+
+    // Set metadata
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: playerState.value.title,
+      artist: playerState.value.description,
+      artwork: [{ src: playerState.value.imageUrl, sizes: '512x512', type: 'image/jpeg' }],
+    });
+
+    // Set playback state
+    navigator.mediaSession.playbackState = playerState.value.isPlaying ? 'playing' : 'paused';
+
+    // Define media session action handlers
+    navigator.mediaSession.setActionHandler('play', () => {
+      handlePlayPause();
+    });
+
+    navigator.mediaSession.setActionHandler('pause', () => {
+      handlePlayPause();
+    });
+
+    if (isPodcast) {
+      navigator.mediaSession.setActionHandler('seekbackward', () => {
+        handleSeek(-10);
+      });
+
+      navigator.mediaSession.setActionHandler('seekforward', () => {
+        handleSeek(30);
+      });
+
+      navigator.mediaSession.setActionHandler('seekto', (details) => {
+        if (!audioRef.current || details.seekTime === undefined) return;
+        audioRef.current.currentTime = details.seekTime;
+        setCurrentTime(details.seekTime);
+      });
+    }
+
+    // Update position state when duration or current time changes
+    navigator.mediaSession.setPositionState({
+      duration: duration,
+      position: currentTime,
+      playbackRate: playbackRate,
+    });
+
+    // Cleanup
+    return () => {
+      navigator.mediaSession.metadata = null;
+      navigator.mediaSession.setActionHandler('play', null);
+      navigator.mediaSession.setActionHandler('pause', null);
+      navigator.mediaSession.setActionHandler('seekbackward', null);
+      navigator.mediaSession.setActionHandler('seekforward', null);
+      navigator.mediaSession.setActionHandler('seekto', null);
+    };
+  }, [playerState.value, isPodcast, duration, currentTime, playbackRate]);
+
   const handleSeek = (seconds: number) => {
     if (!audioRef.current) return;
     audioRef.current.currentTime = audioRef.current.currentTime + seconds;

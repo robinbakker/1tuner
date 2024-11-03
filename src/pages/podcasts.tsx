@@ -1,6 +1,6 @@
-import { SearchIcon } from 'lucide-preact';
-import { useState } from 'preact/hooks';
-import { Button } from '~/components/ui/button';
+import { Search } from 'lucide-preact';
+import { useEffect, useRef, useState } from 'preact/hooks';
+import { Loader } from '~/components/loader';
 import { Card, CardContent } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { getSignature } from '~/lib/signature';
@@ -12,34 +12,55 @@ export const PodcastsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Podcast[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const searchTimeout = useRef<number>();
 
-  const handleSearch = async (e: Event) => {
-    e.preventDefault();
-    setIsLoading(true);
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      setIsLoading(true);
 
-    try {
-      const url = `https://robinbakker-umbilical-71.deno.dev/API/worker/pi/search/byterm?q=${encodeURIComponent(searchTerm)}`;
-      const signature = await getSignature(url);
-      const response = await fetch(url, {
-        headers: {
-          'X-Umbilical-Signature': signature,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Search request failed');
+      // Clear existing timeout
+      if (searchTimeout.current) {
+        clearTimeout(searchTimeout.current);
       }
 
-      const data = await response.json();
-      setSearchResults(data.feeds.map((f: any) => ({ ...f, imageUrl: f.image })));
-    } catch (error) {
-      console.error('Error fetching podcasts:', error);
-    } finally {
+      // Set new timeout
+      searchTimeout.current = window.setTimeout(async () => {
+        try {
+          const url = `https://robinbakker-umbilical-71.deno.dev/API/worker/pi/search/byterm?q=${encodeURIComponent(searchTerm)}`;
+          const signature = await getSignature(url);
+          const response = await fetch(url, {
+            headers: {
+              'X-Umbilical-Signature': signature,
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error('Search request failed');
+          }
+
+          const data = await response.json();
+          setSearchResults(data.feeds.map((f: any) => ({ ...f, imageUrl: f.image })));
+        } catch (error) {
+          console.error('Error fetching podcasts:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      }, 500); // 500ms delay
+    } else {
+      setSearchResults([]);
       setIsLoading(false);
     }
-  };
+
+    // Cleanup timeout on component unmount
+    return () => {
+      if (searchTimeout.current) {
+        clearTimeout(searchTimeout.current);
+      }
+    };
+  }, [searchTerm]);
 
   const renderPodcastList = (podcasts: Podcast[] | undefined, title: string) => {
+    if (isLoading) return <div>Loading...</div>;
     if (!podcasts?.length) return null;
 
     return (
@@ -73,30 +94,32 @@ export const PodcastsPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Podcasts</h1>
-      <form onSubmit={handleSearch} className="mb-8">
-        <div className="flex gap-2">
-          <Input
-            type="text"
-            placeholder="Search podcasts..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm((e.target as HTMLInputElement).value)}
-            className="flex-grow bg-white border-gray-300 focus:ring-primary"
-          />
-          <Button type="submit" disabled={isLoading}>
-            <SearchIcon className="h-4 w-4 mr-2" />
-            {isLoading ? 'Searching...' : 'Search'}
-          </Button>
+    <div class="container mx-auto p-4">
+      <h1 class="text-3xl font-bold mb-6">Podcasts</h1>
+      <div class="mb-8 relative">
+        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+          <Search size={18} />
         </div>
-      </form>
-
-      {searchResults.length > 0 ? (
-        renderPodcastList(searchResults, 'Search Results')
+        <Input
+          type="search"
+          placeholder="Search podcasts..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm((e.target as HTMLInputElement).value)}
+          className="w-full bg-white border-gray-300 focus:ring-primary pl-10"
+        />
+      </div>
+      {isLoading ? (
+        <Loader />
       ) : (
         <>
-          {renderPodcastList(followedPodcasts.value, 'Following')}
-          {renderPodcastList(recentlyVisitedPodcasts.value, 'Last visited')}
+          {searchResults.length > 0 ? (
+            renderPodcastList(searchResults, 'Search Results')
+          ) : (
+            <>
+              {renderPodcastList(followedPodcasts.value, 'Following')}
+              {renderPodcastList(recentlyVisitedPodcasts.value, 'Last visited')}
+            </>
+          )}
         </>
       )}
     </div>
