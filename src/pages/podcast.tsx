@@ -3,21 +3,21 @@ import { Bookmark, Play } from 'lucide-preact';
 import { useRoute } from 'preact-iso';
 import { useEffect, useState } from 'preact/hooks';
 import { Button } from '~/components/ui/button';
-import { setAudioPlayer } from '~/lib/audio-store';
-import { Podcast } from '~/lib/db';
 import { getSignature } from '~/lib/signature';
 import { stripHtml } from '~/lib/utils';
+import { Podcast } from '~/store/db/db';
+import { setAudioPlayer } from '~/store/signals/player';
+import { headerTitle } from '~/store/signals/ui';
 import { Loader } from '../components/loader';
 import { Badge } from '../components/ui/badge';
 import {
   addRecentlyVisitedPodcast,
   followPodcast,
   getPodcast,
-  headerTitle,
   isFollowedPodcast,
   unfollowPodcast,
   updatePodcast,
-} from '../lib/store';
+} from '../store/signals/podcast';
 
 export const PodcastPage = () => {
   const { params } = useRoute();

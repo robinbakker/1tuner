@@ -1,5 +1,5 @@
 import { signal } from '@preact/signals';
-import { Stream } from '~/components/types';
+import { Stream } from '~/store/types';
 
 interface AudioPlayerState {
   isPlaying: boolean;

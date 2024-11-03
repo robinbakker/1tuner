@@ -3,10 +3,10 @@ import { useState } from 'preact/hooks';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
-import { Podcast } from '~/lib/db';
 import { getSignature } from '~/lib/signature';
 import { normalizedUrlWithoutScheme, slugify, stripHtml } from '~/lib/utils';
-import { followedPodcasts, recentlyVisitedPodcasts } from '../lib/store';
+import { Podcast } from '~/store/db/db';
+import { followedPodcasts, recentlyVisitedPodcasts } from '../store/signals/podcast';
 
 export const PodcastsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');

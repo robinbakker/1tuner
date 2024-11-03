@@ -2,13 +2,13 @@ import { ErrorBoundary, LocationProvider, Route, Router } from 'preact-iso';
 import { useEffect } from 'preact/hooks';
 import './app.css';
 import { AppShell } from './components/app-shell';
-import { DatabaseProvider } from './contexts/DatabaseContext';
-import { useDB } from './lib/db';
 import { Homepage } from './pages/homepage';
 import { PodcastPage } from './pages/podcast';
 import { PodcastsPage } from './pages/podcasts';
 import { RadioStationPage } from './pages/radio-station';
 import { RadioStationsPage } from './pages/radio-stations';
+import { DatabaseProvider } from './store/db/DatabaseContext';
+import { useDB } from './store/db/db';
 
 export function App() {
   const db = useDB();

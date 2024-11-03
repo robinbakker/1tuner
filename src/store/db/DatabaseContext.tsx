@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'preact/compat';
-import { useDB } from '../lib/db';
+import { useDB } from './db';
 
 const DatabaseContext = createContext<ReturnType<typeof useDB> | null>(null);
 

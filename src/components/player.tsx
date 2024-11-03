@@ -1,9 +1,9 @@
 import { ChevronDown, ChevronUp, FastForward, Pause, Play, Rewind, Timer, X } from 'lucide-preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { cn } from '~/lib/utils';
-import { audioPlayer, toggleMaximized } from '../lib/audio-store';
+import { audioPlayer, toggleMaximized } from '../store/signals/player';
 
-export function AudioPlayer() {
+export function Player() {
   if (!audioPlayer.value) return null;
 
   const audioRef = useRef<HTMLAudioElement>(null);

@@ -1,10 +1,10 @@
 import { ArrowLeft, Share2 } from 'lucide-preact';
 import { ComponentChildren } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { audioPlayer } from '~/lib/audio-store';
-import { headerTitle } from '~/lib/store';
 import { cn } from '~/lib/utils';
-import { AudioPlayer } from './audio-player';
+import { audioPlayer } from '~/store/signals/player';
+import { headerTitle } from '~/store/signals/ui';
+import { Player } from './player';
 
 interface AppShellProps {
   children: ComponentChildren;
@@ -57,7 +57,10 @@ export function AppShell({ children }: AppShellProps) {
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white shadow-lg md:relative md:h-full md:w-20 md:flex-shrink-0">
         <ul class="flex h-16 items-center justify-around md:h-full md:flex-col md:justify-start md:py-4">
           <li class="w-full">
-            <a href={`/`} class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200">
+            <a
+              href={`/`}
+              class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200"
+            >
               <svg
                 class="h-6 w-6 text-gray-600"
                 xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +129,10 @@ export function AppShell({ children }: AppShellProps) {
             </a>
           </li>
           <li class="w-full">
-            <a href={`/podcasts`} class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200">
+            <a
+              href={`/podcasts`}
+              class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200"
+            >
               <svg
                 class="h-6 w-6 text-gray-600"
                 xmlns="http://www.w3.org/2000/svg"
@@ -150,14 +156,21 @@ export function AppShell({ children }: AppShellProps) {
                     d="M31 17.209v3.081c0 5.957-4.701 10.786-10.5 10.786S10 26.247 10 20.29v-3.081"
                     vector-effect="non-scaling-stroke"
                   />
-                  <path stroke-miterlimit="3" d="M20.5 31.99v7.328M14.246 39.318h12.508" vector-effect="non-scaling-stroke" />
+                  <path
+                    stroke-miterlimit="3"
+                    d="M20.5 31.99v7.328M14.246 39.318h12.508"
+                    vector-effect="non-scaling-stroke"
+                  />
                 </g>
               </svg>
               <span class="text-xs mt-1 text-center">Podcasts</span>
             </a>
           </li>
           <li class="w-full">
-            <a href={`/playlists`} class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200">
+            <a
+              href={`/playlists`}
+              class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200"
+            >
               <svg
                 class="h-6 w-6 text-gray-600"
                 xmlns="http://www.w3.org/2000/svg"
@@ -170,8 +183,17 @@ export function AppShell({ children }: AppShellProps) {
                     <path d="M0 0h42v42H0z" />
                   </clipPath>
                 </defs>
-                <g stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3" stroke-width="2" clip-path="url(#a)">
-                  <path d="M8.572 33.021h28.356M8.572 23.021h28.356M17.928 13.021h19" vector-effect="non-scaling-stroke" />
+                <g
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-miterlimit="3"
+                  stroke-width="2"
+                  clip-path="url(#a)"
+                >
+                  <path
+                    d="M8.572 33.021h28.356M8.572 23.021h28.356M17.928 13.021h19"
+                    vector-effect="non-scaling-stroke"
+                  />
                   <path fill="none" d="M5.072 17.062V8.979l7 4.042z" vector-effect="non-scaling-stroke" />
                 </g>
               </svg>
@@ -179,7 +201,10 @@ export function AppShell({ children }: AppShellProps) {
             </a>
           </li>
           <li class="w-full">
-            <a href={'/settings'} class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200">
+            <a
+              href={'/settings'}
+              class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200"
+            >
               <svg
                 class="h-6 w-6 text-gray-600"
                 xmlns="http://www.w3.org/2000/svg"
@@ -211,10 +236,15 @@ export function AppShell({ children }: AppShellProps) {
             class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md' : 'bg-transparent'}`}
           >
             <div class="flex items-center justify-between p-4">
-              <button onClick={handleBackClick} class="p-2 rounded-full hover:bg-gray-200 transition-colors duration-200">
+              <button
+                onClick={handleBackClick}
+                class="p-2 rounded-full hover:bg-gray-200 transition-colors duration-200"
+              >
                 <ArrowLeft class="h-6 w-6 text-gray-600" />
               </button>
-              <h1 class={`text-lg font-semibold transition-opacity truncate duration-300 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}>
+              <h1
+                class={`text-lg font-semibold transition-opacity truncate duration-300 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}
+              >
                 {headerTitle.value}
               </h1>
               <button onClick={handleShare} class="p-2 rounded-full hover:bg-gray-200 transition-colors duration-200">
@@ -225,7 +255,7 @@ export function AppShell({ children }: AppShellProps) {
         )}
         <div class={'p-4'}>{children}</div>
       </main>
-      <AudioPlayer />
+      <Player />
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import { Card, CardContent } from '~/components/ui/card';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
-import { getRecentlyVisitedRadioStations, recentlyVisitedPodcasts } from '~/lib/store';
 import { normalizedUrlWithoutScheme, slugify } from '~/lib/utils';
+import { recentlyVisitedPodcasts } from '~/store/signals/podcast';
+import { getRecentlyVisitedRadioStations } from '~/store/signals/radio';
 
 export const Homepage = () => {
   return (

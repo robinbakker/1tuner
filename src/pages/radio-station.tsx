@@ -3,7 +3,7 @@ import { useRoute } from 'preact-iso';
 import { useEffect, useState } from 'preact/hooks';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
-import { setAudioPlayer } from '~/lib/audio-store';
+import { setAudioPlayer } from '~/store/signals/player';
 import {
   addRecentlyVisitedRadioStation,
   followRadioStation,
@@ -12,8 +12,8 @@ import {
   radioGenres,
   radioStations,
   unfollowRadioStation,
-} from '~/lib/store';
-import { SocialAccountType } from '../components/types';
+} from '~/store/signals/radio';
+import { SocialAccountType } from '../store/types';
 
 export const RadioStationPage = () => {
   const { params } = useRoute();

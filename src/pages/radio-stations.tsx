@@ -6,7 +6,7 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet';
-import { radioGenres, radioLanguages, radioStations } from '~/lib/store';
+import { radioGenres, radioLanguages, radioStations } from '~/store/signals/radio';
 import { Card, CardContent } from '../components/ui/card';
 
 export const RadioStationsPage = () => {

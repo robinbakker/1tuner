@@ -1,10 +1,6 @@
 import { DBSchema, openDB } from 'idb';
-import {
-  followedPodcasts,
-  followedRadioStationIDs,
-  recentlyVisitedPodcasts,
-  recentlyVisitedRadioStationIDs,
-} from './store';
+import { followedPodcasts, recentlyVisitedPodcasts } from '../signals/podcast';
+import { followedRadioStationIDs, recentlyVisitedRadioStationIDs } from '../signals/radio';
 
 export interface Podcast {
   id: string;
@@ -17,7 +13,6 @@ export interface Podcast {
   addedDate: number;
   lastFetched: number;
   episodes?: Episode[];
-  // Add any other fields you need from the full podcast data
 }
 
 export interface Episode {
