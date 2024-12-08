@@ -1,15 +1,14 @@
 import { Bookmark, Facebook, Instagram, Play, Twitter, Youtube } from 'lucide-preact';
 import { useRoute } from 'preact-iso';
 import { useEffect, useState } from 'preact/hooks';
+import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
-import { Card, CardContent } from '~/components/ui/card';
 import { setPlayerState } from '~/store/signals/player';
 import {
   addRecentlyVisitedRadioStation,
   followRadioStation,
   getRadioStation,
   isFollowedRadioStation,
-  radioGenres,
   radioStations,
   unfollowRadioStation,
 } from '~/store/signals/radio';
@@ -162,26 +161,7 @@ export const RadioStationPage = () => {
               {radioStations.value
                 .filter((rs) => radioStation.related?.includes(rs.id))
                 .map((s) => (
-                  <a
-                    key={`related-${s.id}`}
-                    class="flex flex-col items-center p-2 h-auto"
-                    href={`/radio-station/${s.id}`}
-                  >
-                    <Card class="w-[100px]">
-                      <CardContent class="p-2">
-                        <img src={s.logosource} alt={`${s.name} logo`} class="w-20 h-20 object-contain mb-2" />
-                        <h3 class="text-center text-sm truncate w-full" title={s.name}>
-                          {s.name}
-                        </h3>
-                        <p class="text-sm text-muted-foreground mt-1">
-                          {radioGenres.value
-                            .filter((rg) => s.genres.includes(rg.id))
-                            .map((rg) => rg.name)
-                            .join(', ')}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </a>
+                  <RadioStationCard key={`related-${s.id}`} station={s} size="large" />
                 ))}
             </div>
           </section>

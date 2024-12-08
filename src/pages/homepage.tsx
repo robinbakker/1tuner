@@ -1,3 +1,4 @@
+import { RadioStationCard } from '~/components/radio-station-card';
 import { Card, CardContent } from '~/components/ui/card';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { normalizedUrlWithoutScheme, slugify } from '~/lib/utils';
@@ -17,14 +18,7 @@ export const Homepage = () => {
         <ScrollArea className="w-screen md:w-full whitespace-nowrap">
           <div class="flex w-max space-x-4 p-4">
             {getRecentlyVisitedRadioStations().map((station) => (
-              <a key={station.id} href={`/radio-station/${station.id}`} class="shrink-0">
-                <Card class="w-[100px]">
-                  <CardContent class="p-2">
-                    <img src={station.logosource} alt={station.name} width={80} height={80} class="rounded-md mb-2" />
-                    <p class="text-sm text-center truncate">{station.name}</p>
-                  </CardContent>
-                </Card>
-              </a>
+              <RadioStationCard key={station.id} station={station} />
             ))}
           </div>
           <ScrollBar orientation="horizontal" />

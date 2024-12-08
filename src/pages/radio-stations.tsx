@@ -1,5 +1,6 @@
 import { Filter, Search } from 'lucide-preact';
 import { useMemo, useState } from 'preact/hooks';
+import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
 import { Checkbox } from '~/components/ui/checkbox';
 import { Input } from '~/components/ui/input';
@@ -7,7 +8,6 @@ import { Label } from '~/components/ui/label';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet';
 import { getRadioGenres, radioLanguages, radioStations } from '~/store/signals/radio';
-import { Card, CardContent } from '../components/ui/card';
 
 export const RadioStationsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -103,10 +103,11 @@ export const RadioStationsPage = () => {
     </div>
   );
 
+  const shouldUseLargeCards = useMemo(() => filteredStations.length <= 40, [filteredStations.length]);
+
   return (
     <div class="container mx-auto p-4">
       <h1 class="text-3xl font-bold mb-6">Radio stations</h1>
-      {/* <p class="text-lg font-bold mb-4">Listen to the radio 📻</p> */}
       <div class="flex flex-col lg:flex-row gap-4">
         <section class="flex-1 order-1 lg:order-1">
           <div class="flex gap-2 mb-8">
@@ -139,21 +140,24 @@ export const RadioStationsPage = () => {
               </SheetContent>
             </Sheet>
           </div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {filteredStations.map((station) => (
-              <a key={station.id} class="flex flex-col items-center p-2 h-auto" href={`/radio-station/${station.id}`}>
-                <Card class="w-[100px]">
-                  <CardContent class="p-2">
-                    <img src={station.logosource} alt={`${station.name} logo`} class="w-20 h-20 object-contain mb-2" />
-                    <span class="text-center text-sm truncate w-full" title={station.name}>
-                      {station.name}
-                    </span>
-                  </CardContent>
-                </Card>
-              </a>
-            ))}
-          </div>
+
+          {shouldUseLargeCards ? (
+            // Large card layout
+            <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center">
+              {filteredStations.map((station) => (
+                <RadioStationCard key={station.id} station={station} size="large" />
+              ))}
+            </div>
+          ) : (
+            // Compact card layout
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-8 justify-items-center">
+              {filteredStations.map((station) => (
+                <RadioStationCard key={station.id} station={station} size="default" />
+              ))}
+            </div>
+          )}
         </section>
+
         <aside class="w-full lg:w-1/4 order-2 lg:order-2 hidden lg:block">
           <div class="sticky top-4">
             <FilterContent />
