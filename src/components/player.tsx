@@ -195,9 +195,13 @@ export function Player() {
               </button>
             </div>
             <div class="flex-1 overflow-y-auto p-6">
-              <div class="flex flex-col items-center space-y-6">
-                <div class="relative w-64 h-64 shadow-lg rounded-lg overflow-hidden">
-                  <img src={playerState.value.imageUrl} alt="" class="w-full h-full object-cover" />
+              <div class="flex flex-col items-center justify-center space-y-6">
+                <div class={`relative flex flex-col items-center justify-center overflow-hidden w-64 h-64`}>
+                  <img
+                    src={playerState.value.imageUrl}
+                    alt={playerState.value.title}
+                    class={`w-48 h-48${isPodcast ? '' : ' rounded-full'}`}
+                  />
                 </div>
                 <div class="text-center w-full">
                   <h2 class="text-xl font-semibold text-gray-900">
