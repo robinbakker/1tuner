@@ -161,10 +161,10 @@ export function Player() {
     <div
       class={cn(
         'fixed transition-all duration-300 ease-in-out',
-        'h-20 bottom-16 right-0 z-40',
+        'h-20 bottom-16 right-0 z-50',
         'md:right-0 w-full md:w-auto',
         playerState.value.isMaximized
-          ? ['h-[calc(100%-4rem)] top-0 bottom-16', 'md:h-full md:top-0 md:bottom-0 md:w-96']
+          ? ['h-full top-0 bottom-0', 'md:top-0 md:w-96']
           : ['h-20', 'md:bottom-0 md:right-0 md:left-20'],
       )}
     >
@@ -176,10 +176,17 @@ export function Player() {
 
       <div
         class={cn(
-          'h-full w-full bg-white/66 backdrop-blur-md',
-          playerState.value.isMaximized ? 'shadow-lg' : 'shadow-md',
+          'h-full w-full bg-white/66 backdrop-blur-md relative',
+          playerState.value.isMaximized ? 'shadow-lg bg-white/55' : 'shadow-md',
         )}
       >
+        {/* Add progress bar for podcasts in minimized view */}
+        {!playerState.value.isMaximized && isPodcast && (
+          <div
+            class="absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-200"
+            style={{ width: `${(currentTime / duration) * 100}%` }}
+          />
+        )}
         {playerState.value.isMaximized ? (
           // Maximized View Content
           <div class="h-full flex flex-col">
@@ -295,7 +302,7 @@ export function Player() {
           </div>
         ) : (
           // Minimized View
-          <div class="flex items-center h-full px-4">
+          <div class="flex items-center border-t border-slate-300/50 h-full px-4">
             <button
               onClick={() => togglePlayerMaximized()}
               class="mr-2 p-2 hover:bg-gray-200 rounded-full transition-colors"

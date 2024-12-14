@@ -253,7 +253,7 @@ export function AppShell({ children }: AppShellProps) {
             </div>
           </header>
         )}
-        <div class={'p-4'}>{children}</div>
+        {children}
       </main>
       <Player />
     </div>

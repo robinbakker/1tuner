@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const RadioStationCard = ({ station, size = 'default' }: Props) => {
-  const onClickPlay = (e) => {
+  const onClickPlay = (e: { preventDefault: () => void; stopPropagation: () => void }) => {
     e.preventDefault();
     e.stopPropagation();
     setPlayerState({
