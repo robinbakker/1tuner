@@ -280,9 +280,12 @@ export function Player() {
         'h-20 bottom-16 right-0 z-50',
         'md:right-0 w-full md:w-auto',
         isPlayerMaximized.value
-          ? ['h-full top-0 bottom-0', 'md:top-0 md:w-96']
+          ? ['h-full top-0 bottom-0 overscroll-none', 'md:top-0 md:w-96']
           : ['h-20', 'md:bottom-0 md:right-0 md:left-20'],
       )}
+      style={{
+        touchAction: isPlayerMaximized.value ? 'none' : undefined,
+      }}
     >
       <audio ref={audioRef} preload="metadata">
         {playerState.value.streams.map((stream) => (
@@ -293,7 +296,7 @@ export function Player() {
       <div
         class={cn(
           'h-full w-full bg-white/66 backdrop-blur-md relative',
-          isPlayerMaximized.value ? 'shadow-lg bg-white/55' : 'shadow-md',
+          isPlayerMaximized.value ? 'shadow-lg bg-white/55 overscroll-none' : 'md:shadow-md',
         )}
       >
         {!isPlayerMaximized.value && isPodcast && (
@@ -336,7 +339,7 @@ export function Player() {
                     <div class="flex items-center space-x-4">
                       <button
                         onClick={() => handleSeek(-10)}
-                        class="p-2 rounded-full transition-colors flex flex-col items-center"
+                        class="p-2 pt-6 rounded-full transition-colors flex flex-col items-center"
                         title="Rewind 10 seconds"
                       >
                         <Rewind class="h-6 w-6 text-gray-600" />
@@ -356,7 +359,7 @@ export function Player() {
 
                       <button
                         onClick={() => handleSeek(30)}
-                        class="p-2 rounded-full transition-colors flex flex-col items-center"
+                        class="p-2 pt-6 rounded-full transition-colors flex flex-col items-center"
                         title="Forward 30 seconds"
                       >
                         <FastForward class="h-6 w-6 text-gray-600" />
@@ -373,7 +376,7 @@ export function Player() {
                           max={duration || 0}
                           value={currentTimeRef.current}
                           onChange={handleSliderChange}
-                          class="flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-gray-200"
+                          class="flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-gray-200 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-700 [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-gray-700 [&::-moz-range-thumb]:border-0"
                           style={{
                             backgroundImage: `linear-gradient(to right, #ff6000 ${(currentTimeRef.current / duration) * 100}%, #ccc ${(currentTimeRef.current / duration) * 100}%)`,
                           }}
@@ -417,7 +420,7 @@ export function Player() {
             </div>
           </div>
         ) : (
-          <div class="flex items-center border-t border-slate-300/50 h-full px-4">
+          <div class="flex items-center border-t border-b md:border-b-0 border-slate-300/50 h-full px-4">
             <button
               onClick={() => togglePlayerMaximized()}
               class="mr-2 p-2 hover:bg-gray-200 rounded-full transition-colors"
@@ -446,14 +449,16 @@ export function Player() {
               </div>
               <div class="ml-3 min-w-0 flex-1 flex items-center">
                 {' '}
-                <div class="flex-1">
-                  <h3 class="text-sm font-medium text-gray-900 truncate">
-                    <a href={playerState.value.pageLocation}>{playerState.value.title}</a>
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-sm font-medium text-gray-900 truncate max-w-full">
+                    <a href={playerState.value.pageLocation} class="truncate block">
+                      {playerState.value.title}
+                    </a>
                   </h3>
-                  <p class="text-xs text-gray-500 truncate">{playerState.value.description}</p>
+                  <p class="text-xs text-gray-500 truncate max-w-full">{playerState.value.description}</p>
                 </div>
                 {isPodcast && (
-                  <>
+                  <div class="flex-shrink-0 flex items-center">
                     <button
                       onClick={() => handleSeek(-10)}
                       class="ml-2 p-2 rounded-full transition-colors relative group"
@@ -474,9 +479,12 @@ export function Player() {
                         30s
                       </span>
                     </button>
-                  </>
+                  </div>
                 )}
-                <button onClick={handleClose} class="ml-2 mr-4 p-2 hover:bg-gray-200 rounded-full transition-colors">
+                <button
+                  onClick={handleClose}
+                  class="ml-2 mr-4 p-2 hover:bg-gray-200 rounded-full transition-colors flex-shrink-0"
+                >
                   <X class="h-6 w-6 text-gray-600" />
                 </button>
               </div>

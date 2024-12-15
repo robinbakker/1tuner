@@ -1,7 +1,6 @@
 import { signal } from '@preact/signals';
 import { PlayerState } from '~/store/types';
 
-// Separate maximized state from player state
 export const isPlayerMaximized = signal(false);
 export const playerState = signal<PlayerState | null>(null);
 

@@ -52,6 +52,10 @@ export function AppShell({ children }: AppShellProps) {
     }
   };
 
+  const isActive = (path: string) => {
+    return location?.pathname === path;
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white shadow-lg md:relative md:h-full md:w-20 md:flex-shrink-0">
@@ -59,10 +63,14 @@ export function AppShell({ children }: AppShellProps) {
           <li class="w-full">
             <a
               href={`/`}
-              class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200"
+              class={cn(
+                'flex flex-col items-center justify-center p-2 transition-colors',
+                'duration-200 hover:text-primary [&.active]:text-primary',
+                isActive('/') && 'text-primary',
+              )}
             >
               <svg
-                class="h-6 w-6 text-gray-600"
+                class="h-6 w-6 text-current group-hover:text-primary transition-colors duration-200"
                 xmlns="http://www.w3.org/2000/svg"
                 style="isolation:isolate"
                 stroke="currentColor"
@@ -90,10 +98,14 @@ export function AppShell({ children }: AppShellProps) {
           <li class="w-full">
             <a
               href={`/radio-stations`}
-              class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200"
+              class={cn(
+                'flex flex-col items-center justify-center p-2 transition-colors',
+                'duration-200 hover:text-primary [&.active]:text-primary',
+                isActive('/radio-stations') && 'text-primary',
+              )}
             >
               <svg
-                class="h-6 w-6 text-gray-600"
+                class="h-6 w-6 text-current group-hover:text-primary transition-colors duration-200"
                 xmlns="http://www.w3.org/2000/svg"
                 style="isolation:isolate"
                 stroke="currentColor"
@@ -131,10 +143,14 @@ export function AppShell({ children }: AppShellProps) {
           <li class="w-full">
             <a
               href={`/podcasts`}
-              class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200"
+              class={cn(
+                'flex flex-col items-center justify-center p-2 transition-colors',
+                'duration-200 hover:text-primary [&.active]:text-primary',
+                isActive('/podcasts') && 'text-primary',
+              )}
             >
               <svg
-                class="h-6 w-6 text-gray-600"
+                class="h-6 w-6 text-current group-hover:text-primary transition-colors duration-200"
                 xmlns="http://www.w3.org/2000/svg"
                 style="isolation:isolate"
                 stroke="currentColor"
@@ -169,10 +185,10 @@ export function AppShell({ children }: AppShellProps) {
           {/* <li class="w-full">
             <a
               href={`/playlists`}
-              class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200"
+              class="flex flex-col items-center justify-center p-2 transition-colors duration-200 hover:text-primary [&.active]:text-primary"
             >
               <svg
-                class="h-6 w-6 text-gray-600"
+                class="h-6 w-6 text-gray-600 group-hover:text-primary transition-colors duration-200"
                 xmlns="http://www.w3.org/2000/svg"
                 style="isolation:isolate"
                 stroke="currentColor"
@@ -203,10 +219,14 @@ export function AppShell({ children }: AppShellProps) {
           <li class="w-full">
             <a
               href={'/settings'}
-              class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200"
+              class={cn(
+                'flex flex-col items-center justify-center p-2 transition-colors',
+                'duration-200 hover:text-primary [&.active]:text-primary',
+                isActive('/settings') && 'text-primary',
+              )}
             >
               <svg
-                class="h-6 w-6 text-gray-600"
+                class="h-6 w-6 text-current group-hover:text-primary transition-colors duration-200"
                 xmlns="http://www.w3.org/2000/svg"
                 style="isolation:isolate"
                 stroke="currentColor"
