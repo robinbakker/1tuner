@@ -250,7 +250,7 @@ export function AppShell({ children }: AppShellProps) {
           </li>
         </ul>
       </nav>
-      <main class={cn('flex-1 overflow-auto', isPlayerMaximized.value && 'md:mr-96')}>
+      <main class={cn('flex-1 overflow-auto pb-40', isPlayerMaximized.value && 'md:mr-96')}>
         {!!headerTitle.value && (
           <header
             class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md' : 'bg-transparent'}`}

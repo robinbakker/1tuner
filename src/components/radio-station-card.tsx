@@ -37,7 +37,7 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
 
   if (size === 'large') {
     return (
-      <a class="block w-full sm:w-72 h-28 group" href={`/radio-station/${station.id}`} title={station.name}>
+      <a class="block w-full sm:min-w-72 h-28 group" href={`/radio-station/${station.id}`} title={station.name}>
         <div class="w-full h-full relative overflow-hidden rounded-xl border bg-card shadow-lg hover:shadow-xl transition-all flex">
           <div class="w-28 h-full shrink-0 opacity-80 group-hover:opacity-100 relative overflow-hidden">
             <div
@@ -61,7 +61,7 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
             </button>
           </div>
 
-          <div class="flex-1 sm:w-[288px] px-4 pt-2">
+          <div class="flex-1 sm:min-w-[288px] px-4 pt-2">
             <h3 class="font-bold text-gray-500 group-hover:text-primary text-lg transition-colors duration-500 line-clamp-1">
               {station.name}
             </h3>

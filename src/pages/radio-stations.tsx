@@ -104,7 +104,7 @@ export const RadioStationsPage = () => {
   );
 
   return (
-    <div class="container mx-auto p-4">
+    <div class="container mx-auto px-8 py-6">
       <h1 class="text-3xl font-bold mb-6">Radio stations</h1>
       <div class="flex gap-2 mb-8">
         <div class="relative w-full">

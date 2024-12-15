@@ -63,11 +63,11 @@ export const RadioStationPage = () => {
 
   return (
     <div class="min-h-screen">
-      <header class="relative overflow-hidden -ml-4 -mr-4 px-4 bg-black/75 py-16 -skew-y-3 transform -mt-16 mb-8">
+      <header class="relative overflow-hidden -ml-4 -mr-4 px-8 pt-16 pb-8 bg-black/75 -skew-y-3 transform -mt-16 mb-8">
         <div class="absolute inset-0 z-0">
           <img src={radioStation.logosource} class="w-full filter blur-md opacity-50" />
         </div>
-        <div class="container mx-auto px-4 pt-6 skew-y-3 transform relative z-10">
+        <div class="px-4 pt-6 skew-y-3 transform relative z-10">
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
             <div class="flex items-center space-x-4">
               <img src={radioStation.logosource} alt="Radio station logo" width={80} height={80} class="rounded-full" />
@@ -129,31 +129,12 @@ export const RadioStationPage = () => {
         </div>
       </header>
 
-      <main class="container mx-auto px-4 py-8">
+      <main class="container mx-auto px-8 py-6">
         {/* <section class="mb-12">
           <h2 class="text-2xl font-semibold mb-4">Related Podcasts</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((podcast) => (
-              <Card key={podcast}>
-                <CardContent class="p-4">
-                  <div class="flex items-center space-x-4">
-                    <img
-                      src={`/placeholder.svg?height=80&width=80&text=Podcast ${podcast}`}
-                      alt={`Podcast ${podcast}`}
-                      width={80}
-                      height={80}
-                      class="rounded-md"
-                    />
-                    <div>
-                      <h3 class="font-semibold line-clamp-2">Amazing Podcast Title That Might Be Long</h3>
-                      <p class="text-sm text-muted-foreground line-clamp-2 mt-1">
-                        This is a brief description of the podcast. It might contain interesting details about the
-                        content.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <PodcastCard key={podcast} />
             ))}
           </div>
         </section> */}
@@ -161,7 +142,7 @@ export const RadioStationPage = () => {
         {!!radioStation.related?.length && (
           <section>
             <h2 class="text-2xl font-semibold mb-4">Related</h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {radioStations.value
                 .filter((rs) => radioStation.related?.includes(rs.id))
                 .map((s) => (

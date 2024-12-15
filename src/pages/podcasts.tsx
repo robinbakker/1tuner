@@ -1,10 +1,10 @@
 import { Search } from 'lucide-preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { Loader } from '~/components/loader';
-import { Card, CardContent } from '~/components/ui/card';
+import { PodcastCard } from '~/components/podcast-card';
 import { Input } from '~/components/ui/input';
 import { getSignature } from '~/lib/signature';
-import { normalizedUrlWithoutScheme, slugify, stripHtml } from '~/lib/utils';
+import { slugify } from '~/lib/utils';
 import { Podcast } from '~/store/types';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../store/signals/podcast';
 
@@ -68,25 +68,7 @@ export const PodcastsPage = () => {
         <h2 className="text-2xl font-semibold mb-4">{title}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {podcasts.map((podcast) => (
-            <a
-              key={podcast.id}
-              href={`/podcast/${slugify(podcast.title)}/${btoa(normalizedUrlWithoutScheme(podcast.url))}`}
-              className="group"
-            >
-              <Card className="transition-shadow hover:shadow-md">
-                <CardContent className="flex items-start space-x-4 p-4">
-                  <img
-                    src={podcast.imageUrl}
-                    alt={podcast.title}
-                    className="w-24 h-24 object-cover flex-shrink-0 rounded-md"
-                  />
-                  <div className="flex-1  min-w-0">
-                    <h3 className="text-xl font-semibold mb-2 break-words group-hover:underline">{podcast.title}</h3>
-                    <p className="text-sm text-gray-600 line-clamp-2">{stripHtml(podcast.description)}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </a>
+            <PodcastCard key={`${slugify(title)}-${podcast.id}`} podcast={podcast} />
           ))}
         </div>
       </>
@@ -94,7 +76,7 @@ export const PodcastsPage = () => {
   };
 
   return (
-    <div class="container mx-auto p-4">
+    <div class="container mx-auto px-8 py-6">
       <h1 class="text-3xl font-bold mb-6">Podcasts</h1>
       <div class="mb-8 relative">
         <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
