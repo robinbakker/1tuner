@@ -1,15 +1,21 @@
 import { ChevronDown, ChevronUp, FastForward, Pause, Play, Rewind, Timer, X } from 'lucide-preact';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { cn } from '~/lib/utils';
 import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
-import { playerState, togglePlayerMaximized } from '../store/signals/player';
+import { isPlayerMaximized, playerState, togglePlayerMaximized } from '../store/signals/player';
 
 export function Player() {
   if (!playerState.value) return null;
 
   const audioRef = useRef<HTMLAudioElement>(null);
+  const currentTimeRef = useRef(0);
+  const currentTimeDisplayRef = useRef<HTMLSpanElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLInputElement>(null);
+  const reconnectAttempts = useRef(0);
+  const maxReconnectAttempts = 20;
+  const reconnectTimeout = useRef<NodeJS.Timeout>();
   const [playbackRate, setPlaybackRate] = useState(1);
-  const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
   const isPodcast = playerState.value.pageLocation.startsWith('/podcast/');
@@ -17,7 +23,6 @@ export function Player() {
   useEffect(() => {
     if (!audioRef.current || !playerState.value || !playerState.value.streams?.length) return;
 
-    // Only reload when streams actually change
     const currentSrc = audioRef.current.currentSrc;
     const newSrc = playerState.value.streams[0].url;
 
@@ -28,7 +33,13 @@ export function Player() {
     if (playerState.value.currentTime) audioRef.current.currentTime = playerState.value.currentTime;
 
     if (playerState.value.isPlaying) {
-      audioRef.current.play();
+      const promise = audioRef.current.play();
+      if (promise) {
+        promise.catch((error) => {
+          if (playerState.value) playerState.value = { ...playerState.value, isPlaying: false };
+          console.error('Error playing audio:', error);
+        });
+      }
     } else {
       audioRef.current.pause();
       if (playerState.value.pageLocation.startsWith('/podcast/')) {
@@ -39,14 +50,120 @@ export function Player() {
         );
       }
     }
-  }, [playerState.value.isPlaying, playerState.value.streams]);
+  }, [playerState.value]);
 
   useEffect(() => {
     if (!audioRef.current) return;
 
     const audio = audioRef.current;
+    const isRadioStream = !playerState.value?.pageLocation.startsWith('/podcast/');
 
-    const updateTime = () => setCurrentTime(audio.currentTime);
+    const handleStalled = () => {
+      if (isRadioStream && playerState.value?.isPlaying) {
+        console.log('Stream stalled, attempting reconnect...');
+        attemptReconnect();
+      }
+    };
+
+    const handleError = (e: ErrorEvent) => {
+      if (isRadioStream && playerState.value?.isPlaying) {
+        console.log('Stream error, attempting reconnect...', e);
+        attemptReconnect();
+      }
+    };
+
+    const attemptReconnect = () => {
+      if (reconnectAttempts.current >= maxReconnectAttempts) {
+        console.log('Max reconnect attempts reached');
+        reconnectAttempts.current = 0;
+        playerState.value = playerState.value
+          ? {
+              ...playerState.value,
+              isPlaying: false,
+            }
+          : null;
+        return;
+      }
+
+      reconnectAttempts.current += 1;
+      console.log(`Reconnect attempt ${reconnectAttempts.current}/${maxReconnectAttempts}`);
+
+      if (reconnectTimeout.current) {
+        clearTimeout(reconnectTimeout.current);
+      }
+
+      const timeout =
+        reconnectAttempts.current <= 10 ? 1000 : 1000 * Math.min(2 ** (reconnectAttempts.current - 10), 16);
+
+      reconnectTimeout.current = setTimeout(() => {
+        if (!audio || !playerState.value?.isPlaying) return;
+
+        audio.load();
+        const playPromise = audio.play();
+
+        if (playPromise) {
+          playPromise
+            .then(() => {
+              console.log('Reconnect successful');
+              reconnectAttempts.current = 0;
+            })
+            .catch((error) => {
+              console.log('Reconnect failed:', error);
+              attemptReconnect();
+            });
+        }
+      }, timeout);
+    };
+
+    const handlePlaying = () => (reconnectAttempts.current = 0);
+
+    audio.addEventListener('stalled', handleStalled);
+    audio.addEventListener('error', handleError);
+    audio.addEventListener('playing', handlePlaying);
+
+    return () => {
+      audio.removeEventListener('stalled', handleStalled);
+      audio.removeEventListener('error', handleError);
+      audio.removeEventListener('playing', handlePlaying);
+      if (reconnectTimeout.current) {
+        clearTimeout(reconnectTimeout.current);
+      }
+    };
+  }, [playerState.value?.isPlaying]);
+
+  const updateTimeUI = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio || !playerState.value) return;
+    currentTimeRef.current = audio.currentTime;
+
+    // Only update refs if they exist and the parent elements are mounted
+    // This prevents errors during view transitions
+    requestAnimationFrame(() => {
+      if (currentTimeDisplayRef.current) {
+        currentTimeDisplayRef.current.textContent = formatTime(audio.currentTime);
+      }
+      if (progressBarRef.current) {
+        progressBarRef.current.style.width = `${(audio.currentTime / duration) * 100}%`;
+      }
+      if (sliderRef.current) {
+        sliderRef.current.value = audio.currentTime.toString();
+        sliderRef.current.style.backgroundImage = `linear-gradient(to right, #ff6000 ${(audio.currentTime / duration) * 100}%, #ccc ${(audio.currentTime / duration) * 100}%)`;
+      }
+    });
+  }, [duration]);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+
+    const audio = audioRef.current;
+    let lastTime = 0;
+
+    const updateTime = () => {
+      if (Math.abs(audio.currentTime - lastTime) >= 1) {
+        lastTime = audio.currentTime;
+        updateTimeUI();
+      }
+    };
     const updateDuration = () => setDuration(audio.duration);
 
     audio.addEventListener('timeupdate', updateTime);
@@ -58,23 +175,19 @@ export function Player() {
       audio.removeEventListener('loadedmetadata', updateDuration);
       audio.removeEventListener('durationchange', updateDuration);
     };
-  }, []);
+  }, [duration]);
 
-  // Add new Media Session effect after the existing effects
   useEffect(() => {
     if (!audioRef.current || !playerState.value || typeof navigator.mediaSession === 'undefined') return;
 
-    // Set metadata
     navigator.mediaSession.metadata = new MediaMetadata({
       title: playerState.value.title,
       artist: playerState.value.description,
       artwork: [{ src: playerState.value.imageUrl, sizes: '512x512', type: 'image/jpeg' }],
     });
 
-    // Set playback state
     navigator.mediaSession.playbackState = playerState.value.isPlaying ? 'playing' : 'paused';
 
-    // Define media session action handlers
     navigator.mediaSession.setActionHandler('play', () => {
       handlePlayPause();
     });
@@ -95,18 +208,16 @@ export function Player() {
       navigator.mediaSession.setActionHandler('seekto', (details) => {
         if (!audioRef.current || details.seekTime === undefined) return;
         audioRef.current.currentTime = details.seekTime;
-        setCurrentTime(details.seekTime);
+        updateTimeUI();
       });
     }
 
-    // Update position state when duration or current time changes
     navigator.mediaSession.setPositionState({
       duration: duration,
-      position: currentTime,
+      position: currentTimeRef.current,
       playbackRate: playbackRate,
     });
 
-    // Cleanup
     return () => {
       navigator.mediaSession.metadata = null;
       navigator.mediaSession.setActionHandler('play', null);
@@ -115,47 +226,52 @@ export function Player() {
       navigator.mediaSession.setActionHandler('seekforward', null);
       navigator.mediaSession.setActionHandler('seekto', null);
     };
-  }, [playerState.value, isPodcast, duration, currentTime, playbackRate]);
+  }, [playerState.value, isPodcast, duration, playbackRate]);
 
-  const handleSeek = (seconds: number) => {
+  const handleSeek = useCallback((seconds: number) => {
     if (!audioRef.current) return;
     audioRef.current.currentTime = audioRef.current.currentTime + seconds;
-  };
+  }, []);
 
-  const handlePlaybackRateChange = (rate: number) => {
+  const handlePlaybackRateChange = useCallback((rate: number) => {
     if (!audioRef.current) return;
     audioRef.current.playbackRate = rate;
     setPlaybackRate(rate);
-  };
+  }, []);
 
-  const handlePlayPause = () => {
+  const handlePlayPause = useCallback(() => {
     if (!playerState.value) return;
     playerState.value = {
       ...playerState.value,
       isPlaying: !playerState.value.isPlaying,
     };
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause();
     }
+    if (reconnectTimeout.current) {
+      clearTimeout(reconnectTimeout.current);
+    }
+    reconnectAttempts.current = 0;
     playerState.value = null;
-  };
+    isPlayerMaximized.value = false;
+  }, []);
 
-  const formatTime = (time: number) => {
+  const formatTime = useCallback((time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  };
+  }, []);
 
-  const handleSliderChange = (e: Event) => {
+  const handleSliderChange = useCallback((e: Event) => {
     const target = e.target as HTMLInputElement;
     if (!audioRef.current) return;
     const newTime = parseFloat(target.value);
     audioRef.current.currentTime = newTime;
-    setCurrentTime(newTime);
-  };
+    updateTimeUI();
+  }, []);
 
   return (
     <div
@@ -163,7 +279,7 @@ export function Player() {
         'fixed transition-all duration-300 ease-in-out',
         'h-20 bottom-16 right-0 z-50',
         'md:right-0 w-full md:w-auto',
-        playerState.value.isMaximized
+        isPlayerMaximized.value
           ? ['h-full top-0 bottom-0', 'md:top-0 md:w-96']
           : ['h-20', 'md:bottom-0 md:right-0 md:left-20'],
       )}
@@ -177,18 +293,17 @@ export function Player() {
       <div
         class={cn(
           'h-full w-full bg-white/66 backdrop-blur-md relative',
-          playerState.value.isMaximized ? 'shadow-lg bg-white/55' : 'shadow-md',
+          isPlayerMaximized.value ? 'shadow-lg bg-white/55' : 'shadow-md',
         )}
       >
-        {/* Add progress bar for podcasts in minimized view */}
-        {!playerState.value.isMaximized && isPodcast && (
+        {!isPlayerMaximized.value && isPodcast && (
           <div
+            ref={progressBarRef}
             class="absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-200"
-            style={{ width: `${(currentTime / duration) * 100}%` }}
+            style={{ width: `${(currentTimeRef.current / duration) * 100}%` }}
           />
         )}
-        {playerState.value.isMaximized ? (
-          // Maximized View Content
+        {isPlayerMaximized.value ? (
           <div class="h-full flex flex-col">
             <div class="p-4 flex justify-between">
               <button
@@ -250,16 +365,17 @@ export function Player() {
                     </div>
                     <div class="w-full px-6 mb-6">
                       <div class="flex items-center space-x-2 text-sm text-gray-500">
-                        <span>{formatTime(currentTime)}</span>
+                        <span ref={currentTimeDisplayRef}>{formatTime(currentTimeRef.current)}</span>
                         <input
+                          ref={sliderRef}
                           type="range"
                           min="0"
                           max={duration || 0}
-                          value={currentTime}
+                          value={currentTimeRef.current}
                           onChange={handleSliderChange}
                           class="flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-gray-200"
                           style={{
-                            backgroundImage: `linear-gradient(to right, #ff6000 ${(currentTime / duration) * 100}%, #ccc ${(currentTime / duration) * 100}%)`,
+                            backgroundImage: `linear-gradient(to right, #ff6000 ${(currentTimeRef.current / duration) * 100}%, #ccc ${(currentTimeRef.current / duration) * 100}%)`,
                           }}
                         />
                         <span>{formatTime(duration)}</span>
@@ -301,7 +417,6 @@ export function Player() {
             </div>
           </div>
         ) : (
-          // Minimized View
           <div class="flex items-center border-t border-slate-300/50 h-full px-4">
             <button
               onClick={() => togglePlayerMaximized()}
@@ -312,7 +427,12 @@ export function Player() {
 
             <div class="flex items-center flex-1 min-w-0">
               <div class="relative h-12 w-12 flex-shrink-0">
-                <img src={playerState.value.imageUrl} alt="" class="h-full w-full object-cover rounded-md" />
+                <img
+                  src={playerState.value.imageUrl}
+                  alt={playerState.value.title}
+                  loading="lazy"
+                  class="h-full w-full object-cover rounded-md"
+                />
                 <button
                   onClick={handlePlayPause}
                   class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-md hover:bg-black/50 transition-colors"

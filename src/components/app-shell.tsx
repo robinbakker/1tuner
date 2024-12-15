@@ -2,7 +2,7 @@ import { ArrowLeft, Share2 } from 'lucide-preact';
 import { ComponentChildren } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { cn } from '~/lib/utils';
-import { playerState } from '~/store/signals/player';
+import { isPlayerMaximized } from '~/store/signals/player';
 import { headerTitle } from '~/store/signals/ui';
 import { Player } from './player';
 
@@ -166,7 +166,7 @@ export function AppShell({ children }: AppShellProps) {
               <span class="text-xs mt-1 text-center">Podcasts</span>
             </a>
           </li>
-          <li class="w-full">
+          {/* <li class="w-full">
             <a
               href={`/playlists`}
               class="flex flex-col items-center justify-center p-2 hover:bg-gray-200 transition-colors duration-200"
@@ -199,7 +199,7 @@ export function AppShell({ children }: AppShellProps) {
               </svg>
               <span class="text-xs mt-1 text-center">Playlists</span>
             </a>
-          </li>
+          </li> */}
           <li class="w-full">
             <a
               href={'/settings'}
@@ -230,7 +230,7 @@ export function AppShell({ children }: AppShellProps) {
           </li>
         </ul>
       </nav>
-      <main class={cn('flex-1 overflow-auto', playerState.value?.isMaximized && 'md:mr-96')}>
+      <main class={cn('flex-1 overflow-auto', isPlayerMaximized.value && 'md:mr-96')}>
         {!!headerTitle.value && (
           <header
             class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md' : 'bg-transparent'}`}

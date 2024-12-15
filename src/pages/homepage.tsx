@@ -1,11 +1,28 @@
+import { useCallback } from 'preact/hooks';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Card, CardContent } from '~/components/ui/card';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
-import { normalizedUrlWithoutScheme, slugify } from '~/lib/utils';
+import { cn, normalizedUrlWithoutScheme, slugify } from '~/lib/utils';
 import { recentlyVisitedPodcasts } from '~/store/signals/podcast';
 import { getRecentlyVisitedRadioStations } from '~/store/signals/radio';
 
 export const Homepage = () => {
+  const MoreLink = useCallback(({ location }: { location: string }) => {
+    return (
+      <a
+        href={location}
+        class={cn(
+          'h-9 px-4 py-2 rounded-lg',
+          'border border-black/10 text-black/70 hover:border-black/30',
+          'hover:text-black/90 text-sm font-medium',
+          'inline-flex items-center justify-center whitespace-nowrap focus-visible:outline-none',
+          'focus-visible:ring-1 focus-visible:ring-ring transition-all',
+        )}
+      >
+        More
+      </a>
+    );
+  }, []);
   return (
     <>
       <header className="relative w-full mb-8">
@@ -15,16 +32,14 @@ export const Homepage = () => {
           </div>
         </div>
       </header>
-      <div class="container mx-auto px-0 py-8 overflow-x-hidden">
+      <div class="container overflow-x-hidden">
         <section class="mb-8">
-          <div class="flex justify-between items-center mb-4 px-4">
+          <div class="w-screen md:w-full flex justify-between items-center mb-2 px-6">
             <h2 class="text-2xl font-semibold">Radio stations</h2>
-            <a href="/radio-stations" class="text-sm font-medium text-primary hover:underline">
-              More
-            </a>
+            <MoreLink location="/radio-stations" />
           </div>
           <ScrollArea className="w-screen md:w-full whitespace-nowrap">
-            <div class="flex w-max space-x-4 p-4">
+            <div class="flex w-max space-x-10 p-6">
               {getRecentlyVisitedRadioStations().map((station) => (
                 <RadioStationCard key={station.id} station={station} />
               ))}
@@ -32,16 +47,13 @@ export const Homepage = () => {
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
         </section>
-
         <section class="mb-8">
-          <div class="flex justify-between items-center mb-4 px-4">
+          <div class="w-screen md:w-full flex justify-between items-center mb-2 px-6">
             <h2 class="text-2xl font-semibold">Podcasts</h2>
-            <a href="/podcasts" class="text-sm font-medium text-primary hover:underline">
-              More
-            </a>
+            <MoreLink location="/podcasts" />
           </div>
           <ScrollArea className="w-screen md:w-full whitespace-nowrap">
-            <div class="flex w-max space-x-4 p-4">
+            <div class="flex w-max space-x-10 p-6">
               {recentlyVisitedPodcasts.value.map((podcast) => (
                 <a
                   key={podcast.id}

@@ -1,6 +1,7 @@
 import { Play } from 'lucide-preact';
 import { Badge } from '~/components/ui/badge';
-import { setPlayerState } from '~/store/signals/player';
+import { playerState } from '~/store/signals/player';
+import { getRadioStationLanguage } from '~/store/signals/radio';
 import { RadioStation } from '~/store/types';
 
 interface Props {
@@ -12,7 +13,7 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
   const onClickPlay = (e: { preventDefault: () => void; stopPropagation: () => void }) => {
     e.preventDefault();
     e.stopPropagation();
-    setPlayerState({
+    playerState.value = {
       isPlaying: true,
       contentID: station.id,
       title: station.name,
@@ -20,7 +21,18 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
       imageUrl: station.logosource,
       streams: station.streams,
       pageLocation: `/radio-station/${station.id}`,
-    });
+    };
+  };
+
+  const RadioFlag = () => {
+    const stationLanguage = getRadioStationLanguage(station);
+    if (!stationLanguage?.flag) return null;
+
+    return (
+      <Badge title={stationLanguage.name} className="uppercase" variant="secondary">
+        {stationLanguage.flag}
+      </Badge>
+    );
   };
 
   if (size === 'large') {
@@ -42,23 +54,19 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
             </div>
             <button
               onClick={onClickPlay}
-              class="absolute inset-0 bg-black/0 hover:bg-black/40 duration-700 flex items-center justify-center opacity-0 hover:opacity-100 transition-[background-color,opacity]"
-              title="Play station"
+              class="absolute inset-0 bg-black/0 hover:bg-black/40 duration-500 flex items-center justify-center opacity-0 hover:opacity-100 transition-[background-color,opacity]"
+              title={`Play ${station.name}`}
             >
               <Play size={36} class="text-white" />
             </button>
           </div>
 
-          <div class="flex-1 sm:w-[288px] p-4">
+          <div class="flex-1 sm:w-[288px] px-4 pt-2">
             <h3 class="font-bold text-gray-500 group-hover:text-primary text-lg transition-colors duration-500 line-clamp-1">
               {station.name}
             </h3>
             <div class="flex flex-wrap gap-2 mt-2">
-              {station.language && (
-                <Badge className="uppercase" variant="secondary">
-                  {station.language}
-                </Badge>
-              )}
+              <RadioFlag />
               {station.genres?.map((genre) => (
                 <Badge key={genre} variant="outline">
                   {genre}
@@ -73,7 +81,7 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
 
   return (
     <a class="block w-28 h-28 group" href={`/radio-station/${station.id}`} title={station.name}>
-      <div class="w-full h-full relative overflow-hidden rounded-lg border bg-card shadow-lg hover:shadow-xl transition-all">
+      <div class="w-full h-full relative overflow-hidden rounded-xl border bg-card shadow-lg hover:shadow-xl transition-all">
         <div
           class="absolute inset-0 w-full h-full bg-cover bg-center"
           style={{
@@ -83,8 +91,16 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
             transform: 'scale(2)',
           }}
         />
+
         <div class="relative h-full flex flex-col items-center pt-3">
           <img src={station.logosource} alt={`${station.name} logo`} class="w-14 h-14 rounded-full" />
+          <button
+            onClick={onClickPlay}
+            class="absolute inset-0 bg-black/0 hover:bg-black/40 duration-500 flex items-center justify-center opacity-0 hover:opacity-100 transition-[background-color,opacity]"
+            title={`Play ${station.name}`}
+          >
+            <Play size={36} class="text-white -mt-6" />
+          </button>
           <div class="absolute bottom-0 left-0 right-0 bg-white py-1 px-2">
             <span class="text-center font-bold text-gray-500 group-hover:text-primary text-sm truncate w-full block transition-colors">
               {station.name}

@@ -1,9 +1,9 @@
-import { Bookmark, Facebook, Instagram, Play, Twitter, Youtube } from 'lucide-preact';
+import { Bookmark, Facebook, Instagram, Pause, Play, Twitter, Youtube } from 'lucide-preact';
 import { useRoute } from 'preact-iso';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
-import { setPlayerState } from '~/store/signals/player';
+import { playerState } from '~/store/signals/player';
 import {
   addRecentlyVisitedRadioStation,
   followRadioStation,
@@ -57,9 +57,13 @@ export const RadioStationPage = () => {
     addRecentlyVisitedRadioStation(radioStation?.id);
   }, [radioStation, addRecentlyVisitedRadioStation]);
 
+  const isPlaying = useMemo(() => {
+    return !!(playerState.value && playerState.value.isPlaying && playerState.value.contentID === radioStation.id);
+  }, [playerState.value, radioStation.id]);
+
   return (
     <div class="min-h-screen">
-      <header class="relative overflow-hidden -ml-4 -mr-4 px-4 bg-primary/20 py-16 -skew-y-3 transform -mt-16 mb-8">
+      <header class="relative overflow-hidden -ml-4 -mr-4 px-4 bg-black/75 py-16 -skew-y-3 transform -mt-16 mb-8">
         <div class="absolute inset-0 z-0">
           <img src={radioStation.logosource} class="w-full filter blur-md opacity-50" />
         </div>
@@ -77,7 +81,7 @@ export const RadioStationPage = () => {
                           href={s.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          class="text-white drop-shadow hover:text-black"
+                          class="text-white/90 drop-shadow hover:text-white"
                         >
                           {getSocialIcon(s.type)}
                         </a>
@@ -91,7 +95,7 @@ export const RadioStationPage = () => {
                       href={radioStation.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-white hover:text-black drop-shadow"
+                      class="text-white/90 hover:text-white drop-shadow"
                     >
                       {radioStation.website}
                     </a>
@@ -106,19 +110,19 @@ export const RadioStationPage = () => {
               </Button>
               <Button
                 onClick={() => {
-                  setPlayerState({
-                    isPlaying: true,
+                  playerState.value = {
+                    isPlaying: !isPlaying,
                     contentID: radioStation.id,
                     title: radioStation.name,
                     description: '',
                     imageUrl: radioStation.logosource,
                     streams: radioStation.streams,
                     pageLocation: `/radio-station/${radioStation.id}`,
-                  });
+                  };
                 }}
-                class="rounded-full px-4"
+                styleSize="icon"
               >
-                <Play class="h-5 w-5" />
+                {isPlaying ? <Pause class="h-5 w-5" /> : <Play class="h-5 w-5" />}
               </Button>
             </div>
           </div>

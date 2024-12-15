@@ -72,7 +72,6 @@ export interface Episode {
 
 export interface PlayerState {
   isPlaying: boolean;
-  isMaximized: boolean;
   contentID: string;
   title: string;
   description?: string;

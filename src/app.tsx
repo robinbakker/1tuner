@@ -9,7 +9,7 @@ import { RadioStationPage } from './pages/radio-station';
 import { RadioStationsPage } from './pages/radio-stations';
 import { DatabaseProvider } from './store/db/DatabaseContext';
 import { useDB } from './store/db/db';
-import { playerState } from './store/signals/player';
+import { isPlayerMaximized } from './store/signals/player';
 
 export function App() {
   const db = useDB();
@@ -30,7 +30,7 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    if (playerState.value?.isMaximized) {
+    if (isPlayerMaximized.value) {
       // Prevent scrolling on mobile only
       if (window.innerWidth < 768) {
         document.body.style.overflow = 'hidden';
@@ -42,7 +42,7 @@ export function App() {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [playerState.value?.isMaximized]);
+  }, [isPlayerMaximized.value]);
 
   return (
     <AppShell>

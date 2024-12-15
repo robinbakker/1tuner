@@ -5,7 +5,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { Button } from '~/components/ui/button';
 import { getSignature } from '~/lib/signature';
 import { stripHtml } from '~/lib/utils';
-import { setPlayerState } from '~/store/signals/player';
+import { playerState } from '~/store/signals/player';
 import { headerTitle } from '~/store/signals/ui';
 import { Podcast } from '~/store/types';
 import { Loader } from '../components/loader';
@@ -164,7 +164,7 @@ export const PodcastPage = () => {
                 variant="outline"
                 styleSize="sm"
                 onClick={() => {
-                  setPlayerState({
+                  playerState.value = {
                     isPlaying: true,
                     contentID: params.id,
                     title: episode.title,
@@ -173,7 +173,7 @@ export const PodcastPage = () => {
                     streams: [{ mimetype: 'audio/mpeg', url: episode.audio }],
                     pageLocation: `/podcast/${params.name}/${params.id}`,
                     currentTime: episode.currentTime || 0,
-                  });
+                  };
                 }}
               >
                 <Play class="mr-2 h-4 w-4" />

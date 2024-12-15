@@ -8,7 +8,13 @@ export const followedRadioStationIDs = signal<string[]>([]);
 export const recentlyVisitedRadioStationIDs = signal<string[]>([]);
 
 export const getRadioStation = (id: string): RadioStation | undefined => {
+  if (!id) return undefined;
   return radioStations.value.find((r) => r.id === id);
+};
+
+export const getRadioStationLanguage = (radioStation: RadioStation): Language | undefined => {
+  if (!radioStation) return undefined;
+  return radioLanguages.value.find((l) => l.id === radioStation.language);
 };
 
 export const getRecentlyVisitedRadioStations = (): RadioStation[] => {
