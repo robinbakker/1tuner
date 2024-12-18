@@ -1,0 +1,92 @@
+{
+  "name": "1tuner.com",
+  "short_name": "1tuner",
+  "description": "1 web app to listen to online radio",
+  "start_url": "/?source=pwa",
+  "id": "/?homescreen=2",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ebebeb",
+  "theme_color": "#111111",
+  "launch_handler": {
+    "client_mode": ["focus-existing", "auto"]
+  },
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "purpose": "any",
+      "src": "/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "purpose": "maskable",
+      "src": "/icon-192x192-maskable.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "purpose": "maskable",
+      "src": "/icon-512x512-maskable.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Stations",
+      "short_name": "Stations",
+      "description": "Listen to the radio",
+      "url": "/radio-stations?source=pwa",
+      "icons": [{ "src": "/shortcut-stations-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Podcasts",
+      "short_name": "Podcasts",
+      "description": "Find and listen to podcasts",
+      "url": "/podcasts?source=pwa",
+      "icons": [{ "src": "/shortcut-podcasts-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Playlists",
+      "short_name": "Playlists",
+      "description": "Your own radio playlists",
+      "url": "/playlists?source=pwa",
+      "icons": [{ "src": "/shortcut-playlists-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Settings",
+      "short_name": "Settings",
+      "description": "Change the app settings",
+      "url": "/settings?source=pwa",
+      "icons": [{ "src": "/shortcut-settings-192x192.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/screenshots/screenshot-01-home.jpg",
+      "type": "image/jpeg",
+      "sizes": "750x1334"
+    },
+    {
+      "src": "/assets/screenshots/screenshot-02-radio.jpg",
+      "type": "image/jpeg",
+      "sizes": "750x1334"
+    },
+    {
+      "src": "/assets/screenshots/screenshot-04-podcast.jpg",
+      "type": "image/jpeg",
+      "sizes": "750x1334"
+    },
+    {
+      "src": "/assets/screenshots/screenshot-03-radio-page.jpg",
+      "type": "image/jpeg",
+      "sizes": "750x1334"
+    }
+  ],
+  "categories": ["entertainment", "music", "news"]
+}

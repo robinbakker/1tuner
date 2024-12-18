@@ -13,7 +13,7 @@ export function Player() {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLInputElement>(null);
   const reconnectAttempts = useRef(0);
-  const maxReconnectAttempts = 20;
+  const maxReconnectAttempts = 40;
   const reconnectTimeout = useRef<NodeJS.Timeout>();
   const [playbackRate, setPlaybackRate] = useState(1);
   const [duration, setDuration] = useState(0);
@@ -93,7 +93,7 @@ export function Player() {
       }
 
       const timeout =
-        reconnectAttempts.current <= 10 ? 1000 : 1000 * Math.min(2 ** (reconnectAttempts.current - 10), 16);
+        reconnectAttempts.current <= 20 ? 500 : 1000 * Math.min(2 ** (reconnectAttempts.current - 10), 16);
 
       reconnectTimeout.current = setTimeout(() => {
         if (!audio || !playerState.value?.isPlaying) return;

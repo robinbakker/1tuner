@@ -27,12 +27,12 @@ export const Homepage = () => {
     <>
       <header className="relative w-full mb-8">
         <div className="inset-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: "url('./header-bg.jpg')" }}>
-          <div className="container mx-auto h-full px-4 py-6">
+          <div className="mx-auto h-full px-4 py-6">
             <img src="./logo-text-white.svg" alt="1tuner logo" className="h-14 relative z-10" />
           </div>
         </div>
       </header>
-      <div class="container overflow-x-hidden">
+      <div class="overflow-x-hidden">
         <section class="mb-8">
           <div class="w-screen md:w-full flex justify-between items-center mb-2 px-6">
             <h2 class="text-2xl font-semibold">Radio stations</h2>
