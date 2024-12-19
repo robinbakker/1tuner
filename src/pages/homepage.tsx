@@ -1,26 +1,18 @@
 import { useCallback } from 'preact/hooks';
 import { RadioStationCard } from '~/components/radio-station-card';
+import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
-import { cn, normalizedUrlWithoutScheme, slugify } from '~/lib/utils';
+import { normalizedUrlWithoutScheme, slugify } from '~/lib/utils';
 import { recentlyVisitedPodcasts } from '~/store/signals/podcast';
 import { getRecentlyVisitedRadioStations } from '~/store/signals/radio';
 
 export const Homepage = () => {
   const MoreLink = useCallback(({ location }: { location: string }) => {
     return (
-      <a
-        href={location}
-        class={cn(
-          'h-9 px-4 py-2 rounded-lg',
-          'border border-black/10 text-black/70 hover:border-black/30',
-          'hover:text-black/90 text-sm font-medium',
-          'inline-flex items-center justify-center whitespace-nowrap focus-visible:outline-none',
-          'focus-visible:ring-1 focus-visible:ring-ring transition-all',
-        )}
-      >
-        More
-      </a>
+      <Button asChild variant="outline">
+        <a href={location}>More</a>
+      </Button>
     );
   }, []);
   return (

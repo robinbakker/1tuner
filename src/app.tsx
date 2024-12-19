@@ -7,6 +7,7 @@ import { PodcastPage } from './pages/podcast';
 import { PodcastsPage } from './pages/podcasts';
 import { RadioStationPage } from './pages/radio-station';
 import { RadioStationsPage } from './pages/radio-stations';
+import { SettingsPage } from './pages/settings';
 import { DatabaseProvider } from './store/db/DatabaseContext';
 import { useDB } from './store/db/db';
 import { isPlayerMaximized } from './store/signals/player';
@@ -55,6 +56,7 @@ export function App() {
               <Route path="/radio-station/:id" component={RadioStationPage} />
               <Route path="/podcasts" component={PodcastsPage} />
               <Route path="/podcast/:name/:id" component={PodcastPage} />
+              <Route path="/settings" component={SettingsPage} />
             </Router>
           </DatabaseProvider>
         </ErrorBoundary>

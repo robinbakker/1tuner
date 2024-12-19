@@ -22,6 +22,19 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff6000">
     <link rel="manifest" href="/manifest.json">
     <link rel="shortcut icon" href="/favicon.ico">
+    <script>
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document
+          .documentElement
+          .classList
+          .add('dark')
+      } else {
+        document
+          .documentElement
+          .classList
+          .remove('dark')
+      }
+    </script>
     <title>some.1tuner.com</title>
   </head>
   <body>

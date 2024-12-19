@@ -57,8 +57,8 @@ export function AppShell({ children }: AppShellProps) {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white shadow-lg md:relative md:h-full md:w-20 md:flex-shrink-0">
+    <div className="flex h-screen">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-stone-800 shadow-lg md:relative md:h-full md:w-20 md:flex-shrink-0">
         <ul class="flex h-16 items-center justify-around md:h-full md:flex-col md:justify-start md:py-4">
           <li class="w-full">
             <a

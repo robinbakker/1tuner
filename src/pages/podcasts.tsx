@@ -87,7 +87,7 @@ export const PodcastsPage = () => {
           placeholder="Search podcasts..."
           value={searchTerm}
           onChange={(e) => setSearchTerm((e.target as HTMLInputElement).value)}
-          className="w-full bg-white border-gray-300 focus:ring-primary pl-10"
+          className="w-full focus:ring-primary pl-10"
         />
       </div>
       {isLoading ? (

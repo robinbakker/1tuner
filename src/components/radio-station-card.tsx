@@ -62,7 +62,7 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
           </div>
 
           <div class="flex-1 sm:min-w-[288px] px-4 pt-2">
-            <h3 class="font-bold text-gray-500 group-hover:text-primary text-lg transition-colors duration-500 line-clamp-1">
+            <h3 class="font-bold text-foreground group-hover:text-primary text-lg transition-colors duration-500 line-clamp-1">
               {station.name}
             </h3>
             <div class="flex flex-wrap gap-2 mt-2">
@@ -101,8 +101,8 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
           >
             <Play size={36} class="text-white -mt-6" />
           </button>
-          <div class="absolute bottom-0 left-0 right-0 bg-white py-1 px-2">
-            <span class="text-center font-bold text-gray-500 group-hover:text-primary text-sm truncate w-full block transition-colors">
+          <div class="absolute bottom-0 left-0 right-0 bg-white dark:bg-stone-700 py-1 px-2">
+            <span class="text-center font-bold text-foreground group-hover:text-primary text-sm truncate w-full block transition-colors">
               {station.name}
             </span>
           </div>
