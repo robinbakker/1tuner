@@ -1,9 +1,8 @@
 import { useCallback } from 'preact/hooks';
+import { PodcastCard } from '~/components/podcast-card';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
-import { Card, CardContent } from '~/components/ui/card';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
-import { normalizedUrlWithoutScheme, slugify } from '~/lib/utils';
 import { recentlyVisitedPodcasts } from '~/store/signals/podcast';
 import { getRecentlyVisitedRadioStations } from '~/store/signals/radio';
 
@@ -17,7 +16,7 @@ export const Homepage = () => {
   }, []);
   return (
     <>
-      <header className="relative w-full mb-8">
+      <header className="relative w-full mb-6">
         <div className="inset-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: "url('./header-bg.jpg')" }}>
           <div className="mx-auto h-full px-4 py-6">
             <img src="./logo-text-white.svg" alt="1tuner logo" className="h-14 relative z-10" />
@@ -47,18 +46,7 @@ export const Homepage = () => {
           <ScrollArea className="w-screen md:w-full whitespace-nowrap">
             <div class="flex w-max space-x-10 p-6">
               {recentlyVisitedPodcasts.value.map((podcast) => (
-                <a
-                  key={podcast.id}
-                  href={`/podcast/${slugify(podcast.title)}/${btoa(normalizedUrlWithoutScheme(podcast.url))}`}
-                  class="shrink-0"
-                >
-                  <Card class="w-[100px]">
-                    <CardContent class="p-2">
-                      <img src={podcast.imageUrl} alt={podcast.title} width={80} height={80} class="rounded-md mb-2" />
-                      <p class="text-sm text-center truncate">{podcast.title}</p>
-                    </CardContent>
-                  </Card>
-                </a>
+                <PodcastCard key={podcast.id} podcast={podcast} />
               ))}
             </div>
             <ScrollBar orientation="horizontal" />

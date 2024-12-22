@@ -80,3 +80,7 @@ export interface PlayerState {
   pageLocation: string;
   currentTime?: number;
 }
+
+export interface SettingsState {
+  radioStreamMaxReconnects: number;
+}

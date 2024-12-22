@@ -60,7 +60,6 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
               <Play size={36} class="text-white" />
             </button>
           </div>
-
           <div class="flex-1 sm:min-w-[288px] px-4 pt-2">
             <h3 class="font-bold text-foreground group-hover:text-primary text-lg transition-colors duration-500 line-clamp-1">
               {station.name}
@@ -91,7 +90,6 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
             transform: 'scale(2)',
           }}
         />
-
         <div class="relative h-full flex flex-col items-center pt-3">
           <img src={station.logosource} alt={`${station.name} logo`} class="w-14 h-14 rounded-full" />
           <button

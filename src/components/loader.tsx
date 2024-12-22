@@ -27,8 +27,8 @@ export const Loader = () => {
   }, []);
 
   return (
-    <div class="flex items-center justify-center h-screen bg-gray-100">
-      <div class="w-64 h-16 bg-gray-300 rounded-lg animate-pulse relative overflow-hidden">
+    <div class="flex items-center justify-center h-screen">
+      <div class="w-64 h-16 rounded-lg bg-stone-300 dark:bg-stone-700 animate-pulse relative overflow-hidden">
         <div
           ref={needleRef}
           class="absolute top-0 bottom-0 w-0.5 bg-primary transform -translate-x-1/2"

@@ -253,7 +253,7 @@ export function AppShell({ children }: AppShellProps) {
       <main class={cn('flex-1 overflow-auto pb-40', isPlayerMaximized.value && 'md:mr-96')}>
         {!!headerTitle.value && (
           <header
-            class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md' : 'bg-transparent'}`}
+            class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md border-b app-shell-header' : 'bg-transparent'}`}
           >
             <div class="flex items-center justify-between p-4">
               <button

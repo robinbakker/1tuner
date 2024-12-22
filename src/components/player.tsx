@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { cn } from '~/lib/utils';
 import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
 import { isPlayerMaximized, playerState, togglePlayerMaximized } from '../store/signals/player';
+import { Button } from './ui/button';
 
 export function Player() {
   if (!playerState.value) return null;
@@ -296,7 +297,9 @@ export function Player() {
       <div
         class={cn(
           'h-full w-full bg-white/66 backdrop-blur-md relative',
-          isPlayerMaximized.value ? 'shadow-lg bg-white/55 overscroll-none' : 'md:shadow-md',
+          isPlayerMaximized.value
+            ? 'shadow-lg backdrop-blur-2xl overscroll-none'
+            : 'md:shadow-md player-minimized-backdrop',
         )}
       >
         {!isPlayerMaximized.value && isPodcast && (
@@ -309,15 +312,16 @@ export function Player() {
         {isPlayerMaximized.value ? (
           <div class="h-full flex flex-col">
             <div class="p-4 flex justify-between">
-              <button
+              {/* <button
                 onClick={() => togglePlayerMaximized()}
                 class="p-2 hover:bg-gray-200 rounded-full transition-colors"
-              >
-                <ChevronDown class="h-6 w-6 text-gray-600" />
-              </button>
-              <button onClick={handleClose} class="p-2 hover:bg-gray-200 rounded-full transition-colors">
-                <X class="h-6 w-6 text-gray-600" />
-              </button>
+              > */}
+              <Button variant="outline" styleSize="icon" onClick={togglePlayerMaximized}>
+                <ChevronDown class="h-6 w-6" />
+              </Button>
+              <Button variant="outline" styleSize="icon" onClick={togglePlayerMaximized}>
+                <X class="h-6 w-6" />
+              </Button>
             </div>
             <div class="flex-1 overflow-y-auto p-6">
               <div class="flex flex-col items-center justify-center space-y-6">
@@ -420,7 +424,7 @@ export function Player() {
             </div>
           </div>
         ) : (
-          <div class="flex items-center border-t border-b md:border-b-0 border-slate-300/50 h-full px-4">
+          <div class="flex items-center border-t border-b md:border-b-0 h-full px-4">
             <button
               onClick={() => togglePlayerMaximized()}
               class="mr-2 p-2 hover:bg-gray-200 rounded-full transition-colors"

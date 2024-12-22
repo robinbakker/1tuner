@@ -66,6 +66,14 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .app-shell-header {
+    background: linear-gradient(to bottom, hsl(var(--card)), transparent 50%);
+  }
+
+  .player-minimized-backdrop {
+    background: linear-gradient(to top, hsl(var(--card)), transparent 50%);
+  }
 }
 
 @layer utilities {
