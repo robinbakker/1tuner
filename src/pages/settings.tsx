@@ -3,18 +3,21 @@ import { useState } from 'preact/hooks';
 type ThemeOption = 'default' | 'light' | 'dark';
 
 export const SettingsPage = () => {
-  const [theme, setTheme] = useState<ThemeOption>(window.localStorage.theme ?? 'default');
+  const [theme, setTheme] = useState<ThemeOption>(
+    typeof window !== 'undefined' ? window?.localStorage.theme : 'default',
+  );
 
-  const handleThemeChange = (event: { target: { value: string } }) => {
-    if (event.target.value === 'default') {
-      window.localStorage.removeItem('theme');
+  const handleThemeChange = (e: MouseEvent) => {
+    const target = e.target as HTMLInputElement;
+    if (target.value === 'default') {
+      window?.localStorage.removeItem('theme');
       document.documentElement.classList.remove('dark', 'light');
     } else {
-      window.localStorage.setItem('theme', event.target.value);
-      document.documentElement.classList.toggle('dark', event.target.value === 'dark');
-      document.documentElement.classList.toggle('light', event.target.value === 'light');
+      window?.localStorage.setItem('theme', target.value);
+      document.documentElement.classList.toggle('dark', target.value === 'dark');
+      document.documentElement.classList.toggle('light', target.value === 'light');
     }
-    setTheme(event.target.value as ThemeOption);
+    setTheme(target.value as ThemeOption);
   };
 
   return (

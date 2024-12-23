@@ -68,7 +68,9 @@ const ToastClose = forwardRef<HTMLButtonElement, ComponentPropsWithoutRef<typeof
       toast-close=""
       {...props}
     >
-      <Cross2Icon className="h-4 w-4" />
+      <span className="h-4 w-4">
+        <Cross2Icon />
+      </span>
     </ToastPrimitives.Close>
   ),
 );

@@ -41,7 +41,7 @@ export function AppShell({ children }: AppShellProps) {
       try {
         await navigator.share({
           title: headerTitle.value,
-          url: window.location.href,
+          url: window?.location.href,
         });
       } catch (error) {
         console.error('Error sharing:', error);

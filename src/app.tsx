@@ -22,10 +22,13 @@ export function App() {
       db.saveStateToDB();
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
+    if (window) {
+      window.addEventListener('beforeunload', handleBeforeUnload);
+    }
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      if (window) {
+        window.removeEventListener('beforeunload', handleBeforeUnload);
+      }
       db.saveStateToDB();
     };
   }, []);
@@ -33,7 +36,7 @@ export function App() {
   useEffect(() => {
     if (isPlayerMaximized.value) {
       // Prevent scrolling on mobile only
-      if (window.innerWidth < 768) {
+      if (window?.innerWidth < 768) {
         document.body.style.overflow = 'hidden';
       }
     } else {

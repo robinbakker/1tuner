@@ -4,8 +4,8 @@ import { ComponentPropsWithoutRef, forwardRef } from 'preact/compat';
 import { cn } from '~/lib/utils';
 
 const ScrollArea = forwardRef<
-  ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>,
-  { children: ComponentChildren; className?: string }
+  HTMLDivElement,
+  ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> & { children: ComponentChildren; className?: string }
 >(({ children, className, ...props }, ref) => (
   <ScrollAreaPrimitive.Root ref={ref} className={cn('relative overflow-hidden', className)} {...props}>
     <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">{children}</ScrollAreaPrimitive.Viewport>
@@ -16,8 +16,11 @@ const ScrollArea = forwardRef<
 ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName;
 
 const ScrollBar = forwardRef<
-  ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
-  { orientation?: string; className?: string }
+  HTMLDivElement,
+  ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Scrollbar> & {
+    orientation?: 'vertical' | 'horizontal';
+    className?: string;
+  }
 >(({ orientation = 'vertical', className = undefined, ...props }, ref) => (
   <ScrollAreaPrimitive.ScrollAreaScrollbar
     ref={ref}

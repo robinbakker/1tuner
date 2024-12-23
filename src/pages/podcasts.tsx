@@ -12,7 +12,7 @@ export const PodcastsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Podcast[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const searchTimeout = useRef<number>();
+  const searchTimeout = useRef<NodeJS.Timeout | null>();
 
   useEffect(() => {
     if (searchTerm.trim()) {
@@ -24,7 +24,7 @@ export const PodcastsPage = () => {
       }
 
       // Set new timeout
-      searchTimeout.current = window.setTimeout(async () => {
+      searchTimeout.current = setTimeout(async () => {
         try {
           const url = `https://robinbakker-umbilical-71.deno.dev/API/worker/pi/search/byterm?q=${encodeURIComponent(searchTerm)}`;
           const signature = await getSignature(url);
