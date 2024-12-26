@@ -87,8 +87,8 @@ export default class About extends Component {
             as well.
             <br />
             Do you miss a feature? Spotted a bug? Oh no! Please let me know:{' '}
-            <a href="https://twitter.com/1tuner" rel="noopener me" target="_blank">
-              @1tuner
+            <a href="https://bsky.app/profile/1tuner.com" rel="noopener me" target="_blank">
+              @1tuner.com
             </a>
             .
           </p>

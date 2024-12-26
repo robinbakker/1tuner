@@ -57,7 +57,7 @@ export default class Settings extends Component {
     this.setChromecastSupport(true);
     ev.preventDefault();
   };
-  disableChromecastSupport = (ev) => {  
+  disableChromecastSupport = (ev) => {
     this.setChromecastSupport(false);
     ev.preventDefault();
   };
@@ -80,9 +80,17 @@ export default class Settings extends Component {
       themeOption = themeValue;
     }
     let enableChromecast =
-      enableChromecastValue || (typeof enableChromecastValue !== 'boolean' && this.props.settings && this.props.settings.experimental && this.props.settings.experimental.chromecast);
+      enableChromecastValue ||
+      (typeof enableChromecastValue !== 'boolean' &&
+        this.props.settings &&
+        this.props.settings.experimental &&
+        this.props.settings.experimental.chromecast);
     let enablePodcastindex =
-      enablePodcastindexSearchValue || (typeof enablePodcastindexSearchValue !== 'boolean' && this.props.settings && this.props.settings.experimental && this.props.settings.experimental.podcastindex);
+      enablePodcastindexSearchValue ||
+      (typeof enablePodcastindexSearchValue !== 'boolean' &&
+        this.props.settings &&
+        this.props.settings.experimental &&
+        this.props.settings.experimental.podcastindex);
     let settings = {
       theme: themeOption,
       experimental: {
@@ -154,7 +162,7 @@ export default class Settings extends Component {
             ) : (
               <p>
                 Thanks for checking this new functionality! Please let me know your thoughts{' '}
-                <a href="https://twitter.com/1tuner" rel="noopener me" target="_blank">
+                <a href="https://bsky.app/profile/1tuner.com" rel="noopener me" target="_blank">
                   @1tuner
                 </a>
                 . 🙂
@@ -185,7 +193,7 @@ export default class Settings extends Component {
                   Podcastindex.org
                 </a>
                 ! Please let me know your thoughts{' '}
-                <a href="https://twitter.com/1tuner" rel="noopener me" target="_blank">
+                <a href="https://bsky.app/profile/1tuner.com" rel="noopener me" target="_blank">
                   @1tuner
                 </a>
                 . 🙂

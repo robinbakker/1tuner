@@ -23,13 +23,19 @@ module.exports = async function () {
         offers: {
           '@type': 'Offer',
           price: '0',
+          priceCurrency: 'EUR',
         },
-        sameAs: ['https://twitter.com/1tuner', 'https://github.com/robinbakker/1tuner'],
+        sameAs: ['https://twitter.com/1tuner', 'https://bsky.app/profile/1tuner.com', 'https://github.com/robinbakker/1tuner'],
         author: {
           '@type': 'Person',
           name: 'Robin Bakker',
           url: 'https://robinbakker.nl',
-          sameAs: ['https://twitter.com/robinbakker', 'https://github.com/robinbakker'],
+          sameAs: [
+            'https://twitter.com/robinbakker',
+            'https://mastodon.social/@robinbakker',
+            'https://bsky.app/profile/robinbakker.nl',
+            'https://github.com/robinbakker',
+          ],
         },
       },
     },

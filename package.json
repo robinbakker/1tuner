@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "1tuner",
-  "version": "2.5.9",
+  "version": "2.6.0",
   "description": "1 web app to listen to radio and podcasts",
   "author": "Robin Bakker",
   "license": "MIT",
@@ -13,16 +13,16 @@
     "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider preact watch --template template.html"
   },
   "devDependencies": {
-    "eslint": "^9.13.0",
+    "eslint": "^9.17.0",
     "if-env": "^1.0.4",
     "normalize-url": "^8.0.1",
-    "postcss": "8.4.47",
+    "postcss": "8.4.49",
     "preact-cli": "^3.5.1",
-    "preact-render-to-string": "^6.5.11"
+    "preact-render-to-string": "^6.5.12"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "idb-keyval": "^6.2.1",
     "preact": "^10.24.3",
     "preact-router": "^4.1.2"
