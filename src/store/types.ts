@@ -81,6 +81,12 @@ export interface PlayerState {
   currentTime?: number;
 }
 
+export enum PodcastSearchProvider {
+  Apple = 'Apple',
+  PodcastIndex = 'PodcastIndex',
+}
+
 export interface SettingsState {
   radioStreamMaxReconnects: number;
+  podcastSearchProvider: PodcastSearchProvider;
 }

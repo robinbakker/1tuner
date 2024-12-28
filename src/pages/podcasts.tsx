@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { Loader } from '~/components/loader';
 import { PodcastCard } from '~/components/podcast-card';
 import { Input } from '~/components/ui/input';
-import { getSignature } from '~/lib/signature';
 import { slugify } from '~/lib/utils';
-import { Podcast } from '~/store/types';
+import { settingsState } from '~/store/signals/settings';
+import { Podcast, PodcastSearchProvider } from '~/store/types';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../store/signals/podcast';
 
 export const PodcastsPage = () => {
@@ -23,23 +23,65 @@ export const PodcastsPage = () => {
         clearTimeout(searchTimeout.current);
       }
 
+      // export interface Podcast {
+      //   id: string;
+      //   title: string;
+      //   description: string;
+      //   imageUrl: string;
+      //   url: string;
+      //   feedUrl: string;
+      //   categories?: string[];
+      //   addedDate: number;
+      //   lastFetched: number;
+      //   episodes?: Episode[];
+      // }
+
       // Set new timeout
       searchTimeout.current = setTimeout(async () => {
         try {
-          const url = `https://robinbakker-umbilical-71.deno.dev/API/worker/pi/search/byterm?q=${encodeURIComponent(searchTerm)}`;
-          const signature = await getSignature(url);
-          const response = await fetch(url, {
-            headers: {
-              'X-Umbilical-Signature': signature,
-            },
-          });
+          //const url = `https://robinbakker-umbilical-71.deno.dev/API/worker/pi/search/byterm?q=${encodeURIComponent(searchTerm)}`;
+          //const signature = await getSignature(url);
+          // const response = await fetch(url, {
+          //   headers: {
+          //     'X-Umbilical-Signature': signature,
+          //   },
+          // });
+          const isAppleSearch = settingsState.value?.podcastSearchProvider === PodcastSearchProvider.Apple;
+          const response = isAppleSearch
+            ? await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(searchTerm)}&media=podcast`)
+            : await fetch('https://podcastindex.robinbakker.workers.dev', {
+                method: 'POST',
+                body: searchTerm,
+              });
 
           if (!response.ok) {
-            throw new Error('Search request failed');
+            throw new Error('Search request failed 💥');
           }
 
           const data = await response.json();
-          setSearchResults(data.feeds.map((f: any) => ({ ...f, imageUrl: f.image })));
+          if (
+            !data ||
+            (isAppleSearch && (!data.results || !data.results.length)) ||
+            (!isAppleSearch && (!data.feeds || !data.feeds.length))
+          ) {
+            throw new Error(
+              `Sorry, nothing found for "${searchTerm}"... 😥 Maybe you can try to change your search query?`,
+            );
+          }
+          if (isAppleSearch) {
+            setSearchResults(
+              data.results.map((r: any) => ({
+                ...r,
+                id: r.trackId,
+                title: r.collectionName,
+                description: r.artistName,
+                imageUrl: r.artworkUrl600 || r.artworkUrl100,
+                url: r.feedUrl,
+              })),
+            );
+          } else {
+            setSearchResults(data.feeds.map((f: any) => ({ ...f, imageUrl: f.image })));
+          }
         } catch (error) {
           console.error('Error fetching podcasts:', error);
         } finally {

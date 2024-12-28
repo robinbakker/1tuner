@@ -2,7 +2,8 @@ import { DBSchema, openDB } from 'idb';
 import { playerState } from '../signals/player';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../signals/podcast';
 import { followedRadioStationIDs, recentlyVisitedRadioStationIDs } from '../signals/radio';
-import { PlayerState, Podcast } from '../types';
+import { settingsState } from '../signals/settings';
+import { PlayerState, Podcast, SettingsState } from '../types';
 
 interface TunerDB extends DBSchema {
   followedPodcasts: {
@@ -25,6 +26,10 @@ interface TunerDB extends DBSchema {
     key: 'playerState';
     value: PlayerState | null;
   };
+  settingsState: {
+    key: 'settingsState';
+    value: SettingsState | null;
+  };
 }
 
 const dbPromise =
@@ -36,6 +41,7 @@ const dbPromise =
           db.createObjectStore('followedRadioStationIDs');
           db.createObjectStore('recentlyVisitedRadioStationIDs');
           db.createObjectStore('playerState');
+          db.createObjectStore('settingsState');
         },
       })
     : null;
@@ -49,11 +55,13 @@ export async function loadStateFromDB() {
   const dbRecentlyVisitedRadioStationIDs =
     (await db?.get('recentlyVisitedRadioStationIDs', 'recentlyVisitedRadioStationIDs')) || [];
   const dbPlayerState = (await db?.get('playerState', 'playerState')) || null;
+  const dbSettingsState = (await db?.get('settingsState', 'settingsState')) || null;
   followedPodcasts.value = dbFollowedPodcasts;
   recentlyVisitedPodcasts.value = dbRecentlyVisitedPodcasts;
   followedRadioStationIDs.value = dbFollowedRadioStationIDs;
   recentlyVisitedRadioStationIDs.value = dbRecentlyVisitedRadioStationIDs;
   playerState.value = dbPlayerState;
+  settingsState.value = dbSettingsState;
 }
 
 export async function saveStateToDB() {
@@ -68,6 +76,7 @@ export async function saveStateToDB() {
     'recentlyVisitedRadioStationIDs',
   );
   await db?.put('playerState', playerState.value, 'playerState');
+  await db?.put('settingsState', settingsState.value, 'settingsState');
 }
 
 export function useDB() {

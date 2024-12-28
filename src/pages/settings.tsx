@@ -1,4 +1,6 @@
 import { useState } from 'preact/hooks';
+import { settingsState } from '~/store/signals/settings';
+import { PodcastSearchProvider } from '~/store/types';
 
 type ThemeOption = 'default' | 'light' | 'dark';
 
@@ -20,10 +22,16 @@ export const SettingsPage = () => {
     setTheme(target.value as ThemeOption);
   };
 
+  const handleSearchProviderChange = (e: MouseEvent) => {
+    if (!settingsState.value) return;
+    const target = e.target as HTMLInputElement;
+    settingsState.value.podcastSearchProvider = target.value as PodcastSearchProvider;
+  };
+
   return (
     <div class="container mx-auto px-8 py-6">
       <h1 class="text-3xl font-bold mb-6">Settings</h1>
-      <div class="mb-8 relative">
+      <section class="mb-8 relative">
         <h2 class="text-2xl font-semibold mb-4">Theme</h2>
         <ul>
           <li>
@@ -44,14 +52,43 @@ export const SettingsPage = () => {
                 type="radio"
                 name="theme"
                 value="default"
-                checked={theme === 'default'}
+                checked={!theme || theme === 'default'}
                 onClick={handleThemeChange}
               />{' '}
               System default
             </label>
           </li>
         </ul>
-      </div>
+      </section>
+      <section class="mb-8 relative">
+        <h2 class="text-2xl font-semibold mb-4">Podcast search provider</h2>
+        <ul>
+          <li>
+            <label>
+              <input
+                type="radio"
+                name="searchProvider"
+                value={PodcastSearchProvider.PodcastIndex}
+                checked={settingsState.value?.podcastSearchProvider === PodcastSearchProvider.PodcastIndex}
+                onClick={handleSearchProviderChange}
+              />{' '}
+              PodcastIndex.org
+            </label>
+          </li>
+          <li>
+            <label>
+              <input
+                type="radio"
+                name="searchProvider"
+                value={PodcastSearchProvider.Apple}
+                checked={settingsState.value?.podcastSearchProvider === PodcastSearchProvider.Apple}
+                onClick={handleSearchProviderChange}
+              />{' '}
+              Apple iTunes Search
+            </label>
+          </li>
+        </ul>
+      </section>
     </div>
   );
 };
