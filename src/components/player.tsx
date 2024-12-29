@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp, FastForward, Pause, Play, Rewind, Timer, X } from 'lucide-preact';
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import { styleClass } from '~/lib/styleClass';
 import { cn } from '~/lib/utils';
 import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
 import { isPlayerMaximized, playerState, togglePlayerMaximized } from '../store/signals/player';
@@ -410,7 +411,7 @@ export function Player() {
                     <select
                       value={playbackRate}
                       onChange={(e) => handlePlaybackRateChange(Number(e.currentTarget.value))}
-                      class="bg-transparent text-sm text-gray-700 border border-gray-300 rounded-md px-2 py-1"
+                      class={styleClass.selectSmall}
                     >
                       {playbackRates.map((rate) => (
                         <option key={rate} value={rate}>

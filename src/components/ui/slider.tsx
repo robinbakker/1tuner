@@ -1,6 +1,5 @@
 import * as SliderPrimitive from '@radix-ui/react-slider';
 import { ComponentPropsWithoutRef, forwardRef } from 'preact/compat';
-
 import { cn } from '~/lib/utils';
 
 const Slider = forwardRef<HTMLSpanElement, ComponentPropsWithoutRef<typeof SliderPrimitive.Root>>(
