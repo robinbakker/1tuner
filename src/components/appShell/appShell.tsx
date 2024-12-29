@@ -1,64 +1,21 @@
 import { ArrowLeft, Share2 } from 'lucide-preact';
 import { ComponentChildren } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
 import { cn } from '~/lib/utils';
 import { isPlayerMaximized } from '~/store/signals/player';
 import { headerTitle } from '~/store/signals/ui';
-import { Player } from './player';
+import { Player } from '../player/player';
+import { useAppShell } from './useAppShell';
 
 interface AppShellProps {
   children: ComponentChildren;
 }
 
-export function AppShell({ children }: AppShellProps) {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const mainElement = document.querySelector('main');
-
-    const handleScroll = () => {
-      const isMainScrolled = (mainElement?.scrollTop ?? 0) > 100;
-      setIsScrolled(isMainScrolled);
-    };
-
-    if (mainElement) {
-      mainElement.addEventListener('scroll', handleScroll);
-    }
-
-    return () => {
-      if (mainElement) {
-        mainElement.removeEventListener('scroll', handleScroll);
-      }
-    };
-  }, []);
-
-  const handleBackClick = () => {
-    history.back();
-  };
-
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: headerTitle.value,
-          url: window?.location.href,
-        });
-      } catch (error) {
-        console.error('Error sharing:', error);
-      }
-    } else {
-      console.log('Web Share API not supported');
-      // Fallback behavior could be implemented here
-    }
-  };
-
-  const isActive = (path: string) => {
-    return location?.pathname === path;
-  };
+export const AppShell = ({ children }: AppShellProps) => {
+  const { headerSentinelRef, isScrolled, isActive, handleBackClick, handleShare } = useAppShell();
 
   return (
-    <div className="flex h-screen">
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-stone-800 shadow-lg md:relative md:h-full md:w-20 md:flex-shrink-0">
+    <div class="flex h-screen">
+      <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-stone-800 shadow-lg md:relative md:h-full md:w-20 md:flex-shrink-0">
         <ul class="flex h-16 items-center justify-around md:h-full md:flex-col md:justify-start md:py-4">
           <li class="w-full">
             <a
@@ -182,40 +139,6 @@ export function AppShell({ children }: AppShellProps) {
               <span class="text-xs mt-1 text-center">Podcasts</span>
             </a>
           </li>
-          {/* <li class="w-full">
-            <a
-              href={`/playlists`}
-              class="flex flex-col items-center justify-center p-2 transition-colors duration-200 hover:text-primary [&.active]:text-primary"
-            >
-              <svg
-                class="h-6 w-6 text-gray-600 group-hover:text-primary transition-colors duration-200"
-                xmlns="http://www.w3.org/2000/svg"
-                style="isolation:isolate"
-                stroke="currentColor"
-                viewBox="0 0 42 42"
-              >
-                <defs>
-                  <clipPath id="cpPlaylist">
-                    <path d="M0 0h42v42H0z" />
-                  </clipPath>
-                </defs>
-                <g
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="3"
-                  stroke-width="2"
-                  clip-path="url(#a)"
-                >
-                  <path
-                    d="M8.572 33.021h28.356M8.572 23.021h28.356M17.928 13.021h19"
-                    vector-effect="non-scaling-stroke"
-                  />
-                  <path fill="none" d="M5.072 17.062V8.979l7 4.042z" vector-effect="non-scaling-stroke" />
-                </g>
-              </svg>
-              <span class="text-xs mt-1 text-center">Playlists</span>
-            </a>
-          </li> */}
           <li class="w-full">
             <a
               href={'/settings'}
@@ -250,7 +173,7 @@ export function AppShell({ children }: AppShellProps) {
           </li>
         </ul>
       </nav>
-      <main class={cn('flex-1 overflow-auto pb-40', isPlayerMaximized.value && 'md:mr-96')}>
+      <main class={cn('flex-1 overflow-auto pb-40', isPlayerMaximized.value ? 'md:mr-96' : 'md:mb-20')}>
         {!!headerTitle.value && (
           <header
             class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md border-b app-shell-header' : 'bg-transparent'}`}
@@ -273,9 +196,10 @@ export function AppShell({ children }: AppShellProps) {
             </div>
           </header>
         )}
+        <div ref={headerSentinelRef} class="h-1 w-full"></div>
         {children}
       </main>
       <Player />
     </div>
   );
-}
+};

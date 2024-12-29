@@ -1,7 +1,7 @@
 import { ErrorBoundary, LocationProvider, Route, Router } from 'preact-iso';
 import { useEffect } from 'preact/hooks';
 import './app.css';
-import { AppShell } from './components/app-shell';
+import { AppShell } from './components/appShell/appShell';
 import { Homepage } from './pages/homepage';
 import { PodcastPage } from './pages/podcast';
 import { PodcastsPage } from './pages/podcasts';
