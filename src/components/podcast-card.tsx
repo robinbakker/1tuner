@@ -22,7 +22,7 @@ export const PodcastCard = ({ podcast, size }: Props) => {
               <h3 className="font-bold text-foreground leading-5 group-hover:text-primary text-lg transition-colors duration-500 mb-2 break-words">
                 {podcast.title}
               </h3>
-              <p className="text-sm text-gray-600 line-clamp-2">{stripHtml(podcast.description)}</p>
+              <p className="text-sm text-stone-600 line-clamp-2">{stripHtml(podcast.description)}</p>
             </div>
           </CardContent>
         </Card>

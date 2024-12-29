@@ -64,7 +64,7 @@ export const Homepage = () => {
                     <img src={item.image} alt={item.name} width={400} height={200} class="w-full h-auto" />
                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
                       <h3 class="text-xl font-semibold text-white">{item.name}</h3>
-                      <p class="text-sm text-gray-200 capitalize">{item.type}</p>
+                      <p class="text-sm text-stone-200 capitalize">{item.type}</p>
                     </div>
                   </div>
                 </CardContent>

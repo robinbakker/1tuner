@@ -235,24 +235,23 @@ export const usePlayer = () => {
     });
 
     navigator.mediaSession.setActionHandler('pause', () => {
+      console.log('mediasession: Pause');
       handlePlayPause();
     });
 
-    if (isPodcast) {
-      navigator.mediaSession.setActionHandler('seekbackward', () => {
-        handleSeek(-10);
-      });
+    navigator.mediaSession.setActionHandler('previoustrack', () => {
+      if (isPodcast) handleSeek(-10);
+    });
 
-      navigator.mediaSession.setActionHandler('seekforward', () => {
-        handleSeek(30);
-      });
+    navigator.mediaSession.setActionHandler('nexttrack', () => {
+      if (isPodcast) handleSeek(30);
+    });
 
-      navigator.mediaSession.setActionHandler('seekto', (details) => {
-        if (!audioRef.current || details.seekTime === undefined) return;
-        audioRef.current.currentTime = details.seekTime;
-        updateTimeUI();
-      });
-    }
+    navigator.mediaSession.setActionHandler('seekto', (details) => {
+      if (!isPodcast || !audioRef.current || details.seekTime === undefined) return;
+      audioRef.current.currentTime = details.seekTime;
+      updateTimeUI();
+    });
 
     navigator.mediaSession.setPositionState({
       duration: duration,
@@ -264,8 +263,8 @@ export const usePlayer = () => {
       navigator.mediaSession.metadata = null;
       navigator.mediaSession.setActionHandler('play', null);
       navigator.mediaSession.setActionHandler('pause', null);
-      navigator.mediaSession.setActionHandler('seekbackward', null);
-      navigator.mediaSession.setActionHandler('seekforward', null);
+      navigator.mediaSession.setActionHandler('previoustrack', null);
+      navigator.mediaSession.setActionHandler('nexttrack', null);
       navigator.mediaSession.setActionHandler('seekto', null);
     };
   }, [playerState.value, isPodcast, duration, playbackRate]);

@@ -2,6 +2,7 @@ import { ChangeEvent } from 'preact/compat';
 import { useState } from 'preact/hooks';
 import { RadioButtonList, RadioButtonListOption } from '~/components/ui/radio-button-list';
 import { styleClass } from '~/lib/styleClass';
+import { APP_VERSION } from '~/lib/version';
 import { settingsState } from '~/store/signals/settings';
 import { PodcastSearchProvider } from '~/store/types';
 
@@ -93,6 +94,7 @@ export const SettingsPage = () => {
           <option value="100">100 times</option>
         </select>
       </section>
+      <p class="text-muted-foreground text-sm">v{APP_VERSION}</p>
     </div>
   );
 };

@@ -137,7 +137,7 @@ export const PodcastPage = () => {
         />
         <div class="flex-1">
           <h1 class="text-4xl font-bold mb-2">{podcast.title}</h1>
-          <p class="text-gray-600 mb-4">{stripHtml(podcast.description)}</p>
+          <p class="text-stone-600 mb-4">{stripHtml(podcast.description)}</p>
           <div class="flex flex-wrap gap-2 mb-4">
             {podcast?.categories?.map((category, index) => (
               <Badge key={index} variant="secondary">
@@ -154,12 +154,12 @@ export const PodcastPage = () => {
       <section>
         <div class="space-y-6">
           {podcast.episodes?.map((episode, i) => (
-            <div key={`ep-${episode.pubDate}-${i}`} class="border-b border-gray-200 pb-6">
+            <div key={`ep-${episode.pubDate}-${i}`} class="border-b border-stone-200 pb-6">
               <div class="flex items-center justify-between mb-2">
                 <h3 class="text-xl font-medium">{episode.title}</h3>
-                <span class="text-sm text-gray-500">{episode.duration}</span>
+                <span class="text-sm text-stone-500">{episode.duration}</span>
               </div>
-              <p class="text-gray-600 mb-4">{stripHtml(episode.description)}</p>
+              <p class="text-stone-600 mb-4">{stripHtml(episode.description)}</p>
               <Button
                 variant="outline"
                 styleSize="sm"

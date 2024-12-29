@@ -2,6 +2,7 @@ import preact from '@preact/preset-vite';
 import path from 'path';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { APP_VERSION } from './src/lib/version';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,6 +12,9 @@ export default defineConfig({
       injectRegister: 'auto',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        cacheId: `1tuner-${APP_VERSION}`,
+        clientsClaim: true,
+        skipWaiting: true,
       },
     }),
   ],

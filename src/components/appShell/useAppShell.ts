@@ -3,24 +3,23 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { headerTitle } from '~/store/signals/ui';
 
 export const useAppShell = () => {
+  const mainRef = useRef<HTMLElement>(null);
   const headerSentinelRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const { path } = useLocation();
 
   useEffect(() => {
-    console.log('Location changed:', path); // Debug log
-  }, [path]);
-
-  useEffect(() => {
-    const mainElement = document.querySelector('main');
-    if (!mainElement || !headerSentinelRef.current) return;
+    if (!mainRef.current || !headerSentinelRef.current) {
+      setIsScrolled(false);
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsScrolled(!entry.isIntersecting);
       },
       {
-        root: mainElement, // Set main as the root since we're scrolling inside it
+        root: mainRef.current, // Set main as the root since we're scrolling inside it
         threshold: 1.0,
       },
     );
@@ -31,7 +30,7 @@ export const useAppShell = () => {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [mainRef.current, headerSentinelRef.current, setIsScrolled]);
 
   const handleBackClick = () => {
     history.back();
@@ -54,6 +53,7 @@ export const useAppShell = () => {
   };
 
   return {
+    mainRef,
     headerSentinelRef,
     isActive,
     isScrolled,

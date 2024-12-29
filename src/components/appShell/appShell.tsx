@@ -1,7 +1,7 @@
 import { ArrowLeft, Share2 } from 'lucide-preact';
 import { ComponentChildren } from 'preact';
 import { cn } from '~/lib/utils';
-import { isPlayerMaximized } from '~/store/signals/player';
+import { isPlayerMaximized, playerState } from '~/store/signals/player';
 import { headerTitle } from '~/store/signals/ui';
 import { Player } from '../player/player';
 import { useAppShell } from './useAppShell';
@@ -11,7 +11,7 @@ interface AppShellProps {
 }
 
 export const AppShell = ({ children }: AppShellProps) => {
-  const { headerSentinelRef, isScrolled, isActive, handleBackClick, handleShare } = useAppShell();
+  const { mainRef, headerSentinelRef, isScrolled, isActive, handleBackClick, handleShare } = useAppShell();
   const navLinkBaseClass = cn(
     'group flex flex-col items-center justify-center p-2 transition-colors',
     'duration-200 text-current hover:text-primary [&.active]:text-primary',
@@ -150,30 +150,41 @@ export const AppShell = ({ children }: AppShellProps) => {
           </li>
         </ul>
       </nav>
-      <main class={cn('flex-1 overflow-auto pb-40', isPlayerMaximized.value ? 'md:mr-96' : 'md:mb-20')}>
-        {!!headerTitle.value && (
-          <header
-            class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md border-b app-shell-header' : 'bg-transparent'}`}
-          >
-            <div class="flex items-center justify-between p-4">
-              <button
-                onClick={handleBackClick}
-                class="p-2 rounded-full hover:bg-gray-200 transition-colors duration-200"
-              >
-                <ArrowLeft class="h-6 w-6 text-gray-600" />
-              </button>
-              <h1
-                class={`text-lg font-semibold transition-opacity truncate duration-300 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}
-              >
-                {headerTitle.value}
-              </h1>
-              <button onClick={handleShare} class="p-2 rounded-full hover:bg-gray-200 transition-colors duration-200">
-                <Share2 class="h-6 w-6 text-gray-600" />
-              </button>
-            </div>
-          </header>
+      <main
+        ref={mainRef}
+        class={cn(
+          'flex-1 overflow-auto pb-40',
+          isPlayerMaximized.value ? 'md:mr-96' : playerState.value?.isPlaying ? 'md:mb-20' : '',
         )}
-        <div ref={headerSentinelRef} class="h-1 w-full"></div>
+      >
+        {!!headerTitle.value && (
+          <>
+            <header
+              class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md border-b app-shell-header' : 'bg-transparent'}`}
+            >
+              <div class="flex items-center justify-between p-4">
+                <button
+                  onClick={handleBackClick}
+                  class="p-2 rounded-full hover:bg-stone-200 transition-colors duration-200"
+                >
+                  <ArrowLeft class="h-6 w-6 text-stone-600" />
+                </button>
+                <h1
+                  class={`text-lg font-semibold transition-opacity truncate duration-300 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}
+                >
+                  {headerTitle.value}
+                </h1>
+                <button
+                  onClick={handleShare}
+                  class="p-2 rounded-full hover:bg-stone-200 transition-colors duration-200"
+                >
+                  <Share2 class="h-6 w-6 text-stone-600" />
+                </button>
+              </div>
+            </header>
+            <div ref={headerSentinelRef} class="h-1 w-full"></div>
+          </>
+        )}
         {children}
       </main>
       <Player />

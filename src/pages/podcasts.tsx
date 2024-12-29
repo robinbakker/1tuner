@@ -121,7 +121,7 @@ export const PodcastsPage = () => {
     <div class="container mx-auto px-8 py-6">
       <h1 class="text-3xl font-bold mb-6">Podcasts</h1>
       <div class="mb-8 relative">
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400">
           <Search size={18} />
         </div>
         <Input

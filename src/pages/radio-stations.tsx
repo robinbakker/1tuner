@@ -108,7 +108,7 @@ export const RadioStationsPage = () => {
       <h1 class="text-3xl font-bold mb-6">Radio stations</h1>
       <div class="flex gap-2 mb-8">
         <div class="relative w-full">
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400">
             <Search size={18} />
           </div>
           <Input

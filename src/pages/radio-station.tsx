@@ -1,8 +1,9 @@
-import { Bookmark, Facebook, Instagram, Pause, Play, Twitter, Youtube } from 'lucide-preact';
+import { Bookmark, Facebook, Globe, Instagram, Pause, Play, Twitter, Youtube } from 'lucide-preact';
 import { useRoute } from 'preact-iso';
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
+import { normalizedUrlWithoutScheme } from '~/lib/utils';
 import { playerState } from '~/store/signals/player';
 import {
   addRecentlyVisitedRadioStation,
@@ -12,6 +13,7 @@ import {
   radioStations,
   unfollowRadioStation,
 } from '~/store/signals/radio';
+import { headerTitle } from '~/store/signals/ui';
 import { SocialAccountType } from '../store/types';
 
 export const RadioStationPage = () => {
@@ -57,14 +59,20 @@ export const RadioStationPage = () => {
     addRecentlyVisitedRadioStation(radioStation?.id);
   }, [radioStation, addRecentlyVisitedRadioStation]);
 
+  useEffect(() => {
+    headerTitle.value = radioStation.name;
+
+    return () => (headerTitle.value = '');
+  });
+
   const isPlaying = useMemo(() => {
     return !!(playerState.value && playerState.value.isPlaying && playerState.value.contentID === radioStation.id);
   }, [playerState.value, radioStation.id]);
 
   return (
     <div class="min-h-screen">
-      <header class="relative overflow-hidden -ml-4 -mr-4 px-8 pt-16 pb-8 bg-black/75 -skew-y-3 transform -mt-16 mb-8">
-        <div class="absolute inset-0 z-0">
+      <header class="relative w-full overflow-hidden pt-16 pb-8 bg-black/75 -skew-y-3 transform -mt-32 mb-8">
+        <div class="absolute -inset-2 -top-40 z-0">
           <img src={radioStation.logosource} class="w-full filter blur-md opacity-50" />
         </div>
         <div class="px-4 pt-6 skew-y-3 transform relative z-10">
@@ -81,7 +89,7 @@ export const RadioStationPage = () => {
                           href={s.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          class="text-white/90 drop-shadow hover:text-white"
+                          class="text-white/90 drop-shadow hover:text-white w-6"
                         >
                           {getSocialIcon(s.type)}
                         </a>
@@ -95,9 +103,10 @@ export const RadioStationPage = () => {
                       href={radioStation.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-white/90 hover:text-white drop-shadow"
+                      class="text-white/90 inline-flex items-center mt-1 group hover:text-white drop-shadow transition-colors"
                     >
-                      {radioStation.website}
+                      <Globe className={'mr-2 text-white/50 group-hover:text-white/70'} size={16} />
+                      {normalizedUrlWithoutScheme(radioStation.website)}
                     </a>
                   </p>
                 )}
@@ -129,7 +138,7 @@ export const RadioStationPage = () => {
         </div>
       </header>
 
-      <main class="container mx-auto px-8 py-6">
+      <section class="container mx-auto px-8 py-6">
         {/* <section class="mb-12">
           <h2 class="text-2xl font-semibold mb-4">Related Podcasts</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -151,7 +160,7 @@ export const RadioStationPage = () => {
             </div>
           </section>
         )}
-      </main>
+      </section>
     </div>
   );
 };
