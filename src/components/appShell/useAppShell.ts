@@ -1,9 +1,15 @@
+import { useLocation } from 'preact-iso';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { headerTitle } from '~/store/signals/ui';
 
 export const useAppShell = () => {
   const headerSentinelRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { path } = useLocation();
+
+  useEffect(() => {
+    console.log('Location changed:', path); // Debug log
+  }, [path]);
 
   useEffect(() => {
     const mainElement = document.querySelector('main');
@@ -43,8 +49,8 @@ export const useAppShell = () => {
     }
   };
 
-  const isActive = (path: string) => {
-    return location?.pathname === path;
+  const isActive = (checkPath: string) => {
+    return checkPath === '/' ? path === checkPath : path.startsWith(checkPath);
   };
 
   return {

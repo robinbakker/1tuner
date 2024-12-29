@@ -3,6 +3,7 @@ import { useEffect } from 'preact/hooks';
 import './app.css';
 import { AppShell } from './components/appShell/appShell';
 import { Homepage } from './pages/homepage';
+import { NotFound } from './pages/not-found';
 import { PodcastPage } from './pages/podcast';
 import { PodcastsPage } from './pages/podcasts';
 import { RadioStationPage } from './pages/radio-station';
@@ -49,10 +50,10 @@ export function App() {
   }, [isPlayerMaximized.value]);
 
   return (
-    <AppShell>
-      <LocationProvider>
-        <ErrorBoundary>
-          <DatabaseProvider>
+    <LocationProvider>
+      <ErrorBoundary>
+        <DatabaseProvider>
+          <AppShell>
             <Router>
               <Route path="/" component={Homepage} />
               <Route path="/radio-stations" component={RadioStationsPage} />
@@ -60,10 +61,11 @@ export function App() {
               <Route path="/podcasts" component={PodcastsPage} />
               <Route path="/podcast/:name/:id" component={PodcastPage} />
               <Route path="/settings" component={SettingsPage} />
+              <NotFound default />
             </Router>
-          </DatabaseProvider>
-        </ErrorBoundary>
-      </LocationProvider>
-    </AppShell>
+          </AppShell>
+        </DatabaseProvider>
+      </ErrorBoundary>
+    </LocationProvider>
   );
 }

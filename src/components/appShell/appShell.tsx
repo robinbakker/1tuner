@@ -12,22 +12,20 @@ interface AppShellProps {
 
 export const AppShell = ({ children }: AppShellProps) => {
   const { headerSentinelRef, isScrolled, isActive, handleBackClick, handleShare } = useAppShell();
+  const navLinkBaseClass = cn(
+    'group flex flex-col items-center justify-center p-2 transition-colors',
+    'duration-200 text-current hover:text-primary [&.active]:text-primary',
+  );
+  const navLinkSvgClass = cn('h-6 w-6');
 
   return (
     <div class="flex h-screen">
       <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-stone-800 shadow-lg md:relative md:h-full md:w-20 md:flex-shrink-0">
         <ul class="flex h-16 items-center justify-around md:h-full md:flex-col md:justify-start md:py-4">
           <li class="w-full">
-            <a
-              href={`/`}
-              class={cn(
-                'flex flex-col items-center justify-center p-2 transition-colors',
-                'duration-200 hover:text-primary [&.active]:text-primary',
-                isActive('/') && 'text-primary',
-              )}
-            >
+            <a href="/" class={cn(navLinkBaseClass, isActive('/') && 'text-primary')}>
               <svg
-                class="h-6 w-6 text-current group-hover:text-primary transition-colors duration-200"
+                class={navLinkSvgClass}
                 xmlns="http://www.w3.org/2000/svg"
                 style="isolation:isolate"
                 stroke="currentColor"
@@ -53,16 +51,9 @@ export const AppShell = ({ children }: AppShellProps) => {
             </a>
           </li>
           <li class="w-full">
-            <a
-              href={`/radio-stations`}
-              class={cn(
-                'flex flex-col items-center justify-center p-2 transition-colors',
-                'duration-200 hover:text-primary [&.active]:text-primary',
-                isActive('/radio-stations') && 'text-primary',
-              )}
-            >
+            <a href="/radio-stations" class={cn(navLinkBaseClass, isActive('/radio-station') && 'text-primary')}>
               <svg
-                class="h-6 w-6 text-current group-hover:text-primary transition-colors duration-200"
+                class={navLinkSvgClass}
                 xmlns="http://www.w3.org/2000/svg"
                 style="isolation:isolate"
                 stroke="currentColor"
@@ -98,14 +89,7 @@ export const AppShell = ({ children }: AppShellProps) => {
             </a>
           </li>
           <li class="w-full">
-            <a
-              href={`/podcasts`}
-              class={cn(
-                'flex flex-col items-center justify-center p-2 transition-colors',
-                'duration-200 hover:text-primary [&.active]:text-primary',
-                isActive('/podcasts') && 'text-primary',
-              )}
-            >
+            <a href="/podcasts" class={cn(navLinkBaseClass, isActive('/podcast') && 'text-primary')}>
               <svg
                 class="h-6 w-6 text-current group-hover:text-primary transition-colors duration-200"
                 xmlns="http://www.w3.org/2000/svg"
@@ -140,16 +124,9 @@ export const AppShell = ({ children }: AppShellProps) => {
             </a>
           </li>
           <li class="w-full">
-            <a
-              href={'/settings'}
-              class={cn(
-                'flex flex-col items-center justify-center p-2 transition-colors',
-                'duration-200 hover:text-primary [&.active]:text-primary',
-                isActive('/settings') && 'text-primary',
-              )}
-            >
+            <a href="/settings" class={cn(navLinkBaseClass, isActive('/settings') && 'text-primary')}>
               <svg
-                class="h-6 w-6 text-current group-hover:text-primary transition-colors duration-200"
+                class={navLinkSvgClass}
                 xmlns="http://www.w3.org/2000/svg"
                 style="isolation:isolate"
                 stroke="currentColor"
