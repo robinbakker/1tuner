@@ -21,6 +21,7 @@ export const useAppShell = () => {
       {
         root: mainRef.current, // Set main as the root since we're scrolling inside it
         threshold: 1.0,
+        rootMargin: '100px 0px 0px 0px', // Adjust the margin as needed
       },
     );
 

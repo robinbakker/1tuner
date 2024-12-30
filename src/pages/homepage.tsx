@@ -16,7 +16,7 @@ export const Homepage = () => {
   }, []);
   return (
     <>
-      <header className="relative w-full mb-6">
+      <header className="relative w-full -mt-1 mb-6">
         <div className="inset-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: "url('./header-bg.jpg')" }}>
           <div className="mx-auto h-full px-4 py-6">
             <img src="./logo-text-white.svg" alt="1tuner logo" className="h-14 relative z-10" />

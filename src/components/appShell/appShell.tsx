@@ -160,7 +160,7 @@ export const AppShell = ({ children }: AppShellProps) => {
         {!!headerTitle.value && (
           <>
             <header
-              class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md border-b app-shell-header' : 'bg-transparent'}`}
+              class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md app-shell-header' : 'bg-transparent'}`}
             >
               <div class="flex items-center justify-between p-4">
                 <button
@@ -182,9 +182,9 @@ export const AppShell = ({ children }: AppShellProps) => {
                 </button>
               </div>
             </header>
-            <div ref={headerSentinelRef} class="h-1 w-full"></div>
           </>
         )}
+        <div ref={headerSentinelRef} class="h-1 w-full opacity-0 pointer-events-none" aria-hidden="true"></div>
         {children}
       </main>
       <Player />

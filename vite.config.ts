@@ -10,11 +10,27 @@ export default defineConfig({
     preact({ prerender: { enabled: true, renderTarget: '#app' } }),
     VitePWA({
       injectRegister: 'auto',
+      registerType: 'autoUpdate',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         cacheId: `1tuner-${APP_VERSION}`,
         clientsClaim: true,
         skipWaiting: true,
+        cleanupOutdatedCaches: true,
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/.*\.(png|jpg|jpeg|svg|gif)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'image-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+              },
+            },
+          },
+        ],
       },
     }),
   ],
