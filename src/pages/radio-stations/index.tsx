@@ -1,5 +1,4 @@
 import { Filter, Search } from 'lucide-preact';
-import { useMemo, useState } from 'preact/hooks';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
 import { Checkbox } from '~/components/ui/checkbox';
@@ -7,33 +6,21 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet';
-import { getRadioGenres, radioLanguages, radioStations } from '~/store/signals/radio';
+import { getRadioGenres, radioLanguages } from '~/store/signals/radio';
+import { useRadioStations } from './useRadioStations';
 
 export const RadioStationsPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-
-  const activeFilterCount = () => selectedCountries.length + selectedGenres.length;
-
-  const filteredStations = useMemo(
-    () =>
-      radioStations.value.filter((station) => {
-        const matchesSearch = station.name?.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCountry = !selectedCountries.length || selectedCountries.includes(station.language);
-        const matchesGenre = !selectedGenres.length || selectedGenres.some((g) => station.genres.includes(g));
-        return matchesSearch && matchesCountry && matchesGenre;
-      }),
-    [selectedGenres, selectedCountries, searchTerm, radioStations.value],
-  );
-
-  const handleCountryChange = (country: string) => {
-    setSelectedCountries((prev) => (prev.includes(country) ? prev.filter((c) => c !== country) : [...prev, country]));
-  };
-
-  const handleGenreChange = (genre: string) => {
-    setSelectedGenres((prev) => (prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]));
-  };
+  const {
+    searchTerm,
+    selectedCountries,
+    selectedGenres,
+    filteredStations,
+    activeFilterCount,
+    setSearchTerm,
+    setSelectedCountries,
+    handleCountryChange,
+    handleGenreChange,
+  } = useRadioStations();
 
   const FilterContent = () => (
     <div class="flex flex-col gap-4 h-full">
@@ -121,12 +108,12 @@ export const RadioStationsPage = () => {
         </div>
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant={activeFilterCount() > 0 ? 'default' : 'outline'} className="relative">
+            <Button variant={activeFilterCount > 0 ? 'default' : 'outline'} className="relative">
               <Filter class="mr-2 h-4 w-4" />
               Filters
-              {activeFilterCount() > 0 && (
+              {activeFilterCount > 0 && (
                 <span class="absolute top-0 right-0 -mt-1 -mr-1 bg-black text-primary-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {activeFilterCount()}
+                  {activeFilterCount}
                 </span>
               )}
             </Button>

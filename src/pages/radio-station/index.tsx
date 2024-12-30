@@ -1,25 +1,18 @@
 import { Bookmark, Facebook, Globe, Instagram, Pause, Play, Twitter, Youtube } from 'lucide-preact';
-import { useRoute } from 'preact-iso';
-import { useEffect, useMemo, useState } from 'preact/hooks';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
 import { normalizedUrlWithoutScheme } from '~/lib/utils';
 import { playerState } from '~/store/signals/player';
-import {
-  addRecentlyVisitedRadioStation,
-  followRadioStation,
-  getRadioStation,
-  isFollowedRadioStation,
-  radioStations,
-  unfollowRadioStation,
-} from '~/store/signals/radio';
-import { headerTitle } from '~/store/signals/ui';
-import { SocialAccountType } from '../store/types';
+import { radioStations } from '~/store/signals/radio';
+import { SocialAccountType } from '~/store/types';
+import { useRadioStation } from './useRadioStation';
 
 export const RadioStationPage = () => {
-  const { params } = useRoute();
-  const radioStation = getRadioStation(params.id);
-  const [isFollowing, setIsFollowing] = useState(isFollowedRadioStation(params.id));
+  const { radioStation, isPlaying, isFollowing, toggleFollow } = useRadioStation();
+
+  if (!radioStation) {
+    return <div>Radio station not found</div>;
+  }
 
   const getSocialIcon = (type: SocialAccountType) => {
     switch (type) {
@@ -36,51 +29,18 @@ export const RadioStationPage = () => {
     }
   };
 
-  const toggleFollow = () => {
-    if (!radioStation) return;
-
-    if (isFollowing) {
-      unfollowRadioStation(radioStation.id);
-    } else {
-      followRadioStation(radioStation.id);
-    }
-    setIsFollowing(!isFollowing);
-  };
-
-  useEffect(() => {
-    setIsFollowing(isFollowedRadioStation(params.id));
-  }, [setIsFollowing, isFollowedRadioStation, params.id]);
-
-  if (!radioStation) {
-    return <div>Radio station not found</div>;
-  }
-
-  useEffect(() => {
-    addRecentlyVisitedRadioStation(radioStation?.id);
-  }, [radioStation, addRecentlyVisitedRadioStation]);
-
-  useEffect(() => {
-    headerTitle.value = radioStation.name;
-
-    return () => (headerTitle.value = '');
-  });
-
-  const isPlaying = useMemo(() => {
-    return !!(playerState.value && playerState.value.isPlaying && playerState.value.contentID === radioStation.id);
-  }, [playerState.value, radioStation.id]);
-
   return (
     <div class="min-h-screen">
-      <header class="relative w-full overflow-hidden pt-16 pb-8 bg-black/75 -skew-y-3 transform -mt-32 mb-8">
-        <div class="absolute -inset-2 -top-40 z-0">
-          <img src={radioStation.logosource} class="w-full filter blur-md opacity-50" />
+      <header class="relative w-full overflow-hidden pt-24 pb-8 bg-black/75 -skew-y-3 transform -mt-32 mb-8">
+        <div class="absolute -inset-2 -top-40 md:-top-96 z-0">
+          <img src={radioStation.logosource} class="w-full filter blur-2xl opacity-50" />
         </div>
-        <div class="px-4 pt-6 skew-y-3 transform relative z-10">
+        <div class="px-6 pt-6 skew-y-3 transform relative z-10">
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
             <div class="flex items-center space-x-4">
               <img src={radioStation.logosource} alt="Radio station logo" width={80} height={80} class="rounded-full" />
               <div>
-                <h1 class="text-3xl font-bold text-white drop-shadow">{radioStation.name}</h1>
+                <h1 class="text-3xl font-bold text-white drop-shadow-lg">{radioStation.name}</h1>
                 {!!radioStation.social?.length && (
                   <div class="flex opacity-60 space-x-2 my-2">
                     {radioStation.social?.map((s) => {
@@ -137,17 +97,7 @@ export const RadioStationPage = () => {
           </div>
         </div>
       </header>
-
       <section class="container mx-auto px-8 py-6">
-        {/* <section class="mb-12">
-          <h2 class="text-2xl font-semibold mb-4">Related Podcasts</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((podcast) => (
-              <PodcastCard key={podcast} />
-            ))}
-          </div>
-        </section> */}
-
         {!!radioStation.related?.length && (
           <section>
             <h2 class="text-2xl font-semibold mb-4">Related</h2>
