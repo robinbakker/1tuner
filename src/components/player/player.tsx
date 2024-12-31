@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp, FastForward, Pause, Play, Rewind, Timer, X } from 'lucide-preact';
+import { Cast, ChevronDown, ChevronUp, FastForward, Pause, Play, Rewind, Timer, X } from 'lucide-preact';
 import { styleClass } from '~/lib/styleClass';
 import { cn } from '~/lib/utils';
 import { isPlayerMaximized, playerState, togglePlayerMaximized } from '../../store/signals/player';
@@ -18,6 +18,10 @@ export const Player = () => {
     duration,
     playbackRates,
     isPodcast,
+    isCastingAvailable,
+    castSession,
+    startCasting,
+    stopCasting,
     handleSeek,
     handlePlaybackRateChange,
     handlePlayPause,
@@ -67,9 +71,16 @@ export const Player = () => {
               <Button variant="outline" styleSize="icon" onClick={togglePlayerMaximized}>
                 <ChevronDown class="h-6 w-6" />
               </Button>
-              <Button variant="outline" styleSize="icon" onClick={togglePlayerMaximized}>
-                <X class="h-6 w-6" />
-              </Button>
+              <div class="flex gap-2">
+                {isCastingAvailable && (
+                  <Button variant="outline" styleSize="icon" onClick={castSession ? stopCasting : startCasting}>
+                    {castSession ? <Cast class="h-6 w-6 text-color-primary" /> : <Cast class="h-6 w-6" />}
+                  </Button>
+                )}
+                <Button variant="outline" styleSize="icon" onClick={togglePlayerMaximized}>
+                  <X class="h-6 w-6" />
+                </Button>
+              </div>
             </div>
             <div class="flex-1 overflow-y-auto p-6">
               <div class="flex flex-col items-center justify-center space-y-6">
@@ -238,6 +249,15 @@ export const Player = () => {
                       </span>
                     </button>
                   </div>
+                )}
+                {isCastingAvailable && (
+                  <button
+                    onClick={castSession ? stopCasting : startCasting}
+                    class="ml-2 p-2 hover:bg-stone-200 rounded-full transition-colors flex-shrink-0"
+                    title={castSession ? 'Stop casting' : 'Start casting'}
+                  >
+                    {castSession ? <Cast class="h-6 w-6 text-primary" /> : <Cast class="h-6 w-6 text-stone-600" />}
+                  </button>
                 )}
                 <button
                   onClick={handleClose}

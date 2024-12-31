@@ -52,10 +52,16 @@ export const useSettings = () => {
     settingsState.value.radioStreamMaxReconnects = +e.currentTarget.value;
   };
 
+  const handleGoogleCastSupportChange = (checked: boolean) => {
+    if (!settingsState.value) return;
+    settingsState.value.enableChromecast = checked;
+  };
+
   return {
     handleRadioReconnectsValueChange,
     handleSearchProviderChange,
     handleThemeChange,
+    handleGoogleCastSupportChange,
     searchProviderOptions,
     themeOptions,
     theme,

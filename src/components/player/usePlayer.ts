@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
 import { isPlayerMaximized, playerState } from '../../store/signals/player';
+import { useCastApi } from './useCastApi';
 
 export const usePlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -9,10 +10,20 @@ export const usePlayer = () => {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLInputElement>(null);
   const reconnectAttempts = useRef(0);
-  const maxReconnectAttempts = 40;
   const reconnectTimeout = useRef<NodeJS.Timeout>();
   const [playbackRate, setPlaybackRate] = useState(1);
   const [duration, setDuration] = useState(0);
+  const {
+    isCastingAvailable,
+    startCasting,
+    stopCasting,
+    handleCastPlayPause,
+    handleCastSeek,
+    handleCastPlaybackRateChange,
+    castSession,
+    castMediaRef,
+  } = useCastApi();
+  const maxReconnectAttempts = 40;
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
   const isPodcast = playerState.value?.pageLocation.startsWith('/podcast/');
 
@@ -42,23 +53,59 @@ export const usePlayer = () => {
   }, [duration, formatTime]);
 
   const handleSeek = useCallback((seconds: number) => {
-    if (!audioRef.current) return;
-    audioRef.current.currentTime = audioRef.current.currentTime + seconds;
+    if (castSession && castMediaRef.current) {
+      handleCastSeek(seconds);
+      return;
+    }
+
+    if (audioRef.current) {
+      audioRef.current.currentTime = audioRef.current.currentTime + seconds;
+    }
   }, []);
 
   const handlePlaybackRateChange = useCallback((rate: number) => {
-    if (!audioRef.current) return;
-    audioRef.current.playbackRate = rate;
-    setPlaybackRate(rate);
+    if (castSession && castMediaRef.current) {
+      handleCastPlaybackRateChange(rate);
+      setPlaybackRate(rate);
+      return;
+    }
+
+    if (audioRef.current) {
+      audioRef.current.playbackRate = rate;
+      setPlaybackRate(rate);
+    }
   }, []);
 
   const handlePlayPause = useCallback(() => {
     if (!playerState.value) return;
+    const newIsPlaying = !playerState.value.isPlaying;
+
     playerState.value = {
       ...playerState.value,
-      isPlaying: !playerState.value.isPlaying,
+      isPlaying: newIsPlaying,
     };
-  }, []);
+
+    // Handle cast media if casting
+    if (castSession && castMediaRef.current) {
+      handleCastPlayPause(newIsPlaying);
+      return;
+    }
+
+    // Otherwise handle local audio
+    if (audioRef.current) {
+      if (newIsPlaying) {
+        audioRef.current.play().catch((error) => {
+          console.error('Error playing audio:', error);
+          playerState.value = {
+            ...playerState.value!,
+            isPlaying: false,
+          };
+        });
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [castSession, castMediaRef.current, playerState.value, audioRef.current]);
 
   const handleClose = useCallback(() => {
     if (audioRef.current) {
@@ -95,7 +142,7 @@ export const usePlayer = () => {
 
     if (playerState.value.currentTime) audioRef.current.currentTime = playerState.value.currentTime;
 
-    if (playerState.value.isPlaying) {
+    if (playerState.value.isPlaying && !castSession) {
       const promise = audioRef.current.play();
       if (promise) {
         promise.catch((error) => {
@@ -113,7 +160,7 @@ export const usePlayer = () => {
         );
       }
     }
-  }, [playerState.value]);
+  }, [playerState.value, audioRef.current, updatePodcastEpisodeCurrentTime, castSession]);
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -201,6 +248,13 @@ export const usePlayer = () => {
     let lastTime = 0;
 
     const updateTime = () => {
+      // Use cast media time if casting
+      if (castSession && castMediaRef.current) {
+        lastTime = castMediaRef.current.getEstimatedTime() ?? 0;
+        updateTimeUI();
+        return;
+      }
+
       if (Math.abs(audio.currentTime - lastTime) >= 1) {
         lastTime = audio.currentTime;
         updateTimeUI();
@@ -218,6 +272,12 @@ export const usePlayer = () => {
       audio.removeEventListener('durationchange', updateDuration);
     };
   }, [duration]);
+
+  useEffect(() => {
+    if (castSession && audioRef.current) {
+      audioRef.current.pause();
+    }
+  }, [castSession, audioRef.current]);
 
   useEffect(() => {
     if (!audioRef.current || !playerState.value || typeof navigator.mediaSession === 'undefined') return;
@@ -285,5 +345,9 @@ export const usePlayer = () => {
     handleClose,
     handleSliderChange,
     formatTime,
+    isCastingAvailable,
+    castSession,
+    startCasting,
+    stopCasting,
   };
 };

@@ -1,4 +1,5 @@
 import { RadioButtonList } from '~/components/ui/radio-button-list';
+import { Switch } from '~/components/ui/switch';
 import { styleClass } from '~/lib/styleClass';
 import { APP_VERSION } from '~/lib/version';
 import { settingsState } from '~/store/signals/settings';
@@ -12,6 +13,7 @@ export const SettingsPage = () => {
     handleThemeChange,
     handleSearchProviderChange,
     handleRadioReconnectsValueChange,
+    handleGoogleCastSupportChange,
   } = useSettings();
 
   return (
@@ -52,6 +54,14 @@ export const SettingsPage = () => {
           <option value="50">50 times</option>
           <option value="100">100 times</option>
         </select>
+      </section>
+      <section class="mb-8 relative">
+        <h2 class="text-2xl font-semibold">Google Cast (Chromecast) support</h2>
+        <p class="text-muted-foreground text-sm mb-4">
+          Enable this option to support playing to a Chromecast or Google Cast enabled device (this is behind a toggle
+          because it loads an extra external script from gstatic.com).
+        </p>
+        <Switch id="googleCastSupport" onCheckedChange={handleGoogleCastSupportChange} />
       </section>
       <p class="text-muted-foreground text-sm">v{APP_VERSION}</p>
     </div>

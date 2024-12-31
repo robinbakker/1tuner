@@ -89,4 +89,5 @@ export enum PodcastSearchProvider {
 export interface SettingsState {
   radioStreamMaxReconnects: number;
   podcastSearchProvider: PodcastSearchProvider;
+  enableChromecast: boolean;
 }
