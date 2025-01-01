@@ -49,9 +49,7 @@ export const useCastApi = () => {
   const updateCastMedia = useCallback(
     (session: chrome.cast.Session) => {
       try {
-        // Get current media using the correct API method
-        const media = session.media?.[0] || null;
-
+        const media = session.media?.[0];
         if (media) {
           console.log('Found active media session:', media);
           castMediaRef.current = media;
@@ -140,7 +138,7 @@ export const useCastApi = () => {
               setupMediaListeners(media);
               if (playerState.value?.isPlaying) {
                 media.play(
-                  null,
+                  new chrome.cast.media.PlayRequest(),
                   () => console.log('Playback started'),
                   (error) => {
                     if (playerState.value) playerState.value.isPlaying = false;
@@ -148,7 +146,11 @@ export const useCastApi = () => {
                   },
                 );
               } else {
-                media.pause();
+                media.pause(
+                  new chrome.cast.media.PauseRequest(),
+                  () => console.log('Playback paused while loading media'),
+                  (error) => console.error('Error pausing playback while loading media:', error),
+                );
               }
             }
             resolve(media);
@@ -189,9 +191,12 @@ export const useCastApi = () => {
   const stopCasting = useCallback(() => {
     if (castSession) {
       if (castMediaRef.current) {
-        castMediaRef.current.removeUpdateListener();
+        castMediaRef.current.removeUpdateListener(() => {});
       }
-      castSession.stop();
+      castSession.stop(
+        () => console.log('Casting stopped'),
+        (error) => console.error('Error stopping playback:', error),
+      );
       setCastSession(null);
       castMediaRef.current = null;
     }
@@ -201,9 +206,17 @@ export const useCastApi = () => {
     (isPlaying: boolean) => {
       if (!castMediaRef.current) return;
       if (isPlaying) {
-        castMediaRef.current.play();
+        castMediaRef.current.play(
+          new chrome.cast.media.PlayRequest(),
+          () => console.log('Playback started (play action)'),
+          (error) => console.error('Error starting playback (play):', error),
+        );
       } else {
-        castMediaRef.current.pause();
+        castMediaRef.current.pause(
+          new chrome.cast.media.PauseRequest(),
+          () => console.log('Playback paused (pause action)'),
+          (error) => console.error('Error pausing playback:', error),
+        );
       }
     },
     [castMediaRef.current],
@@ -213,19 +226,24 @@ export const useCastApi = () => {
     (seconds: number) => {
       if (!castMediaRef.current) return;
 
-      const newTime = castMediaRef.current.currentTime + seconds;
+      const newTime = castMediaRef.current.getEstimatedTime() + seconds;
       const request = new chrome.cast.media.SeekRequest();
       request.currentTime = newTime;
-      castMediaRef.current.seek(request);
+      castMediaRef.current.seek(
+        request,
+        () => console.log('Seek (seek action)'),
+        (error) => console.error('Error seeking:', error),
+      );
     },
     [castMediaRef.current],
   );
 
   const handleCastPlaybackRateChange = useCallback(
-    (rate: number) => {
+    //(rate: number) => {
+    () => {
       if (!castMediaRef.current) return;
-      const request = new chrome.cast.media.SetPlaybackRateRequest(rate);
-      castMediaRef.current.setPlaybackRate(request);
+      // const request = new chrome.cast.media.SetPlaybackRateRequest(rate);
+      // castMediaRef.current.setPlaybackRate(request);
     },
     [castMediaRef.current],
   );

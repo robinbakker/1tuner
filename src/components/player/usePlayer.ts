@@ -19,7 +19,6 @@ export const usePlayer = () => {
     stopCasting,
     handleCastPlayPause,
     handleCastSeek,
-    handleCastPlaybackRateChange,
     castSession,
     castMediaRef,
   } = useCastApi();
@@ -65,7 +64,7 @@ export const usePlayer = () => {
 
   const handlePlaybackRateChange = useCallback((rate: number) => {
     if (castSession && castMediaRef.current) {
-      handleCastPlaybackRateChange(rate);
+      //handleCastPlaybackRateChange(rate);
       setPlaybackRate(rate);
       return;
     }
@@ -80,11 +79,6 @@ export const usePlayer = () => {
     if (!playerState.value) return;
     const newIsPlaying = !playerState.value.isPlaying;
 
-    playerState.value = {
-      ...playerState.value,
-      isPlaying: newIsPlaying,
-    };
-
     // Handle cast media if casting
     if (castSession && castMediaRef.current) {
       handleCastPlayPause(newIsPlaying);
@@ -92,7 +86,12 @@ export const usePlayer = () => {
     }
 
     // Otherwise handle local audio
-    if (audioRef.current) {
+    if (!castSession && audioRef.current) {
+      playerState.value = {
+        ...playerState.value,
+        isPlaying: newIsPlaying,
+      };
+
       if (newIsPlaying) {
         audioRef.current.play().catch((error) => {
           console.error('Error playing audio:', error);

@@ -52,9 +52,10 @@ export const useSettings = () => {
     settingsState.value.radioStreamMaxReconnects = +e.currentTarget.value;
   };
 
-  const handleGoogleCastSupportChange = (checked: boolean) => {
+  const handleGoogleCastSupportChange = (e: MouseEvent) => {
     if (!settingsState.value) return;
-    settingsState.value.enableChromecast = checked;
+    const input = e.currentTarget as HTMLInputElement;
+    settingsState.value.enableChromecast = input.checked;
   };
 
   return {

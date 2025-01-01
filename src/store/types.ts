@@ -64,9 +64,10 @@ export interface Podcast {
 export interface Episode {
   title: string;
   description: string;
-  pubDate: string;
+  pubDate: Date;
   duration: string;
   audio: string;
+  mimeType: string;
   currentTime?: number;
 }
 

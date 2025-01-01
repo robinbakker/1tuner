@@ -3,11 +3,10 @@ import { Loader } from '~/components/loader';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { stripHtml } from '~/lib/utils';
-import { playerState } from '~/store/signals/player';
 import { usePodcast } from './usePodcast';
 
 export const PodcastPage = () => {
-  const { isLoading, podcast, isFollowing, params, toggleFollow } = usePodcast();
+  const { isLoading, podcast, isFollowing, toggleFollow, handleEpisodeClick } = usePodcast();
 
   if (isLoading) {
     return <Loader />;
@@ -47,30 +46,36 @@ export const PodcastPage = () => {
         <div class="space-y-6">
           {podcast.episodes?.map((episode, i) => (
             <div key={`ep-${episode.pubDate}-${i}`} class="border-b border-stone-200 pb-6">
-              <div class="flex items-center justify-between mb-2">
-                <h3 class="text-xl font-medium">{episode.title}</h3>
-                <span class="text-sm text-stone-500">{episode.duration}</span>
+              <div class="flex group items-center justify-between mb-2">
+                <div className={'cursor-pointer'} onClick={() => handleEpisodeClick(episode)}>
+                  <h3 class="text-xl font-medium group-hover:text-primary transition-colors">
+                    {episode.title} <span class="text-muted-foreground font-normal text-sm">({episode.duration})</span>
+                  </h3>
+                  <p class="text-muted-foreground text-sm">
+                    <time dateTime={episode.pubDate.toJSON()}>
+                      {episode.pubDate.toLocaleDateString(undefined, {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        weekday: 'long',
+                      })}
+                    </time>
+                  </p>
+                </div>
+                <div>
+                  <Button
+                    onClick={() => handleEpisodeClick(episode)}
+                    variant="outline"
+                    styleSize="icon"
+                    className={
+                      'border-stone-300 group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground hover:text-primary-foreground transition-colors'
+                    }
+                  >
+                    <Play class="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
               <p class="text-stone-600 mb-4">{stripHtml(episode.description)}</p>
-              <Button
-                variant="outline"
-                styleSize="sm"
-                onClick={() => {
-                  playerState.value = {
-                    isPlaying: true,
-                    contentID: params.id,
-                    title: episode.title,
-                    description: podcast.title,
-                    imageUrl: podcast.imageUrl,
-                    streams: [{ mimetype: 'audio/mpeg', url: episode.audio }],
-                    pageLocation: `/podcast/${params.name}/${params.id}`,
-                    currentTime: episode.currentTime || 0,
-                  };
-                }}
-              >
-                <Play class="mr-2 h-4 w-4" />
-                Play Episode
-              </Button>
             </div>
           ))}
         </div>

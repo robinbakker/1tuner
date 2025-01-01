@@ -32,3 +32,14 @@ export const stripHtml = (html: string) => {
   tmp.innerHTML = html;
   return tmp.textContent || tmp.innerText || '';
 };
+
+const getTime = (part1: number, part2: number) => {
+  if (!part2) part2 = 0;
+  return `${part1.toString().padStart(2, '0')}:${part2.toString().padStart(2, '0')}`;
+};
+
+export const getTimeStringFromSeconds = (secs: number) => {
+  if (!secs) return getTime(0, 0);
+  const minutes = secs / 60;
+  return getTime(Math.floor(minutes / 60), Math.floor(minutes % 60));
+};

@@ -1,7 +1,8 @@
 import { XMLParser } from 'fast-xml-parser';
 import { useRoute } from 'preact-iso';
-import { useEffect, useMemo, useState } from 'preact/hooks';
-import { normalizedUrlWithoutScheme } from '~/lib/utils';
+import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
+import { getTimeStringFromSeconds, normalizedUrlWithoutScheme } from '~/lib/utils';
+import { playerState } from '~/store/signals/player';
 import {
   addRecentlyVisitedPodcast,
   followPodcast,
@@ -11,7 +12,7 @@ import {
   updatePodcast,
 } from '~/store/signals/podcast';
 import { headerTitle } from '~/store/signals/ui';
-import { Podcast } from '~/store/types';
+import { Episode, Podcast } from '~/store/types';
 
 export const usePodcast = () => {
   const { params } = useRoute();
@@ -22,6 +23,14 @@ export const usePodcast = () => {
   const paramsFeedUrl = useMemo(() => {
     return `https://${normalizedUrlWithoutScheme(atob(params.id))}`;
   }, [params.id]);
+
+  const getDurationString = useCallback((duration: string) => {
+    const durationParts = duration.split(':');
+    if (durationParts.length >= 2) {
+      return `${durationParts[0]}:${durationParts[1]}`;
+    }
+    return getTimeStringFromSeconds(+duration);
+  }, []);
 
   useEffect(() => {
     const fetchPodcastData = async () => {
@@ -79,7 +88,8 @@ export const usePodcast = () => {
               description: item.description,
               pubDate: new Date(item.pubDate),
               audio: item.enclosure?.['@_url'],
-              duration: item['itunes:duration'],
+              mimeType: item.enclosure?.['@_type'],
+              duration: getDurationString(`${item['itunes:duration'] ?? item['duration']}`),
             })),
           } as Podcast;
 
@@ -121,11 +131,29 @@ export const usePodcast = () => {
     setIsFollowing(!isFollowing);
   };
 
+  const handleEpisodeClick = useCallback(
+    (episode: Episode) => {
+      if (!podcast) return;
+      playerState.value = {
+        isPlaying: true,
+        contentID: params.id,
+        title: episode.title,
+        description: podcast.title,
+        imageUrl: podcast.imageUrl,
+        streams: [{ mimetype: episode.mimeType || 'audio/mpeg', url: episode.audio }],
+        pageLocation: `/podcast/${params.name}/${params.id}`,
+        currentTime: episode.currentTime || 0,
+      };
+    },
+    [podcast, params.id, params.name],
+  );
+
   return {
     params,
     isLoading,
     podcast,
     isFollowing,
     toggleFollow,
+    handleEpisodeClick,
   };
 };
