@@ -1,6 +1,6 @@
 import { useLocation } from 'preact-iso';
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { headerTitle } from '~/store/signals/ui';
+import { uiState } from '~/store/signals/ui';
 
 export const useAppShell = () => {
   const mainRef = useRef<HTMLElement>(null);
@@ -38,10 +38,10 @@ export const useAppShell = () => {
   };
 
   const handleShare = async () => {
-    if (!navigator.share) return;
+    if (!navigator.share || !uiState.value.headerTitle) return;
     try {
       await navigator.share({
-        title: headerTitle.value,
+        title: uiState.value.headerTitle,
         url: window?.location.href,
       });
     } catch (error) {

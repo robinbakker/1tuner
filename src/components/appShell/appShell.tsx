@@ -2,7 +2,7 @@ import { ArrowLeft, Share2 } from 'lucide-preact';
 import { ComponentChildren } from 'preact';
 import { cn } from '~/lib/utils';
 import { isPlayerMaximized, playerState } from '~/store/signals/player';
-import { headerTitle } from '~/store/signals/ui';
+import { uiState } from '~/store/signals/ui';
 import { Player } from '../player/player';
 import { useAppShell } from './useAppShell';
 
@@ -17,6 +17,8 @@ export const AppShell = ({ children }: AppShellProps) => {
     'duration-200 text-current hover:text-primary [&.active]:text-primary',
   );
   const navLinkSvgClass = cn('h-6 w-6');
+
+  const isLightHeaderText = uiState.value.headerDefaultTextColor === 'light' && !isScrolled;
 
   return (
     <div class="flex h-screen">
@@ -157,7 +159,7 @@ export const AppShell = ({ children }: AppShellProps) => {
           isPlayerMaximized.value ? 'md:mr-96' : playerState.value?.isPlaying ? 'md:mb-20' : '',
         )}
       >
-        {!!headerTitle.value && (
+        {!!uiState.value?.headerTitle && (
           <>
             <header
               class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md app-shell-header' : 'bg-transparent'}`}
@@ -165,20 +167,26 @@ export const AppShell = ({ children }: AppShellProps) => {
               <div class="flex items-center justify-between p-4">
                 <button
                   onClick={handleBackClick}
-                  class="p-2 rounded-full hover:bg-stone-200 transition-colors duration-200"
+                  class={cn(
+                    'p-2 rounded-full  transition-colors duration-200',
+                    isLightHeaderText ? 'hover:bg-stone-200/20' : 'hover:bg-stone-200',
+                  )}
                 >
-                  <ArrowLeft class="h-6 w-6 text-stone-600" />
+                  <ArrowLeft class={cn('h-6 w-6', isLightHeaderText ? 'text-white' : 'text-stone-600')} />
                 </button>
                 <h1
                   class={`text-lg font-semibold transition-opacity truncate duration-300 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}
                 >
-                  {headerTitle.value}
+                  {uiState.value?.headerTitle}
                 </h1>
                 <button
                   onClick={handleShare}
-                  class="p-2 rounded-full hover:bg-stone-200 transition-colors duration-200"
+                  class={cn(
+                    'p-2 rounded-full  transition-colors duration-200',
+                    isLightHeaderText ? 'hover:bg-stone-200/20' : 'hover:bg-stone-200',
+                  )}
                 >
-                  <Share2 class="h-6 w-6 text-stone-600" />
+                  <Share2 class={cn('h-6 w-6', isLightHeaderText ? 'text-white' : 'text-stone-600')} />
                 </button>
               </div>
             </header>

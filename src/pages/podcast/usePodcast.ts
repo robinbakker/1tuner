@@ -11,7 +11,7 @@ import {
   unfollowPodcast,
   updatePodcast,
 } from '~/store/signals/podcast';
-import { headerTitle } from '~/store/signals/ui';
+import { uiState } from '~/store/signals/ui';
 import { Episode, Podcast } from '~/store/types';
 
 export const usePodcast = () => {
@@ -101,7 +101,7 @@ export const usePodcast = () => {
         }
       }
 
-      headerTitle.value = podcastData.title;
+      uiState.value.headerTitle = podcastData.title;
 
       addRecentlyVisitedPodcast(podcastData);
       setPodcast(podcastData);
@@ -116,7 +116,7 @@ export const usePodcast = () => {
     fetchPodcastData();
 
     return () => {
-      headerTitle.value = '';
+      uiState.value.headerTitle = '';
     };
   }, [params.id]);
 

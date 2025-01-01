@@ -8,7 +8,7 @@ import {
   isFollowedRadioStation,
   unfollowRadioStation,
 } from '~/store/signals/radio';
-import { headerTitle } from '~/store/signals/ui';
+import { uiState } from '~/store/signals/ui';
 
 export const useRadioStation = () => {
   const { params } = useRoute();
@@ -39,9 +39,16 @@ export const useRadioStation = () => {
   }, [radioStation, addRecentlyVisitedRadioStation]);
 
   useEffect(() => {
-    headerTitle.value = radioStation?.name ?? '';
+    uiState.value = {
+      headerTitle: radioStation?.name ?? '',
+      headerDefaultTextColor: 'light',
+    };
 
-    return () => (headerTitle.value = '');
+    return () =>
+      (uiState.value = {
+        headerTitle: '',
+        headerDefaultTextColor: 'default',
+      });
   });
 
   return {

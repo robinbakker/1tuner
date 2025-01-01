@@ -82,6 +82,11 @@ export interface PlayerState {
   currentTime?: number;
 }
 
+export interface UIState {
+  headerTitle: string;
+  headerDefaultTextColor: 'light' | 'default';
+}
+
 export enum PodcastSearchProvider {
   Apple = 'Apple',
   PodcastIndex = 'PodcastIndex',
