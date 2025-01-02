@@ -42,6 +42,9 @@ export const PodcastsPage = () => {
           className="w-full focus:ring-primary pl-10"
         />
       </div>
+      {typeof window === 'undefined' && (global as any).__PRERENDER_PODCASTS__ && (
+        <>{renderPodcastList((global as any).__PRERENDER_PODCASTS__, 'Podcasts')}</>
+      )}
       {isLoading ? (
         <Loader />
       ) : (

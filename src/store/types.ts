@@ -82,6 +82,11 @@ export interface PlayerState {
   currentTime?: number;
 }
 
+export interface PodcastJsonGenre {
+  genreId: string;
+  name: string;
+}
+
 export interface UIState {
   headerTitle: string;
   headerDefaultTextColor: 'light' | 'default';

@@ -35,6 +35,8 @@ export function App() {
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     if (isPlayerMaximized.value) {
       // Prevent scrolling on mobile only
       if (window?.innerWidth < 768) {
@@ -59,6 +61,13 @@ export function App() {
               <Route path="/radio-stations" component={RadioStationsPage} />
               <Route path="/radio-station/:id" component={RadioStationPage} />
               <Route path="/podcasts" component={PodcastsPage} />
+              {/* {prerenderPodcasts.map((podcast) => (
+                <Route
+                  key={podcast.id}
+                  path={`/podcast/${slugify(podcast.title)}/${podcast.id}`}
+                  component={() => <PodcastPage initialPodcast={podcast} />}
+                />
+              ))} */}
               <Route path="/podcast/:name/:id" component={PodcastPage} />
               <Route path="/settings" component={SettingsPage} />
               <NotFound default />

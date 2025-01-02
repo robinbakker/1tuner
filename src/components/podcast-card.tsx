@@ -1,4 +1,4 @@
-import { normalizedUrlWithoutScheme, slugify, stripHtml } from '~/lib/utils';
+import { getPodcastUrlID, normalizedUrlWithoutScheme, slugify, stripHtml } from '~/lib/utils';
 import { Podcast } from '~/store/types';
 import { Card, CardContent } from './ui/card';
 
@@ -32,7 +32,7 @@ export const PodcastCard = ({ podcast, size }: Props) => {
   return (
     <a
       class="block w-28 h-28 group"
-      href={`/podcast/${slugify(podcast.title)}/${btoa(normalizedUrlWithoutScheme(podcast.url))}`}
+      href={`/podcast/${slugify(podcast.title)}/${getPodcastUrlID(podcast.url)}`}
       title={podcast.title}
     >
       <div class="w-full h-full relative overflow-hidden rounded-xl border bg-card shadow-lg hover:shadow-xl transition-all">

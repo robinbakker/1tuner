@@ -101,7 +101,7 @@ export const usePodcast = () => {
         }
       }
 
-      uiState.value.headerTitle = podcastData.title;
+      uiState.value = { ...uiState.value, headerTitle: podcastData.title };
 
       addRecentlyVisitedPodcast(podcastData);
       setPodcast(podcastData);
@@ -113,10 +113,17 @@ export const usePodcast = () => {
       setIsLoading(false);
     };
 
-    fetchPodcastData();
+    if (typeof window !== 'undefined') {
+      fetchPodcastData();
+    } else if ((global as any).__PRERENDER_PODCASTS__) {
+      const podcastData = (global as any).__PRERENDER_PODCASTS__.find((p: Podcast) => p.id === params.id);
+      console.log('Found podcast data in global:', podcastData);
+
+      setPodcast(podcastData);
+    }
 
     return () => {
-      uiState.value.headerTitle = '';
+      uiState.value = { ...uiState.value, headerTitle: '' };
     };
   }, [params.id]);
 

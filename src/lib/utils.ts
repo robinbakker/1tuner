@@ -9,6 +9,12 @@ export const normalizedUrlWithoutScheme = (url: string): string => {
   return url ? url.replace(/^https?:\/\//, '').replace(/\/+$/, '') : '';
 };
 
+export const getPodcastUrlID = (url: string): string => {
+  const normalizedUrl = normalizedUrlWithoutScheme(url);
+  const urlParts = normalizedUrl.split('/');
+  return btoa(urlParts[urlParts.length - 1]);
+};
+
 // See https://gist.github.com/hagemann/382adfc57adbd5af078dc93feef01fe1
 export const slugify = (text: string): string => {
   const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
@@ -28,6 +34,7 @@ export const slugify = (text: string): string => {
 };
 
 export const stripHtml = (html: string) => {
+  if (typeof window === 'undefined') return html;
   const tmp = document.createElement('div');
   tmp.innerHTML = html;
   return tmp.textContent || tmp.innerText || '';
