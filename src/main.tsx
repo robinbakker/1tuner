@@ -18,12 +18,35 @@ if (typeof window !== 'undefined') {
 
 export async function prerender() {
   // Fetch podcast data during prerender phase
-  if (!(global as any).__PRERENDER_PODCASTS__) {
+  if (!(globalThis as any).__PRERENDER_PODCASTS__) {
     const podcastData = await import('./assets/data/podcasts.json');
-    (global as any).__PRERENDER_PODCASTS__ = podcastData.default.map((pc) => ({
+    (globalThis as any).__PRERENDER_PODCASTS__ = podcastData.default.map((pc) => ({
       ...pc,
       id: getPodcastUrlID(pc.url),
     }));
   }
   return await ssr(<App />);
+  // const { html } = await ssr(<App />);
+
+  // return {
+  // 	html,
+  // 	// Optionally add additional links that should be
+  // 	// prerendered (if they haven't already been -- these will be deduped)
+  // 	//links: new Set([...discoveredLinks, '/foo', '/bar']),
+  // 	// Optionally configure and add elements to the `<head>` of
+  // 	// the prerendered HTML document
+  // 	head: {
+  // 		// Sets the "lang" attribute: `<html lang="en">`
+  // 		//lang: 'en',
+  // 		// Sets the title for the current page: `<title>My cool page</title>`
+  // 		//title: 'My cool page',
+  // 		// Sets any additional elements you want injected into the `<head>`:
+  // 		//   <link rel="stylesheet" href="foo.css">
+  // 		//   <meta property="og:title" content="Social media title">
+  // 		elements: new Set([
+  // 			{ type: 'link', props: { rel: 'stylesheet', href: 'foo.css' } },
+  // 			{ type: 'meta', props: { property: 'og:title', content: 'Social media title' } }
+  // 		])
+  // 	}
+  // }
 }

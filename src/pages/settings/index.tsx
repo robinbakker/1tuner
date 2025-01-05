@@ -40,18 +40,15 @@ export const SettingsPage = () => {
         <h2 class="text-2xl font-semibold">Radio stream reconnect</h2>
         <p class="text-muted-foreground text-sm mb-4">
           When switching from networks (e.g. going from wifi to cellular), the radio stream may be interrupted. This
-          setting allows you to specify a number of times the player will try to reconnect to the stream automatically.
+          setting allows you to specify a number of times the player will try to reconnect to the stream automatically
+          (or never).
         </p>
         <select title="Radio stream reconnect" onChange={handleRadioReconnectsValueChange} class={styleClass.select}>
           <option value="0">Never</option>
-          <option value="5">5 times</option>
           <option value="10">10 times</option>
-          <option value="20">20 times</option>
-          <option value="30">30 times</option>
-          <option value="40" selected>
-            40 times
+          <option value="50" selected>
+            50 times
           </option>
-          <option value="50">50 times</option>
           <option value="100">100 times</option>
         </select>
       </section>

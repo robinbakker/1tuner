@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
+import { Stream } from '~/store/types';
 import { isPlayerMaximized, playerState } from '../../store/signals/player';
 import { useCastApi } from './useCastApi';
 
@@ -12,6 +13,7 @@ export const usePlayer = () => {
   const reconnectAttempts = useRef(0);
   const reconnectTimeout = useRef<NodeJS.Timeout>();
   const [playbackRate, setPlaybackRate] = useState(1);
+  const [audioSources, setAudioSources] = useState<Stream[]>([]);
   const [duration, setDuration] = useState(0);
   const {
     isCastingAvailable,
@@ -50,6 +52,31 @@ export const usePlayer = () => {
       }
     });
   }, [duration, formatTime]);
+
+  useEffect(() => {
+    setAudioSources(playerState.value?.streams || []);
+    // const hlsStream = playerState.value?.streams.find((s) => s.url.endsWith('.m3u8'));
+    // if (!playerState.value?.streams.length || !hlsStream) {
+    //   setAudioSources(playerState.value?.streams || []);
+    // } else {
+    //   // TODO: doesn't work, maybe use hls.js?
+    //   fetch(hlsStream.url)
+    //     .then((response) => {
+    //       //console.log(response);
+    //       return response.blob();
+    //     })
+    //     .then((blob) => {
+    //       const blobUrl = URL.createObjectURL(blob);
+    //       // Cleanup the blob URL when the component unmounts
+    //       const result = playerState.value?.streams.filter((s) => !s.url.endsWith('.m3u8')) || [];
+    //       result.push({ url: blobUrl, mimetype: 'audio/aac' });
+    //       setAudioSources(result);
+    //     })
+    //     .catch((error) => {
+    //       console.error('Error loading HLS stream:', error);
+    //     });
+    // }
+  }, [playerState.value, setAudioSources]);
 
   const handleSeek = useCallback((seconds: number) => {
     if (castSession && castMediaRef.current) {
@@ -338,6 +365,7 @@ export const usePlayer = () => {
     duration,
     playbackRates,
     isPodcast,
+    audioSources,
     handleSeek,
     handlePlaybackRateChange,
     handlePlayPause,

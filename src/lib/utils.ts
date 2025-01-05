@@ -11,8 +11,7 @@ export const normalizedUrlWithoutScheme = (url: string): string => {
 
 export const getPodcastUrlID = (url: string): string => {
   const normalizedUrl = normalizedUrlWithoutScheme(url);
-  const urlParts = normalizedUrl.split('/');
-  return btoa(urlParts[urlParts.length - 1]);
+  return btoa(normalizedUrl);
 };
 
 // See https://gist.github.com/hagemann/382adfc57adbd5af078dc93feef01fe1

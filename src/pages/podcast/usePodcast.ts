@@ -16,9 +16,11 @@ import { Episode, Podcast } from '~/store/types';
 
 export const usePodcast = () => {
   const { params } = useRoute();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(typeof window !== 'undefined');
   const [isFollowing, setIsFollowing] = useState(false);
-  const [podcast, setPodcast] = useState<Podcast | null>(null);
+  const [podcast, setPodcast] = useState<Podcast | null>(
+    (globalThis as any)?.__PRERENDER_PODCASTS__?.find((p: Podcast) => p.id === params.id),
+  );
 
   const paramsFeedUrl = useMemo(() => {
     return `https://${normalizedUrlWithoutScheme(atob(params.id))}`;
@@ -115,11 +117,6 @@ export const usePodcast = () => {
 
     if (typeof window !== 'undefined') {
       fetchPodcastData();
-    } else if ((global as any).__PRERENDER_PODCASTS__) {
-      const podcastData = (global as any).__PRERENDER_PODCASTS__.find((p: Podcast) => p.id === params.id);
-      console.log('Found podcast data in global:', podcastData);
-
-      setPodcast(podcastData);
     }
 
     return () => {

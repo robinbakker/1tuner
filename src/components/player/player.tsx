@@ -20,6 +20,7 @@ export const Player = () => {
     isPodcast,
     isCastingAvailable,
     castSession,
+    audioSources,
     startCasting,
     stopCasting,
     handleSeek,
@@ -45,7 +46,7 @@ export const Player = () => {
       }}
     >
       <audio ref={audioRef} preload="metadata">
-        {playerState.value.streams.map((stream) => (
+        {audioSources.map((stream) => (
           <source key={stream.url} src={stream.url} type={stream.mimetype} />
         ))}
       </audio>
