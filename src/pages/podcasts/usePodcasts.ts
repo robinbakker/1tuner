@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
+import { useHead } from '~/hooks/useHead';
 import { settingsState } from '~/store/signals/settings';
 import { Podcast, PodcastSearchProvider } from '~/store/types';
 
@@ -7,6 +8,10 @@ export const usePodcasts = () => {
   const [searchResults, setSearchResults] = useState<Podcast[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const searchTimeout = useRef<NodeJS.Timeout | null>();
+
+  useHead({
+    title: 'Podcasts',
+  });
 
   useEffect(() => {
     if (searchTerm.trim()) {

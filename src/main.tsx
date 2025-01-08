@@ -3,6 +3,7 @@ import { App } from './app.tsx';
 import { genres } from './assets/data/genres.json';
 import { languages } from './assets/data/languages.json';
 import { stations } from './assets/data/stations.json';
+import { defaultHeadData, HeadData } from './hooks/useHead.ts';
 import { getPodcastUrlID } from './lib/utils.ts';
 import { radioGenres, radioLanguages, radioStations } from './store/signals/radio.ts';
 import { RadioStation } from './store/types.ts';
@@ -25,28 +26,32 @@ export async function prerender() {
       id: getPodcastUrlID(pc.url),
     }));
   }
-  return await ssr(<App />);
-  // const { html } = await ssr(<App />);
+  //return await ssr(<App />);
+  const { html, links } = await ssr(<App />);
+  const headData = { ...defaultHeadData, ...((globalThis as any).__HEAD_DATA__ || {}) } as HeadData;
 
-  // return {
-  // 	html,
-  // 	// Optionally add additional links that should be
-  // 	// prerendered (if they haven't already been -- these will be deduped)
-  // 	//links: new Set([...discoveredLinks, '/foo', '/bar']),
-  // 	// Optionally configure and add elements to the `<head>` of
-  // 	// the prerendered HTML document
-  // 	head: {
-  // 		// Sets the "lang" attribute: `<html lang="en">`
-  // 		//lang: 'en',
-  // 		// Sets the title for the current page: `<title>My cool page</title>`
-  // 		//title: 'My cool page',
-  // 		// Sets any additional elements you want injected into the `<head>`:
-  // 		//   <link rel="stylesheet" href="foo.css">
-  // 		//   <meta property="og:title" content="Social media title">
-  // 		elements: new Set([
-  // 			{ type: 'link', props: { rel: 'stylesheet', href: 'foo.css' } },
-  // 			{ type: 'meta', props: { property: 'og:title', content: 'Social media title' } }
-  // 		])
-  // 	}
-  // }
+  return {
+    html,
+    // Optionally add additional links that should be
+    // prerendered (if they haven't already been -- these will be deduped)
+    links,
+    // Optionally configure and add elements to the `<head>` of
+    // the prerendered HTML document
+    head: {
+      // Sets the "lang" attribute: `<html lang="en">`
+      //lang: 'en',
+      // Sets the title for the current page: `<title>My cool page</title>`
+      title: headData.title,
+      // Sets any additional elements you want injected into the `<head>`:
+      //   <link rel="stylesheet" href="foo.css">
+      //   <meta property="og:title" content="Social media title">
+      elements: new Set([
+        { type: 'meta', props: { property: 'og:title', content: headData.title } },
+        { type: 'meta', props: { property: 'og:description', content: headData.description } },
+        { type: 'meta', props: { property: 'og:image', content: headData.image } },
+        { type: 'meta', props: { property: 'og:url', content: headData.url } },
+        { type: 'meta', props: { property: 'og:type', content: headData.type } },
+      ]),
+    },
+  };
 }

@@ -1,10 +1,15 @@
 import { useMemo, useState } from 'preact/hooks';
+import { useHead } from '~/hooks/useHead';
 import { radioStations } from '~/store/signals/radio';
 
 export const useRadioStations = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+
+  useHead({
+    title: 'Radio Stations',
+  });
 
   const activeFilterCount = useMemo(
     () => selectedCountries.length + selectedGenres.length,

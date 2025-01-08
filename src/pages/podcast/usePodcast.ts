@@ -1,7 +1,8 @@
 import { XMLParser } from 'fast-xml-parser';
 import { useRoute } from 'preact-iso';
 import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
-import { getTimeStringFromSeconds, normalizedUrlWithoutScheme } from '~/lib/utils';
+import { useHead } from '~/hooks/useHead';
+import { getPodcastUrlID, getTimeStringFromSeconds, normalizedUrlWithoutScheme, slugify, stripHtml } from '~/lib/utils';
 import { playerState } from '~/store/signals/player';
 import {
   addRecentlyVisitedPodcast,
@@ -21,6 +22,16 @@ export const usePodcast = () => {
   const [podcast, setPodcast] = useState<Podcast | null>(
     (globalThis as any)?.__PRERENDER_PODCASTS__?.find((p: Podcast) => p.id === params.id),
   );
+
+  useHead({
+    title: podcast ? podcast.title : 'Podcast',
+    description: podcast ? stripHtml(podcast.description).slice(0, 200) : undefined,
+    image: podcast?.imageUrl,
+    url: podcast
+      ? `${import.meta.env.VITE_BASE_URL}/podcast/${slugify(podcast.title)}/${getPodcastUrlID(podcast.url)}`
+      : undefined,
+    type: 'music.playlist',
+  });
 
   const paramsFeedUrl = useMemo(() => {
     return `https://${normalizedUrlWithoutScheme(atob(params.id))}`;

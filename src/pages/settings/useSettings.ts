@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'preact/compat';
 import { useState } from 'preact/hooks';
 import { RadioButtonListOption } from '~/components/ui/radio-button-list';
+import { useHead } from '~/hooks/useHead';
 import { settingsState } from '~/store/signals/settings';
 import { PodcastSearchProvider } from '~/store/types';
 import { ThemeOption } from './types';
@@ -28,6 +29,10 @@ export const useSettings = () => {
       value: PodcastSearchProvider.Apple,
     },
   ];
+
+  useHead({
+    title: 'Settings',
+  });
 
   const handleThemeChange = (value: string) => {
     if (value === 'default') {

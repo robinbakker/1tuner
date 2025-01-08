@@ -1,4 +1,5 @@
 interface Window {
+  __HEAD_DATA__?: HeadData;
   chrome: {
     cast: {
       initialized: boolean;
