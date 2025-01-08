@@ -1,7 +1,7 @@
 import { Play } from 'lucide-preact';
 import { Badge } from '~/components/ui/badge';
 import { playerState } from '~/store/signals/player';
-import { getRadioStationLanguage } from '~/store/signals/radio';
+import { addRecentlyVisitedRadioStation, getRadioStationLanguage } from '~/store/signals/radio';
 import { RadioStation } from '~/store/types';
 
 interface Props {
@@ -13,6 +13,7 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
   const onClickPlay = (e: { preventDefault: () => void; stopPropagation: () => void }) => {
     e.preventDefault();
     e.stopPropagation();
+    addRecentlyVisitedRadioStation(station.id);
     playerState.value = {
       isPlaying: true,
       contentID: station.id,

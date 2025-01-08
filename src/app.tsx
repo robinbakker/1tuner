@@ -2,6 +2,7 @@ import { ErrorBoundary, LocationProvider, Route, Router } from 'preact-iso';
 import { useEffect } from 'preact/hooks';
 import './app.css';
 import { AppShell } from './components/appShell/appShell';
+import { AboutPage } from './pages/about';
 import { Homepage } from './pages/homepage';
 import { NotFound } from './pages/not-found';
 import { PodcastPage } from './pages/podcast';
@@ -63,6 +64,7 @@ export function App() {
               <Route path="/podcasts" component={PodcastsPage} />
               <Route path="/podcast/:name/:id" component={PodcastPage} />
               <Route path="/settings" component={SettingsPage} />
+              <Route path="/about" component={AboutPage} />
               <NotFound default />
             </Router>
           </AppShell>

@@ -4,6 +4,7 @@ import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { useHead } from '~/hooks/useHead';
+import { styleClass } from '~/lib/styleClass';
 import { recentlyVisitedPodcasts } from '~/store/signals/podcast';
 import { getRecentlyVisitedRadioStations } from '~/store/signals/radio';
 
@@ -18,6 +19,7 @@ export const Homepage = () => {
       </Button>
     );
   }, []);
+
   return (
     <>
       <header className="relative w-full -mt-1 mb-6">
@@ -55,6 +57,38 @@ export const Homepage = () => {
             </div>
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
+        </section>
+
+        <section class="mb-8">
+          <div class="w-screen md:w-full flex justify-between items-center mb-2 px-6">
+            <h2 class="text-2xl font-semibold">About 1tuner.com</h2>
+            <MoreLink location="/about" />
+          </div>
+          <div class="px-6">
+            <p class="pb-4">
+              This is a free web app. Here you can listen to online{' '}
+              <a href="/radio-stations" class={styleClass.textLink}>
+                radio stations
+              </a>
+              ,{' '}
+              <a href="/podcasts" class={styleClass.textLink}>
+                podcasts
+              </a>{' '}
+              and create{' '}
+              <a href="/playlists" class={styleClass.textLink}>
+                playlists
+              </a>
+              .<br />
+              Just add this site to your homescreen and you're good to go!
+            </p>
+            <p class="pb-4">
+              This app stores information in your browser to save your preferences and Cloudflare Web Analytics is used
+              for basic analytics.{' '}
+              <a href="/about" class={styleClass.textLink}>
+                Read more
+              </a>
+            </p>
+          </div>
         </section>
 
         {/* <section class="px-4">

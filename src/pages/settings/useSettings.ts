@@ -12,9 +12,9 @@ export const useSettings = () => {
   );
 
   const themeOptions: RadioButtonListOption[] = [
+    { label: 'System default', value: 'default' },
     { label: 'Light', value: 'light' },
     { label: 'Dark', value: 'dark' },
-    { label: 'System default', value: 'default' },
   ];
 
   const searchProviderOptions: RadioButtonListOption[] = [

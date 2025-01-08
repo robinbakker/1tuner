@@ -2993,14 +2993,14 @@
       "genres": ["oldies", "pop", "rock"],
       "language": "nl",
       "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/radioveronica",
-      "name": "Vintage Veronica",
+      "name": "Veronica Goud van Oud",
       "streams": [
         {
-          "mimetype": "audio/mp3",
-          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SRGSTR09.mp3"
+          "mimetype": "audio/aac",
+          "url": "https://25703.live.streamtheworld.com/DAB01_AAC.aac"
         }
       ],
-      "website": "https://www.radioveronica.nl/veronica-vintage",
+      "website": "https://www.radioveronica.nl",
       "related": ["veronica"],
       "social": [
         {
@@ -3010,7 +3010,7 @@
           "url": "https://twitter.com/radioveronica"
         }
       ],
-      "id": "vintageveronica"
+      "id": "veronica-goud-van-oud"
     },
     {
       "displayorder": 113,

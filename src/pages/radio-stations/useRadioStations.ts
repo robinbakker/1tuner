@@ -8,7 +8,7 @@ export const useRadioStations = () => {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
   useHead({
-    title: 'Radio Stations',
+    title: 'Radio stations',
   });
 
   const activeFilterCount = useMemo(

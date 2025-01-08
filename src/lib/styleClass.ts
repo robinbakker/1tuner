@@ -10,7 +10,10 @@ const select = cn(selectBaseClass, 'py-3 px-4 pe-9 block w-full');
 
 const selectSmall = cn(selectBaseClass, 'custom-select-arrow--small', 'py-1 px-2 pe-5 block');
 
+const textLink = cn('text-primary hover:underline');
+
 export const styleClass = {
   select,
   selectSmall,
+  textLink,
 };
