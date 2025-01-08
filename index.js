@@ -220,6 +220,7 @@ export default class App extends Component {
           <Redirect path="/planning-edit/:name/:params?" to="/playlist-edit" />
           <Redirect path="/radio-station/npokx" to="/radio-station/npocampus" />
           <Redirect path="/radio-station/radio4all" to="/radio-station/yoursaferadio" />
+          <Redirect path="/radio-station/vintageveronica" to="/radio-station/veronica-goud-van-oud" />
           <Error type="404" default />
         </Router>
         <Footer

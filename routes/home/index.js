@@ -126,7 +126,7 @@ export default class Home extends Component {
               Just add this site to your homescreen and you're good to go!
             </p>
             <p>
-              This app stores information in your browser to save your preferences and Google Analytics is used for basic analytics.{' '}
+              This app stores information in your browser to save your preferences and Cloudflare Web Analytics is used for basic analytics.{' '}
               <Link href="/about" native>
                 Read more
               </Link>

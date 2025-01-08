@@ -1947,19 +1947,19 @@
     ],
     "related": ["sublimefm"]
   },
-  "vintageveronica": {
+  "veronica-goud-van-oud": {
     "displayorder": 112,
     "genres": ["oldies", "pop", "rock"],
     "language": "nl",
     "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/radioveronica",
-    "name": "Vintage Veronica",
+    "name": "Veronica Goud van Oud",
     "streams": [
       {
-        "mimetype": "audio/mp3",
-        "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SRGSTR09.mp3"
+        "mimetype": "audio/aac",
+        "url": "https://25703.live.streamtheworld.com/DAB01_AAC.aac"
       }
     ],
-    "website": "https://www.radioveronica.nl/veronica-vintage",
+    "website": "https://www.radioveronica.nl",
     "related": ["veronica"],
     "social": [{ "title": "@radioveronica", "type": "twitter", "account": "radioveronica", "url": "https://twitter.com/radioveronica" }]
   },
@@ -1967,7 +1967,7 @@
     "displayorder": 113,
     "genres": ["talk"],
     "language": "nl",
-    "logosource": "https://www.yoursaferadio.nl/images.v2/android-chrome-192x192.png",
+    "logosource": "https://www.yoursafe.com/misc/favicon.ico",
     "name": "Yoursafe Radio",
     "streams": [
       {
@@ -2080,6 +2080,85 @@
       { "title": "@4ever49radio", "type": "youtube", "account": "4ever49radio", "url": "https://www.youtube.com/@4ever49radio" },
       { "title": "@4ever49radio", "type": "instagram", "account": "4ever49radio", "url": "https://www.instagram.com/4ever49radio" },
       { "title": "@radio4ever49", "type": "facebook", "account": "radio4ever49", "url": "https://www.facebook.com/radio4ever49" }
+    ]
+  },
+  "radioparadise": {
+    "displayorder": 119,
+    "genres": ["indie", "pop", "rock", "electronic", "oldies", "alternative", "world"],
+    "language": "en-US",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/RadioParadise",
+    "name": "Radio Paradise",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://stream-uk1.radioparadise.com/aac-320"
+      }
+    ],
+    "website": "https://radioparadise.com",
+    "social": [
+      { "title": "@radioparadise9757", "type": "youtube", "account": "radioparadise9757", "url": "https://www.youtube.com/@radioparadise9757" },
+      {
+        "title": "@radioparadisestudio",
+        "type": "instagram",
+        "account": "radioparadisestudio",
+        "url": "https://www.instagram.com/radioparadisestudio"
+      },
+      { "title": "@RadioParadise", "type": "facebook", "account": "RadioParadise", "url": "https://www.facebook.com/RadioParadise" },
+      { "title": "@radioparadise", "type": "twitter", "account": "radioparadise", "url": "https://twitter.com/radioparadise" }
+    ]
+  },
+  "novaclassicrock": {
+    "displayorder": 120,
+    "genres": ["oldies", "rock", "pop"],
+    "language": "nl",
+    "logosource": "https://www.novaclassicrock.nl/images/banner.png",
+    "name": "Nova Classic Rock",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://mediaserv68.live-streams.nl:8070/stream"
+      }
+    ],
+    "website": "https://www.novaclassicrock.nl"
+  },
+  "radionl": {
+    "displayorder": 121,
+    "genres": ["folk", "pop"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/radionlfm",
+    "name": "RADIONL",
+    "streams": [
+      {
+        "mimetype": "audio/mp3",
+        "url": "https://stream.radionl.fm/radionl"
+      }
+    ],
+    "website": "https://radionl.fm",
+    "social": [
+      { "title": "@radionlfm", "type": "twitter", "account": "radionlfm", "url": "https://twitter.com/radionlfm" },
+      { "title": "@radionlfm", "type": "instagram", "account": "radionlfm", "url": "https://www.instagram.com/radionlfm" },
+      { "title": "@radionlfm", "type": "facebook", "account": "radionlfm", "url": "https://www.facebook.com/radionlfm" },
+      { "title": "@RADIONLTV", "type": "youtube", "account": "RADIONLTV", "url": "https://youtube.com/RADIONLTV" },
+      { "title": "@radionlfm", "type": "tiktok", "account": "radionlfm", "url": "https://www.tiktok.com/@radionlfm" }
+    ]
+  },
+  "xdradio": {
+    "displayorder": 122,
+    "genres": ["pop", "oldies"],
+    "language": "nl",
+    "logosource": "https://res.cloudinary.com/onetuner/image/facebook/xdradioxd",
+    "name": "XD Radio",
+    "streams": [
+      {
+        "mimetype": "audio/aac",
+        "url": "https://stream.xdradio.nl/live.m3u8"
+      }
+    ],
+    "website": "https://www.xdradio.nl",
+    "social": [
+      { "title": "@xdradionl", "type": "instagram", "account": "xdradionl", "url": "https://www.instagram.com/xdradionl" },
+      { "title": "@xdradioxd", "type": "facebook", "account": "xdradioxd", "url": "https://www.facebook.com/xdradioxd" },
+      { "title": "@xdradionl", "type": "youtube", "account": "xdradionl", "url": "https://www.youtube.com/@xdradionl" }
     ]
   }
 }
