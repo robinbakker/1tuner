@@ -8,7 +8,16 @@ import { SocialAccountType } from '~/store/types';
 import { useRadioStation } from './useRadioStation';
 
 export const RadioStationPage = () => {
-  const { radioStation, isPlaying, isFollowing, toggleFollow } = useRadioStation();
+  const { params, radioStation, isPlaying, isFollowing, toggleFollow } = useRadioStation();
+
+  if (typeof window !== 'undefined' && !radioStation) {
+    if (params.id) {
+      location.href = '/404-page-not-found';
+      return <></>;
+    }
+    location.href = '/radio-stations';
+    return <></>;
+  }
 
   if (!radioStation) {
     return <div>Radio station not found</div>;

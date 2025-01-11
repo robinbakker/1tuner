@@ -1,8 +1,9 @@
 import { ChangeEvent } from 'preact/compat';
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { RadioButtonListOption } from '~/components/ui/radio-button-list';
 import { useHead } from '~/hooks/useHead';
 import { settingsState } from '~/store/signals/settings';
+import { uiState } from '~/store/signals/ui';
 import { PodcastSearchProvider } from '~/store/types';
 import { ThemeOption } from './types';
 
@@ -61,6 +62,11 @@ export const useSettings = () => {
     const input = e.currentTarget as HTMLInputElement;
     settingsState.value.enableChromecast = input.checked;
   };
+
+  useEffect(() => {
+    uiState.value = { ...uiState.value, headerTitle: 'Settings' };
+    return () => (uiState.value = { ...uiState.value, headerTitle: '' });
+  });
 
   return {
     handleRadioReconnectsValueChange,

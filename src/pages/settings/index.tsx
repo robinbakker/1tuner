@@ -1,3 +1,4 @@
+import { Button } from '~/components/ui/button';
 import { RadioButtonList } from '~/components/ui/radio-button-list';
 import { Switch } from '~/components/ui/switch';
 import { styleClass } from '~/lib/styleClass';
@@ -19,8 +20,33 @@ export const SettingsPage = () => {
   } = useSettings();
 
   return (
-    <div class="container mx-auto px-8 py-6">
+    <div class="container mx-auto px-8 pb-6">
       <h1 class="text-3xl font-bold mb-6">Settings</h1>
+      <p class="pb-4">
+        1tuner is a free web app. Here you can listen to online{' '}
+        <a href="/radio-stations" class={styleClass.textLink}>
+          radio stations
+        </a>
+        ,{' '}
+        <a href="/podcasts" class={styleClass.textLink}>
+          podcasts
+        </a>{' '}
+        and create{' '}
+        <a href="/playlists" class={styleClass.textLink}>
+          playlists
+        </a>
+        .<br />
+        Just add this site to your homescreen and you're good to go!
+      </p>
+      <p class="pb-4">
+        This app stores information in your browser to save your preferences and Cloudflare Web Analytics is used for
+        basic analytics. <br />
+        <Button asChild variant={`outline`}>
+          <a href="/about" class={styleClass.textLink}>
+            More about 1tuner.com
+          </a>
+        </Button>
+      </p>
       <section class="mb-8 relative">
         <h2 class="text-2xl font-semibold">Theme</h2>
         <p class="text-muted-foreground text-sm mb-4">Just like Star Wars - choose your theme preference here.</p>

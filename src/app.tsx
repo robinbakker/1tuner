@@ -60,9 +60,9 @@ export function App() {
             <Router>
               <Route path="/" component={Homepage} />
               <Route path="/radio-stations" component={RadioStationsPage} />
-              <Route path="/radio-station/:id" component={RadioStationPage} />
+              <Route path="/radio-station/:id?" component={RadioStationPage} />
               <Route path="/podcasts" component={PodcastsPage} />
-              <Route path="/podcast/:name/:id" component={PodcastPage} />
+              <Route path="/podcast/:name?/:id?" component={PodcastPage} />
               <Route path="/settings" component={SettingsPage} />
               <Route path="/about" component={AboutPage} />
               <NotFound default />

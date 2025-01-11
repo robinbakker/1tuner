@@ -84,6 +84,7 @@ export const useRadioStation = () => {
   });
 
   return {
+    params,
     isPlaying,
     radioStation,
     isFollowing,

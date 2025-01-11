@@ -1,10 +1,25 @@
+import { useEffect } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import { styleClass } from '~/lib/styleClass';
 import { APP_VERSION } from '~/lib/version';
+import { uiState } from '~/store/signals/ui';
 
 export const AboutPage = () => {
   useHead({
     title: 'About',
+  });
+
+  useEffect(() => {
+    uiState.value = {
+      headerTitle: 'About',
+      headerDefaultTextColor: 'default',
+    };
+
+    return () =>
+      (uiState.value = {
+        headerTitle: '',
+        headerDefaultTextColor: 'default',
+      });
   });
 
   return (

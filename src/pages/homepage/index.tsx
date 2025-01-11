@@ -1,6 +1,7 @@
 import { useCallback } from 'preact/hooks';
 import { PodcastCard } from '~/components/podcast-card';
 import { RadioStationCard } from '~/components/radio-station-card';
+import { ShareButton } from '~/components/share-button';
 import { Button } from '~/components/ui/button';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { styleClass } from '~/lib/styleClass';
@@ -18,10 +19,16 @@ export const Homepage = () => {
 
   return (
     <>
-      <header className="relative w-full -mt-1 mb-6">
-        <div className="inset-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: "url('./header-bg.jpg')" }}>
-          <div className="mx-auto h-full px-4 py-6">
+      <header class="relative w-full -mt-1 mb-6">
+        <div
+          class="inset-0 w-full h-full flex justify-between bg-cover bg-center"
+          style={{ backgroundImage: "url('./header-bg.jpg')" }}
+        >
+          <div className="h-full px-4 py-6">
             <img src="./logo-text-white.svg" alt="1tuner logo" className="h-14 relative z-10" />
+          </div>
+          <div class="flex items-center pr-4">
+            <ShareButton hasDarkBackground={true} />
           </div>
         </div>
       </header>

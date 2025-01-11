@@ -1,6 +1,5 @@
 import { useLocation } from 'preact-iso';
-import { useEffect, useRef, useState } from 'preact/hooks';
-import { uiState } from '~/store/signals/ui';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 
 export const useAppShell = () => {
   const mainRef = useRef<HTMLElement>(null);
@@ -37,28 +36,20 @@ export const useAppShell = () => {
     history.back();
   };
 
-  const handleShare = async () => {
-    if (!navigator.share || !uiState.value.headerTitle) return;
-    try {
-      await navigator.share({
-        title: uiState.value.headerTitle,
-        url: window?.location.href,
-      });
-    } catch (error) {
-      console.error('Error sharing:', error);
-    }
-  };
-
   const isActive = (checkPath: string) => {
     return checkPath === '/' ? path === checkPath : path.startsWith(checkPath);
   };
+
+  const isMainRoute = useMemo(() => {
+    return ['/', '/radio-stations', '/podcasts', '/settings'].includes(path);
+  }, [path]);
 
   return {
     mainRef,
     headerSentinelRef,
     isActive,
+    isMainRoute,
     isScrolled,
     handleBackClick,
-    handleShare,
   };
 };

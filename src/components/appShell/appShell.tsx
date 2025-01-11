@@ -1,9 +1,10 @@
-import { ArrowLeft, Share2 } from 'lucide-preact';
+import { ArrowLeft } from 'lucide-preact';
 import { ComponentChildren } from 'preact';
 import { cn } from '~/lib/utils';
 import { isPlayerMaximized, playerState } from '~/store/signals/player';
 import { uiState } from '~/store/signals/ui';
 import { Player } from '../player/player';
+import { ShareButton } from '../share-button';
 import { useAppShell } from './useAppShell';
 
 interface AppShellProps {
@@ -11,7 +12,7 @@ interface AppShellProps {
 }
 
 export const AppShell = ({ children }: AppShellProps) => {
-  const { mainRef, headerSentinelRef, isScrolled, isActive, handleBackClick, handleShare } = useAppShell();
+  const { mainRef, headerSentinelRef, isScrolled, isMainRoute, isActive, handleBackClick } = useAppShell();
   const navLinkBaseClass = cn(
     'group flex flex-col items-center justify-center p-2 transition-colors',
     'duration-200 text-current hover:text-primary [&.active]:text-primary',
@@ -165,29 +166,23 @@ export const AppShell = ({ children }: AppShellProps) => {
               class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md app-shell-header' : 'bg-transparent'}`}
             >
               <div class="flex items-center justify-between p-4">
-                <button
-                  onClick={handleBackClick}
-                  class={cn(
-                    'p-2 rounded-full  transition-colors duration-200',
-                    isLightHeaderText ? 'hover:bg-stone-200/20' : 'hover:bg-stone-200',
-                  )}
-                >
-                  <ArrowLeft class={cn('h-6 w-6', isLightHeaderText ? 'text-white' : 'text-stone-600')} />
-                </button>
+                {!isMainRoute && (
+                  <button
+                    onClick={handleBackClick}
+                    class={cn(
+                      'p-2 rounded-full  transition-colors duration-200',
+                      isLightHeaderText ? 'hover:bg-stone-200/20' : 'hover:bg-stone-200',
+                    )}
+                  >
+                    <ArrowLeft class={cn('h-6 w-6', isLightHeaderText ? 'text-white' : 'text-stone-600')} />
+                  </button>
+                )}
                 <h1
                   class={`text-lg font-semibold transition-opacity truncate duration-300 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}
                 >
                   {uiState.value?.headerTitle}
                 </h1>
-                <button
-                  onClick={handleShare}
-                  class={cn(
-                    'p-2 rounded-full  transition-colors duration-200',
-                    isLightHeaderText ? 'hover:bg-stone-200/20' : 'hover:bg-stone-200',
-                  )}
-                >
-                  <Share2 class={cn('h-6 w-6', isLightHeaderText ? 'text-white' : 'text-stone-600')} />
-                </button>
+                <ShareButton hasDarkBackground={isLightHeaderText} />
               </div>
             </header>
           </>
