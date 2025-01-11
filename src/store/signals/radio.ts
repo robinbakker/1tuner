@@ -26,7 +26,6 @@ export const getRecentlyVisitedRadioStations = (): RadioStation[] => {
 };
 
 export const addRecentlyVisitedRadioStation = (id: string | undefined) => {
-  console.log('addRecentlyVisitedRadioStation', id);
   if (!id) return;
   recentlyVisitedRadioStationIDs.value = [id, ...recentlyVisitedRadioStationIDs.value.filter((s) => s !== id)].slice(
     0,

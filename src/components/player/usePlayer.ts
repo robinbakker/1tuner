@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import { reconnectUtil } from '~/lib/reconnectUtil';
 import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
+import { settingsState } from '~/store/signals/settings';
 import { Stream } from '~/store/types';
 import { isPlayerMaximized, playerState } from '../../store/signals/player';
 import { useCastApi } from './useCastApi';
@@ -24,7 +26,7 @@ export const usePlayer = () => {
     castSession,
     castMediaRef,
   } = useCastApi();
-  const maxReconnectAttempts = 40;
+  const maxReconnectAttempts = settingsState.value.radioStreamMaxReconnects || 50;
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
   const isPodcast = playerState.value?.pageLocation.startsWith('/podcast/');
 
@@ -228,8 +230,7 @@ export const usePlayer = () => {
         clearTimeout(reconnectTimeout.current);
       }
 
-      const timeout =
-        reconnectAttempts.current <= 20 ? 500 : 1000 * Math.min(2 ** (reconnectAttempts.current - 10), 16);
+      const timeout = reconnectUtil.getReconnectTimeoutMs(reconnectAttempts.current, maxReconnectAttempts);
 
       reconnectTimeout.current = setTimeout(() => {
         if (!audio || !playerState.value?.isPlaying) return;

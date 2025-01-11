@@ -3,15 +3,11 @@ import { PodcastCard } from '~/components/podcast-card';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
-import { useHead } from '~/hooks/useHead';
 import { styleClass } from '~/lib/styleClass';
 import { recentlyVisitedPodcasts } from '~/store/signals/podcast';
 import { getRecentlyVisitedRadioStations } from '~/store/signals/radio';
 
 export const Homepage = () => {
-  useHead({
-    title: 'Home',
-  });
   const MoreLink = useCallback(({ location }: { location: string }) => {
     return (
       <Button asChild variant="outline">

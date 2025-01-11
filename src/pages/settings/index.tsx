@@ -2,7 +2,6 @@ import { RadioButtonList } from '~/components/ui/radio-button-list';
 import { Switch } from '~/components/ui/switch';
 import { styleClass } from '~/lib/styleClass';
 import { APP_VERSION } from '~/lib/version';
-import { settingsState } from '~/store/signals/settings';
 import { useSettings } from './useSettings';
 
 export const SettingsPage = () => {
@@ -10,6 +9,9 @@ export const SettingsPage = () => {
     theme,
     themeOptions,
     searchProviderOptions,
+    searchProviderValue,
+    radioStreamMaxReconnectsValue,
+    hasGoogleCastsSupport,
     handleThemeChange,
     handleSearchProviderChange,
     handleRadioReconnectsValueChange,
@@ -32,7 +34,7 @@ export const SettingsPage = () => {
         <RadioButtonList
           options={searchProviderOptions}
           name="searchProvider"
-          value={settingsState.value?.podcastSearchProvider}
+          value={searchProviderValue}
           onChange={handleSearchProviderChange}
         />
       </section>
@@ -43,12 +45,15 @@ export const SettingsPage = () => {
           setting allows you to specify a number of times the player will try to reconnect to the stream automatically
           (or never).
         </p>
-        <select title="Radio stream reconnect" onChange={handleRadioReconnectsValueChange} class={styleClass.select}>
+        <select
+          title="Radio stream reconnect"
+          value={radioStreamMaxReconnectsValue}
+          onChange={handleRadioReconnectsValueChange}
+          class={styleClass.select}
+        >
           <option value="0">Never</option>
           <option value="10">10 times</option>
-          <option value="50" selected>
-            50 times
-          </option>
+          <option value="50">50 times</option>
           <option value="100">100 times</option>
         </select>
       </section>
@@ -58,11 +63,7 @@ export const SettingsPage = () => {
           Enable this option to support playing to a Chromecast or Google Cast enabled device (this is behind a toggle
           because it loads an extra external script from gstatic.com).
         </p>
-        <Switch
-          id="googleCastSupport"
-          checked={settingsState.value?.enableChromecast}
-          onClick={handleGoogleCastSupportChange}
-        />
+        <Switch id="googleCastSupport" checked={hasGoogleCastsSupport} onClick={handleGoogleCastSupportChange} />
       </section>
       <p class="text-muted-foreground text-sm">v{APP_VERSION}</p>
     </div>

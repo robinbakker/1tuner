@@ -8,7 +8,7 @@ import { ThemeOption } from './types';
 
 export const useSettings = () => {
   const [theme, setTheme] = useState<ThemeOption>(
-    typeof window !== 'undefined' ? window?.localStorage.theme : 'default',
+    typeof window !== 'undefined' ? (window?.localStorage.theme ?? 'default') : 'default',
   );
 
   const themeOptions: RadioButtonListOption[] = [
@@ -47,7 +47,6 @@ export const useSettings = () => {
   };
 
   const handleSearchProviderChange = (value: string) => {
-    console.log('handleSearchProviderChange', value);
     if (!value) return;
     settingsState.value.podcastSearchProvider = value as PodcastSearchProvider;
   };
@@ -71,5 +70,8 @@ export const useSettings = () => {
     searchProviderOptions,
     themeOptions,
     theme,
+    searchProviderValue: settingsState.value.podcastSearchProvider ?? PodcastSearchProvider.PodcastIndex,
+    radioStreamMaxReconnectsValue: settingsState.value.radioStreamMaxReconnects ?? 50,
+    hasGoogleCastsSupport: !!settingsState.value.enableChromecast,
   };
 };
