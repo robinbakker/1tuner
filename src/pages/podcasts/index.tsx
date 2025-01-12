@@ -14,13 +14,13 @@ export const PodcastsPage = () => {
   const renderPodcastList = useCallback((podcasts: Podcast[] | undefined, title: string) => {
     if (isLoading) return <div>Loading...</div>;
     if (!podcasts?.length) return null;
-
+    const slugTitle = slugify(title);
     return (
       <>
         <h2 className="text-2xl font-semibold mb-4">{title}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {podcasts.map((podcast) => (
-            <PodcastCard key={`${slugify(title)}-${podcast.id}`} size="large" podcast={podcast} />
+            <PodcastCard key={`${slugTitle}-${podcast.id}`} size="large" podcast={podcast} />
           ))}
         </div>
       </>
@@ -40,6 +40,7 @@ export const PodcastsPage = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm((e.target as HTMLInputElement).value)}
           className="w-full focus:ring-primary pl-10"
+          autofocus={!!searchTerm}
         />
       </div>
       {typeof window === 'undefined' && (globalThis as any).__PRERENDER_PODCASTS__ && (

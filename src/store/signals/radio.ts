@@ -1,11 +1,12 @@
 import { signal } from '@preact/signals';
-import { Genre, Language, RadioStation } from '~/store/types';
+import { Genre, Language, RadioSearchResult, RadioStation } from '~/store/types';
 
 export const radioStations = signal<RadioStation[]>([]);
 export const radioLanguages = signal<Language[]>([]);
 export const radioGenres = signal<Genre[]>([]);
 export const followedRadioStationIDs = signal<string[]>([]);
 export const recentlyVisitedRadioStationIDs = signal<string[]>([]);
+export const lastRadioSearchResult = signal<RadioSearchResult | null>(null);
 
 export const getRadioStation = (id: string): RadioStation | undefined => {
   if (!id) return undefined;
@@ -52,4 +53,12 @@ export const unfollowRadioStation = (id: string) => {
 
 export const isFollowedRadioStation = (id: string) => {
   return followedRadioStationIDs.value.some((s) => s === id);
+};
+
+export const setLastRadioSearchResult = (query: string, result: RadioStation[]) => {
+  lastRadioSearchResult.value = { query, result };
+};
+
+export const clearLastRadioSearchResult = () => {
+  lastRadioSearchResult.value = null;
 };

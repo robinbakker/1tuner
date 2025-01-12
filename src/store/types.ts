@@ -87,6 +87,16 @@ export interface PodcastJsonGenre {
   name: string;
 }
 
+export interface PodcastSearchResult {
+  query: string;
+  result: Podcast[];
+}
+
+export interface RadioSearchResult {
+  query: string;
+  result: RadioStation[];
+}
+
 export interface UIState {
   headerTitle: string;
   headerDefaultTextColor: 'light' | 'default';

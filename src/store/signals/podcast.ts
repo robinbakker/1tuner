@@ -1,8 +1,9 @@
 import { signal } from '@preact/signals';
-import { Podcast } from '../types';
+import { Podcast, PodcastSearchResult } from '../types';
 
 export const followedPodcasts = signal<Podcast[]>([]);
 export const recentlyVisitedPodcasts = signal<Podcast[]>([]);
+export const lastPodcastSearchResult = signal<PodcastSearchResult | null>(null);
 
 export const getPodcast = (id: string): Podcast | undefined => {
   return [...followedPodcasts.value, ...recentlyVisitedPodcasts.value].find((p) => p.id === id);
@@ -50,4 +51,12 @@ export const unfollowPodcast = (id: string) => {
 
 export const isFollowedPodcast = (id: string) => {
   return followedPodcasts.value.some((p) => p.id === id);
+};
+
+export const setLastPodcastSearchResult = (query: string, result: Podcast[]) => {
+  lastPodcastSearchResult.value = { query, result };
+};
+
+export const clearLastPodcastSearchResult = () => {
+  lastPodcastSearchResult.value = null;
 };

@@ -2,13 +2,12 @@ import { useLocation } from 'preact-iso';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 
 export const useAppShell = () => {
-  const mainRef = useRef<HTMLElement>(null);
   const headerSentinelRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const { path } = useLocation();
 
   useEffect(() => {
-    if (!mainRef.current || !headerSentinelRef.current) {
+    if (!headerSentinelRef.current) {
       setIsScrolled(false);
       return;
     }
@@ -18,7 +17,6 @@ export const useAppShell = () => {
         setIsScrolled(!entry.isIntersecting);
       },
       {
-        root: mainRef.current, // Set main as the root since we're scrolling inside it
         threshold: 1.0,
         rootMargin: '100px 0px 0px 0px', // Adjust the margin as needed
       },
@@ -30,7 +28,7 @@ export const useAppShell = () => {
     return () => {
       observer.disconnect();
     };
-  }, [mainRef.current, headerSentinelRef.current, setIsScrolled]);
+  }, [headerSentinelRef.current]);
 
   const handleBackClick = () => {
     history.back();
@@ -45,7 +43,6 @@ export const useAppShell = () => {
   }, [path]);
 
   return {
-    mainRef,
     headerSentinelRef,
     isActive,
     isMainRoute,

@@ -40,7 +40,9 @@ export const SettingsPage = () => {
       </p>
       <p class="pb-4">
         This app stores information in your browser to save your preferences and Cloudflare Web Analytics is used for
-        basic analytics. <br />
+        basic analytics.{' '}
+      </p>
+      <p class="pb-4">
         <Button asChild variant={`outline`}>
           <a href="/about" class={styleClass.textLink}>
             More about 1tuner.com

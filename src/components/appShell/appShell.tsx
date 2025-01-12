@@ -12,7 +12,7 @@ interface AppShellProps {
 }
 
 export const AppShell = ({ children }: AppShellProps) => {
-  const { mainRef, headerSentinelRef, isScrolled, isMainRoute, isActive, handleBackClick } = useAppShell();
+  const { headerSentinelRef, isScrolled, isMainRoute, isActive, handleBackClick } = useAppShell();
   const navLinkBaseClass = cn(
     'group flex flex-col items-center justify-center p-2 transition-colors',
     'duration-200 text-current hover:text-primary [&.active]:text-primary',
@@ -22,8 +22,13 @@ export const AppShell = ({ children }: AppShellProps) => {
   const isLightHeaderText = uiState.value.headerDefaultTextColor === 'light' && !isScrolled;
 
   return (
-    <div class="flex h-screen">
-      <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-stone-800 shadow-lg md:relative md:h-full md:w-20 md:flex-shrink-0">
+    <div
+      class={cn(
+        'min-h-screen flex',
+        isPlayerMaximized.value ? 'md:mr-96' : playerState.value?.isPlaying ? 'md:mb-20' : '',
+      )}
+    >
+      <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-stone-800 shadow-lg md:fixed md:top-0 md:bottom-0 md:left:0 md:h-full md:w-20 md:flex-shrink-0">
         <ul class="flex h-16 items-center justify-around md:h-full md:flex-col md:justify-start md:py-4">
           <li class="w-full">
             <a href="/" class={cn(navLinkBaseClass, isActive('/') && 'text-primary')}>
@@ -153,13 +158,7 @@ export const AppShell = ({ children }: AppShellProps) => {
           </li>
         </ul>
       </nav>
-      <main
-        ref={mainRef}
-        class={cn(
-          'flex-1 overflow-auto pb-40',
-          isPlayerMaximized.value ? 'md:mr-96' : playerState.value?.isPlaying ? 'md:mb-20' : '',
-        )}
-      >
+      <main class="flex-1 pb-40 md:ml-20">
         {!!uiState.value?.headerTitle && (
           <>
             <header

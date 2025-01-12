@@ -16,7 +16,7 @@ export const RadioStationsPage = () => {
     selectedGenres,
     filteredStations,
     activeFilterCount,
-    setSearchTerm,
+    onSearchInput,
     setSelectedCountries,
     handleCountryChange,
     handleGenreChange,
@@ -102,7 +102,7 @@ export const RadioStationsPage = () => {
             type="search"
             placeholder="Search radio stations..."
             value={searchTerm}
-            onChange={(e: Event) => setSearchTerm((e.target as HTMLInputElement)?.value || '')}
+            onInput={onSearchInput}
             className="w-full focus:ring-primary pl-10"
           />
         </div>
