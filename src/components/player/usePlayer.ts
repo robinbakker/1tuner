@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { reconnectUtil } from '~/lib/reconnectUtil';
 import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
+import { playNextRadioStation } from '~/store/signals/radio';
 import { settingsState } from '~/store/signals/settings';
 import { Stream } from '~/store/types';
 import { isPlayerMaximized, playerState } from '../../store/signals/player';
@@ -328,10 +329,12 @@ export const usePlayer = () => {
 
     navigator.mediaSession.setActionHandler('previoustrack', () => {
       if (isPodcast) handleSeek(-10);
+      else playNextRadioStation(true);
     });
 
     navigator.mediaSession.setActionHandler('nexttrack', () => {
       if (isPodcast) handleSeek(30);
+      else playNextRadioStation();
     });
 
     navigator.mediaSession.setActionHandler('seekto', (details) => {

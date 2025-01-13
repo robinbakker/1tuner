@@ -1,5 +1,6 @@
 import { signal } from '@preact/signals';
 import { Genre, Language, RadioSearchResult, RadioStation } from '~/store/types';
+import { playerState } from './player';
 
 export const radioStations = signal<RadioStation[]>([]);
 export const radioLanguages = signal<Language[]>([]);
@@ -61,4 +62,31 @@ export const setLastRadioSearchResult = (query: string, result: RadioStation[]) 
 
 export const clearLastRadioSearchResult = () => {
   lastRadioSearchResult.value = null;
+};
+
+export const playRadioStation = (station: RadioStation | undefined) => {
+  if (!station) return;
+  playerState.value = {
+    isPlaying: playerState.value?.isPlaying || true,
+    contentID: station.id,
+    title: station.name,
+    description: '',
+    imageUrl: station.logosource,
+    streams: station.streams,
+    pageLocation: `/radio-station/${station.id}`,
+  };
+};
+
+export const playNextRadioStation = (isPrev?: boolean) => {
+  if (!playerState.value?.contentID) return;
+  const currentIndex = recentlyVisitedRadioStationIDs.value.findIndex((s) => s === playerState.value?.contentID);
+  if (currentIndex === -1) return;
+  let newIndex = isPrev ? currentIndex - 1 : currentIndex + 1;
+  if (newIndex < 0) newIndex = recentlyVisitedRadioStationIDs.value.length - 1;
+  if (newIndex >= recentlyVisitedRadioStationIDs.value.length) newIndex = 0;
+  if (currentIndex === recentlyVisitedRadioStationIDs.value.length - 1) {
+    playRadioStation(radioStations.value.find((s) => s.id === recentlyVisitedRadioStationIDs.value[newIndex]));
+  } else {
+    playRadioStation(radioStations.value.find((s) => s.id === recentlyVisitedRadioStationIDs.value[newIndex]));
+  }
 };
