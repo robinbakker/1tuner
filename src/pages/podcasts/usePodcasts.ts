@@ -19,7 +19,6 @@ export const usePodcasts = () => {
 
   useEffect(() => {
     const searchQuery = searchTerm.trim();
-    console.log('searchQuery', searchQuery, lastPodcastSearchResult.value);
 
     if (searchQuery && searchQuery !== lastPodcastSearchResult.value?.query) {
       setIsLoading(true);

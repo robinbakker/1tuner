@@ -97,7 +97,7 @@ export async function saveStateToDB() {
   await putToDB(db, StoreName.RecentlyVisitedPodcasts, recentlyVisitedPodcasts.value);
   await putToDB(db, StoreName.FollowedRadioStationIDs, followedRadioStationIDs.value);
   await putToDB(db, StoreName.RecentlyVisitedRadioStationIDs, recentlyVisitedRadioStationIDs.value);
-  await putToDB(db, StoreName.PlayerState, playerState.value);
+  await putToDB(db, StoreName.PlayerState, { ...playerState.value, isPlaying: false } as DBData); // Stop playing when saving state to DB.
   await putToDB(db, StoreName.SettingsState, settingsState.value);
 }
 

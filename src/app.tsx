@@ -18,9 +18,11 @@ export function App() {
   const db = useDB();
 
   useEffect(() => {
+    console.log('Loading state from DB...');
     db.loadStateFromDB();
 
     const handleBeforeUnload = () => {
+      console.log('Saving state to DB...');
       db.saveStateToDB();
     };
 
