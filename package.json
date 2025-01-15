@@ -1,7 +1,7 @@
 {
   "name": "some.1tuner.com",
   "private": true,
-  "version": "0.0.14",
+  "version": "0.0.15",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -32,13 +32,14 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-toast": "^1.2.4",
+    "@tailwindcss/container-queries": "^0.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
     "fast-xml-parser": "^4.5.1",
     "idb": "^8.0.1",
     "lucide-preact": "^0.471.0",
-    "preact": "10.25.4",
+    "preact": "^10.25.4",
     "preact-iso": "^2.8.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7"

@@ -78,7 +78,7 @@ export const Player = () => {
                     {castSession ? <Cast class="h-6 w-6 text-color-primary" /> : <Cast class="h-6 w-6" />}
                   </Button>
                 )}
-                <Button variant="outline" styleSize="icon" onClick={togglePlayerMaximized}>
+                <Button variant="outline" styleSize="icon" onClick={handleClose}>
                   <X class="h-6 w-6" />
                 </Button>
               </div>

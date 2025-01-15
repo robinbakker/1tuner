@@ -47,9 +47,15 @@ export const RadioStationPage = () => {
         <div class="px-6 pt-6 skew-y-3 transform relative z-10">
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
             <div class="flex items-center space-x-4">
-              <img src={radioStation.logosource} alt="Radio station logo" width={80} height={80} class="rounded-full" />
+              <img
+                src={radioStation.logosource}
+                alt="Radio station logo"
+                width="80"
+                height="80"
+                class="w-24 h-24 sm:w-28 sm:h-28 sm:mr-2 rounded-full"
+              />
               <div>
-                <h1 class="text-3xl font-bold text-white drop-shadow-lg">{radioStation.name}</h1>
+                <h1 class="text-3xl font-bold sm:mb-3 text-white drop-shadow-lg">{radioStation.name}</h1>
                 {!!radioStation.social?.length && (
                   <div class="flex opacity-60 space-x-2 my-2">
                     {radioStation.social?.map((s) => {
@@ -81,7 +87,7 @@ export const RadioStationPage = () => {
                 )}
               </div>
             </div>
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-4 w-full sm:w-auto justify-between sm:justify-normal">
               <Button onClick={toggleFollow} variant={isFollowing ? 'ghost' : 'secondary'}>
                 <Bookmark class={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />
                 {isFollowing ? 'Following' : 'Follow'}
@@ -108,9 +114,9 @@ export const RadioStationPage = () => {
       </header>
       <section class="container mx-auto px-8 py-6">
         {!!radioStation.related?.length && (
-          <section>
+          <section class="@container">
             <h2 class="text-2xl font-semibold mb-4">Related</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3 gap-6">
               {radioStations.value
                 .filter((rs) => radioStation.related?.includes(rs.id))
                 .map((s) => (

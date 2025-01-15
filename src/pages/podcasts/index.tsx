@@ -18,7 +18,7 @@ export const PodcastsPage = () => {
     return (
       <>
         <h2 className="text-2xl font-semibold mb-4">{title}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-6 mb-8">
           {podcasts.map((podcast) => (
             <PodcastCard key={`${slugTitle}-${podcast.id}`} size="large" podcast={podcast} />
           ))}
@@ -28,7 +28,7 @@ export const PodcastsPage = () => {
   }, []);
 
   return (
-    <div class="container mx-auto px-8 py-6">
+    <div class="container @container mx-auto px-8 py-6">
       <h1 class="text-3xl font-bold mb-6">Podcasts</h1>
       <div class="mb-8 relative">
         <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400">
