@@ -6,6 +6,7 @@ import {
   addRecentlyVisitedRadioStation,
   followRadioStation,
   getRadioStation,
+  getStationPodcasts,
   isFollowedRadioStation,
   unfollowRadioStation,
 } from '~/store/signals/radio';
@@ -62,6 +63,10 @@ export const useRadioStation = () => {
     setIsFollowing(!isFollowing);
   };
 
+  const stationPodcasts = useMemo(() => {
+    return radioStation?.id ? getStationPodcasts(radioStation.id) : [];
+  }, [radioStation?.id]);
+
   useEffect(() => {
     setIsFollowing(isFollowedRadioStation(params.id));
   }, [setIsFollowing, isFollowedRadioStation, params.id]);
@@ -87,6 +92,7 @@ export const useRadioStation = () => {
     params,
     isPlaying,
     radioStation,
+    stationPodcasts,
     isFollowing,
     toggleFollow,
   };

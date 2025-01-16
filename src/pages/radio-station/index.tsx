@@ -1,4 +1,5 @@
 import { Bookmark, Facebook, Globe, Instagram, Pause, Play, Twitter, Youtube } from 'lucide-preact';
+import { PodcastCard } from '~/components/podcast-card';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
 import { normalizedUrlWithoutScheme } from '~/lib/utils';
@@ -8,7 +9,7 @@ import { SocialAccountType } from '~/store/types';
 import { useRadioStation } from './useRadioStation';
 
 export const RadioStationPage = () => {
-  const { params, radioStation, isPlaying, isFollowing, toggleFollow } = useRadioStation();
+  const { params, radioStation, isPlaying, isFollowing, stationPodcasts, toggleFollow } = useRadioStation();
 
   if (typeof window !== 'undefined' && !radioStation) {
     if (params.id) {
@@ -112,20 +113,34 @@ export const RadioStationPage = () => {
           </div>
         </div>
       </header>
-      <section class="container mx-auto px-8 py-6">
-        {!!radioStation.related?.length && (
-          <section class="@container">
-            <h2 class="text-2xl font-semibold mb-4">Related</h2>
-            <div class="grid grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3 gap-6">
-              {radioStations.value
-                .filter((rs) => radioStation.related?.includes(rs.id))
-                .map((s) => (
-                  <RadioStationCard key={`related-${s.id}`} station={s} size="large" />
+      <div class="container mx-auto px-8 py-6">
+        <>
+          {!!radioStation.related?.length && (
+            <section class="@container">
+              <h2 class="text-2xl font-semibold mb-4">Related</h2>
+              <div class="grid grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3 gap-6">
+                {radioStations.value
+                  .filter((rs) => radioStation.related?.includes(rs.id))
+                  .map((s) => (
+                    <RadioStationCard key={`related-${s.id}`} station={s} size="large" />
+                  ))}
+              </div>
+            </section>
+          )}
+        </>
+        <>
+          {stationPodcasts.length && (
+            <section class="@container">
+              <h2 class="text-2xl font-semibold mt-12 mb-4">Related podcasts</h2>
+              <div class="grid grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3 gap-6">
+                {stationPodcasts.map((p) => (
+                  <PodcastCard key={`p${p.id}`} podcast={p} size={'large'} />
                 ))}
-            </div>
-          </section>
-        )}
-      </section>
+              </div>
+            </section>
+          )}
+        </>
+      </div>
     </div>
   );
 };

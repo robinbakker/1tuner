@@ -1,0 +1,289 @@
+{
+  "538": [
+    {
+      "title": "Man man man, de podcast",
+      "description": "Bas, Chris en Domien zoeken uit hoe mannelijk ze eigenlijk zijn. Ook leuk voor vrouwen!",
+      "imageUrl": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/5c/04/ff/5c04ff8a-a27b-ea59-31a2-5f3d228f7551/mza_2081063904726091647.jpeg/600x600bb.jpg",
+      "url": "https://rss.art19.com/man-man-man-de-podcast",
+      "categories": [
+        "Komedie",
+        "Podcasts",
+        "Maatschappij & cultuur"
+      ],
+      "addedDate": 1737064288634,
+      "lastFetched": 1737064288634,
+      "episodes": []
+    }
+  ],
+  "3fm": [
+    {
+      "title": "Vera On Track",
+      "description": "3FM-dj Vera Siemons neemt je mee naar de tofste festivals, concerten en artiesten en brengt hier uitgebreid verslag van uit speciaal voor jou.",
+      "imageUrl": "https://is3-ssl.mzstatic.com/image/thumb/Podcasts123/v4/11/47/43/114743e0-5260-8c2f-7be4-d2de7b996f90/mza_9749279680508512853.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/vera-on-track.xml",
+      "categories": [
+        "Music",
+        "Podcasts"
+      ],
+      "addedDate": 1737064288634,
+      "lastFetched": 1737064288634,
+      "episodes": []
+    },
+    {
+      "title": "3FM New Music Friday",
+      "description": "Elke vrijdag neemt 3FM-dj Sander Hoogendoorn je mee door alle nieuwe releases! En dat doet hij niet alleen, maar samen met een van zijn muzikale vrienden. Zo ben je binnen een half uurtje weer op de hoogte van de beste nieuwe muziek!",
+      "imageUrl": "https://is2-ssl.mzstatic.com/image/thumb/Podcasts123/v4/f2/d7/e7/f2d7e79b-b6a0-8941-2761-005d2f78e958/mza_1129857320878755965.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/de-music-starts-here-podcast.xml",
+      "categories": [
+        "Music",
+        "Podcasts"
+      ],
+      "addedDate": 1737064288635,
+      "lastFetched": 1737064288635,
+      "episodes": []
+    },
+    {
+      "title": "APODCALYPSE",
+      "description": "Mocht de wereld vergaan, dan kun je maar beter nog één keer je hele platenkast doorwerken. En omdat Ryanne van Dorst noodgedwongen thuis zit, is daar alle tijd voor! Zo lang de Coronacrisis duurt, hoor je drie keer per week een nieuwe aflevering van APODCALYPSE.",
+      "imageUrl": "https://is2-ssl.mzstatic.com/image/thumb/Podcasts123/v4/62/8f/e6/628fe6f9-55f6-620b-8e43-3b8a9b9fe112/mza_16847290572733051502.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/apodcalypse.xml",
+      "categories": [
+        "Music",
+        "Podcasts",
+        "Comedy"
+      ],
+      "addedDate": 1737064288635,
+      "lastFetched": 1737064288635,
+      "episodes": []
+    }
+  ],
+  "bbcradio4": [
+    {
+      "title": "In Our Time",
+      "description": "Melvyn Bragg and guests discuss the history of ideas",
+      "imageUrl": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/0e/9b/fb/0e9bfb69-06f2-6f5a-8bb9-02fd77411b26/mza_16829848421184530687.jpg/600x600bb.jpg",
+      "url": "https://podcasts.files.bbci.co.uk/b006qykl.rss",
+      "categories": [
+        "History",
+        "Podcasts"
+      ],
+      "addedDate": 1737064288634,
+      "lastFetched": 1737064288634,
+      "episodes": []
+    },
+    {
+      "title": "Friday Night Comedy from BBC Radio 4",
+      "description": "Download the best satirical comedy from Radio 4, every Friday. Features The News Quiz, The Now Show and Dead Ringers.",
+      "imageUrl": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/47/70/22/477022d9-5434-8a2d-c2e0-2d6cada4f500/mza_1547315491054706863.jpg/600x600bb.jpg",
+      "url": "https://podcasts.files.bbci.co.uk/p02pc9pj.rss",
+      "categories": [
+        "Comedy",
+        "Podcasts"
+      ],
+      "addedDate": 1737064288634,
+      "lastFetched": 1737064288634,
+      "episodes": []
+    },
+    {
+      "title": "More or Less: Behind the Stats",
+      "description": "Tim Harford and the More or Less team try to make sense of the statistics which surround us. From BBC Radio 4",
+      "imageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/26/cf/32/26cf3245-4f2f-bfde-8117-2e08b9e98ab0/mza_3048031617250188411.jpg/600x600bb.jpg",
+      "url": "https://podcasts.files.bbci.co.uk/p02nrss1.rss",
+      "categories": [
+        "News",
+        "Podcasts",
+        "Education",
+        "Science"
+      ],
+      "addedDate": 1737064288634,
+      "lastFetched": 1737064288634,
+      "episodes": []
+    }
+  ],
+  "bbcradio5live": [
+    {
+      "title": "Global News Podcast",
+      "description": "The day’s top stories from BBC News. Delivered twice a day on weekdays, daily at weekends",
+      "imageUrl": "https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/fd/4d/ae/fd4daedf-a735-cd14-7a24-eebe4b195930/mza_1782238947154757153.jpg/600x600bb.jpg",
+      "url": "https://podcasts.files.bbci.co.uk/p02nq0gn.rss",
+      "categories": [
+        "News",
+        "Podcasts"
+      ],
+      "addedDate": 1737064288634,
+      "lastFetched": 1737064288634,
+      "episodes": []
+    }
+  ],
+  "qmusic": [
+    {
+      "title": "Man man man, de podcast",
+      "description": "Bas, Chris en Domien zoeken uit hoe mannelijk ze eigenlijk zijn. Ook leuk voor vrouwen!",
+      "imageUrl": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/5c/04/ff/5c04ff8a-a27b-ea59-31a2-5f3d228f7551/mza_2081063904726091647.jpeg/600x600bb.jpg",
+      "url": "https://rss.art19.com/man-man-man-de-podcast",
+      "categories": [
+        "Komedie",
+        "Podcasts",
+        "Maatschappij & cultuur"
+      ],
+      "addedDate": 1737064288634,
+      "lastFetched": 1737064288634,
+      "episodes": []
+    }
+  ],
+  "radio1": [
+    {
+      "title": "De Dag",
+      "description": "Elke werkdag hoor je bij 'De Dag' gesprekken die nét even verder graven. Jurgen van den Berg, Lara Rense en Elisabeth Steinz nemen je mee in verhalen achter het nieuws, verteld door betrokkenen en journalisten van alle omroepen.",
+      "imageUrl": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts123/v4/95/55/fa/9555fabb-343e-3859-4c05-8f421f5a4885/mza_1355691311593021135.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/de-dag.xml",
+      "categories": [
+        "Nieuwscommentaar",
+        "Podcasts",
+        "Nieuws",
+        "Politiek"
+      ],
+      "addedDate": 1737064288635,
+      "lastFetched": 1737064288635,
+      "episodes": []
+    },
+    {
+      "title": "NOS Met het Oog op Morgen",
+      "description": "Het Oog brengt een overzicht van het nieuws, een blik in de ochtendkranten en het betere journalistieke interview met mensen in en achter het nieuws, omlijst door mooie muziek.",
+      "imageUrl": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/bf/d4/43/bfd44383-02d5-596d-c6b9-ee7a8e76e16a/mza_725470743154182643.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/met-het-oog-op-morgen.xml",
+      "categories": [
+        "Dagelijks nieuws",
+        "Podcasts",
+        "Nieuws",
+        "Nieuwscommentaar"
+      ],
+      "addedDate": 1737064288635,
+      "lastFetched": 1737064288635,
+      "episodes": []
+    },
+    {
+      "title": "POEN",
+      "description": "POEN - de podcast over economisch nieuws van de NOS. Verslaggevers Wouters en Waaijers duiken in de grote verhalen uit de wereld van het geld, de pegels, de monnies. Waardoor je aan het eind beter begrijpt hoe de economie werkt en wat je ermee moet.",
+      "imageUrl": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts124/v4/ea/7b/a6/ea7ba64a-c760-0879-983b-c95757f85eae/mza_14040631879718138640.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/poen.xml",
+      "categories": [
+        "Business News",
+        "Podcasts",
+        "News",
+        "News Commentary"
+      ],
+      "addedDate": 1737064288634,
+      "lastFetched": 1737064288634,
+      "episodes": []
+    },
+    {
+      "title": "De Man en de Maan",
+      "description": "Een Nederlandse sterrenkundige gaat in zee met China om zijn grote droom waar te maken. Wat gebeurde er net na de oerknal? Voor het antwoord op die vraag moet astronoom Marc Klein Wolt naar de achterkant van de maan. Eén probleempje: daar is nog niemand geweest. \r\nAls hij in zee gaat met opkomende ruimtemacht China, blijkt samenwerken niet zonder risico. \r\n\r\nDocumentairemaker Saar Slegers volgt hem tijdens zijn race tegen de klok en ziet hoe zijn wetenschappelijke droom langzaamaan verandert in een nachtmerrie. Een podcast over grootse dromen, culturele clashes en de nieuwe wereldorde. \r\n\r\nDe Man en de Maan is e...",
+      "imageUrl": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a3/26/1a/a3261a67-3e14-2b5e-2927-3e1ed864bc2a/mza_6158397401004641018.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/de-man-en-de-maan.xml",
+      "categories": [
+        "Astronomy",
+        "Podcasts",
+        "Science"
+      ],
+      "addedDate": 1737064288635,
+      "lastFetched": 1737064288635,
+      "episodes": []
+    },
+    {
+      "title": "De Krokante Leesmap",
+      "description": "Voormalig bladenrecensenten Marcel van Roosmalen, Noortje Veldhuizen en Roelof de Vries, trekken het land in.\r\n\r\nWaar moet je zijn en waar kun je beter met een grote boog omheen rijden? Marcel, Noortje en Roelof zijn je onmisbare gidsen. Zolang COVID-19 rondwaart: De Coronafiles.",
+      "imageUrl": "https://is2-ssl.mzstatic.com/image/thumb/Podcasts123/v4/f7/d8/67/f7d867e4-2818-fadc-f01d-4bcd6278aee2/mza_8347981705070845867.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/de-krokante-leesmap.xml",
+      "categories": [
+        "Comedy",
+        "Podcasts"
+      ],
+      "addedDate": 1737064288635,
+      "lastFetched": 1737064288635,
+      "episodes": []
+    },
+    {
+      "title": "Kwaad Bloed",
+      "description": "Kwaad Bloed is een podcast over zes spraakmakende moordzaken en een mysterieuze verdwijning op het platteland. De gebruikte wapens? Een bijl, gif en zelfs een trein. En de daders zijn geen dolende geweldenaars maar in de meeste zaken bekenden van het slachtoffer.  \r\nNiemand wordt als moordenaar geboren, zegt een vrouw die haar echtgenoot ombracht, maar waar gaat het mis? Wanneer wordt het de dader te veel? \r\n\r\nIn hun gesprekken met nabestaanden, getuigen en ook daders, gaan Gerrit Kalsbeek en Jacqueline Maris op zoek naar wat er aan het misdrijf voorafging. Ook kijken ze wat er daarna gebeurde; met het dorp...",
+      "imageUrl": "https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/fe/69/f2/fe69f284-661a-0d97-4e9d-9f39dddc0f57/mza_8151255630799004531.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/kwaad-bloed.xml",
+      "categories": [
+        "Society & Culture",
+        "Podcasts"
+      ],
+      "addedDate": 1737064288634,
+      "lastFetched": 1737064288634,
+      "episodes": []
+    }
+  ],
+  "radio2": [
+    {
+      "title": "30 MINUTEN RAUW door Ruud de Wild",
+      "description": "Ruud de Wild stelt 30 minuten lang vlijmscherpe vragen aan een bijzonder persoon. De wekker wordt gezet, er wordt geen vraag geschuwd en het resultaat hoor je ongecensureerd in 30 MINUTEN RAUW.",
+      "imageUrl": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts114/v4/a6/4f/95/a64f955a-29c4-77ef-0790-7cbf57f9d022/mza_297770507328811332.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/30-minuten-rauw.xml",
+      "categories": [
+        "Music",
+        "Podcasts"
+      ],
+      "addedDate": 1737064288634,
+      "lastFetched": 1737064288634,
+      "episodes": []
+    },
+    {
+      "title": "Barts Classic Track",
+      "description": "In Barts Classic Track bespreekt NPO Radio 2 DJ Bart Arens samen met de artiest in kwestie hoe grote Nederlandse hits tot stand zijn gekomen. Achter het mengpaneel van de Wisseloord Studios wordt de track laagje voor laagje ontleed en hoor je hoe het nummer is ontstaan. Iedere maand een nieuwe aflevering!",
+      "imageUrl": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/06/59/1f/06591f9e-6300-5cfb-361a-fc7d85047359/mza_7360613294288369065.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/barts-classic-track.xml",
+      "categories": [
+        "Music",
+        "Podcasts"
+      ],
+      "addedDate": 1737064288635,
+      "lastFetched": 1737064288635,
+      "episodes": []
+    },
+    {
+      "title": "Blokhuis de Podcast",
+      "description": "Blokhuis de Podcast is de compacte podcast versie van het Radio 2 programma Blokhuis (elke zondagavond 22-00 uur). Muziekkenner Leo Blokhuis praat je wekelijks bij met de opmerkelijkste verse tracks voor je playlist. Met een uitgebreid rondje door de platenzaak langs de beste nieuwe albumreleases. En twee livetracks uit het zondagse radioprogramma. Blijf op de hoogte via deze podcast van het beste nieuwe materiaal voor de popliefhebber.",
+      "imageUrl": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts123/v4/64/94/87/64948795-437c-5347-5a22-101506bf710e/mza_1805616522260259823.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/blokhuis-de-podcast.xml",
+      "categories": [
+        "Music Commentary",
+        "Podcasts",
+        "Music"
+      ],
+      "addedDate": 1737064288635,
+      "lastFetched": 1737064288635,
+      "episodes": []
+    },
+    {
+      "title": "Spijkers met Koppen",
+      "description": "Spijkers met Koppen live vanuit café The Florin in Utrecht met muziek, cultuur, cabaret en opvallend nieuws. Presentatie: Felix Meurders en Dolf Jansen.",
+      "imageUrl": "https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/6c/88/5f/6c885fab-c5a8-d88a-86c2-b079ae193a16/mza_4548442167716205037.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/spijkers-met-koppen.xml",
+      "categories": [
+        "Comedy",
+        "Podcasts"
+      ],
+      "addedDate": 1737064288634,
+      "lastFetched": 1737064288634,
+      "episodes": []
+    },
+    {
+      "title": "De Albumshow",
+      "description": "De Albumshow is het enige albumprogramma op de Nederlandse radio! Bijzondere albumtracks, lange versies, classic albums, kortom: 1 grote Punica-oase van oude en nieuwe albums.",
+      "imageUrl": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/00/af/ca/00afcab3-79f0-6431-d495-5af952df9506/mza_4743230104593871.jpg/600x600bb.jpg",
+      "url": "https://podcast.npo.nl/feed/de-albumshow.xml",
+      "categories": [
+        "Music",
+        "Podcasts"
+      ],
+      "addedDate": 1737064288635,
+      "lastFetched": 1737064288635,
+      "episodes": []
+    }
+  ]
+}

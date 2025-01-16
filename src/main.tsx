@@ -5,7 +5,7 @@ import { languages } from './assets/data/languages.json';
 import { stations } from './assets/data/stations.json';
 import { defaultHeadData, HeadData } from './hooks/useHead.ts';
 import { getPodcastUrlID } from './lib/utils.ts';
-import { radioGenres, radioLanguages, radioStations } from './store/signals/radio.ts';
+import { radioGenres, radioLanguages, radioStations, setStationPodcasts } from './store/signals/radio.ts';
 import { RadioStation } from './store/types.ts';
 
 // Make sure the radio signals are in the air before (pre)rendering :)
@@ -13,18 +13,52 @@ radioStations.value = stations as RadioStation[];
 radioLanguages.value = languages;
 radioGenres.value = genres;
 
+// Load station podcasts data
+if (typeof window !== 'undefined') {
+  // Load station podcasts data in browser
+  import('./assets/data/stations/podcasts.json')
+    .then((module) => {
+      const podcasts = Object.keys(module.default).reduce((acc: { [key: string]: any[] }, key: string) => {
+        acc[key] = (module.default as { [key: string]: any[] })[key].map((podcast) => ({
+          ...podcast,
+          id: getPodcastUrlID(podcast.url),
+          feedUrl: podcast.url,
+        }));
+        return acc;
+      }, {});
+      setStationPodcasts(podcasts);
+    })
+    .catch(console.error);
+}
+
 if (typeof window !== 'undefined') {
   hydrate(<App />, document.getElementById('app')!);
 }
 
 export async function prerender() {
-  // Fetch podcast data during prerender phase
+  // Load both podcast data and station podcasts during prerender
   if (!(globalThis as any).__PRERENDER_PODCASTS__) {
-    const podcastData = await import('./assets/data/podcasts.json');
+    const [podcastData, stationPodcastsData] = await Promise.all([
+      import('./assets/data/podcasts.json'),
+      import('./assets/data/stations/podcasts.json'),
+    ]);
     (globalThis as any).__PRERENDER_PODCASTS__ = podcastData.default.map((pc) => ({
       ...pc,
       id: getPodcastUrlID(pc.url),
     }));
+
+    const formattedStationPodcasts = Object.keys(stationPodcastsData.default).reduce(
+      (acc: { [key: string]: any[] }, key: string) => {
+        acc[key] = (stationPodcastsData.default as { [key: string]: any[] })[key].map((podcast) => ({
+          ...podcast,
+          id: getPodcastUrlID(podcast.url),
+          feedUrl: podcast.url,
+        }));
+        return acc;
+      },
+      {},
+    );
+    setStationPodcasts(formattedStationPodcasts);
   }
   //return await ssr(<App />);
   const { html, links } = await ssr(<App />);

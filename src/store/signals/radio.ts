@@ -1,5 +1,5 @@
 import { signal } from '@preact/signals';
-import { Genre, Language, RadioSearchResult, RadioStation } from '~/store/types';
+import { Genre, Language, Podcast, RadioSearchResult, RadioStation } from '~/store/types';
 import { playerState } from './player';
 
 export const radioStations = signal<RadioStation[]>([]);
@@ -8,6 +8,7 @@ export const radioGenres = signal<Genre[]>([]);
 export const followedRadioStationIDs = signal<string[]>([]);
 export const recentlyVisitedRadioStationIDs = signal<string[]>([]);
 export const lastRadioSearchResult = signal<RadioSearchResult | null>(null);
+export const stationPodcasts = signal<Record<string, Podcast[]>>({});
 
 export const getRadioStation = (id: string): RadioStation | undefined => {
   if (!id) return undefined;
@@ -89,4 +90,12 @@ export const playNextRadioStation = (isPrev?: boolean) => {
   } else {
     playRadioStation(radioStations.value.find((s) => s.id === recentlyVisitedRadioStationIDs.value[newIndex]));
   }
+};
+
+export const getStationPodcasts = (stationId: string): Podcast[] => {
+  return stationPodcasts.value[stationId] || [];
+};
+
+export const setStationPodcasts = (podcastData: Record<string, Podcast[]>) => {
+  stationPodcasts.value = podcastData;
 };
