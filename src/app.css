@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+:host {
+  font-family: 'Twemoji Country Flags', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
 @layer base {
   :root {
     --background: 60 9.1% 97.8%; /* stone-50 */

@@ -3,6 +3,8 @@ import { useHead } from '~/hooks/useHead';
 import {
   clearLastRadioSearchResult,
   lastRadioSearchResult,
+  radioGenres,
+  radioLanguages,
   radioStations,
   setLastRadioSearchResult,
 } from '~/store/signals/radio';
@@ -20,6 +22,16 @@ export const useRadioStations = () => {
     [selectedCountries, selectedGenres],
   );
 
+  const activeLanguages = useMemo(
+    () => radioLanguages.value.filter((l) => selectedCountries.includes(l.id)),
+    [selectedCountries, radioLanguages.value],
+  );
+
+  const activeGenres = useMemo(
+    () => radioGenres.value.filter((g) => selectedGenres.includes(g.id)),
+    [selectedGenres, radioGenres.value],
+  );
+
   const filteredStations = useMemo(
     () =>
       radioStations.value.filter((station) => {
@@ -33,12 +45,24 @@ export const useRadioStations = () => {
     [selectedGenres, selectedCountries, lastRadioSearchResult.value?.query, radioStations.value],
   );
 
-  const handleCountryChange = (country: string) => {
-    setSelectedCountries((prev) => (prev.includes(country) ? prev.filter((c) => c !== country) : [...prev, country]));
+  const languageOptions = useMemo(
+    () =>
+      radioLanguages.value
+        .filter((language) => !selectedCountries.includes(language.country))
+        .map((l) => ({ label: `${l.flag ?? ''} ${l.name}`, minimalLabel: l.flag ?? undefined, value: l.id })),
+    [selectedCountries, radioLanguages.value],
+  );
+
+  const genreOptions = useMemo(() => {
+    return radioGenres.value.map((genre) => ({ label: genre.name, value: genre.id }));
+  }, [radioGenres.value]);
+
+  const handleLanguageChange = (countries: string[]) => {
+    setSelectedCountries(countries);
   };
 
-  const handleGenreChange = (genre: string) => {
-    setSelectedGenres((prev) => (prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]));
+  const handleGenreChange = (genres: string[]) => {
+    setSelectedGenres(genres);
   };
 
   const onSearchInput = (event: InputEvent) => {
@@ -53,13 +77,14 @@ export const useRadioStations = () => {
   return {
     searchTerm: lastRadioSearchResult.value?.query || '',
     onSearchInput,
-    selectedCountries,
-    setSelectedCountries,
-    selectedGenres,
     setSelectedGenres,
     activeFilterCount,
     filteredStations,
-    handleCountryChange,
+    languageOptions,
+    activeLanguages,
+    activeGenres,
+    genreOptions,
+    handleLanguageChange,
     handleGenreChange,
   };
 };

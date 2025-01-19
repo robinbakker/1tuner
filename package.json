@@ -1,7 +1,7 @@
 {
   "name": "some.1tuner.com",
   "private": true,
-  "version": "0.0.16",
+  "version": "0.0.17",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -36,6 +36,7 @@
     "@tailwindcss/container-queries": "^0.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "country-flag-emoji-polyfill": "^0.1.8",
     "dotenv": "^16.4.7",
     "fast-xml-parser": "^4.5.1",
     "idb": "^8.0.1",

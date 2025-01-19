@@ -8,6 +8,10 @@ import { getPodcastUrlID } from './lib/utils.ts';
 import { radioGenres, radioLanguages, radioStations, setStationPodcasts } from './store/signals/radio.ts';
 import { RadioStation } from './store/types.ts';
 
+import { polyfillCountryFlagEmojis } from 'country-flag-emoji-polyfill';
+
+polyfillCountryFlagEmojis();
+
 // Make sure the radio signals are in the air before (pre)rendering :)
 radioStations.value = stations as RadioStation[];
 radioLanguages.value = languages;

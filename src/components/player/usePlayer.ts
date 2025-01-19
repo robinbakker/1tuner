@@ -29,7 +29,7 @@ export const usePlayer = () => {
   } = useCastApi();
   const maxReconnectAttempts = settingsState.value.radioStreamMaxReconnects || 50;
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
-  const isPodcast = playerState.value?.pageLocation.startsWith('/podcast/');
+  const isPodcast = playerState.value?.pageLocation?.startsWith('/podcast/');
 
   const formatTime = useCallback((time: number) => {
     const minutes = Math.floor(time / 60);
@@ -195,7 +195,7 @@ export const usePlayer = () => {
     if (!audioRef.current) return;
 
     const audio = audioRef.current;
-    const isRadioStream = !playerState.value?.pageLocation.startsWith('/podcast/');
+    const isRadioStream = !playerState.value?.pageLocation?.startsWith('/podcast/');
 
     const handleStalled = () => {
       if (isRadioStream && playerState.value?.isPlaying) {
