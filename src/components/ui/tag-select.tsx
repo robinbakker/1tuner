@@ -18,6 +18,7 @@ interface TagSelectProps {
   placeholder?: string | JSX.Element;
   disabled?: boolean;
   className?: string;
+  align?: 'left' | 'right';
 }
 
 export function TagSelect({
@@ -28,6 +29,7 @@ export function TagSelect({
   placeholder = 'Select options...',
   disabled = false,
   className = '',
+  align = 'left',
 }: TagSelectProps): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -117,19 +119,16 @@ export function TagSelect({
         // Existing tag display when there are selections
         <div
           class={cn(
-            'inline-flex items-center w-full min-h-[2.25rem] rounded-lg border border-input bg-background px-3 py-1 text-sm',
+            'inline-flex items-center w-full min-h-[2.25rem] rounded-lg border border-stone-500 bg-background px-3 py-1 text-sm',
             'ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
             disabled && 'cursor-not-allowed opacity-50',
           )}
         >
-          {/* Leading Icon */}
           {!!(icon && selectedOptions.length) && (
             <div class="mr-2 flex-shrink-0" title={typeof placeholder === 'string' ? placeholder : ''}>
               {icon}
             </div>
           )}
-
-          {/* Selected Tags */}
           <div class="flex flex-wrap gap-2 flex-grow">
             <ul>
               {selectedOptions.map((option) => (
@@ -150,7 +149,6 @@ export function TagSelect({
               ))}
             </ul>
           </div>
-
           <button
             type="button"
             onClick={() => {
@@ -166,10 +164,14 @@ export function TagSelect({
           </button>
         </div>
       )}
-
-      {/* Dropdown */}
       {isOpen && (
-        <div class="absolute left-0 right-0 z-10 mt-1 bg-white border rounded-lg shadow-lg">
+        <div
+          class={cn(
+            'absolute z-10 mt-1 bg-white dark:bg-black border rounded-lg shadow-lg',
+            'w-max min-w-full whitespace-nowrap',
+            align === 'right' ? 'right-0' : 'left-0',
+          )}
+        >
           <div class="p-2">
             <input
               ref={searchInputRef}
@@ -180,7 +182,7 @@ export function TagSelect({
                 setHighlightedIndex(0);
               }}
               placeholder="Type to search..."
-              class="w-full px-3 py-2 border text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+              class="w-full px-3 py-2 border dark:bg-black text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </div>
 
