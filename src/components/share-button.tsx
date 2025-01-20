@@ -1,19 +1,20 @@
 import { Share2 } from 'lucide-preact';
+import { useCallback } from 'preact/hooks';
 import { cn } from '~/lib/utils';
 import { uiState } from '~/store/signals/ui';
 
 export function ShareButton({ hasDarkBackground }: { hasDarkBackground: boolean }) {
-  const handleShare = async () => {
-    if (!navigator.share || !uiState.value.headerTitle) return;
+  const handleShare = useCallback(async () => {
+    if (!navigator.share) return;
     try {
       await navigator.share({
-        title: uiState.value.headerTitle,
+        title: uiState.value.headerTitle || '1tuner.com | listen to radio & podcasts',
         url: window?.location.href,
       });
     } catch (error) {
       console.error('Error sharing:', error);
     }
-  };
+  }, []);
 
   return (
     <button

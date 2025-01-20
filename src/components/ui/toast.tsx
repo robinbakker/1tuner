@@ -1,6 +1,6 @@
-import { Cross2Icon } from '@radix-ui/react-icons';
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { CrossIcon } from 'lucide-preact';
 import { ComponentPropsWithoutRef, forwardRef } from 'preact/compat';
 import { cn } from '~/lib/utils';
 
@@ -69,7 +69,7 @@ const ToastClose = forwardRef<HTMLButtonElement, ComponentPropsWithoutRef<typeof
       {...props}
     >
       <span className="h-4 w-4">
-        <Cross2Icon />
+        <CrossIcon />
       </span>
     </ToastPrimitives.Close>
   ),
