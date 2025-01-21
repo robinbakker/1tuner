@@ -1,21 +1,12 @@
-import { useCallback } from 'preact/hooks';
+import { ContentSection } from '~/components/content-section';
 import { PodcastCard } from '~/components/podcast-card';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { ShareButton } from '~/components/share-button';
-import { Button } from '~/components/ui/button';
 import { styleClass } from '~/lib/styleClass';
 import { recentlyVisitedPodcasts } from '~/store/signals/podcast';
 import { getRecentlyVisitedRadioStations } from '~/store/signals/radio';
 
 export const Homepage = () => {
-  const MoreLink = useCallback(({ location }: { location: string }) => {
-    return (
-      <Button asChild variant="outline">
-        <a href={location}>More</a>
-      </Button>
-    );
-  }, []);
-
   return (
     <>
       <header class="relative w-full -mt-1 mb-6">
@@ -32,48 +23,28 @@ export const Homepage = () => {
         </div>
       </header>
 
-      <section class="mb-8">
-        <div class="flex justify-between items-center mb-2 px-4 md:px-6">
-          <h2 class="text-2xl font-semibold">Radio stations</h2>
-          <MoreLink location="/radio-stations" />
-        </div>
-        <div class="relative w-full overflow-hidden">
-          <div class="overflow-x-auto pb-4">
-            <div class="flex gap-4 md:gap-10 px-4 md:px-6">
-              {getRecentlyVisitedRadioStations().map((station) => (
-                <div class="flex-none">
-                  <RadioStationCard key={station.id} station={station} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <ContentSection title="Radio stations" moreLink="/radio-stations" isScrollable>
+        <ul class="flex gap-4 md:gap-10 px-4 md:px-6">
+          {getRecentlyVisitedRadioStations().map((station) => (
+            <li class="shrink-0">
+              <RadioStationCard key={station.id} station={station} />
+            </li>
+          ))}
+        </ul>
+      </ContentSection>
 
-      <section class="mb-8">
-        <div class="flex justify-between items-center mb-2 px-4 md:px-6">
-          <h2 class="text-2xl font-semibold">Podcasts</h2>
-          <MoreLink location="/podcasts" />
-        </div>
-        <div class="relative overflow-hidden">
-          <div class="overflow-x-auto pb-4">
-            <div class="flex gap-4 md:gap-10 px-4 md:px-6">
-              {recentlyVisitedPodcasts.value.map((podcast) => (
-                <div class="flex-none">
-                  <PodcastCard key={podcast.id} podcast={podcast} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <ContentSection title="Podcasts" moreLink="/podcasts" isScrollable>
+        <ul class="flex gap-4 md:gap-10 px-4 md:px-6">
+          {recentlyVisitedPodcasts.value.map((podcast) => (
+            <li class="shrink-0">
+              <PodcastCard key={podcast.id} podcast={podcast} />
+            </li>
+          ))}
+        </ul>
+      </ContentSection>
 
-      <section class="mb-8">
-        <div class="w-full flex justify-between items-center mb-2 px-4 md:px-6">
-          <h2 class="text-2xl font-semibold">About 1tuner.com</h2>
-          <MoreLink location="/about" />
-        </div>
-        <div class="px-4 md:px-6">
+      <ContentSection title="About 1tuner.com" moreLink="/about">
+        <>
           <p class="pb-4">
             This is a free web app. Here you can listen to online{' '}
             <a href="/radio-stations" class={styleClass.textLink}>
@@ -97,29 +68,8 @@ export const Homepage = () => {
               Read more
             </a>
           </p>
-        </div>
-      </section>
-
-      {/* <section class="px-4">
-        <h2 class="text-2xl font-semibold mb-4">Featured</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {featuredItems.map((item) => (
-            <a key={item.id} href={`/${item.type}/${item.id}`}>
-              <Card class="w-full">
-                <CardContent class="p-0">
-                  <div class="relative">
-                    <img src={item.image} alt={item.name} width={400} height={200} class="w-full h-auto" />
-                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                      <h3 class="text-xl font-semibold text-white">{item.name}</h3>
-                      <p class="text-sm text-stone-200 capitalize">{item.type}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </a>
-          ))}
-        </div>
-      </section> */}
+        </>
+      </ContentSection>
     </>
   );
 };

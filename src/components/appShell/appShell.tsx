@@ -158,7 +158,12 @@ export const AppShell = ({ children }: AppShellProps) => {
           </li>
         </ul>
       </nav>
-      <main class="flex-1 pb-40 md:ml-20">
+      <main
+        class={cn(
+          'flex-1 pb-40 w-full',
+          'md:ml-20 md:w-[calc(100%-5rem)]', // 5rem = 20 (nav width) in pixels
+        )}
+      >
         {!!uiState.value?.headerTitle && (
           <>
             <header

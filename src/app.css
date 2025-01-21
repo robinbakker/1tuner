@@ -63,6 +63,24 @@ html,
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+
+  section ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  section ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  section ::-webkit-scrollbar-thumb {
+    background: rgb(156 163 175 / 0.5); /* gray-400 with 50% opacity */
+    border-radius: 5px;
+  }
+
+  section ::-webkit-scrollbar-thumb:hover {
+    background: rgb(156 163 175 / 0.7);
+  }
 }
 
 select.custom-select-arrow {
