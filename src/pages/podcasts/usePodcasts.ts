@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import {
   clearLastPodcastSearchResult,
@@ -6,6 +6,7 @@ import {
   setLastPodcastSearchResult,
 } from '~/store/signals/podcast';
 import { settingsState } from '~/store/signals/settings';
+import { uiIsScrolled } from '~/store/signals/ui';
 import { Podcast, PodcastSearchProvider } from '~/store/types';
 
 export const usePodcasts = () => {
@@ -91,10 +92,13 @@ export const usePodcasts = () => {
     };
   }, [searchTerm]);
 
+  const isScrolled = useMemo(() => !!uiIsScrolled.value, [uiIsScrolled.value]);
+
   return {
     searchTerm,
     setSearchTerm,
     searchResults: lastPodcastSearchResult.value?.result || [],
     isLoading,
+    isScrolled,
   };
 };

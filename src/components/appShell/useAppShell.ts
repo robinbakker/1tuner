@@ -1,20 +1,20 @@
 import { useLocation } from 'preact-iso';
-import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef } from 'preact/hooks';
+import { uiIsScrolled } from '~/store/signals/ui';
 
 export const useAppShell = () => {
   const headerSentinelRef = useRef<HTMLDivElement>(null);
-  const [isScrolled, setIsScrolled] = useState(false);
   const { path } = useLocation();
 
   useEffect(() => {
     if (!headerSentinelRef.current) {
-      setIsScrolled(false);
+      uiIsScrolled.value = false;
       return;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsScrolled(!entry.isIntersecting);
+        uiIsScrolled.value = !entry.isIntersecting;
       },
       {
         threshold: 1.0,
@@ -46,7 +46,7 @@ export const useAppShell = () => {
     headerSentinelRef,
     isActive,
     isMainRoute,
-    isScrolled,
+    isScrolled: uiIsScrolled.value,
     handleBackClick,
   };
 };

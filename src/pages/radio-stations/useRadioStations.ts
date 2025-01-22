@@ -8,6 +8,7 @@ import {
   radioStations,
   setLastRadioSearchResult,
 } from '~/store/signals/radio';
+import { uiIsScrolled } from '~/store/signals/ui';
 
 export const useRadioStations = () => {
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
@@ -65,6 +66,12 @@ export const useRadioStations = () => {
     setSelectedGenres(genres);
   };
 
+  const isScrolled = useMemo(() => !!uiIsScrolled.value, [uiIsScrolled.value]);
+
+  const handleFilterClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const onSearchInput = (event: InputEvent) => {
     const searchInput = (event.target as HTMLInputElement).value;
     if (searchInput.trim()) {
@@ -77,14 +84,15 @@ export const useRadioStations = () => {
   return {
     searchTerm: lastRadioSearchResult.value?.query || '',
     onSearchInput,
-    setSelectedGenres,
     activeFilterCount,
     filteredStations,
     languageOptions,
     activeLanguages,
     activeGenres,
     genreOptions,
+    isScrolled,
     handleLanguageChange,
     handleGenreChange,
+    handleFilterClick,
   };
 };
