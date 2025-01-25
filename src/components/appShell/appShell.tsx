@@ -5,6 +5,7 @@ import { isPlayerMaximized, playerState } from '~/store/signals/player';
 import { uiState } from '~/store/signals/ui';
 import { Player } from '../player/player';
 import { ShareButton } from '../share-button';
+import { Toaster } from './toast/toaster';
 import { useAppShell } from './useAppShell';
 
 interface AppShellProps {
@@ -190,6 +191,7 @@ export const AppShell = ({ children }: AppShellProps) => {
         {children}
       </main>
       <Player />
+      <Toaster />
     </div>
   );
 };
