@@ -63,6 +63,35 @@ export const useSettings = () => {
     settingsState.value.enableChromecast = input.checked;
   };
 
+  const handleResetClick = async () => {
+    if (
+      confirm(
+        'Are you sure you want to reset all your settings and listening data? Please note: you cannot reverse this action.',
+      )
+    ) {
+      localStorage.clear();
+
+      // Clear IndexedDB
+      const dbs = await window.indexedDB.databases();
+      dbs.forEach((db) => {
+        if (db.name) {
+          window.indexedDB.deleteDatabase(db.name);
+        }
+      });
+
+      // Unregister service worker
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (const registration of registrations) {
+          await registration.unregister();
+        }
+      }
+
+      // Reload page
+      window.location.reload();
+    }
+  };
+
   useEffect(() => {
     uiState.value = { ...uiState.value, headerTitle: 'Settings' };
     return () => (uiState.value = { ...uiState.value, headerTitle: '' });
@@ -73,6 +102,7 @@ export const useSettings = () => {
     handleSearchProviderChange,
     handleThemeChange,
     handleGoogleCastSupportChange,
+    handleResetClick,
     searchProviderOptions,
     themeOptions,
     theme,

@@ -1,3 +1,4 @@
+import { OctagonX } from 'lucide-preact';
 import { Button } from '~/components/ui/button';
 import { RadioButtonList } from '~/components/ui/radio-button-list';
 import { Switch } from '~/components/ui/switch';
@@ -17,6 +18,7 @@ export const SettingsPage = () => {
     handleSearchProviderChange,
     handleRadioReconnectsValueChange,
     handleGoogleCastSupportChange,
+    handleResetClick,
   } = useSettings();
 
   return (
@@ -92,6 +94,16 @@ export const SettingsPage = () => {
           because it loads an extra external script from gstatic.com).
         </p>
         <Switch id="googleCastSupport" checked={hasGoogleCastsSupport} onClick={handleGoogleCastSupportChange} />
+      </section>
+      <section class="mb-8 relative">
+        <h2 class="text-2xl font-semibold">Reset</h2>
+        <p class="text-muted-foreground text-sm mb-4">
+          The following button will reset all your settings backand remove listening data. It means that all data will
+          be reset to their defaults.
+        </p>
+        <Button variant={'outline'} onClick={handleResetClick}>
+          <OctagonX class="mr-2 w-4 opacity-50" /> Reset
+        </Button>
       </section>
       <p class="text-muted-foreground text-sm">v{APP_VERSION}</p>
     </div>

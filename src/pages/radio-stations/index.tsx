@@ -45,7 +45,7 @@ export const RadioStationsPage = () => {
                   title="Filter"
                   onClick={handleFilterClick}
                   class={cn(
-                    'md:hidden absolute right-0 top-0',
+                    'md:hidden absolute right-0 top-1',
                     'p-2 rounded-md border border-input bg-white/80 dark:bg-black/80',
                     'hover:bg-accent hover:text-accent-foreground transition-colors',
                     'inline-flex items-center gap-1 opacity-0 transition-opacity duration-200',
