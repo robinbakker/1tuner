@@ -1,9 +1,23 @@
+import { cn } from '~/lib/utils';
 import { toasts } from '~/store/signals/ui';
 import { Toast } from './toast';
 
-export function Toaster() {
+type Props = {
+  isPlayerOpen?: boolean;
+  isPlayerMaximized?: boolean;
+};
+
+export function Toaster({ isPlayerOpen, isPlayerMaximized }: Props) {
   return (
-    <div className="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px] gap-2">
+    <div
+      class={cn(
+        'fixed bottom-20 z-[100] flex max-h-screen w-full',
+        'flex-col-reverse p-4',
+        'sm:bottom-20 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px] gap-2',
+        isPlayerOpen && !isPlayerMaximized && 'bottom-36 sm:bottom-20',
+        isPlayerMaximized && 'bottom-0',
+      )}
+    >
       {toasts.value.map((toast) => (
         <Toast key={toast.id} {...toast} />
       ))}

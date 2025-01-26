@@ -9,15 +9,17 @@ export const toasts = signal<ToastProps[]>([]);
 const TOAST_DURATION = 5000;
 
 export const addToast = (toast: Omit<ToastProps, 'id'>) => {
+  if (toasts.value.some((t) => t.title === toast.title && t.description === toast.description)) return;
+
   const id = new Date().toISOString();
-  const newToast = { ...toast, id };
+  const newToast = { ...toast, id, duration: toast.duration || TOAST_DURATION };
 
   toasts.value = [...toasts.value, newToast];
 
   // Auto dismiss
   setTimeout(() => {
     dismissToast(id);
-  }, toast.duration || TOAST_DURATION);
+  }, toast.duration);
 
   return id;
 };

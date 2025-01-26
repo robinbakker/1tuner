@@ -3,6 +3,7 @@ import { reconnectUtil } from '~/lib/reconnectUtil';
 import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
 import { playNextRadioStation } from '~/store/signals/radio';
 import { settingsState } from '~/store/signals/settings';
+import { addToast } from '~/store/signals/ui';
 import { Stream } from '~/store/types';
 import { isPlayerMaximized, playerState } from '../../store/signals/player';
 import { useCastApi } from './useCastApi';
@@ -214,6 +215,11 @@ export const usePlayer = () => {
     const attemptReconnect = () => {
       if (reconnectAttempts.current >= maxReconnectAttempts) {
         console.log('Max reconnect attempts reached');
+        addToast({
+          title: '😢 Reconnect failed...',
+          description: 'Failed to reconnect to the stream',
+          variant: 'error',
+        });
         reconnectAttempts.current = 0;
         playerState.value = playerState.value
           ? {
@@ -226,6 +232,11 @@ export const usePlayer = () => {
 
       reconnectAttempts.current += 1;
       console.log(`Reconnect attempt ${reconnectAttempts.current}/${maxReconnectAttempts}`);
+      addToast({
+        title: '🛜 Reconnecting...',
+        description: `There was an issue with the stream. Attempting to reconnect...`,
+        variant: 'default',
+      });
 
       if (reconnectTimeout.current) {
         clearTimeout(reconnectTimeout.current);

@@ -14,7 +14,7 @@ export function Toast({ id, title, description, variant = 'default', onClose }: 
   return (
     <div
       className={cn(
-        'pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all',
+        'pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-xl border p-6 pr-4 shadow-lg transition-all',
         toastVariants[variant],
       )}
     >
@@ -23,13 +23,14 @@ export function Toast({ id, title, description, variant = 'default', onClose }: 
         {description && <div className="text-sm opacity-90">{description}</div>}
       </div>
       <button
+        title="Dismiss"
         onClick={() => {
           onClose?.();
           dismissToast(id);
         }}
-        className="absolute right-2 top-2 rounded-md p-1 text-stone-950/50 opacity-0 transition-opacity hover:text-stone-950 focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100"
+        class="p-2 hover:bg-stone-200 rounded-full transition-colors flex-shrink-0"
       >
-        <X className="h-4 w-4" />
+        <X class="h-6 w-6 text-stone-600" />
       </button>
     </div>
   );

@@ -1,22 +1,11 @@
 import { useLocation } from 'preact-iso';
 import { useEffect, useMemo, useRef } from 'preact/hooks';
-import { addToast, uiIsScrolled } from '~/store/signals/ui';
+import { playerState } from '~/store/signals/player';
+import { uiIsScrolled } from '~/store/signals/ui';
 
 export const useAppShell = () => {
   const headerSentinelRef = useRef<HTMLDivElement>(null);
   const { path } = useLocation();
-
-  useEffect(() => {
-    addToast({
-      title: 'Welcome to the app!',
-    });
-    addToast({
-      title: 'And again!',
-    });
-    addToast({
-      title: 'And again!',
-    });
-  }, []);
 
   useEffect(() => {
     if (!headerSentinelRef.current) {
@@ -27,12 +16,6 @@ export const useAppShell = () => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         uiIsScrolled.value = !entry.isIntersecting;
-        if (!entry.isIntersecting) {
-          addToast({
-            title: 'Scrolled!',
-            description: 'You have scrolled past the header.',
-          });
-        }
       },
       {
         threshold: 1.0,
@@ -66,5 +49,6 @@ export const useAppShell = () => {
     isMainRoute,
     isScrolled: uiIsScrolled.value,
     handleBackClick,
+    isPlayerOpen: !!playerState.value?.streams?.length,
   };
 };

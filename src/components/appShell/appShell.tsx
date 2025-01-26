@@ -13,7 +13,7 @@ interface AppShellProps {
 }
 
 export const AppShell = ({ children }: AppShellProps) => {
-  const { headerSentinelRef, isScrolled, isMainRoute, isActive, handleBackClick } = useAppShell();
+  const { headerSentinelRef, isScrolled, isMainRoute, isPlayerOpen, isActive, handleBackClick } = useAppShell();
   const navLinkBaseClass = cn(
     'group flex flex-col items-center justify-center p-2 transition-colors',
     'duration-200 text-current hover:text-primary [&.active]:text-primary',
@@ -191,7 +191,7 @@ export const AppShell = ({ children }: AppShellProps) => {
         {children}
       </main>
       <Player />
-      <Toaster />
+      <Toaster isPlayerOpen={isPlayerOpen} isPlayerMaximized={isPlayerMaximized.value} />
     </div>
   );
 };
