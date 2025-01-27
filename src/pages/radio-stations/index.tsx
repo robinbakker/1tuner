@@ -22,7 +22,7 @@ export const RadioStationsPage = () => {
   } = useRadioStations();
 
   return (
-    <>
+    <div class="mt-4">
       <div
         class={cn(
           'sticky top-0 z-20',
@@ -124,6 +124,6 @@ export const RadioStationsPage = () => {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };

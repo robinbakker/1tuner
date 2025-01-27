@@ -26,19 +26,37 @@ export function App() {
       db.saveStateToDB();
     };
 
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        console.log('App hidden, saving state...');
+        db.saveStateToDB();
+      }
+    };
+
+    // Save state periodically
+    const saveInterval = setInterval(() => {
+      console.log('Periodic state save...');
+      db.saveStateToDB();
+    }, 30000); // Every 30 seconds
+
     if (window) {
       window.addEventListener('beforeunload', handleBeforeUnload);
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('pagehide', handleBeforeUnload); // Add pagehide event for iOS
     }
     return () => {
       if (window) {
         window.removeEventListener('beforeunload', handleBeforeUnload);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        window.removeEventListener('pagehide', handleBeforeUnload);
+        clearInterval(saveInterval);
       }
       db.saveStateToDB();
     };
   }, []);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!window) return;
 
     if (isPlayerMaximized.value) {
       // Prevent scrolling on mobile only

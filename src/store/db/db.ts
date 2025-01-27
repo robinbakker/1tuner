@@ -91,14 +91,18 @@ const putToDB = async (db: IDBPDatabase<TunerDB> | null, storeName: StoreName, d
 };
 
 export async function saveStateToDB() {
-  if (typeof window === 'undefined') return;
-  const db = await dbPromise;
-  await putToDB(db, StoreName.FollowedPodcasts, followedPodcasts.value);
-  await putToDB(db, StoreName.RecentlyVisitedPodcasts, recentlyVisitedPodcasts.value);
-  await putToDB(db, StoreName.FollowedRadioStationIDs, followedRadioStationIDs.value);
-  await putToDB(db, StoreName.RecentlyVisitedRadioStationIDs, recentlyVisitedRadioStationIDs.value);
-  await putToDB(db, StoreName.PlayerState, { ...playerState.value, isPlaying: false } as DBData); // Stop playing when saving state to DB.
-  await putToDB(db, StoreName.SettingsState, settingsState.value);
+  if (!window) return;
+  try {
+    const db = await dbPromise;
+    await putToDB(db, StoreName.FollowedPodcasts, followedPodcasts.value);
+    await putToDB(db, StoreName.RecentlyVisitedPodcasts, recentlyVisitedPodcasts.value);
+    await putToDB(db, StoreName.FollowedRadioStationIDs, followedRadioStationIDs.value);
+    await putToDB(db, StoreName.RecentlyVisitedRadioStationIDs, recentlyVisitedRadioStationIDs.value);
+    await putToDB(db, StoreName.PlayerState, { ...playerState.value, isPlaying: false } as DBData); // Stop playing when saving state to DB.
+    await putToDB(db, StoreName.SettingsState, settingsState.value);
+  } catch (error) {
+    console.error('Error saving state to DB:', error);
+  }
 }
 
 export function useDB() {

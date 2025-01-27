@@ -22,7 +22,7 @@ export const SettingsPage = () => {
   } = useSettings();
 
   return (
-    <div class="container mx-auto px-8 pb-6">
+    <div class="container mx-auto -mt-6 pb-6">
       <h1 class="text-3xl font-bold mb-6">Settings</h1>
       <p class="pb-4">
         1tuner is a free web app. Here you can listen to online{' '}

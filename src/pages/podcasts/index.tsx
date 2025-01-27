@@ -28,7 +28,7 @@ export const PodcastsPage = () => {
   }, []);
 
   return (
-    <>
+    <div class="mt-4">
       <div
         class={cn(
           'sticky top-0 z-20',
@@ -84,6 +84,6 @@ export const PodcastsPage = () => {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
