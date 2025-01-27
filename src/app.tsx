@@ -5,6 +5,8 @@ import { AppShell } from './components/appShell/appShell';
 import { AboutPage } from './pages/about';
 import { Homepage } from './pages/homepage';
 import { NotFound } from './pages/not-found';
+import { PlaylistPage } from './pages/playlist';
+import { PlaylistsPage } from './pages/playlists';
 import { PodcastPage } from './pages/podcast';
 import { PodcastsPage } from './pages/podcasts';
 import { RadioStationPage } from './pages/radio-station';
@@ -83,6 +85,8 @@ export function App() {
               <Route path="/radio-station/:id?" component={RadioStationPage} />
               <Route path="/podcasts" component={PodcastsPage} />
               <Route path="/podcast/:name?/:id?" component={PodcastPage} />
+              <Route path="/playlists" component={PlaylistsPage} />
+              <Route path="/playlist/:name?" component={PlaylistPage} />
               <Route path="/settings" component={SettingsPage} />
               <Route path="/about" component={AboutPage} />
               <NotFound default />

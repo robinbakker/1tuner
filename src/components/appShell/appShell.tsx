@@ -133,6 +133,37 @@ export const AppShell = ({ children }: AppShellProps) => {
             </a>
           </li>
           <li class="w-full">
+            <a href="/playlists" class={cn(navLinkBaseClass, isActive('/playlists') && 'text-primary')}>
+              <svg
+                class="h-6 w-6 text-current group-hover:text-primary transition-colors duration-200"
+                xmlns="http://www.w3.org/2000/svg"
+                style="isolation:isolate"
+                stroke="currentColor"
+                viewBox="0 0 42 42"
+              >
+                <defs>
+                  <clipPath id="cpPlaylist">
+                    <path d="M0 0h42v42H0z" />
+                  </clipPath>
+                </defs>
+                <g
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-miterlimit="3"
+                  stroke-width="2"
+                  clip-path="url(#a)"
+                >
+                  <path
+                    d="M8.572 33.021h28.356M8.572 23.021h28.356M17.928 13.021h19"
+                    vector-effect="non-scaling-stroke"
+                  />
+                  <path fill="none" d="M5.072 17.062V8.979l7 4.042z" vector-effect="non-scaling-stroke" />
+                </g>
+              </svg>
+              <span class="text-xs mt-1 text-center">Playlists</span>
+            </a>
+          </li>
+          <li class="w-full">
             <a href="/settings" class={cn(navLinkBaseClass, isActive('/settings') && 'text-primary')}>
               <svg
                 class={navLinkSvgClass}
