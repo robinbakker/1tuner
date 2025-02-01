@@ -1,8 +1,9 @@
 import { useRoute } from 'preact-iso';
-import { useCallback, useMemo } from 'preact/hooks';
+import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
+import { playlists } from '~/store/signals/playlist';
 import { getRadioStation } from '~/store/signals/radio';
-import { RadioStation } from '~/store/types';
+import { Playlist, RadioStation } from '~/store/types';
 
 interface TimeRadioStation {
   time: string;
@@ -11,6 +12,7 @@ interface TimeRadioStation {
 
 export const usePlaylist = () => {
   const { params, query } = useRoute();
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const playlistName = useMemo(() => {
     return params.name ? decodeURI(params.name).trim() : undefined;
@@ -54,16 +56,41 @@ export const usePlaylist = () => {
     return result ? `?${result}` : '';
   }, [playlist]);
 
-  useHead({
-    title: playlistName ? `${decodeURI(params.name).trim()}` : 'Playlist',
-    url: playlistName
+  const playlistUrl = useMemo(() => {
+    return playlistName
       ? `${import.meta.env.VITE_BASE_URL}/playlist/${encodeURI(playlistName)}/${playlistQueryString}`
-      : undefined,
+      : undefined;
+  }, [playlistName, playlistQueryString]);
+
+  useHead({
+    url: playlistUrl,
+    title: playlistName ? `${decodeURI(params.name).trim()}` : 'Playlist',
     type: 'music.playlist',
   });
+
+  useEffect(() => {
+    if (!(playlists.value || []).some((p) => p.url === playlistUrl)) {
+      setIsEditMode(true);
+    }
+  }, [playlistUrl, playlists.value]);
+
+  const handleSaveClick = useCallback(() => {
+    playlists.value = [
+      ...(playlists.value || []),
+      { name: playlistName, url: playlistUrl, items: playlist.map((p) => ({ time: p.time, stationID: p.station.id })) },
+    ] as Playlist[];
+    setIsEditMode(false);
+  }, []);
+
+  const handleCancelClick = useCallback(() => {
+    setIsEditMode(false);
+  }, []);
 
   return {
     playlistName: playlistName || 'Playlist',
     playlist,
+    isEditMode,
+    handleSaveClick,
+    handleCancelClick,
   };
 };

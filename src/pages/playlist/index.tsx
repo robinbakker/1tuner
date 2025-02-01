@@ -1,7 +1,8 @@
+import { Button } from '~/components/ui/button';
 import { usePlaylist } from './usePlaylist';
 
 export const PlaylistPage = () => {
-  const { playlistName, playlist } = usePlaylist();
+  const { playlistName, playlist, isEditMode, handleSaveClick, handleCancelClick } = usePlaylist();
 
   return (
     <div class="container mx-auto px-8 py-6">
@@ -13,6 +14,14 @@ export const PlaylistPage = () => {
           </div>
         ))}
       </section>
+      {isEditMode && (
+        <>
+          <Button variant={'secondary'} onClick={handleCancelClick}>
+            Cancel
+          </Button>{' '}
+          <Button onClick={handleSaveClick}>Save</Button>
+        </>
+      )}
     </div>
   );
 };

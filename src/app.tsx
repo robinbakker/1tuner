@@ -35,12 +35,6 @@ export function App() {
       }
     };
 
-    // Save state periodically
-    const saveInterval = setInterval(() => {
-      console.log('Periodic state save...');
-      db.saveStateToDB();
-    }, 30000); // Every 30 seconds
-
     if (window) {
       window.addEventListener('beforeunload', handleBeforeUnload);
       document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -51,7 +45,6 @@ export function App() {
         window.removeEventListener('beforeunload', handleBeforeUnload);
         document.removeEventListener('visibilitychange', handleVisibilityChange);
         window.removeEventListener('pagehide', handleBeforeUnload);
-        clearInterval(saveInterval);
       }
       db.saveStateToDB();
     };

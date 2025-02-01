@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'preact/compat';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect } from 'preact/hooks';
 import { RadioButtonListOption } from '~/components/ui/radio-button-list';
 import { useHead } from '~/hooks/useHead';
 import { settingsState } from '~/store/signals/settings';
@@ -8,9 +8,9 @@ import { PodcastSearchProvider } from '~/store/types';
 import { ThemeOption } from './types';
 
 export const useSettings = () => {
-  const [theme, setTheme] = useState<ThemeOption>(
-    typeof window !== 'undefined' ? (window?.localStorage.theme ?? 'default') : 'default',
-  );
+  useHead({
+    title: 'Settings',
+  });
 
   const themeOptions: RadioButtonListOption[] = [
     { label: 'System default', value: 'default' },
@@ -31,11 +31,10 @@ export const useSettings = () => {
     },
   ];
 
-  useHead({
-    title: 'Settings',
-  });
 
   const handleThemeChange = (value: string) => {
+    settingsState.value.theme = value as ThemeOption;
+    console.log('Theme changed to', value);
     if (value === 'default') {
       window?.localStorage.removeItem('theme');
       document.documentElement.classList.remove('dark', 'light');
@@ -44,7 +43,6 @@ export const useSettings = () => {
       document.documentElement.classList.toggle('dark', value === 'dark');
       document.documentElement.classList.toggle('light', value === 'light');
     }
-    setTheme(value as ThemeOption);
   };
 
   const handleSearchProviderChange = (value: string) => {
@@ -105,7 +103,7 @@ export const useSettings = () => {
     handleResetClick,
     searchProviderOptions,
     themeOptions,
-    theme,
+    theme: settingsState.value.theme ?? 'default',
     searchProviderValue: settingsState.value.podcastSearchProvider ?? PodcastSearchProvider.PodcastIndex,
     radioStreamMaxReconnectsValue: settingsState.value.radioStreamMaxReconnects ?? 50,
     hasGoogleCastsSupport: !!settingsState.value.enableChromecast,

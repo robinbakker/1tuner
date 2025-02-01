@@ -1,3 +1,5 @@
+import { ThemeOption } from "~/pages/settings/types";
+
 export interface Stream {
   mimetype: string;
   url: string;
@@ -71,6 +73,17 @@ export interface Episode {
   currentTime?: number;
 }
 
+export interface PlaylistItem {
+  time: string;
+  stationID: string;
+}
+
+export interface Playlist {
+  name: string;
+  items: PlaylistItem[];
+  url: string;
+}
+
 export interface PlayerState {
   isPlaying: boolean;
   contentID: string;
@@ -108,6 +121,7 @@ export enum PodcastSearchProvider {
 }
 
 export interface SettingsState {
+  theme?: ThemeOption;
   radioStreamMaxReconnects: number;
   podcastSearchProvider: PodcastSearchProvider;
   enableChromecast: boolean;

@@ -1,20 +1,22 @@
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import { playerState } from '../signals/player';
+import { playlists } from '../signals/playlist';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../signals/podcast';
 import { followedRadioStationIDs, recentlyVisitedRadioStationIDs } from '../signals/radio';
 import { settingsState } from '../signals/settings';
-import { PlayerState, Podcast, SettingsState } from '../types';
+import { PlayerState, Playlist, Podcast, SettingsState } from '../types';
 
 enum StoreName {
   FollowedPodcasts = 'followedPodcasts',
   RecentlyVisitedPodcasts = 'recentlyVisitedPodcasts',
   FollowedRadioStationIDs = 'followedRadioStationIDs',
   RecentlyVisitedRadioStationIDs = 'recentlyVisitedRadioStationIDs',
+  Playlists = 'playlists',
   PlayerState = 'playerState',
   SettingsState = 'settingsState',
 }
 
-type DBData = Podcast[] | string[] | PlayerState | SettingsState | null;
+type DBData = Podcast[] | Playlist[] | string[] | PlayerState | SettingsState | null;
 interface TunerDB extends DBSchema {
   followedPodcasts: {
     key: StoreName.FollowedPodcasts;
@@ -31,6 +33,10 @@ interface TunerDB extends DBSchema {
   recentlyVisitedRadioStationIDs: {
     key: StoreName.RecentlyVisitedRadioStationIDs;
     value: string[];
+  };
+  playlists: {
+    key: StoreName.Playlists;
+    value: Playlist[] | null;
   };
   playerState: {
     key: StoreName.PlayerState;
@@ -75,12 +81,14 @@ export async function loadStateFromDB() {
   const dbFollowedRadioStationIDs = (await getFromDB<string[]>(db, StoreName.FollowedRadioStationIDs)) || [];
   const dbRecentlyVisitedRadioStationIDs =
     (await getFromDB<string[]>(db, StoreName.RecentlyVisitedRadioStationIDs)) || [];
+  const dbPlaylists = (await getFromDB<Playlist[]>(db, StoreName.Playlists)) || [];
   const dbPlayerState = (await getFromDB<PlayerState>(db, StoreName.PlayerState)) || null;
   const dbSettingsState = (await getFromDB<SettingsState>(db, StoreName.SettingsState)) || ({} as SettingsState);
   followedPodcasts.value = dbFollowedPodcasts;
   recentlyVisitedPodcasts.value = dbRecentlyVisitedPodcasts;
   followedRadioStationIDs.value = dbFollowedRadioStationIDs;
   recentlyVisitedRadioStationIDs.value = dbRecentlyVisitedRadioStationIDs;
+  playlists.value = dbPlaylists;
   playerState.value = dbPlayerState;
   settingsState.value = dbSettingsState;
 }
@@ -98,6 +106,7 @@ export async function saveStateToDB() {
     await putToDB(db, StoreName.RecentlyVisitedPodcasts, recentlyVisitedPodcasts.value);
     await putToDB(db, StoreName.FollowedRadioStationIDs, followedRadioStationIDs.value);
     await putToDB(db, StoreName.RecentlyVisitedRadioStationIDs, recentlyVisitedRadioStationIDs.value);
+    await putToDB(db, StoreName.Playlists, playlists.value);
     await putToDB(db, StoreName.PlayerState, { ...playerState.value, isPlaying: false } as DBData); // Stop playing when saving state to DB.
     await putToDB(db, StoreName.SettingsState, settingsState.value);
   } catch (error) {

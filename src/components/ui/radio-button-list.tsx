@@ -1,3 +1,4 @@
+import { useCallback } from 'preact/hooks';
 import { RadioButton as RadioButtonListOption, RadioButtonProps } from './radio-button';
 
 export type RadioButtonListOption = Pick<RadioButtonProps, 'value' | 'label' | 'description'>;
@@ -10,9 +11,9 @@ type RadioButtonListProps = {
 };
 
 export const RadioButtonList = ({ name, options, value, onChange }: RadioButtonListProps) => {
-  const onRadioButtonChange = (value: string) => {
+  const onRadioButtonChange = useCallback((value: string) => {
     onChange(value);
-  };
+  }, [onChange]);
 
   return (
     <ul>

@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 import { usePlayer } from './usePlayer';
 
 export const Player = () => {
-  if (!playerState.value || playerState.value.streams?.length === 0) return null;
+  if (!playerState.value || !playerState.value.streams?.length) return null;
 
   const {
     audioRef,
