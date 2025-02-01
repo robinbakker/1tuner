@@ -1,17 +1,12 @@
 import { ChangeEvent } from 'preact/compat';
 import { useEffect } from 'preact/hooks';
 import { RadioButtonListOption } from '~/components/ui/radio-button-list';
-import { useHead } from '~/hooks/useHead';
 import { settingsState } from '~/store/signals/settings';
 import { uiState } from '~/store/signals/ui';
 import { PodcastSearchProvider } from '~/store/types';
 import { ThemeOption } from './types';
 
 export const useSettings = () => {
-  useHead({
-    title: 'Settings',
-  });
-
   const themeOptions: RadioButtonListOption[] = [
     { label: 'System default', value: 'default' },
     { label: 'Light', value: 'light' },
@@ -30,7 +25,6 @@ export const useSettings = () => {
       value: PodcastSearchProvider.Apple,
     },
   ];
-
 
   const handleThemeChange = (value: string) => {
     settingsState.value.theme = value as ThemeOption;

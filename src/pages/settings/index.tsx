@@ -1,4 +1,4 @@
-import { OctagonX } from 'lucide-preact';
+import { TriangleAlert } from 'lucide-preact';
 import { Button } from '~/components/ui/button';
 import { RadioButtonList } from '~/components/ui/radio-button-list';
 import { Switch } from '~/components/ui/switch';
@@ -22,7 +22,7 @@ export const SettingsPage = () => {
   } = useSettings();
 
   return (
-    <div class="container mx-auto -mt-6 pb-6">
+    <div class="container mx-auto px-8 pb-6">
       <h1 class="text-3xl font-bold mb-6">Settings</h1>
       <p class="pb-4">
         1tuner is a free web app. Here you can listen to online{' '}
@@ -102,7 +102,7 @@ export const SettingsPage = () => {
           be reset to their defaults.
         </p>
         <Button variant={'outline'} onClick={handleResetClick}>
-          <OctagonX class="mr-2 w-4 opacity-50" /> Reset
+          <TriangleAlert class="mr-2 w-4 opacity-50" /> Reset
         </Button>
       </section>
       <p class="text-muted-foreground text-sm">v{APP_VERSION}</p>

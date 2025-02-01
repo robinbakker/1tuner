@@ -24,7 +24,7 @@ export const Homepage = () => {
       </header>
 
       <ContentSection title="Radio stations" moreLink="/radio-stations" isScrollable>
-        <ul class="flex gap-4 md:gap-10 px-4 md:px-6">
+        <ul class="flex gap-6 md:gap-10 px-4 md:px-6">
           {getRecentlyVisitedRadioStations().map((station) => (
             <li class="shrink-0">
               <RadioStationCard key={station.id} station={station} />
@@ -34,7 +34,7 @@ export const Homepage = () => {
       </ContentSection>
 
       <ContentSection title="Podcasts" moreLink="/podcasts" isScrollable>
-        <ul class="flex gap-4 md:gap-10 px-4 md:px-6">
+        <ul class="flex gap-6 md:gap-10 px-4 md:px-6">
           {recentlyVisitedPodcasts.value.map((podcast) => (
             <li class="shrink-0">
               <PodcastCard key={podcast.id} podcast={podcast} />
