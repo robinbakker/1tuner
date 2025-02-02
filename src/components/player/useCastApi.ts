@@ -67,7 +67,7 @@ export const useCastApi = () => {
   );
 
   const initializeCastApi = useCallback(() => {
-    if (!window.chrome?.cast?.isAvailable || castInitialized.current) return;
+    if (typeof window === 'undefined' || window.chrome?.cast?.isAvailable || castInitialized.current) return;
 
     const sessionRequest = new window.chrome.cast.SessionRequest(APPLICATION_ID);
     const apiConfig = new window.chrome.cast.ApiConfig(

@@ -14,21 +14,35 @@ interface StationPercentage {
   stationID: string;
   logo: string;
   name: string;
-  hour: number;
+  startTime: string;
+  endTime: string;
   percentage: number;
   startPercentage: number;
+  isActive: boolean;
 }
 
 export const usePlaylists = () => {
+  const startHour = 6;
+  const endHour = 21;
+
   useHead({
     title: 'Playlists',
     url: `${import.meta.env.VITE_BASE_URL}/podcasts`,
   });
 
+  const currentTimePercentage = useMemo(() => {
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    if (hour < startHour || hour >= endHour) return null;
+
+    const totalMinutes = (hour - startHour) * 60 + minute;
+    const totalPeriodMinutes = (endHour - startHour) * 60;
+    return (totalMinutes / totalPeriodMinutes) * 100;
+  }, []);
+
   const getPercentagePerStation = useCallback(
     (items: PlaylistItem[], stations: RadioStation[]) => {
-      const startHour = 6;
-      const endHour = 21;
       const totalMinutes = (endHour - startHour) * 60;
 
       // Sort items by time
@@ -81,20 +95,27 @@ export const usePlaylists = () => {
         const startPercentage = currentPercentage;
         currentPercentage += percentage;
         const station = stations.find((s) => s.id === range.stationID);
+        const isActive =
+          !!currentTimePercentage &&
+          currentTimePercentage >= startPercentage &&
+          currentTimePercentage < startPercentage + percentage;
+        console.log(station?.name, isActive, currentTimePercentage, currentPercentage, percentage);
 
         return {
           stationID: range.stationID,
           percentage,
           startPercentage,
-          hour: range.start.getHours(),
+          startTime: range.start.toTimeString().substring(0, 5),
+          endTime: range.end.toTimeString().substring(0, 5),
           name: station?.name || range.stationID,
           logo: station?.logosource,
+          isActive,
         } as StationPercentage;
       });
 
       return stationPercentages;
     },
-    [playlists.value],
+    [playlists.value, currentTimePercentage],
   );
 
   const playlistsData = useMemo((): PlaylistData[] => {
@@ -109,9 +130,10 @@ export const usePlaylists = () => {
         stationPercentages: getPercentagePerStation(p.items, stations),
       };
     });
-  }, [playlists.value]);
+  }, [playlists.value, getPercentagePerStation]);
 
   return {
     playlistsData,
+    currentTimePercentage,
   };
 };

@@ -34,7 +34,7 @@ export const usePodcast = () => {
   });
 
   const paramsFeedUrl = useMemo(() => {
-    return `https://${normalizedUrlWithoutScheme(atob(params.id))}`;
+    return params.id ? `https://${normalizedUrlWithoutScheme(atob(params.id))}` : '';
   }, [params.id]);
 
   const getDurationString = useCallback((duration: string) => {

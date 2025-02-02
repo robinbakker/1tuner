@@ -49,3 +49,15 @@ export const getTimeStringFromSeconds = (secs: number) => {
   const minutes = secs / 60;
   return getTime(Math.floor(minutes / 60), Math.floor(minutes % 60));
 };
+
+export const getColorString = (text: string) => {
+  if (!text) return 'rgba(50,50,50,.75)';
+  let idNrTxt = `${[...text].map((c) => c.charCodeAt(0)).reduce((v1, v2) => v1 + v2)}`;
+  let offset = 140;
+  let nr1 = +idNrTxt.substring(0, 2);
+  let nr2 = +idNrTxt.substring(2);
+  let r = offset + nr1 - 90,
+    g = offset - nr1 + text.length,
+    b = offset + nr2;
+  return `rgba(${r},${g},${b},.75)`;
+};

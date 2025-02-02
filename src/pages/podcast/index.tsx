@@ -1,4 +1,5 @@
 import { Bookmark, Play } from 'lucide-preact';
+import { useLocation } from 'preact-iso';
 import { Loader } from '~/components/loader';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -6,10 +7,11 @@ import { stripHtml } from '~/lib/utils';
 import { usePodcast } from './usePodcast';
 
 export const PodcastPage = () => {
+  const { route } = useLocation();
   const { params, isLoading, podcast, isFollowing, toggleFollow, handleEpisodeClick } = usePodcast();
 
   if (typeof window !== 'undefined' && !params.id) {
-    location.href = '/podcasts';
+    route('/podcasts');
     return <></>;
   }
 

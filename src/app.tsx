@@ -35,13 +35,13 @@ export function App() {
       }
     };
 
-    if (window) {
+    if (typeof window !== 'undefined') {
       window.addEventListener('beforeunload', handleBeforeUnload);
       document.addEventListener('visibilitychange', handleVisibilityChange);
       window.addEventListener('pagehide', handleBeforeUnload); // Add pagehide event for iOS
     }
     return () => {
-      if (window) {
+      if (typeof window !== 'undefined') {
         window.removeEventListener('beforeunload', handleBeforeUnload);
         document.removeEventListener('visibilitychange', handleVisibilityChange);
         window.removeEventListener('pagehide', handleBeforeUnload);
@@ -51,11 +51,11 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    if (!window) return;
+    if (typeof window === 'undefined') return;
 
     if (isPlayerMaximized.value) {
       // Prevent scrolling on mobile only
-      if (window?.innerWidth < 768) {
+      if (window.innerWidth < 768) {
         document.body.style.overflow = 'hidden';
       }
     } else {

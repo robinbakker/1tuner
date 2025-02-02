@@ -1,6 +1,7 @@
-import { useRoute } from 'preact-iso';
+import { useLocation, useRoute } from 'preact-iso';
 import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
+import { getLocalTimeFromUrlKey, getValidTimeZone } from '~/lib/convertTime';
 import { playlists } from '~/store/signals/playlist';
 import { getRadioStation } from '~/store/signals/radio';
 import { Playlist, RadioStation } from '~/store/types';
@@ -12,48 +13,41 @@ interface TimeRadioStation {
 
 export const usePlaylist = () => {
   const { params, query } = useRoute();
+  const { route } = useLocation();
   const [isEditMode, setIsEditMode] = useState(false);
+  const isAddNew = !params.name && !Object.keys(query ?? {}).length;
 
   const playlistName = useMemo(() => {
     return params.name ? decodeURI(params.name).trim() : undefined;
   }, [params.name]);
 
-  const getTimeFromKey = useCallback((key: string) => {
-    try {
-      const hourMatch = key.match(/h(\d+)/);
-      if (!hourMatch) return undefined;
-      const hour = hourMatch[1].padStart(2, '0');
-      const minuteMatch = key.match(/m(\d+)/);
-      const minutes = minuteMatch ? minuteMatch[1].padStart(2, '0') : '00';
-      return `${hour}:${minutes}`;
-    } catch {
-      return undefined;
-    }
-  }, []);
-
   const getParamFromTime = useCallback((time: string) => {
     const [hour, minute] = time.split(':');
-    return `h${hour}m${minute}`;
+    return `h${hour}` + (minute === '00' ? '' : `m${minute}`);
   }, []);
+
+  const urlTimeZone = useMemo(() => {
+    return query['tz'] as string | undefined;
+  }, [query]);
 
   const playlist = useMemo(() => {
     const list: TimeRadioStation[] = [];
     Object.keys(query).forEach((key) => {
-      console.log(key, query[key]);
-      const time = getTimeFromKey(key);
+      if (key === 'tz') return;
+      const time = getLocalTimeFromUrlKey(key, urlTimeZone);
       const station = getRadioStation(query[key] as string);
       if (time && station) {
         list.push({ time, station });
       }
     });
     list.sort((a, b) => a.time.localeCompare(b.time));
-    console.log(list);
     return list;
   }, [query]);
 
   const playlistQueryString = useMemo(() => {
     const result = playlist.map((i) => getParamFromTime(i.time) + '=' + i.station.id).join('&');
-    return result ? `?${result}` : '';
+    const timeZone = getValidTimeZone(urlTimeZone);
+    return result ? `?${result}&tz=${timeZone}` : '';
   }, [playlist]);
 
   const playlistUrl = useMemo(() => {
@@ -83,6 +77,7 @@ export const usePlaylist = () => {
   }, []);
 
   const handleCancelClick = useCallback(() => {
+    if (isAddNew) route('/playlists');
     setIsEditMode(false);
   }, []);
 

@@ -99,7 +99,7 @@ const putToDB = async (db: IDBPDatabase<TunerDB> | null, storeName: StoreName, d
 };
 
 export async function saveStateToDB() {
-  if (!window) return;
+  if (typeof window === 'undefined') return;
   try {
     const db = await dbPromise;
     await putToDB(db, StoreName.FollowedPodcasts, followedPodcasts.value);

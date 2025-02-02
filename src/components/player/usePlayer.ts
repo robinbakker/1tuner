@@ -133,6 +133,15 @@ export const usePlayer = () => {
         });
       } else {
         audioRef.current.pause();
+        if (isPodcast) {
+          updatePodcastEpisodeCurrentTime(
+            playerState.value.contentID,
+            playerState.value.streams?.[0]?.url || '',
+            audioRef.current.currentTime,
+          );
+        } else {
+          audioRef.current.currentTime = 0;
+        }
       }
     }
   }, [castSession, castMediaRef.current, playerState.value, audioRef.current]);

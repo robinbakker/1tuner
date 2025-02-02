@@ -1,4 +1,5 @@
 import { Bookmark, Facebook, Globe, Instagram, Pause, Play, Twitter, Youtube } from 'lucide-preact';
+import { useLocation } from 'preact-iso';
 import { PodcastCard } from '~/components/podcast-card';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
@@ -9,14 +10,15 @@ import { SocialAccountType } from '~/store/types';
 import { useRadioStation } from './useRadioStation';
 
 export const RadioStationPage = () => {
+  const { route } = useLocation();
   const { params, radioStation, isPlaying, isFollowing, stationPodcasts, toggleFollow } = useRadioStation();
 
   if (typeof window !== 'undefined' && !radioStation) {
     if (params.id) {
-      location.href = '/404-page-not-found';
+      route('/404-page-not-found');
       return <></>;
     }
-    location.href = '/radio-stations';
+    route('/radio-stations');
     return <></>;
   }
 
