@@ -3,7 +3,7 @@ import { useLocation } from 'preact-iso';
 import { Loader } from '~/components/loader';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
-import { stripHtml } from '~/lib/utils';
+import { getTimeStringFromSeconds, stripHtml } from '~/lib/utils';
 import { usePodcast } from './usePodcast';
 
 export const PodcastPage = () => {
@@ -56,7 +56,11 @@ export const PodcastPage = () => {
               <div class="flex group items-center justify-between mb-2">
                 <div className={'cursor-pointer'} onClick={() => handleEpisodeClick(episode)}>
                   <h3 class="text-xl font-medium group-hover:text-primary transition-colors">
-                    {episode.title} <span class="text-muted-foreground font-normal text-sm">({episode.duration})</span>
+                    {episode.title}{' '}
+                    <span class="text-muted-foreground font-normal text-sm">
+                      ({episode.duration}
+                      {episode.currentTime ? ` - ${getTimeStringFromSeconds(episode.currentTime)}` : ''})
+                    </span>
                   </h3>
                   <p class="text-muted-foreground text-sm">
                     <time dateTime={episode.pubDate.toJSON()}>

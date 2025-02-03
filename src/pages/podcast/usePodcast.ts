@@ -103,6 +103,7 @@ export const usePodcast = () => {
               audio: item.enclosure?.['@_url'],
               mimeType: item.enclosure?.['@_type'],
               duration: getDurationString(`${item['itunes:duration'] ?? item['duration']}`),
+              currentTime: podcastData?.episodes?.find((ep) => ep.audio === item.audio)?.currentTime || 0,
             })),
           } as Podcast;
 

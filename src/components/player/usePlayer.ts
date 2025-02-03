@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { reconnectUtil } from '~/lib/reconnectUtil';
+import { saveStateToDB } from '~/store/db/db';
 import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
 import { playNextRadioStation } from '~/store/signals/radio';
 import { settingsState } from '~/store/signals/settings';
@@ -139,6 +140,7 @@ export const usePlayer = () => {
             playerState.value.streams?.[0]?.url || '',
             audioRef.current.currentTime,
           );
+          saveStateToDB();
         } else {
           audioRef.current.currentTime = 0;
         }
