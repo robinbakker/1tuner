@@ -13,14 +13,14 @@ const toastVariants = {
 export function Toast({ id, title, description, variant = 'default', onClose }: ToastProps) {
   return (
     <div
-      className={cn(
+      class={cn(
         'pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-xl border p-6 pr-4 shadow-lg transition-all',
         toastVariants[variant],
       )}
     >
-      <div className="flex flex-col gap-1">
-        {title && <div className="text-sm font-semibold">{title}</div>}
-        {description && <div className="text-sm opacity-90">{description}</div>}
+      <div class="flex flex-col gap-1">
+        {title && <div class="text-sm font-semibold">{title}</div>}
+        {description && <div class="text-sm opacity-90">{description}</div>}
       </div>
       <button
         title="Dismiss"

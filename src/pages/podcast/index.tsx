@@ -3,7 +3,7 @@ import { useLocation } from 'preact-iso';
 import { Loader } from '~/components/loader';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
-import { getTimeStringFromSeconds, stripHtml } from '~/lib/utils';
+import { cn, getTimeStringFromSeconds, stripHtml } from '~/lib/utils';
 import { usePodcast } from './usePodcast';
 
 export const PodcastPage = () => {
@@ -54,7 +54,7 @@ export const PodcastPage = () => {
           {podcast.episodes?.map((episode, i) => (
             <div key={`ep-${episode.pubDate}-${i}`} class="border-b border-stone-200 pb-6">
               <div class="flex group items-center justify-between mb-2">
-                <div className={'cursor-pointer'} onClick={() => handleEpisodeClick(episode)}>
+                <div class={'cursor-pointer'} onClick={() => handleEpisodeClick(episode)}>
                   <h3 class="text-xl font-medium group-hover:text-primary transition-colors">
                     {episode.title}{' '}
                     <span class="text-muted-foreground font-normal text-sm">
@@ -78,9 +78,10 @@ export const PodcastPage = () => {
                     onClick={() => handleEpisodeClick(episode)}
                     variant="outline"
                     styleSize="icon"
-                    className={
-                      'border-stone-300 group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground hover:text-primary-foreground transition-colors'
-                    }
+                    class={cn(
+                      'border-stone-300 group-hover:bg-primary group-hover:border-primary',
+                      'group-hover:text-primary-foreground hover:text-primary-foreground transition-colors',
+                    )}
                   >
                     <Play class="h-4 w-4" />
                   </Button>

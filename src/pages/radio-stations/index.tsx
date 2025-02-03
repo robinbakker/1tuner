@@ -35,7 +35,8 @@ export const RadioStationsPage = () => {
               <div class="md:flex md:justify-between md:items-center relative">
                 <h1
                   class={cn(
-                    'text-3xl font-bold transform-gpu transition-transform origin-bottom-left duration-200 pr-12 md:pr-0',
+                    'text-3xl font-bold transform-gpu transition-transform origin-bottom-left',
+                    'duration-200 pr-12 md:pr-0',
                     isScrolled ? 'scale-[0.833]' : 'scale-100',
                   )}
                 >
@@ -53,7 +54,12 @@ export const RadioStationsPage = () => {
                   )}
                 >
                   {activeFilterCount > 0 && (
-                    <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    <div
+                      class={cn(
+                        'absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs rounded-full',
+                        'w-5 h-5 flex items-center justify-center',
+                      )}
+                    >
                       {activeFilterCount}
                     </div>
                   )}
@@ -67,7 +73,7 @@ export const RadioStationsPage = () => {
                   options={languageOptions}
                   placeholder={'Language/region'}
                   icon={<Globe class="w-4 opacity-50" />}
-                  onChange={handleLanguageChange}
+                  onChangeTags={handleLanguageChange}
                   selectedValues={activeLanguages.map((l) => l.id)}
                 />
                 <TagSelect
@@ -75,7 +81,7 @@ export const RadioStationsPage = () => {
                   options={genreOptions}
                   placeholder={'Genre'}
                   icon={<SquareLibrary class="w-4 opacity-50" />}
-                  onChange={handleGenreChange}
+                  onChangeTags={handleGenreChange}
                   selectedValues={activeGenres.map((l) => l.id)}
                 />
               </div>
@@ -83,7 +89,7 @@ export const RadioStationsPage = () => {
 
             <div class="mt-4">
               <div class="relative w-full">
-                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400">
+                <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400">
                   <Search size={18} />
                 </div>
                 <Input
@@ -91,7 +97,7 @@ export const RadioStationsPage = () => {
                   placeholder="Search radio stations..."
                   value={searchTerm}
                   onInput={onSearchInput}
-                  className="w-full bg-white/80 dark:bg-black/80 focus:ring-primary pl-10"
+                  class="w-full bg-white/80 dark:bg-black/80 focus:ring-primary pl-10"
                 />
               </div>
             </div>
@@ -104,15 +110,15 @@ export const RadioStationsPage = () => {
           options={languageOptions}
           placeholder={'Language/region'}
           icon={<Globe class="w-4 opacity-50" />}
-          onChange={handleLanguageChange}
+          onChangeTags={handleLanguageChange}
           selectedValues={activeLanguages.map((l) => l.id)}
-          className="mb-2"
+          class="mb-2"
         />
         <TagSelect
           options={genreOptions}
           placeholder={'Genre'}
           icon={<SquareLibrary class="w-4 opacity-50" />}
-          onChange={handleGenreChange}
+          onChangeTags={handleGenreChange}
           selectedValues={activeGenres.map((l) => l.id)}
         />
       </div>

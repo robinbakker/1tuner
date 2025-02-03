@@ -1,5 +1,6 @@
 import { ChevronDown, X } from 'lucide-preact';
 import { JSX } from 'preact';
+import { HTMLAttributes } from 'preact/compat';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { cn } from '~/lib/utils';
 
@@ -10,27 +11,26 @@ interface Option {
   searchableLabel?: string;
 }
 
-interface TagSelectProps {
+interface TagSelectProps extends HTMLAttributes<HTMLDivElement> {
   options: Option[];
   selectedValues: string[];
-  onChange: (values: string[]) => void;
+  onChangeTags: (values: string[]) => void;
   icon?: JSX.Element;
   placeholder?: string | JSX.Element;
   disabled?: boolean;
-  className?: string;
   align?: 'left' | 'right';
 }
 
 export function TagSelect({
   options,
   selectedValues,
-  onChange,
+  onChangeTags,
   icon,
   placeholder = 'Select options...',
   disabled = false,
-  className = '',
   align = 'left',
-}: TagSelectProps): JSX.Element {
+  ...props
+}: TagSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(0);
@@ -46,11 +46,11 @@ export function TagSelect({
   });
 
   const handleRemoveTag = (valueToRemove: string) => {
-    onChange(selectedValues.filter((value) => value !== valueToRemove));
+    onChangeTags(selectedValues.filter((value) => value !== valueToRemove));
   };
 
   const handleAddOption = (valueToAdd: string) => {
-    onChange([...selectedValues, valueToAdd]);
+    onChangeTags([...selectedValues, valueToAdd]);
     setIsOpen(false);
     setSearchTerm('');
   };
@@ -80,7 +80,7 @@ export function TagSelect({
       case 'Enter':
         e.preventDefault();
         if (filteredOptions[highlightedIndex]) {
-          onChange([filteredOptions[highlightedIndex].value]);
+          onChangeTags([filteredOptions[highlightedIndex].value]);
           setIsOpen(false);
           setSearchTerm('');
         }
@@ -93,7 +93,7 @@ export function TagSelect({
   };
 
   return (
-    <div ref={containerRef} class={cn('relative', className)} onKeyDown={handleKeyDown}>
+    <div ref={containerRef} class={cn('relative', props.class)} onKeyDown={handleKeyDown}>
       {selectedValues.length === 0 ? (
         // Button-like appearance when no selections
         <button
@@ -119,8 +119,9 @@ export function TagSelect({
         // Existing tag display when there are selections
         <div
           class={cn(
-            'inline-flex items-center w-full min-h-[2.25rem] rounded-lg border border-stone-500 bg-background px-3 py-1 text-sm',
-            'ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
+            'inline-flex items-center w-full min-h-[2.25rem] rounded-lg border border-stone-500',
+            'bg-background px-3 py-1 text-sm ring-offset-background focus-within:ring-2',
+            'focus-within:ring-ring focus-within:ring-offset-2',
             disabled && 'cursor-not-allowed opacity-50',
           )}
         >
@@ -134,9 +135,10 @@ export function TagSelect({
               {selectedOptions.map((option) => (
                 <li
                   key={option.value}
-                  className={cn(
+                  class={cn(
                     'inline-flex items-center pl-1 pr-2 font-semibold',
-                    'transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground',
+                    'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+                    'transition-colors text-foreground',
                     option.minimalLabel && 'text-lg',
                   )}
                   title={typeof option.label === 'string' ? option.label : ''}

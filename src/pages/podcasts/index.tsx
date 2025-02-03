@@ -17,8 +17,8 @@ export const PodcastsPage = () => {
     const slugTitle = slugify(title);
     return (
       <>
-        <h2 className="text-xl opacity-60 font-semibold mb-4">{title}</h2>
-        <div className="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-6 mb-8">
+        <h2 class="text-xl opacity-60 font-semibold mb-4">{title}</h2>
+        <div class="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-6 mb-8">
           {podcasts.map((podcast) => (
             <PodcastCard key={`${slugTitle}-${podcast.id}`} size="large" podcast={podcast} />
           ))}
@@ -48,7 +48,7 @@ export const PodcastsPage = () => {
               </h1>
               <div class="my-4">
                 <div class="relative w-full">
-                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400">
+                  <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400">
                     <Search size={18} />
                   </div>
                   <Input
@@ -56,7 +56,7 @@ export const PodcastsPage = () => {
                     placeholder="Search podcasts..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm((e.target as HTMLInputElement).value)}
-                    className="w-full focus:ring-primary pl-10"
+                    class="w-full focus:ring-primary pl-10"
                     autofocus={!!searchTerm}
                   />
                 </div>

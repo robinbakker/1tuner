@@ -83,7 +83,7 @@ export const RadioStationPage = () => {
                       rel="noopener noreferrer"
                       class="text-white/90 inline-flex items-center mt-1 group hover:text-white drop-shadow transition-colors"
                     >
-                      <Globe className={'mr-2 text-white/50 group-hover:text-white/70'} size={16} />
+                      <Globe class={'mr-2 text-white/50 group-hover:text-white/70'} size={16} />
                       {normalizedUrlWithoutScheme(radioStation.website)}
                     </a>
                   </p>

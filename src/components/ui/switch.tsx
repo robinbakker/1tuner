@@ -1,16 +1,12 @@
 import type { ComponentProps } from 'preact';
 import { cn } from '~/lib/utils';
 
-type SwitchProps = ComponentProps<'input'> & {
-  className?: string;
-};
-
-export function Switch({ className, ...props }: SwitchProps) {
+export function Switch({ ...props }: ComponentProps<'input'>) {
   return (
-    <label className="relative inline-flex items-center cursor-pointer">
-      <input type="checkbox" className="sr-only peer" {...props} />
+    <label class="relative inline-flex items-center cursor-pointer">
+      <input type="checkbox" class="sr-only peer" {...props} />
       <div
-        className={cn(
+        class={cn(
           'relative w-12 h-6 rounded-full border-2 border-transparent',
           'bg-stone-300 peer-checked:bg-primary',
           'after:content-[""] after:absolute',
@@ -20,7 +16,7 @@ export function Switch({ className, ...props }: SwitchProps) {
           'peer-focus-visible:ring-2 peer-focus-visible:ring-ring',
           'peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background',
           'peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
-          className,
+          props.class,
         )}
       />
     </label>

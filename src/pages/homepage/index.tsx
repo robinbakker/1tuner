@@ -14,8 +14,8 @@ export const Homepage = () => {
           class="inset-0 w-full h-full flex justify-between bg-cover bg-center"
           style={{ backgroundImage: "url('./header-bg.jpg')" }}
         >
-          <div className="h-full px-4 py-6">
-            <img src="./logo-text-white.svg" alt="1tuner logo" className="h-14 relative z-10" />
+          <div class="h-full px-4 py-6">
+            <img src="./logo-text-white.svg" alt="1tuner logo" class="h-14 relative z-10" />
           </div>
           <div class="flex items-center pr-4">
             <ShareButton hasDarkBackground={true} />

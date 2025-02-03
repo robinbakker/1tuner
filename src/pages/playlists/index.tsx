@@ -69,7 +69,7 @@ export const PlaylistsPage = () => {
                 <h2 class="text-xl font-semibold">
                   <a href={playlist.url}>{playlist.name}</a>
                 </h2>
-                <ul className="flex flex-row gap-2 mt-2 mb-3">
+                <ul class="flex flex-row gap-2 mt-2 mb-3">
                   {playlist.stations.map((s) => (
                     <li>
                       <Badge

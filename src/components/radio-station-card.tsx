@@ -30,7 +30,7 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
     if (!stationLanguage?.flag) return null;
 
     return (
-      <Badge title={stationLanguage.name} className="uppercase" variant="secondary">
+      <Badge title={stationLanguage.name} class="uppercase" variant="secondary">
         {stationLanguage.flag}
       </Badge>
     );
