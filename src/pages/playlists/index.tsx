@@ -11,7 +11,7 @@ export const PlaylistsPage = () => {
   return (
     <div class="container mx-auto px-8 py-6">
       <h1 class="text-3xl font-bold mb-6">Playlists</h1>
-      <div class="mb-4">
+      <div class="mb-6">
         <Button asChild>
           <a href="/playlist">
             <Plus class="w-5 h-5 -ml-2 mr-1" /> Add playlist

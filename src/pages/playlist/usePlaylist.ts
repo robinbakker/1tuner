@@ -15,6 +15,7 @@ export const usePlaylist = () => {
   const { params, query } = useRoute();
   const { route } = useLocation();
   const [isEditMode, setIsEditMode] = useState(false);
+  const [editName, setEditName] = useState<string>();
   const isAddNew = !params.name && !Object.keys(query ?? {}).length;
 
   const playlistName = useMemo(() => {
@@ -65,13 +66,15 @@ export const usePlaylist = () => {
   useEffect(() => {
     if (!(playlists.value || []).some((p) => p.url === playlistUrl)) {
       setIsEditMode(true);
+      setEditName(playlistName || '');
     }
   }, [playlistUrl, playlists.value]);
 
   const handleSaveClick = useCallback(() => {
+    if (!editName) return;
     playlists.value = [
       ...(playlists.value || []),
-      { name: playlistName, url: playlistUrl, items: playlist.map((p) => ({ time: p.time, stationID: p.station.id })) },
+      { name: editName, url: playlistUrl, items: playlist.map((p) => ({ time: p.time, stationID: p.station.id })) },
     ] as Playlist[];
     setIsEditMode(false);
   }, []);
@@ -81,10 +84,17 @@ export const usePlaylist = () => {
     setIsEditMode(false);
   }, []);
 
+  const handleNameInput = useCallback((e: Event) => {
+    const target = e.currentTarget as HTMLInputElement;
+    setEditName(target.value);
+  }, []);
+
   return {
     playlistName: playlistName || 'Playlist',
     playlist,
     isEditMode,
+    editName,
+    handleNameInput,
     handleSaveClick,
     handleCancelClick,
   };

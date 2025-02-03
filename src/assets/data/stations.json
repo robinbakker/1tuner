@@ -65,9 +65,10 @@
       "website": "https://www.npo3fm.nl",
       "related": ["npocampus", "funx", "radio2", "radio1"],
       "podcasts": [
-        "https://podcast.npo.nl/feed/vera-on-track.xml",
-        "https://podcast.npo.nl/feed/de-music-starts-here-podcast.xml",
-        "https://podcast.npo.nl/feed/apodcalypse.xml"
+        "https://podcast.npo.nl/feed/blauwe-mms.xml",
+        "https://podcast.npo.nl/feed/als-muren-konden-praten.xml",
+        "https://podcast.npo.nl/feed/de-machine.xml",
+        "https://podcast.npo.nl/feed/lang-verhaal-kort.xml"
       ],
       "social": [
         {
@@ -1218,8 +1219,7 @@
         "https://podcast.npo.nl/feed/30-minuten-rauw.xml",
         "https://podcast.npo.nl/feed/barts-classic-track.xml",
         "https://podcast.npo.nl/feed/blokhuis-de-podcast.xml",
-        "https://podcast.npo.nl/feed/spijkers-met-koppen.xml",
-        "https://podcast.npo.nl/feed/de-albumshow.xml"
+        "https://podcast.npo.nl/feed/spijkers-met-koppen.xml"
       ],
       "social": [
         {
@@ -1908,10 +1908,6 @@
       ],
       "website": "https://www.robstenders.nl",
       "related": ["radio2", "kxclassic", "40upradio"],
-      "podcasts": [
-        "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/60f45b0c-4c14-4b8c-9554-ab8a00c6d6d8/podcast.rss",
-        "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/54066678-d665-4fd0-b212-ab8a00c6446d/34cc1d58-2bae-448f-946d-ab9500e02101/podcast.rss"
-      ],
       "id": "xxlstenders"
     },
     {
@@ -2024,7 +2020,6 @@
       ],
       "website": "https://kink.nl",
       "related": ["kinkclassics", "kink90s", "kink-distortion"],
-      "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"],
       "social": [
         {
           "title": "@kinkpuntnl",
@@ -2117,7 +2112,6 @@
       ],
       "website": "https://kink80s.nl",
       "related": ["kink", "kink90s", "kxclassic", "kink-distortion"],
-      "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"],
       "social": [
         {
           "title": "@KINK80s",
@@ -2158,7 +2152,6 @@
       ],
       "website": "https://kink.nl",
       "related": ["kink", "kink90s", "kinkclassics"],
-      "podcasts": ["https://api.kink.nl/rss/dailykink", "https://api.kink.nl/rss/oeverloos"],
       "id": "kink-distortion"
     },
     {
@@ -2178,11 +2171,6 @@
         }
       ],
       "website": "https://www.linda.nl/luister/",
-      "podcasts": [
-        "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/ada937c2-d543-4239-aab1-aafd00f12a7d/podcast.rss",
-        "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/401aeff9-7a6e-435f-9e8f-ab4800fc215c/podcast.rss",
-        "https://www.omnycontent.com/d/playlist/56ccbbb7-0ff7-4482-9d99-a88800f49f6c/6b3065bb-9b6b-4bbb-ad50-aa7d00dbbddf/0fe83a72-617f-4582-a282-ab0b01134269/podcast.rss"
-      ],
       "social": [
         {
           "title": "@lindanieuws",
