@@ -6,7 +6,6 @@ import { usePlaylists } from './usePlaylists';
 
 export const PlaylistsPage = () => {
   const { playlistsData, currentTimePercentage } = usePlaylists();
-  console.log(playlistsData);
 
   return (
     <div class="container mx-auto px-8 py-6">

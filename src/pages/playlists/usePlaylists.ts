@@ -99,7 +99,6 @@ export const usePlaylists = () => {
           !!currentTimePercentage &&
           currentTimePercentage >= startPercentage &&
           currentTimePercentage < startPercentage + percentage;
-        console.log(station?.name, isActive, currentTimePercentage, currentPercentage, percentage);
 
         return {
           stationID: range.stationID,

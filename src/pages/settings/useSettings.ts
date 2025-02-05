@@ -28,7 +28,6 @@ export const useSettings = () => {
 
   const handleThemeChange = (value: string) => {
     settingsState.value.theme = value as ThemeOption;
-    console.log('Theme changed to', value);
     if (value === 'default') {
       window?.localStorage.removeItem('theme');
       document.documentElement.classList.remove('dark', 'light');

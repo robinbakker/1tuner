@@ -50,6 +50,19 @@ export const getTimeStringFromSeconds = (secs: number) => {
   return getTime(Math.floor(minutes / 60), Math.floor(minutes % 60));
 };
 
+export const getTimeStringFromMinutes = (minutes: number) => {
+  return getTimeStringFromSeconds(minutes * 60);
+};
+
+export const getTimeInMinutesFromTimeString = (timeString: string) => {
+  const [hours, minutes] = timeString.split(':').map(Number);
+  return hours * 60 + minutes;
+};
+
+export const roundTo15Minutes = (minutes: number) => {
+  return Math.round(minutes / 15) * 15;
+};
+
 export const getColorString = (text: string) => {
   if (!text) return 'rgba(50,50,50,.75)';
   let idNrTxt = `${[...text].map((c) => c.charCodeAt(0)).reduce((v1, v2) => v1 + v2)}`;
