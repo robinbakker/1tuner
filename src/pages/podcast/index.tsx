@@ -87,7 +87,7 @@ export const PodcastPage = () => {
                   </Button>
                 </div>
               </div>
-              <p class="text-stone-600 mb-4">{stripHtml(episode.description)}</p>
+              <p class="text-stone-600 break-words mb-4">{stripHtml(episode.description)}</p>
             </div>
           ))}
         </div>

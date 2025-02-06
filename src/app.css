@@ -83,6 +83,15 @@ html,
   }
 }
 
+.is-dragging {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.is-dragging * {
+  cursor: ns-resize !important;
+}
+
 select.custom-select-arrow {
   appearance: none;
   background-image: linear-gradient(45deg, transparent 50%, hsl(var(--muted-foreground)) 50%),

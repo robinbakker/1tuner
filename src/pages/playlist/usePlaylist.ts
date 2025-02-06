@@ -1,4 +1,3 @@
-import { JSXInternal } from 'node_modules/preact/src/jsx';
 import { useLocation, useRoute } from 'preact-iso';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
@@ -101,20 +100,28 @@ export const usePlaylist = () => {
           station: p.station,
           top: getBlockTopPercentage(p.time),
           height: getBlockTopPercentage(endTime) - getBlockTopPercentage(p.time),
-        };
+        } as ScheduleBlock;
       });
+      if (!newBlocks.length) {
+        newBlocks.push({
+          startTime: '00:00',
+          endTime: '23:59',
+          top: 0,
+          height: 100,
+        } as ScheduleBlock);
+      }
       setBlocks(newBlocks);
     }
   }, [playlistUrl, playlists.value]);
 
   const handleSaveClick = useCallback(() => {
-    if (!editName) return;
+    if (!editName || blocks.length < 1 || blocks.some((b) => !b.station)) return;
     playlists.value = [
       ...(playlists.value || []),
-      { name: editName, url: playlistUrl, items: playlist.map((p) => ({ time: p.time, stationID: p.station.id })) },
+      { name: editName, url: playlistUrl, items: blocks.map((b) => ({ time: b.startTime, stationID: b.station?.id })) },
     ] as Playlist[];
     setIsEditMode(false);
-  }, []);
+  }, [blocks, editName, playlistUrl, playlists.value]);
 
   const handleCancelClick = useCallback(() => {
     if (isAddNew) route('/playlists');
@@ -161,15 +168,18 @@ export const usePlaylist = () => {
   );
 
   const handleDragStart = useCallback(
-    (e: JSXInternal.TargetedDragEvent<HTMLDivElement>, blockIndex: number) => {
+    (e: MouseEvent | TouchEvent, blockIndex: number) => {
+      e.preventDefault();
       if (!containerRef.current) return;
 
-      const dividerRect = e.currentTarget.getBoundingClientRect();
+      containerRef.current.classList.add('is-dragging');
+      const dividerRect = (e.target as HTMLElement).getBoundingClientRect();
       const containerRect = containerRef.current.getBoundingClientRect();
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
 
       setDragInfo({
         blockIndex,
-        startY: e.clientY,
+        startY: clientY,
         dividerInitialY: dividerRect.top - containerRect.top,
         containerHeight: containerRect.height,
       });
@@ -177,40 +187,75 @@ export const usePlaylist = () => {
     [containerRef],
   );
 
+  const rafRef = useRef<number>();
+
   const handleDrag = useCallback(
-    (e: MouseEvent) => {
-      if (!containerRef.current || !dragInfo || !e.clientY) return;
+    (e: MouseEvent | TouchEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-      const containerRect = containerRef.current.getBoundingClientRect();
-      const relativeY = e.clientY - containerRect.top;
-      const totalMinutes = 24 * 60;
-      const minutesPerPixel = totalMinutes / containerRect.height;
+      if (!containerRef.current || !dragInfo) return;
 
-      const newTime = roundTo15Minutes(relativeY * minutesPerPixel);
-
-      const offset = 59;
-      const startTimeMins = getTimeInMinutesFromTimeString(blocks[dragInfo.blockIndex].startTime) + offset;
-      const endTimeMins = getTimeInMinutesFromTimeString(blocks[dragInfo.blockIndex + 1].endTime) - offset;
-
-      if (newTime > startTimeMins && newTime < endTimeMins) {
-        const updatedBlocks = [...blocks];
-        const newTimeString = getTimeStringFromMinutes(newTime);
-        const topBlock = updatedBlocks[dragInfo.blockIndex];
-        const bottomBlock = updatedBlocks[dragInfo.blockIndex + 1];
-        topBlock.endTime = newTimeString;
-        topBlock.height = getBlockTopPercentage(newTimeString) - updatedBlocks[dragInfo.blockIndex].top;
-        bottomBlock.startTime = newTimeString;
-        bottomBlock.top = getBlockTopPercentage(newTimeString);
-        bottomBlock.height = getBlockTopPercentage(bottomBlock.endTime) - bottomBlock.top;
-        setBlocks(updatedBlocks);
+      // Cancel any pending animation frame
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
       }
+
+      // Schedule the update
+      rafRef.current = requestAnimationFrame(() => {
+        const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+        const containerRect = containerRef.current!.getBoundingClientRect();
+        const relativeY = Math.max(0, Math.min(clientY - containerRect.top, containerRect.height));
+        const totalMinutes = 24 * 60;
+        const minutesPerPixel = totalMinutes / containerRect.height;
+
+        const newTime = roundTo15Minutes(relativeY * minutesPerPixel);
+
+        const offset = 59;
+        const startTimeMins = getTimeInMinutesFromTimeString(blocks[dragInfo.blockIndex].startTime) + offset;
+        const endTimeMins = getTimeInMinutesFromTimeString(blocks[dragInfo.blockIndex + 1].endTime) - offset;
+
+        if (newTime > startTimeMins && newTime < endTimeMins) {
+          const updatedBlocks = [...blocks];
+          const newTimeString = getTimeStringFromMinutes(newTime);
+          const topBlock = updatedBlocks[dragInfo.blockIndex];
+          const bottomBlock = updatedBlocks[dragInfo.blockIndex + 1];
+
+          topBlock.endTime = newTimeString;
+          topBlock.height = getBlockTopPercentage(newTimeString) - topBlock.top;
+
+          bottomBlock.startTime = newTimeString;
+          bottomBlock.top = getBlockTopPercentage(newTimeString);
+          bottomBlock.height = getBlockTopPercentage(bottomBlock.endTime) - bottomBlock.top;
+
+          setBlocks(updatedBlocks);
+        }
+      });
     },
     [blocks, dragInfo, containerRef],
   );
 
   const handleDragEnd = useCallback(() => {
+    containerRef.current?.classList.remove('is-dragging');
     setDragInfo(undefined);
-  }, []);
+  }, [handleDrag]);
+
+  useEffect(() => {
+    const handleTouchMove = (e: TouchEvent) => handleDrag(e);
+    const handleMouseMove = (e: MouseEvent) => handleDrag(e);
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('mouseup', handleDragEnd);
+    window.addEventListener('touchend', handleDragEnd);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('mouseup', handleDragEnd);
+      window.removeEventListener('touchend', handleDragEnd);
+    };
+  }, [handleDrag, handleDragEnd]);
 
   const handleAddBlock = useCallback(() => {
     const lastBlock = blocks[blocks.length - 1];
@@ -248,9 +293,7 @@ export const usePlaylist = () => {
     handleCancelClick,
     handleStationChange,
     handleDeleteBlock,
-    handleDrag,
     handleDragStart,
-    handleDragEnd,
     handleAddBlock,
   };
 };
