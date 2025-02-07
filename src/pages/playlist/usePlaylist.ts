@@ -5,6 +5,7 @@ import { getLocalTimeFromUrlKey, getValidTimeZone } from '~/lib/convertTime';
 import { getTimeInMinutesFromTimeString, getTimeStringFromMinutes, roundTo15Minutes } from '~/lib/utils';
 import { playlists } from '~/store/signals/playlist';
 import { getRadioStation } from '~/store/signals/radio';
+import { addToast } from '~/store/signals/ui';
 import { Playlist, RadioStation } from '~/store/types';
 
 interface TimeRadioStation {
@@ -71,7 +72,7 @@ export const usePlaylist = () => {
   }, [playlist]);
 
   const playlistUrl = useMemo(() => {
-    return playlistName
+    return playlistName && playlistQueryString
       ? `${import.meta.env.VITE_BASE_URL}/playlist/${encodeURI(playlistName)}/${playlistQueryString}`
       : undefined;
   }, [playlistName, playlistQueryString]);
@@ -87,8 +88,22 @@ export const usePlaylist = () => {
     return (startMinutes / (24 * 60)) * 100;
   }, []);
 
+  const getPlaylistUrlFromBlocks = useCallback(() => {
+    if (!editName || !blocks.length) return '';
+    const query = blocks
+      .map((b) => {
+        const time = getParamFromTime(b.startTime);
+        const station = b.station?.id;
+        return `${time}=${station}`;
+      })
+      .join('&');
+    const timeZone = getValidTimeZone(urlTimeZone);
+    return `${import.meta.env.VITE_BASE_URL}/playlist/${encodeURI(editName)}/${query ? `?${query}&tz=${timeZone}` : ''}`;
+  }, [blocks, editName, urlTimeZone]);
+
   useEffect(() => {
-    if (!(playlists.value || []).some((p) => p.url === playlistUrl)) {
+    console.log('useEffect playlistUrl', playlistUrl);
+    if (!(playlists.value || []).some((p) => !!p.url && p.url === playlistUrl)) {
       setIsEditMode(true);
       setEditName(playlistName || '');
 
@@ -112,16 +127,49 @@ export const usePlaylist = () => {
       }
       setBlocks(newBlocks);
     }
-  }, [playlistUrl, playlists.value]);
+  }, [
+    playlistUrl,
+    playlists.value,
+    setIsEditMode,
+    setEditName,
+    playlistName,
+    playlist,
+    getBlockTopPercentage,
+    setBlocks,
+  ]);
 
   const handleSaveClick = useCallback(() => {
-    if (!editName || blocks.length < 1 || blocks.some((b) => !b.station)) return;
+    if (!editName) {
+      addToast({
+        title: "Can't save...",
+        description: 'Please enter a playlist name',
+      });
+      return;
+    }
+    if (blocks.length < 2 || [...new Set(blocks.map((b) => b.station?.id))].length < 2) {
+      addToast({
+        title: "Can't save...",
+        description: 'Please add at least 2 different station blocks',
+      });
+      return;
+    }
+    if (blocks.some((b) => !b.station)) {
+      addToast({
+        title: "Can't save...",
+        description: 'Please ensure all blocks have a station selected',
+      });
+      return;
+    }
     playlists.value = [
-      ...(playlists.value || []),
-      { name: editName, url: playlistUrl, items: blocks.map((b) => ({ time: b.startTime, stationID: b.station?.id })) },
+      ...(playlists.value || []).filter((p) => !playlistUrl || p.url !== playlistUrl),
+      {
+        name: editName,
+        url: getPlaylistUrlFromBlocks(),
+        items: blocks.map((b) => ({ time: b.startTime, stationID: b.station?.id })),
+      },
     ] as Playlist[];
     setIsEditMode(false);
-  }, [blocks, editName, playlistUrl, playlists.value]);
+  }, [blocks, editName, playlistUrl, playlists.value, getPlaylistUrlFromBlocks, addToast, setIsEditMode]);
 
   const handleCancelClick = useCallback(() => {
     if (isAddNew) route('/playlists');
@@ -191,10 +239,9 @@ export const usePlaylist = () => {
 
   const handleDrag = useCallback(
     (e: MouseEvent | TouchEvent) => {
+      if (!containerRef.current || !dragInfo) return;
       e.preventDefault();
       e.stopPropagation();
-
-      if (!containerRef.current || !dragInfo) return;
 
       // Cancel any pending animation frame
       if (rafRef.current) {
@@ -281,6 +328,31 @@ export const usePlaylist = () => {
     ]);
   }, [blocks]);
 
+  const handleEditClick = useCallback(() => {
+    setIsEditMode(true);
+    setEditName(playlistName || '');
+
+    const newBlocks = playlist.map((p, i) => {
+      const endTime = playlist[i + 1]?.time || '23:59';
+      return {
+        startTime: p.time,
+        endTime: endTime,
+        station: p.station,
+        top: getBlockTopPercentage(p.time),
+        height: getBlockTopPercentage(endTime) - getBlockTopPercentage(p.time),
+      } as ScheduleBlock;
+    });
+    if (!newBlocks.length) {
+      newBlocks.push({
+        startTime: '00:00',
+        endTime: '23:59',
+        top: 0,
+        height: 100,
+      } as ScheduleBlock);
+    }
+    setBlocks(newBlocks);
+  }, [playlist, playlistName, setEditName, setIsEditMode]);
+
   return {
     playlistName: playlistName || 'Playlist',
     playlist,
@@ -295,5 +367,6 @@ export const usePlaylist = () => {
     handleDeleteBlock,
     handleDragStart,
     handleAddBlock,
+    handleEditClick,
   };
 };

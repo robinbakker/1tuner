@@ -19,7 +19,7 @@ export const addToast = (toast: Omit<ToastProps, 'id'>) => {
   // Auto dismiss
   setTimeout(() => {
     dismissToast(id);
-  }, toast.duration);
+  }, newToast.duration);
 
   return id;
 };

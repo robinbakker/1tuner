@@ -21,6 +21,7 @@ export const PlaylistPage = () => {
     handleDeleteBlock,
     handleDragStart,
     handleAddBlock,
+    handleEditClick,
   } = usePlaylist();
 
   return (
@@ -33,16 +34,17 @@ export const PlaylistPage = () => {
               <time>{i.time}</time> {i.station.name}
             </div>
           ))}
+          <Button onClick={handleEditClick}>Edit</Button>
         </section>
       ) : (
         <>
           <Input type="text" placeholder={'Playlist name'} class="mb-4" value={editName} onInput={handleNameInput} />
           <div class="w-full max-w-md mx-auto p-4 h-[720px] flex flex-col">
-            <div ref={containerRef} class="relative h-full border rounded-lg user-select-none">
+            <div ref={containerRef} class="relative h-full border rounded-lg select-none">
               {blocks.map((block, index) => (
                 <div
                   key={`${block.startTime}-${block.station?.id}`}
-                  class="absolute w-full px-4 overflow-hidden user-select-none"
+                  class="absolute w-full px-4 overflow-hidden"
                   style={{
                     top: `${block.top}%`,
                     height: `${block.height}%`,

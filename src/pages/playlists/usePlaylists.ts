@@ -123,7 +123,7 @@ export const usePlaylists = () => {
         .map((id) => getRadioStation(id))
         .filter(Boolean) as RadioStation[];
       return {
-        url: p.url.replace(import.meta.env.VITE_BASE_URL, ''),
+        url: p.url ? p.url.replace(import.meta.env.VITE_BASE_URL, '') : '',
         name: p.name,
         stations,
         stationPercentages: getPercentagePerStation(p.items, stations),
