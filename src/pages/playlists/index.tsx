@@ -1,11 +1,11 @@
-import { Play, Plus } from 'lucide-preact';
+import { Play, Plus, Trash2 } from 'lucide-preact';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { getColorString } from '~/lib/utils';
 import { usePlaylists } from './usePlaylists';
 
 export const PlaylistsPage = () => {
-  const { playlistsData, currentTimePercentage } = usePlaylists();
+  const { playlistsData, currentTimePercentage, handleDeletePlaylist } = usePlaylists();
 
   return (
     <div class="container mx-auto px-8 py-6">
@@ -64,11 +64,22 @@ export const PlaylistsPage = () => {
                   <Play size={36} class="text-white" />
                 </button>
               </div>
-              <div class="flex-1">
-                <h2 class="text-xl font-semibold">
-                  <a href={playlist.url}>{playlist.name}</a>
+              <div class="flex-1 min-w-0">
+                <h2 class="text-xl font-semibold flex items-center">
+                  <a href={playlist.url} class="truncate block min-w-0 flex-1">
+                    {playlist.name}
+                  </a>
+                  <Button
+                    variant="outline"
+                    styleSize="sm"
+                    onClick={() => handleDeletePlaylist(playlist)}
+                    title="Delete block"
+                    class="flex-shrink-0 ml-2"
+                  >
+                    <Trash2 class="w-4 h-4" />
+                  </Button>
                 </h2>
-                <ul class="flex flex-row gap-2 mt-2 mb-3">
+                <ul class="flex flex-row flex-wrap gap-2 mt-2 mb-3">
                   {playlist.stations.map((s) => (
                     <li>
                       <Badge
@@ -89,7 +100,7 @@ export const PlaylistsPage = () => {
             <div class="flex rounded-bl-lg rounded-br-lg flex-row w-full h-5 pt-2 overflow-hidden relative">
               {!!currentTimePercentage && (
                 <div
-                  class="absolute top-0 w-0 h-0 z-10 -translate-x-1/2 border-l-4 border-r-4 border-t-[6px] border-transparent border-t-primary"
+                  class="absolute top-0 w-0 h-0 z-10 -translate-x-1/2 border-l-4 border-r-4 border-t-[6px] border-transparent border-t-stone-500"
                   style={{ left: `${currentTimePercentage}%` }}
                 />
               )}

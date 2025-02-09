@@ -5,7 +5,7 @@ import { getLocalTimeFromUrlKey, getValidTimeZone } from '~/lib/convertTime';
 import { getTimeInMinutesFromTimeString, getTimeStringFromMinutes, roundTo15Minutes } from '~/lib/utils';
 import { playlists } from '~/store/signals/playlist';
 import { getRadioStation } from '~/store/signals/radio';
-import { addToast } from '~/store/signals/ui';
+import { addToast, uiState } from '~/store/signals/ui';
 import { Playlist, RadioStation } from '~/store/types';
 
 interface TimeRadioStation {
@@ -102,7 +102,15 @@ export const usePlaylist = () => {
   }, [blocks, editName, urlTimeZone]);
 
   useEffect(() => {
-    console.log('useEffect playlistUrl', playlistUrl);
+    if (isEditMode) {
+      uiState.value = { ...uiState.value, headerTitle: '' };
+    } else {
+      uiState.value = { ...uiState.value, headerTitle: playlistName || 'Playlist' };
+    }
+    return () => (uiState.value = { ...uiState.value, headerTitle: '' });
+  }, [isEditMode]);
+
+  useEffect(() => {
     if (!(playlists.value || []).some((p) => !!p.url && p.url === playlistUrl)) {
       setIsEditMode(true);
       setEditName(playlistName || '');
@@ -168,6 +176,7 @@ export const usePlaylist = () => {
         items: blocks.map((b) => ({ time: b.startTime, stationID: b.station?.id })),
       },
     ] as Playlist[];
+    route('/playlists');
     setIsEditMode(false);
   }, [blocks, editName, playlistUrl, playlists.value, getPlaylistUrlFromBlocks, addToast, setIsEditMode]);
 

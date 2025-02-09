@@ -40,7 +40,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, Va
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant, styleSize, asChild = false, children, ...props }, ref) => {
-    const classes = buttonVariants({ variant, styleSize, className: props.class });
+    const classes = buttonVariants({ variant, styleSize, class: props.class });
 
     if (asChild && children && typeof children === 'object' && 'type' in children) {
       const Child = children.type;
@@ -49,7 +49,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <button class={classes} ref={ref} {...props}>
+      <button type="button" ref={ref} {...{ ...props, class: classes }}>
         {children}
       </button>
     );

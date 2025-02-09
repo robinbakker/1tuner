@@ -95,7 +95,9 @@ export function DropdownList({
       class={cn(
         'bg-white dark:bg-black border rounded-lg shadow-lg',
         'w-max min-w-full whitespace-nowrap',
-        useNativePopover ? 'p-2' : 'absolute z-10 mt-1',
+        useNativePopover
+          ? 'p-2 mx-auto min-w-[16rem] backdrop:bg-black/50 backdrop:backdrop-blur-md'
+          : 'absolute z-10 mt-1',
         !useNativePopover && (align === 'right' ? 'right-0' : 'left-0'),
       )}
       id={props.id ? `${props.id}-popover` : undefined}

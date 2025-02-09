@@ -26,7 +26,19 @@ export const PlaylistPage = () => {
 
   return (
     <div class="container mx-auto px-8 py-6">
-      <h1 class="text-3xl font-bold mb-6">{`${isEditMode ? 'Edit' : ''} ${playlistName}`}</h1>
+      <div class="flex justify-between">
+        <h1 class="text-3xl font-bold mb-6">{`${isEditMode ? 'Edit' : ''} ${playlistName}`}</h1>
+        {isEditMode ? (
+          <div>
+            <Button class="mr-2" variant={'secondary'} onClick={handleCancelClick}>
+              Cancel
+            </Button>{' '}
+            <Button onClick={handleSaveClick}>Save</Button>
+          </div>
+        ) : (
+          <Button onClick={handleEditClick}>Edit</Button>
+        )}
+      </div>
       {!isEditMode ? (
         <section class="mb-8 relative">
           {playlist.map((i) => (
@@ -34,12 +46,19 @@ export const PlaylistPage = () => {
               <time>{i.time}</time> {i.station.name}
             </div>
           ))}
-          <Button onClick={handleEditClick}>Edit</Button>
         </section>
       ) : (
         <>
-          <Input type="text" placeholder={'Playlist name'} class="mb-4" value={editName} onInput={handleNameInput} />
-          <div class="w-full max-w-md mx-auto p-4 h-[720px] flex flex-col">
+          <Input
+            maxLength={80}
+            type="text"
+            placeholder={'Playlist name'}
+            class="mb-4 w-full max-w-md mx-auto"
+            value={editName}
+            onInput={handleNameInput}
+            autoFocus
+          />
+          <div class={'w-full max-w-md mx-auto flex flex-col ' + (blocks.length < 2 ? 'h-[300px]' : 'h-[720px]')}>
             <div ref={containerRef} class="relative h-full border rounded-lg select-none">
               {blocks.map((block, index) => (
                 <div
@@ -86,7 +105,7 @@ export const PlaylistPage = () => {
                                 )}
                               />
                             ) : (
-                              <span class="text-sm text-stone-600">Select station...</span>
+                              <span class="text-sm text-stone-600 underline">Select station...</span>
                             )}
                           </button>
                         }
@@ -95,24 +114,26 @@ export const PlaylistPage = () => {
                     <div class="flex items-center justify-between mb-2">
                       <div class="flex items-center gap-2">
                         <Clock class="w-4 h-4 text-stone-500" />
-                        <span class="text-sm text-stone-600">
+                        <span class="text-sm text-stone-600 dark:text-stone-300">
                           {block.startTime} - {block.endTime}
                         </span>
                       </div>
                       {blocks.length > 1 && (
-                        <button
+                        <Button
+                          variant="outline"
+                          styleSize="sm"
                           onClick={() => handleDeleteBlock(index)}
-                          class="p-1 text-gray-500 hover:text-red-500 transition-colors"
                           title="Delete block"
+                          class="-mr-2 bg-transparent border-stone-500/20"
                         >
                           <Trash2 class="w-4 h-4" />
-                        </button>
+                        </Button>
                       )}
                     </div>
                   </div>
                   {index < blocks.length - 1 && (
                     <div
-                      class="absolute bottom-0 left-0 w-full h-2 bg-stone-300 cursor-ns-resize active:bg-primary hover:bg-primary transition-colors"
+                      class="absolute bottom-0 left-0 w-full h-2 bg-stone-300 dark:bg-stone-600 cursor-ns-resize active:bg-primary hover:bg-primary transition-colors"
                       onMouseDown={(e) => handleDragStart(e, index)}
                       onTouchStart={(e) => handleDragStart(e, index)}
                     />
@@ -120,15 +141,9 @@ export const PlaylistPage = () => {
                 </div>
               ))}
             </div>
-          </div>
-          <Button onClick={handleAddBlock}>
-            <Plus class="w-5 h-5 -ml-2 mr-1" /> Add
-          </Button>
-          <div>
-            <Button variant={'secondary'} onClick={handleCancelClick}>
-              Cancel
-            </Button>{' '}
-            <Button onClick={handleSaveClick}>Save</Button>
+            <Button class="mt-2" onClick={handleAddBlock}>
+              <Plus class="w-5 h-5 -ml-2 mr-1" /> Add
+            </Button>
           </div>
         </>
       )}

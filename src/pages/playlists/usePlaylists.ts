@@ -48,11 +48,13 @@ export const usePlaylists = () => {
       // Sort items by time
       const plItems = [...items].sort((a, b) => a.time.localeCompare(b.time));
 
+      console.log(plItems);
+
       // Filter items within time range and pair them with next item to calculate duration
       const timeRanges: { stationID: string; start: Date; end: Date }[] = [];
 
       plItems.forEach((item, index) => {
-        const itemTime = new Date(`1970-01-01T${item.time}`);
+        let itemTime = new Date(`1970-01-01T${item.time}`);
         let itemHour = itemTime.getHours();
 
         let endTime: Date;
@@ -64,11 +66,14 @@ export const usePlaylists = () => {
             const nextItemTime = new Date(`1970-01-01T${nextItem.time}`);
             const nextItemHour = nextItemTime.getHours();
             if (nextItemHour > startHour) {
-              itemHour = startHour;
+              itemTime = new Date(`1970-01-01T${startHour.toString().padStart(2, '0')}:00`);
               endTime = new Date(`1970-01-01T${nextItem.time}`);
+            } else {
+              return;
             }
+          } else {
+            return;
           }
-          return;
         } else if (nextItem) {
           endTime = new Date(`1970-01-01T${nextItem.time}`);
           if (endTime.getHours() >= endHour) {
@@ -131,8 +136,17 @@ export const usePlaylists = () => {
     });
   }, [playlists.value, getPercentagePerStation]);
 
+  const handleDeletePlaylist = (playlist: PlaylistData) => {
+    if (confirm(`Are you sure you want to delete "${playlist.name}"?`)) {
+      playlists.value = (playlists.value || []).filter(
+        (p) => p.url && p.url.replace(import.meta.env.VITE_BASE_URL, '') !== playlist.url,
+      );
+    }
+  };
+
   return {
     playlistsData,
     currentTimePercentage,
+    handleDeletePlaylist,
   };
 };
