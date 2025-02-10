@@ -41,11 +41,35 @@ export const PlaylistPage = () => {
       </div>
       {!isEditMode ? (
         <section class="mb-8 relative">
-          {playlist.map((i) => (
-            <div key={i.time} class="mb-4">
-              <time>{i.time}</time> {i.station.name}
-            </div>
-          ))}
+          <div class="w-full flex flex-col h-[720px]">
+            {playlist.map((i) => (
+              <div
+                key={i.startTime}
+                class="relative overflow-hidden border-b"
+                style={{
+                  height: `${i.height}%`,
+                }}
+              >
+                <div class="absolute -inset-2 -top-40 md:-top-96 z-0 pointer-events-none">
+                  <img src={i.station?.logosource} class="w-full filter blur-3xl opacity-50" />
+                </div>
+                <div class={'relative z-10 flex flex-col items-center justify-between p-4'}>
+                  <div class="w-full flex items-center gap-2">
+                    <Clock class="w-4 h-4 text-stone-500" />
+                    <span class="text-sm text-stone-600 dark:text-stone-300">
+                      {i.startTime} - {i.endTime} {i.station?.name}
+                    </span>
+                  </div>
+                  <img
+                    alt={i.station?.name}
+                    src={i.station?.logosource}
+                    data-test={i.height}
+                    class={cn('rounded-full', i.height > 15 ? 'w-16 h-16' : i.height > 7 ? 'w-10 h-10' : 'w-5 h-5')}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
       ) : (
         <>

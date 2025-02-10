@@ -8,16 +8,11 @@ import { getRadioStation } from '~/store/signals/radio';
 import { addToast, uiState } from '~/store/signals/ui';
 import { Playlist, RadioStation } from '~/store/types';
 
-interface TimeRadioStation {
-  time: string;
-  station: RadioStation;
-}
-
 interface ScheduleBlock {
   startTime: string;
   endTime: string;
   station?: RadioStation;
-  top: number;
+  top?: number;
   height: number;
 }
 
@@ -47,26 +42,40 @@ export const usePlaylist = () => {
     return `h${hour}` + (minute === '00' ? '' : `m${minute}`);
   }, []);
 
+  const getBlockTopPercentage = useCallback((startTime: string) => {
+    const startMinutes = getTimeInMinutesFromTimeString(startTime);
+    return (startMinutes / (24 * 60)) * 100;
+  }, []);
+
   const urlTimeZone = useMemo(() => {
     return query['tz'] as string | undefined;
   }, [query]);
 
   const playlist = useMemo(() => {
-    const list: TimeRadioStation[] = [];
+    const list: Pick<ScheduleBlock, 'startTime' | 'station'>[] = [];
     Object.keys(query).forEach((key) => {
       if (key === 'tz') return;
-      const time = getLocalTimeFromUrlKey(key, urlTimeZone);
+      const startTime = getLocalTimeFromUrlKey(key, urlTimeZone);
       const station = getRadioStation(query[key] as string);
-      if (time && station) {
-        list.push({ time, station });
+      if (startTime && station) {
+        list.push({ startTime, station });
       }
     });
-    list.sort((a, b) => a.time.localeCompare(b.time));
-    return list;
+    list.sort((a, b) => a.startTime.localeCompare(b.startTime));
+    return list.map((p, i) => {
+      const endTime = list[i + 1]?.startTime || '23:59';
+      const top = getBlockTopPercentage(p.startTime);
+      return {
+        ...p,
+        endTime,
+        top,
+        height: getBlockTopPercentage(endTime) - top,
+      } as ScheduleBlock;
+    });
   }, [query]);
 
   const playlistQueryString = useMemo(() => {
-    const result = playlist.map((i) => getParamFromTime(i.time) + '=' + i.station.id).join('&');
+    const result = playlist.map((i) => getParamFromTime(i.startTime) + '=' + i.station?.id).join('&');
     const timeZone = getValidTimeZone(urlTimeZone);
     return result ? `?${result}&tz=${timeZone}` : '';
   }, [playlist]);
@@ -82,11 +91,6 @@ export const usePlaylist = () => {
     title: playlistName ? `${decodeURI(params.name).trim()}` : 'Playlist',
     type: 'music.playlist',
   });
-
-  const getBlockTopPercentage = useCallback((startTime: string) => {
-    const startMinutes = getTimeInMinutesFromTimeString(startTime);
-    return (startMinutes / (24 * 60)) * 100;
-  }, []);
 
   const getPlaylistUrlFromBlocks = useCallback(() => {
     if (!editName || !blocks.length) return '';
@@ -115,16 +119,7 @@ export const usePlaylist = () => {
       setIsEditMode(true);
       setEditName(playlistName || '');
 
-      const newBlocks = playlist.map((p, i) => {
-        const endTime = playlist[i + 1]?.time || '23:59';
-        return {
-          startTime: p.time,
-          endTime: endTime,
-          station: p.station,
-          top: getBlockTopPercentage(p.time),
-          height: getBlockTopPercentage(endTime) - getBlockTopPercentage(p.time),
-        } as ScheduleBlock;
-      });
+      const newBlocks = structuredClone(playlist);
       if (!newBlocks.length) {
         newBlocks.push({
           startTime: '00:00',
@@ -211,11 +206,11 @@ export const usePlaylist = () => {
         updatedBlocks[1].height = getBlockTopPercentage(updatedBlocks[1].endTime);
       } else if (blockIndex === blocks.length - 1) {
         updatedBlocks[blockIndex - 1].endTime = '23:59';
-        updatedBlocks[blockIndex - 1].height = 100 - updatedBlocks[blockIndex - 1].top;
+        updatedBlocks[blockIndex - 1].height = 100 - (updatedBlocks[blockIndex - 1].top ?? 0);
       } else {
         updatedBlocks[blockIndex - 1].endTime = updatedBlocks[blockIndex].endTime;
         updatedBlocks[blockIndex - 1].height =
-          getBlockTopPercentage(updatedBlocks[blockIndex].endTime) - updatedBlocks[blockIndex - 1].top;
+          getBlockTopPercentage(updatedBlocks[blockIndex].endTime) - (updatedBlocks[blockIndex - 1].top ?? 0);
       }
 
       updatedBlocks.splice(blockIndex, 1);
@@ -278,7 +273,7 @@ export const usePlaylist = () => {
           const bottomBlock = updatedBlocks[dragInfo.blockIndex + 1];
 
           topBlock.endTime = newTimeString;
-          topBlock.height = getBlockTopPercentage(newTimeString) - topBlock.top;
+          topBlock.height = getBlockTopPercentage(newTimeString) - (topBlock.top ?? 0);
 
           bottomBlock.startTime = newTimeString;
           bottomBlock.top = getBlockTopPercentage(newTimeString);
@@ -326,7 +321,7 @@ export const usePlaylist = () => {
       {
         ...lastBlock,
         endTime: splitPointTimeString,
-        height: newBlockTop - lastBlock.top,
+        height: newBlockTop - (lastBlock.top ?? 0),
       },
       {
         startTime: splitPointTimeString,
@@ -341,16 +336,7 @@ export const usePlaylist = () => {
     setIsEditMode(true);
     setEditName(playlistName || '');
 
-    const newBlocks = playlist.map((p, i) => {
-      const endTime = playlist[i + 1]?.time || '23:59';
-      return {
-        startTime: p.time,
-        endTime: endTime,
-        station: p.station,
-        top: getBlockTopPercentage(p.time),
-        height: getBlockTopPercentage(endTime) - getBlockTopPercentage(p.time),
-      } as ScheduleBlock;
-    });
+    const newBlocks = structuredClone(playlist);
     if (!newBlocks.length) {
       newBlocks.push({
         startTime: '00:00',

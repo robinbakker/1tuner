@@ -82,7 +82,7 @@ export function App() {
               <Route path="/playlist/:name?" component={PlaylistPage} />
               <Route path="/settings" component={SettingsPage} />
               <Route path="/about" component={AboutPage} />
-              <NotFound default />
+              <Route default component={NotFound} />
             </Router>
           </AppShell>
         </DatabaseProvider>

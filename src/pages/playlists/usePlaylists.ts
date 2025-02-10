@@ -44,13 +44,7 @@ export const usePlaylists = () => {
   const getPercentagePerStation = useCallback(
     (items: PlaylistItem[], stations: RadioStation[]) => {
       const totalMinutes = (endHour - startHour) * 60;
-
-      // Sort items by time
       const plItems = [...items].sort((a, b) => a.time.localeCompare(b.time));
-
-      console.log(plItems);
-
-      // Filter items within time range and pair them with next item to calculate duration
       const timeRanges: { stationID: string; start: Date; end: Date }[] = [];
 
       plItems.forEach((item, index) => {
@@ -60,7 +54,6 @@ export const usePlaylists = () => {
         let endTime: Date;
         const nextItem = plItems[index + 1];
 
-        // Skip if item is outside our time range
         if (itemHour < startHour || itemHour >= endHour) {
           if (nextItem) {
             const nextItemTime = new Date(`1970-01-01T${nextItem.time}`);
@@ -92,7 +85,6 @@ export const usePlaylists = () => {
         }
       });
 
-      // Calculate percentages
       let currentPercentage = 0;
       const stationPercentages: StationPercentage[] = timeRanges.map((range) => {
         const duration = (range.end.getTime() - range.start.getTime()) / (1000 * 60); // in minutes
