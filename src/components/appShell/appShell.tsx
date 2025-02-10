@@ -29,7 +29,7 @@ export const AppShell = ({ children }: AppShellProps) => {
         isPlayerMaximized.value ? 'md:mr-96' : playerState.value?.isPlaying ? 'md:mb-20' : '',
       )}
     >
-      <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-stone-800 shadow-lg md:fixed md:top-0 md:bottom-0 md:left:0 md:h-full md:w-20 md:flex-shrink-0">
+      <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-stone-800 shadow-lg md:fixed md:top-0 md:bottom-0 md:left:0 md:h-full md:w-20 md:shrink-0">
         <ul class="flex h-16 items-center justify-around md:h-full md:flex-col md:justify-start md:py-4">
           <li class="w-full">
             <a href="/" class={cn(navLinkBaseClass, isActive('/') && 'text-primary')}>

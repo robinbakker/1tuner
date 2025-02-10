@@ -199,7 +199,7 @@ export const Player = () => {
             </button>
 
             <div class="flex items-center flex-1 min-w-0">
-              <div class="relative h-12 w-12 flex-shrink-0">
+              <div class="relative h-12 w-12 shrink-0">
                 <img
                   src={playerState.value.imageUrl}
                   alt={playerState.value.title}
@@ -228,7 +228,7 @@ export const Player = () => {
                   <p class="text-xs text-stone-500 truncate max-w-full">{playerState.value.description}</p>
                 </div>
                 {isPodcast && (
-                  <div class="flex-shrink-0 flex items-center">
+                  <div class="shrink-0 flex items-center">
                     <button
                       onClick={() => handleSeek(-10)}
                       class="ml-2 p-2 rounded-full transition-colors relative group"
@@ -254,7 +254,7 @@ export const Player = () => {
                 {isCastingAvailable && (
                   <button
                     onClick={castSession ? stopCasting : startCasting}
-                    class="ml-2 p-2 hover:bg-stone-200 rounded-full transition-colors flex-shrink-0"
+                    class="ml-2 p-2 hover:bg-stone-200 rounded-full transition-colors shrink-0"
                     title={castSession ? 'Stop casting' : 'Start casting'}
                   >
                     {castSession ? <Cast class="h-6 w-6 text-primary" /> : <Cast class="h-6 w-6 text-stone-600" />}
@@ -262,7 +262,7 @@ export const Player = () => {
                 )}
                 <button
                   onClick={handleClose}
-                  class="ml-2 mr-4 p-2 hover:bg-stone-200 rounded-full transition-colors flex-shrink-0"
+                  class="ml-2 mr-4 p-2 hover:bg-stone-200 rounded-full transition-colors shrink-0"
                 >
                   <X class="h-6 w-6 text-stone-600" />
                 </button>

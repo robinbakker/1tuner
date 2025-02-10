@@ -11,7 +11,7 @@ export function Toaster({ isPlayerOpen, isPlayerMaximized }: Props) {
   return (
     <div
       class={cn(
-        'fixed bottom-20 z-[100] flex max-h-screen w-full',
+        'fixed bottom-20 z-100 flex max-h-screen w-full',
         'flex-col-reverse p-4',
         'sm:bottom-20 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px] gap-2',
         isPlayerOpen && !isPlayerMaximized && 'bottom-36 sm:bottom-20',

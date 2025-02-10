@@ -80,7 +80,7 @@ export function DropdownList({
       popoverTarget={useNativePopover ? `${props.id}-popover` : undefined}
       class={cn(
         'inline-flex items-center justify-between w-full px-3 py-2',
-        'border rounded-lg bg-background shadow-sm',
+        'border rounded-lg bg-background shadow-xs',
         'hover:bg-accent hover:text-accent-foreground',
       )}
     >
@@ -113,7 +113,7 @@ export function DropdownList({
             setHighlightedIndex(0);
           }}
           placeholder="Type to search..."
-          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
+          class="w-full px-3 py-2 border rounded-md focus:outline-hidden focus:ring-2"
         />
       </div>
       <ul role="listbox" class="max-h-60 overflow-auto py-1" aria-activedescendant={`option-${highlightedIndex}`}>

@@ -74,7 +74,7 @@ export const PlaylistsPage = () => {
                     styleSize="sm"
                     onClick={() => handleDeletePlaylist(playlist)}
                     title="Delete block"
-                    class="flex-shrink-0 ml-2"
+                    class="shrink-0 ml-2"
                   >
                     <Trash2 class="w-4 h-4" />
                   </Button>

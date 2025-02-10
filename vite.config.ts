@@ -1,4 +1,5 @@
 import preact from '@preact/preset-vite';
+import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -8,6 +9,7 @@ import { APP_VERSION } from './src/lib/version';
 export default defineConfig({
   plugins: [
     preact({ prerender: { enabled: true, renderTarget: '#app' } }),
+    tailwindcss(),
     VitePWA({
       injectRegister: 'auto',
       registerType: 'autoUpdate',

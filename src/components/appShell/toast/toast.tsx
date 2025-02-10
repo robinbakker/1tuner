@@ -28,7 +28,7 @@ export function Toast({ id, title, description, variant = 'default', onClose }: 
           onClose?.();
           dismissToast(id);
         }}
-        class="p-2 hover:bg-stone-200 rounded-full transition-colors flex-shrink-0"
+        class="p-2 hover:bg-stone-200 rounded-full transition-colors shrink-0"
       >
         <X class="h-6 w-6 text-stone-600" />
       </button>

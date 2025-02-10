@@ -13,7 +13,7 @@ export const PodcastCard = ({ podcast, size }: Props) => {
       <a href={`/podcast/${slugify(podcast.title)}/${btoa(normalizedUrlWithoutScheme(podcast.url))}`} class="group">
         <Card class="rounded-xl border bg-card shadow-lg hover:shadow-xl transition-all">
           <CardContent class="flex items-start space-x-4 p-4">
-            <img src={podcast.imageUrl} alt={podcast.title} class="w-24 h-24 object-cover flex-shrink-0 rounded-md" />
+            <img src={podcast.imageUrl} alt={podcast.title} class="w-24 h-24 object-cover shrink-0 rounded-md" />
             <div class="flex-1  min-w-0">
               <h3 class="font-bold text-foreground leading-5 group-hover:text-primary text-lg transition-colors duration-500 mb-2 break-words">
                 {podcast.title}

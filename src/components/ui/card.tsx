@@ -2,7 +2,7 @@ import { forwardRef, HTMLAttributes } from 'preact/compat';
 import { cn } from '~/lib/utils';
 
 const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({ ...props }, ref) => (
-  <div ref={ref} class={cn('rounded-xl border bg-card text-card-foreground shadow', props.class)} {...props} />
+  <div ref={ref} class={cn('rounded-xl border bg-card text-card-foreground shadow-sm', props.class)} {...props} />
 ));
 Card.displayName = 'Card';
 

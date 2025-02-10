@@ -107,9 +107,9 @@ export function TagSelect({
           disabled={disabled}
           class={cn(
             'inline-flex items-center justify-center whitespace-nowrap text-sm font-medium w-full',
-            'transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+            'transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
             'disabled:pointer-events-none disabled:opacity-50 border border-input bg-background',
-            'shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-3 rounded-lg gap-2',
+            'shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-3 rounded-lg gap-2',
           )}
         >
           <span class="text-muted-foreground font-semibold">{placeholder}</span>
@@ -126,18 +126,18 @@ export function TagSelect({
           )}
         >
           {!!(icon && selectedOptions.length) && (
-            <div class="mr-2 flex-shrink-0" title={typeof placeholder === 'string' ? placeholder : ''}>
+            <div class="mr-2 shrink-0" title={typeof placeholder === 'string' ? placeholder : ''}>
               {icon}
             </div>
           )}
-          <div class="flex flex-wrap gap-2 flex-grow">
+          <div class="flex flex-wrap gap-2 grow">
             <ul>
               {selectedOptions.map((option) => (
                 <li
                   key={option.value}
                   class={cn(
                     'inline-flex items-center pl-1 pr-2 font-semibold',
-                    'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+                    'focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2',
                     'transition-colors text-foreground',
                     option.minimalLabel && 'text-lg',
                   )}
@@ -160,7 +160,7 @@ export function TagSelect({
               }
             }}
             disabled={disabled}
-            class="ml-2 flex-shrink-0 hover:text-accent-foreground"
+            class="ml-2 shrink-0 hover:text-accent-foreground"
           >
             <ChevronDown class="h-4 w-4 opacity-50" />
           </button>
@@ -184,7 +184,7 @@ export function TagSelect({
                 setHighlightedIndex(0);
               }}
               placeholder="Type to search..."
-              class="w-full px-3 py-2 border dark:bg-black text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+              class="w-full px-3 py-2 border dark:bg-black text-sm rounded-md focus:outline-hidden focus:ring-2 focus:ring-ring"
             />
           </div>
 

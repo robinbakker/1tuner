@@ -67,7 +67,7 @@ export const RadioStationPage = () => {
                           href={s.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          class="text-white/90 drop-shadow hover:text-white w-6"
+                          class="text-white/90 drop-shadow-sm hover:text-white w-6"
                         >
                           {getSocialIcon(s.type)}
                         </a>
@@ -81,7 +81,7 @@ export const RadioStationPage = () => {
                       href={radioStation.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-white/90 inline-flex items-center mt-1 group hover:text-white drop-shadow transition-colors"
+                      class="text-white/90 inline-flex items-center mt-1 group hover:text-white drop-shadow-sm transition-colors"
                     >
                       <Globe class={'mr-2 text-white/50 group-hover:text-white/70'} size={16} />
                       {normalizedUrlWithoutScheme(radioStation.website)}
