@@ -1,7 +1,7 @@
 {
   "name": "some.1tuner.com",
   "private": true,
-  "version": "0.0.34",
+  "version": "0.0.35",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -41,11 +41,11 @@
     "clsx": "^2.1.1",
     "country-flag-emoji-polyfill": "^0.1.8",
     "dotenv": "^16.4.7",
-    "eslint": "^9.20.0",
+    "eslint": "^9.20.1",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
-    "globals": "^15.14.0",
-    "postcss": "^8.5.1",
+    "globals": "^15.15.0",
+    "postcss": "^8.5.2",
     "prettier-plugin-organize-imports": "^4.1.0",
     "tailwind-merge": "^3.0.1",
     "tailwindcss": "^4.0.6",

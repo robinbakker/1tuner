@@ -1,0 +1,13 @@
+.timeline li::after {
+  position: absolute;
+  content: '';
+  display: block;
+  top: 1.4rem;
+  bottom: 0.2rem;
+  left: calc(50%);
+  border-right: 0.1rem dashed currentColor;
+}
+
+.timeline > li:last-child:after {
+  display: none;
+}

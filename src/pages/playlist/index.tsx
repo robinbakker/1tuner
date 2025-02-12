@@ -1,4 +1,6 @@
 import { Clock, Plus, Trash2 } from 'lucide-preact';
+import { DayTimeline } from '~/components/day-timeline';
+import { ImageBackground } from '~/components/image-background';
 import { Button } from '~/components/ui/button';
 import { DropdownList } from '~/components/ui/dropdown-list';
 import { Input } from '~/components/ui/input';
@@ -41,34 +43,44 @@ export const PlaylistPage = () => {
       </div>
       {!isEditMode ? (
         <section class="mb-8 relative">
-          <div class="w-full flex flex-col h-[720px]">
-            {playlist.map((i) => (
-              <div
-                key={i.startTime}
-                class="relative overflow-hidden border-b"
-                style={{
-                  height: `${i.height}%`,
-                }}
-              >
-                <div class="absolute -inset-2 -top-40 md:-top-96 z-0 pointer-events-none">
-                  <img src={i.station?.logosource} class="w-full filter blur-3xl opacity-50" />
-                </div>
-                <div class={'relative z-10 flex flex-col items-center justify-between p-4'}>
-                  <div class="w-full flex items-center gap-2">
-                    <Clock class="w-4 h-4 text-stone-500" />
-                    <span class="text-sm text-stone-600 dark:text-stone-300">
-                      {i.startTime} - {i.endTime} {i.station?.name}
-                    </span>
+          <div class="w-full mt-4 flex flex-col h-[720px]">
+            <DayTimeline class="absolute w-3 -mt-2" />
+            <div class="rounded-2xl h-full overflow-hidden mx-14">
+              {playlist.map((i) => (
+                <div
+                  key={i.startTime}
+                  class="relative overflow-hidden border-b"
+                  style={{
+                    height: `${i.height}%`,
+                  }}
+                >
+                  <ImageBackground imgSrc={i.station?.logosource} />
+                  <div class="relative z-10  bg-transparent flex flex-col items-center justify-between p-4">
+                    <div class="w-full flex items-center gap-2">
+                      <Clock class="w-4 h-4 text-stone-500" />
+                      <span class="text-sm flex justify-between w-full text-stone-600 dark:text-stone-300">
+                        <span>
+                          {i.startTime} - {i.endTime}
+                        </span>{' '}
+                        <a
+                          class="underline hover:text-primary transition-colors"
+                          href={`/radio-station/${i.station?.id}`}
+                        >
+                          {i.station?.name}
+                        </a>
+                      </span>
+                    </div>
+                    <img
+                      alt={i.station?.name}
+                      src={i.station?.logosource}
+                      data-test={i.height}
+                      class={cn('rounded-full', i.height > 15 ? 'w-16 h-16' : i.height > 7 ? 'w-10 h-10' : 'w-5 h-5')}
+                    />
                   </div>
-                  <img
-                    alt={i.station?.name}
-                    src={i.station?.logosource}
-                    data-test={i.height}
-                    class={cn('rounded-full', i.height > 15 ? 'w-16 h-16' : i.height > 7 ? 'w-10 h-10' : 'w-5 h-5')}
-                  />
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <DayTimeline class="absolute w-3 right-6 -mt-2" />
           </div>
         </section>
       ) : (
@@ -83,21 +95,17 @@ export const PlaylistPage = () => {
             autoFocus
           />
           <div class={'w-full max-w-md mx-auto flex flex-col ' + (blocks.length < 2 ? 'h-[300px]' : 'h-[720px]')}>
-            <div ref={containerRef} class="relative h-full border rounded-lg select-none">
+            <div ref={containerRef} class="relative h-full border rounded-lg overflow-hidden select-none">
               {blocks.map((block, index) => (
                 <div
                   key={`${block.startTime}-${block.station?.id}`}
-                  class="absolute w-full px-4 overflow-hidden"
+                  class="absolute w-full overflow-hidden"
                   style={{
                     top: `${block.top}%`,
                     height: `${block.height}%`,
                   }}
                 >
-                  {block.station && (
-                    <div class="absolute -inset-2 -top-40 md:-top-96 z-0 pointer-events-none">
-                      <img src={block.station.logosource} class="w-full filter blur-2xl opacity-50" />
-                    </div>
-                  )}
+                  {block.station && <ImageBackground imgSrc={block.station.logosource} />}
                   <div
                     class={cn(
                       'relative h-full flex flex-col justify-start rounded',
@@ -135,7 +143,7 @@ export const PlaylistPage = () => {
                         }
                       />
                     </div>
-                    <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center justify-between px-4 mb-2">
                       <div class="flex items-center gap-2">
                         <Clock class="w-4 h-4 text-stone-500" />
                         <span class="text-sm text-stone-600 dark:text-stone-300">
