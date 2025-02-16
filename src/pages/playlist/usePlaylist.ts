@@ -32,6 +32,27 @@ export const usePlaylist = () => {
   const [dragInfo, setDragInfo] = useState<DragInfo>();
   const containerRef = useRef<HTMLDivElement>(null);
   const isAddNew = !params.name && !Object.keys(query ?? {}).length;
+  const [currentTimePosition, setCurrentTimePosition] = useState(0);
+  const [showNightSchedule, setShowNightSchedule] = useState(false);
+
+  const toggleNightSchedule = useCallback(() => {
+    setShowNightSchedule((prev) => !prev);
+  }, []);
+
+  const updateCurrentTimePosition = useCallback(() => {
+    const now = new Date();
+    const minutes = now.getHours() * 60 + now.getMinutes();
+    const position = (minutes / (24 * 60)) * 100;
+    setCurrentTimePosition(position);
+  }, []);
+
+  useEffect(() => {
+    if (!isEditMode) {
+      updateCurrentTimePosition();
+      const interval = setInterval(updateCurrentTimePosition, 60000); // Update every minute
+      return () => clearInterval(interval);
+    }
+  }, [isEditMode, updateCurrentTimePosition]);
 
   const playlistName = useMemo(() => {
     return params.name ? decodeURI(params.name).trim() : undefined;
@@ -334,19 +355,20 @@ export const usePlaylist = () => {
     );
     const splitPointTimeString = getTimeStringFromMinutes(splitPoint);
     const newBlockTop = getBlockTopPercentage(splitPointTimeString);
+    const splitPartHeight = newBlockTop - (lastBlock.top ?? 0);
 
     setBlocks([
       ...blocks.slice(0, -1),
       {
         ...lastBlock,
         endTime: splitPointTimeString,
-        height: newBlockTop - (lastBlock.top ?? 0),
+        height: splitPartHeight,
       },
       {
         startTime: splitPointTimeString,
         endTime: lastBlock.endTime,
         top: newBlockTop,
-        height: lastBlock.height - newBlockTop,
+        height: splitPartHeight,
       },
     ]);
   }, [blocks]);
@@ -374,6 +396,8 @@ export const usePlaylist = () => {
     isEditMode,
     editName,
     containerRef,
+    currentTimePosition,
+    showNightSchedule,
     handleNameInput,
     handleSaveClick,
     handleCancelClick,
@@ -382,5 +406,6 @@ export const usePlaylist = () => {
     handleDragStart,
     handleAddBlock,
     handleEditClick,
+    toggleNightSchedule,
   };
 };

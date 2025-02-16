@@ -1,4 +1,4 @@
-import { Clock, Plus, Trash2 } from 'lucide-preact';
+import { ChevronDown, Clock, Plus, Trash2 } from 'lucide-preact';
 import { DayTimeline } from '~/components/day-timeline';
 import { ImageBackground } from '~/components/image-background';
 import { Button } from '~/components/ui/button';
@@ -16,6 +16,8 @@ export const PlaylistPage = () => {
     isEditMode,
     editName,
     containerRef,
+    currentTimePosition,
+    showNightSchedule,
     handleNameInput,
     handleSaveClick,
     handleCancelClick,
@@ -24,6 +26,7 @@ export const PlaylistPage = () => {
     handleDragStart,
     handleAddBlock,
     handleEditClick,
+    toggleNightSchedule,
   } = usePlaylist();
 
   return (
@@ -32,7 +35,7 @@ export const PlaylistPage = () => {
         <h1 class="text-3xl font-bold mb-6">{`${isEditMode ? 'Edit' : ''} ${playlistName}`}</h1>
         {isEditMode ? (
           <div>
-            <Button class="mr-2" variant={'secondary'} onClick={handleCancelClick}>
+            <Button class="mr-2" variant="outline" onClick={handleCancelClick}>
               Cancel
             </Button>{' '}
             <Button onClick={handleSaveClick}>Save</Button>
@@ -43,44 +46,77 @@ export const PlaylistPage = () => {
       </div>
       {!isEditMode ? (
         <section class="mb-8 relative">
-          <div class="w-full mt-4 flex flex-col h-[720px]">
-            <DayTimeline class="absolute w-3 -mt-2" />
-            <div class="rounded-2xl h-full overflow-hidden mx-14">
-              {playlist.map((i) => (
-                <div
-                  key={i.startTime}
-                  class="relative overflow-hidden border-b"
-                  style={{
-                    height: `${i.height}%`,
-                  }}
-                >
-                  <ImageBackground imgSrc={i.station?.logosource} />
-                  <div class="relative z-10  bg-transparent flex flex-col items-center justify-between p-4">
-                    <div class="w-full flex items-center gap-2">
-                      <Clock class="w-4 h-4 text-stone-500" />
-                      <span class="text-sm flex justify-between w-full text-stone-600 dark:text-stone-300">
-                        <span>
-                          {i.startTime} - {i.endTime}
-                        </span>{' '}
-                        <a
-                          class="underline hover:text-primary transition-colors"
-                          href={`/radio-station/${i.station?.id}`}
-                        >
-                          {i.station?.name}
-                        </a>
-                      </span>
+          <div
+            class={cn(
+              'absolute inset-0 z-20 bg-gradient-to-b from-background to-transparent pointer-events-none',
+              'transition-opacity duration-500',
+              showNightSchedule ? 'opacity-0' : 'opacity-100 h-[10%]',
+            )}
+          />
+          <Button
+            onClick={toggleNightSchedule}
+            variant="secondary"
+            class="absolute -top-2 bg-background hover:bg-background left-1/2 -translate-x-1/2 z-30"
+          >
+            <ChevronDown class={cn('w-5 h-5 transition-transform', showNightSchedule && 'rotate-180')} />
+          </Button>
+          <div class="w-full pt-4 flex flex-col h-[720px] overflow-hidden relative">
+            <div
+              class={cn(
+                'flex flex-col h-full transition-transform duration-500',
+                !showNightSchedule && '-translate-y-[22%]',
+              )}
+            >
+              <DayTimeline class="absolute w-3 -mt-2" />
+              <div
+                class={cn(
+                  'absolute w-full h-[2px] bg-secondary-foreground/20 z-20',
+                  "before:content-[''] before:absolute before:left-0 before:-translate-x-1/2 before:border-[6px]",
+                  "before:border-transparent before:border-l-secondary-foreground/60 before:top-1/2 before:-translate-y-1/2 after:content-['']",
+                  'after:absolute after:right-0 after:translate-x-1/2 after:border-[6px] after:border-transparent',
+                  'after:border-r-secondary-foreground/60 after:top-1/2 after:-translate-y-1/2',
+                )}
+                style={{
+                  top: `${currentTimePosition}%`,
+                }}
+              />
+              <div class="rounded-2xl h-full overflow-hidden mx-14 relative">
+                {playlist.map((i) => (
+                  <div
+                    key={i.startTime}
+                    class="relative overflow-hidden border-b"
+                    style={{
+                      height: `${i.height}%`,
+                    }}
+                  >
+                    <ImageBackground imgSrc={i.station?.logosource} />
+                    <div class="relative z-10  bg-transparent flex flex-col items-center justify-between p-4">
+                      <div class="w-full flex items-center gap-2">
+                        <Clock class="w-4 h-4 text-stone-500" />
+                        <span class="text-sm flex justify-between w-full text-stone-600 dark:text-stone-300">
+                          <span>
+                            {i.startTime} - {i.endTime}
+                          </span>{' '}
+                          <a
+                            class="underline hover:text-primary transition-colors"
+                            href={`/radio-station/${i.station?.id}`}
+                          >
+                            {i.station?.name}
+                          </a>
+                        </span>
+                      </div>
+                      <img
+                        alt={i.station?.name}
+                        src={i.station?.logosource}
+                        data-test={i.height}
+                        class={cn('rounded-full', i.height > 15 ? 'w-16 h-16' : i.height > 7 ? 'w-10 h-10' : 'w-5 h-5')}
+                      />
                     </div>
-                    <img
-                      alt={i.station?.name}
-                      src={i.station?.logosource}
-                      data-test={i.height}
-                      class={cn('rounded-full', i.height > 15 ? 'w-16 h-16' : i.height > 7 ? 'w-10 h-10' : 'w-5 h-5')}
-                    />
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <DayTimeline class="absolute w-3 right-6 -mt-2" />
             </div>
-            <DayTimeline class="absolute w-3 right-6 -mt-2" />
           </div>
         </section>
       ) : (
