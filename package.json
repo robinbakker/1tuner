@@ -1,7 +1,7 @@
 {
   "name": "some.1tuner.com",
   "private": true,
-  "version": "0.0.37",
+  "version": "0.0.38",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -29,7 +29,7 @@
     "fast-xml-parser": "^4.5.1",
     "idb": "^8.0.2",
     "lucide-preact": "^0.475.0",
-    "preact": "^10.25.4",
+    "preact": "^10.26.0",
     "preact-iso": "^2.9.0",
     "tailwindcss-animate": "^1.0.7"
   },
@@ -37,7 +37,7 @@
     "@eslint/js": "^9.20.0",
     "@preact/preset-vite": "^2.10.1",
     "@types/chromecast-caf-sender": "^1.0.11",
-    "@types/node": "^22.13.2",
+    "@types/node": "^22.13.4",
     "clsx": "^2.1.1",
     "country-flag-emoji-polyfill": "^0.1.8",
     "dotenv": "^16.4.7",

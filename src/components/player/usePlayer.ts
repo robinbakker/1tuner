@@ -209,12 +209,12 @@ export const usePlayer = () => {
     const audio = audioRef.current;
     const isRadioStream = !playerState.value?.pageLocation?.startsWith('/podcast/');
 
-    const handleStalled = () => {
-      if (isRadioStream && playerState.value?.isPlaying) {
-        console.log('Stream stalled, attempting reconnect...');
-        attemptReconnect();
-      }
-    };
+    // const handleStalled = () => {
+    //   if (isRadioStream && playerState.value?.isPlaying) {
+    //     console.log('Stream stalled, attempting reconnect...');
+    //     attemptReconnect();
+    //   }
+    // };
 
     const handleError = (e: ErrorEvent) => {
       if (isRadioStream && playerState.value?.isPlaying) {
@@ -277,12 +277,12 @@ export const usePlayer = () => {
 
     const handlePlaying = () => (reconnectAttempts.current = 0);
 
-    audio.addEventListener('stalled', handleStalled);
+    //audio.addEventListener('stalled', handleStalled);
     audio.addEventListener('error', handleError);
     audio.addEventListener('playing', handlePlaying);
 
     return () => {
-      audio.removeEventListener('stalled', handleStalled);
+      //audio.removeEventListener('stalled', handleStalled);
       audio.removeEventListener('error', handleError);
       audio.removeEventListener('playing', handlePlaying);
       if (reconnectTimeout.current) {

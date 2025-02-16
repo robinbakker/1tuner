@@ -124,7 +124,7 @@ export const PlaylistPage = () => {
           <Input
             maxLength={80}
             type="text"
-            placeholder={'Playlist name'}
+            placeholder="Playlist name"
             class="mb-4 w-full max-w-md mx-auto"
             value={editName}
             onInput={handleNameInput}
