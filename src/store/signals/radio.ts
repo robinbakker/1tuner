@@ -68,6 +68,7 @@ export const clearLastRadioSearchResult = () => {
 export const playRadioStation = (station: RadioStation | undefined) => {
   if (!station) return;
   playerState.value = {
+    playType: 'radio',
     isPlaying: playerState.value?.isPlaying || true,
     contentID: station.id,
     title: station.name,

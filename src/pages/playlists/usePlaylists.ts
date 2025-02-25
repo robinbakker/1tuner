@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
+import { playlistUtil } from '~/lib/playlistUtil';
 import { playlists } from '~/store/signals/playlist';
 import { getRadioStation } from '~/store/signals/radio';
 import { PlaylistItem, RadioStation } from '~/store/types';
@@ -136,9 +137,14 @@ export const usePlaylists = () => {
     }
   };
 
+  const handlePlay = (playlist: PlaylistData) => {
+    playlistUtil.playPlaylistByUrl(playlist.url, true);
+  };
+
   return {
     playlistsData,
     currentTimePercentage,
+    handlePlay,
     handleDeletePlaylist,
   };
 };

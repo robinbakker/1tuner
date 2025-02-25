@@ -15,6 +15,7 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
     e.stopPropagation();
     addRecentlyVisitedRadioStation(station.id);
     playerState.value = {
+      playType: 'radio',
       isPlaying: true,
       contentID: station.id,
       title: station.name,

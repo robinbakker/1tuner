@@ -1,4 +1,4 @@
-import { ThemeOption } from "~/pages/settings/types";
+import { ThemeOption } from '~/pages/settings/types';
 
 export interface Stream {
   mimetype: string;
@@ -85,6 +85,7 @@ export interface Playlist {
 }
 
 export interface PlayerState {
+  playType: 'none' | 'radio' | 'podcast' | 'playlist';
   isPlaying: boolean;
   contentID: string;
   title: string;

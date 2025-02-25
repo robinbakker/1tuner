@@ -55,7 +55,7 @@ export const RadioStationPage = () => {
                 alt="Radio station logo"
                 width="80"
                 height="80"
-                class="w-24 h-24 sm:w-28 sm:h-28 sm:mr-2 rounded-full"
+                class="w-24 h-24 sm:w-28 sm:h-28 sm:mr-4 md:mr-6 rounded-full"
               />
               <div>
                 <h1 class="text-3xl font-bold sm:mb-3 text-white drop-shadow-lg">{radioStation.name}</h1>
@@ -98,6 +98,7 @@ export const RadioStationPage = () => {
               <Button
                 onClick={() => {
                   playerState.value = {
+                    playType: 'radio',
                     isPlaying: !isPlaying,
                     contentID: radioStation.id,
                     title: radioStation.name,

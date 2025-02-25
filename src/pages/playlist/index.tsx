@@ -1,4 +1,4 @@
-import { ChevronDown, Clock, Plus, Trash2 } from 'lucide-preact';
+import { ChevronDown, Clock, Pause, Pencil, Play, Plus, Trash2 } from 'lucide-preact';
 import { DayTimeline } from '~/components/day-timeline';
 import { ImageBackground } from '~/components/image-background';
 import { Button } from '~/components/ui/button';
@@ -18,6 +18,7 @@ export const PlaylistPage = () => {
     containerRef,
     currentTimePosition,
     showNightSchedule,
+    isPlaying,
     handleNameInput,
     handleSaveClick,
     handleCancelClick,
@@ -26,6 +27,7 @@ export const PlaylistPage = () => {
     handleDragStart,
     handleAddBlock,
     handleEditClick,
+    handlePlayClick,
     toggleNightSchedule,
   } = usePlaylist();
 
@@ -41,7 +43,14 @@ export const PlaylistPage = () => {
             <Button onClick={handleSaveClick}>Save</Button>
           </div>
         ) : (
-          <Button onClick={handleEditClick}>Edit</Button>
+          <div class="flex items-center -mt-8 space-x-4 w-full sm:w-auto justify-between sm:justify-normal">
+            <Button class="mr-6" variant="outline" onClick={handleEditClick}>
+              <Pencil class="h-3.5 w-3.5 mr-2" /> Edit
+            </Button>
+            <Button onClick={handlePlayClick} styleSize="icon">
+              {isPlaying ? <Pause class="h-5 w-5" /> : <Play class="h-5 w-5" />}
+            </Button>
+          </div>
         )}
       </div>
       {!isEditMode ? (

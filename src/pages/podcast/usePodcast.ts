@@ -151,6 +151,7 @@ export const usePodcast = () => {
     (episode: Episode) => {
       if (!podcast) return;
       playerState.value = {
+        playType: 'podcast',
         isPlaying: true,
         contentID: params.id,
         title: episode.title,

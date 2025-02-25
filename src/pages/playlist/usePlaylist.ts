@@ -2,7 +2,9 @@ import { useLocation, useRoute } from 'preact-iso';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import { getLocalTimeFromUrlKey, getValidTimeZone } from '~/lib/convertTime';
+import { playlistUtil } from '~/lib/playlistUtil';
 import { getTimeInMinutesFromTimeString, getTimeStringFromMinutes, roundTo15Minutes } from '~/lib/utils';
+import { playerState } from '~/store/signals/player';
 import { playlists } from '~/store/signals/playlist';
 import { getRadioStation } from '~/store/signals/radio';
 import { addToast, uiState } from '~/store/signals/ui';
@@ -107,6 +109,10 @@ export const usePlaylist = () => {
       : undefined;
   }, [playlistName, playlistQueryString]);
 
+  const isPlaying = useMemo(() => {
+    return playerState.value?.isPlaying && playlistUtil.isSameUrl(playerState.value?.pageLocation, playlistUrl);
+  }, [playlistUrl]);
+
   useHead({
     url: playlistUrl,
     title: playlistName ? `${decodeURI(params.name).trim()}` : 'Playlist',
@@ -135,26 +141,8 @@ export const usePlaylist = () => {
     return () => (uiState.value = { ...uiState.value, headerTitle: '' });
   }, [isEditMode]);
 
-  const isSameUrl = useCallback((url1: string | undefined, url2: string | undefined) => {
-    if (!url1 || !url2) return false;
-    if (url1.toLocaleLowerCase() === url2.toLocaleLowerCase()) return true;
-
-    const url1Params = new URLSearchParams(url1.split('?')[1]);
-    const url2Params = new URLSearchParams(url2.split('?')[1]);
-    url1Params.delete('tz');
-    url2Params.delete('tz');
-    const normalizedParams1 = Array.from(url1Params.entries())
-      .map(([key, value]) => getLocalTimeFromUrlKey(key) + value)
-      .sort();
-    const normalizedParams2 = Array.from(url2Params.entries())
-      .map(([key, value]) => getLocalTimeFromUrlKey(key) + value)
-      .sort();
-
-    return JSON.stringify(normalizedParams1) === JSON.stringify(normalizedParams2);
-  }, []);
-
   useEffect(() => {
-    if (!(playlists.value || []).some((p) => !!p.url && isSameUrl(p.url, playlistUrl))) {
+    if (!(playlists.value || []).some((p) => !!p.url && playlistUtil.isSameUrl(p.url, playlistUrl))) {
       setIsEditMode(true);
       setEditName(playlistName || '');
 
@@ -174,7 +162,6 @@ export const usePlaylist = () => {
     playlists.value,
     setIsEditMode,
     setEditName,
-    isSameUrl,
     playlistName,
     playlist,
     getBlockTopPercentage,
@@ -389,6 +376,10 @@ export const usePlaylist = () => {
     setBlocks(newBlocks);
   }, [playlist, playlistName, setEditName, setIsEditMode]);
 
+  const handlePlayClick = useCallback(() => {
+    playlistUtil.playPlaylistByUrl(playlistUrl, true);
+  }, []);
+
   return {
     playlistName: playlistName || 'Playlist',
     playlist,
@@ -398,6 +389,7 @@ export const usePlaylist = () => {
     containerRef,
     currentTimePosition,
     showNightSchedule,
+    isPlaying,
     handleNameInput,
     handleSaveClick,
     handleCancelClick,
@@ -406,6 +398,7 @@ export const usePlaylist = () => {
     handleDragStart,
     handleAddBlock,
     handleEditClick,
+    handlePlayClick,
     toggleNightSchedule,
   };
 };

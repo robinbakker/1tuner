@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import { playlistUtil } from '~/lib/playlistUtil';
 import { reconnectUtil } from '~/lib/reconnectUtil';
 import { saveStateToDB } from '~/store/db/db';
 import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
@@ -31,7 +32,32 @@ export const usePlayer = () => {
   } = useCastApi();
   const maxReconnectAttempts = settingsState.value.radioStreamMaxReconnects || 50;
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
-  const isPodcast = playerState.value?.pageLocation?.startsWith('/podcast/');
+  const isPodcast = playerState.value?.playType === 'podcast';
+  const isPlaylist = playerState.value?.playType === 'playlist';
+  const playlistUrl = isPlaylist ? playerState.value?.pageLocation : undefined;
+
+  let playlistInterval: NodeJS.Timeout;
+
+  const checkPlaylistCurrentPlaying = useCallback(() => {
+    playlistUtil.playPlaylistByUrl(playerState.value?.pageLocation);
+  }, []);
+
+  useEffect(() => {
+    console.log('usePlayer useEffect playlistUrl', playlistUrl);
+    if (playlistInterval) {
+      clearInterval(playlistInterval);
+    }
+    if (playlistUrl) {
+      checkPlaylistCurrentPlaying();
+      playlistInterval = setInterval(checkPlaylistCurrentPlaying, 30000); // Check every 30 secs
+    }
+
+    return () => {
+      if (playlistInterval) {
+        clearInterval(playlistInterval);
+      }
+    };
+  }, [playlistUrl, checkPlaylistCurrentPlaying]);
 
   const formatTime = useCallback((time: number) => {
     const minutes = Math.floor(time / 60);
@@ -365,11 +391,13 @@ export const usePlayer = () => {
       updateTimeUI();
     });
 
-    navigator.mediaSession.setPositionState({
-      duration: duration,
-      position: currentTimeRef.current,
-      playbackRate: playbackRate,
-    });
+    if (isPodcast) {
+      navigator.mediaSession.setPositionState({
+        duration: duration,
+        position: currentTimeRef.current,
+        playbackRate: playbackRate,
+      });
+    }
 
     return () => {
       navigator.mediaSession.metadata = null;

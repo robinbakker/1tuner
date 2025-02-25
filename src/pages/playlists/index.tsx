@@ -5,7 +5,7 @@ import { getColorString } from '~/lib/utils';
 import { usePlaylists } from './usePlaylists';
 
 export const PlaylistsPage = () => {
-  const { playlistsData, currentTimePercentage, handleDeletePlaylist } = usePlaylists();
+  const { playlistsData, currentTimePercentage, handlePlay, handleDeletePlaylist } = usePlaylists();
 
   return (
     <div class="container mx-auto px-8 py-6">
@@ -57,7 +57,7 @@ export const PlaylistsPage = () => {
                   </svg>
                 </div>
                 <button
-                  onClick={() => console.log('sa')}
+                  onClick={() => handlePlay(playlist)}
                   class="absolute inset-0 bg-black/0 hover:bg-black/40 duration-500 flex items-center justify-center opacity-0 hover:opacity-100 transition-[background-color,opacity]"
                   title={`Play`}
                 >
