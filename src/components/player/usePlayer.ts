@@ -133,6 +133,21 @@ export const usePlayer = () => {
     }
   }, []);
 
+  const setToPaused = useCallback(() => {
+    if (!audioRef.current || !playerState.value) return;
+    audioRef.current.pause();
+    if (isPodcast) {
+      updatePodcastEpisodeCurrentTime(
+        playerState.value.contentID,
+        playerState.value.streams?.[0]?.url || '',
+        audioRef.current.currentTime,
+      );
+      saveStateToDB();
+    } else {
+      audioRef.current.currentTime = 0;
+    }
+  }, [audioRef.current, playerState.value, isPodcast, updatePodcastEpisodeCurrentTime]);
+
   const handlePlayPause = useCallback(() => {
     if (!playerState.value) return;
     const newIsPlaying = !playerState.value.isPlaying;
@@ -159,32 +174,20 @@ export const usePlayer = () => {
           };
         });
       } else {
-        audioRef.current.pause();
-        if (isPodcast) {
-          updatePodcastEpisodeCurrentTime(
-            playerState.value.contentID,
-            playerState.value.streams?.[0]?.url || '',
-            audioRef.current.currentTime,
-          );
-          saveStateToDB();
-        } else {
-          audioRef.current.currentTime = 0;
-        }
+        setToPaused();
       }
     }
   }, [castSession, castMediaRef.current, playerState.value, audioRef.current]);
 
   const handleClose = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
+    setToPaused();
     if (reconnectTimeout.current) {
       clearTimeout(reconnectTimeout.current);
     }
     reconnectAttempts.current = 0;
     playerState.value = null;
     isPlayerMaximized.value = false;
-  }, []);
+  }, [setToPaused, reconnectTimeout.current]);
 
   const handleSliderChange = useCallback(
     (e: Event) => {
@@ -218,14 +221,7 @@ export const usePlayer = () => {
         });
       }
     } else {
-      audioRef.current.pause();
-      if (playerState.value.pageLocation.startsWith('/podcast/')) {
-        updatePodcastEpisodeCurrentTime(
-          playerState.value.contentID,
-          playerState.value.streams?.[0]?.url || '',
-          audioRef.current.currentTime,
-        );
-      }
+      setToPaused();
     }
   }, [playerState.value, audioRef.current, updatePodcastEpisodeCurrentTime, castSession]);
 
