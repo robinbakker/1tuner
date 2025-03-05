@@ -1,8 +1,6 @@
 import { HTMLAttributes } from 'preact/compat';
 
-export interface DayTimelineProps extends HTMLAttributes<HTMLUListElement> {}
-
-export const DayTimeline = (props: DayTimelineProps) => {
+export const DayTimeline = (props: HTMLAttributes<HTMLUListElement>) => {
   return (
     <ul {...props}>
       {new Array(13).fill(0).map((_, i) => (

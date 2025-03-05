@@ -20,8 +20,10 @@ export const useHead = (data: HeadData) => {
   // For prerendering
   if (
     typeof window === 'undefined' &&
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (typeof (globalThis as any).__HEAD_DATA__ === 'undefined' || (globalThis as any).__HEAD_DATA__.title !== data.title)
   ) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).__HEAD_DATA__ = { ...defaultHeadData, ...data, title: `${data.title} | 1tuner.com` };
   }
 

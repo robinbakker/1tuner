@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Search } from 'lucide-preact';
 import { useCallback } from 'preact/hooks';
 import { Loader } from '~/components/loader';
@@ -11,21 +12,24 @@ import { usePodcasts } from './usePodcasts';
 export const PodcastsPage = () => {
   const { isLoading, isScrolled, searchTerm, setSearchTerm, searchResults } = usePodcasts();
 
-  const renderPodcastList = useCallback((podcasts: Podcast[] | undefined, title: string) => {
-    if (isLoading) return <div>Loading...</div>;
-    if (!podcasts?.length) return null;
-    const slugTitle = slugify(title);
-    return (
-      <>
-        <h2 class="text-xl opacity-60 font-semibold mb-4">{title}</h2>
-        <div class="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-6 mb-8">
-          {podcasts.map((podcast) => (
-            <PodcastCard key={`${slugTitle}-${podcast.id}`} size="large" podcast={podcast} />
-          ))}
-        </div>
-      </>
-    );
-  }, []);
+  const renderPodcastList = useCallback(
+    (podcasts: Podcast[] | undefined, title: string) => {
+      if (isLoading) return <div>Loading...</div>;
+      if (!podcasts?.length) return null;
+      const slugTitle = slugify(title);
+      return (
+        <>
+          <h2 class="text-xl opacity-60 font-semibold mb-4">{title}</h2>
+          <div class="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-6 mb-8">
+            {podcasts.map((podcast) => (
+              <PodcastCard key={`${slugTitle}-${podcast.id}`} size="large" podcast={podcast} />
+            ))}
+          </div>
+        </>
+      );
+    },
+    [isLoading],
+  );
 
   return (
     <div class="mt-4">

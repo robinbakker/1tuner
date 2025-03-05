@@ -44,7 +44,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (asChild && children && typeof children === 'object' && 'type' in children) {
       const Child = children.type;
-      // @ts-ignore - Passing refs through might need additional typing
+      // @ts-expect-error - Passing refs through might need additional typing
       return <Child {...children.props} class={cn(classes, children.props?.class)} ref={ref} />;
     }
 

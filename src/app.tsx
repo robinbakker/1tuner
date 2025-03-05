@@ -48,7 +48,7 @@ export function App() {
       }
       db.saveStateToDB();
     };
-  }, []);
+  }, [db]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -65,7 +65,7 @@ export function App() {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isPlayerMaximized.value]);
+  }, []);
 
   return (
     <LocationProvider>

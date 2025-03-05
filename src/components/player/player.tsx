@@ -6,8 +6,6 @@ import { Button } from '../ui/button';
 import { usePlayer } from './usePlayer';
 
 export const Player = () => {
-  if (!playerState.value || !playerState.value.streams?.length) return null;
-
   const {
     audioRef,
     currentTimeRef,
@@ -16,6 +14,7 @@ export const Player = () => {
     sliderRef,
     playbackRate,
     duration,
+    progressPercentage,
     playbackRates,
     isPodcast,
     isCastingAvailable,
@@ -30,6 +29,8 @@ export const Player = () => {
     handleSliderChange,
     formatTime,
   } = usePlayer();
+
+  if (!audioSources.value?.length) return null;
 
   return (
     <div
@@ -46,7 +47,7 @@ export const Player = () => {
       }}
     >
       <audio ref={audioRef} preload="metadata">
-        {audioSources.map((stream) => (
+        {playerState.value?.streams.map((stream) => (
           <source key={stream.url} src={stream.url} type={stream.mimetype} />
         ))}
       </audio>
@@ -63,7 +64,7 @@ export const Player = () => {
           <div
             ref={progressBarRef}
             class="absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-200"
-            style={{ width: `${(currentTimeRef.current / duration) * 100}%` }}
+            style={{ width: `${progressPercentage.value}%` }}
           />
         )}
         {isPlayerMaximized.value ? (
@@ -87,16 +88,16 @@ export const Player = () => {
               <div class="flex flex-col items-center justify-center space-y-6">
                 <div class={`relative flex flex-col items-center justify-center overflow-hidden w-64 h-64`}>
                   <img
-                    src={playerState.value.imageUrl}
-                    alt={playerState.value.title}
+                    src={playerState.value?.imageUrl}
+                    alt={playerState.value?.title}
                     class={`w-48 h-48${isPodcast ? '' : ' rounded-full'}`}
                   />
                 </div>
                 <div class="text-center w-full">
                   <h2 class="text-xl font-semibold text-stone-800 dark:text-stone-400">
-                    <a href={playerState.value.pageLocation}>{playerState.value.title}</a>
+                    <a href={playerState.value?.pageLocation}>{playerState.value?.title}</a>
                   </h2>
-                  <p class="text-sm text-stone-500 mt-2">{playerState.value.description}</p>
+                  <p class="text-sm text-stone-500 mt-2">{playerState.value?.description}</p>
                 </div>
                 {isPodcast && (
                   <>
@@ -114,7 +115,7 @@ export const Player = () => {
                         onClick={handlePlayPause}
                         class="p-4 bg-primary rounded-full hover:bg-primary/90 transition-colors"
                       >
-                        {playerState.value.isPlaying ? (
+                        {playerState.value?.isPlaying ? (
                           <Pause class="h-8 w-8 text-white" />
                         ) : (
                           <Play class="h-8 w-8 text-white" />
@@ -148,10 +149,10 @@ export const Player = () => {
                             '[&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-0',
                           )}
                           style={{
-                            backgroundImage: `linear-gradient(to right, #ff6000 ${(currentTimeRef.current / duration) * 100}%, #ccc ${(currentTimeRef.current / duration) * 100}%)`,
+                            backgroundImage: `linear-gradient(to right, #ff6000 ${progressPercentage.value}%, #ccc ${progressPercentage.value}%)`,
                           }}
                         />
-                        <span>{formatTime(duration)}</span>
+                        <span>{formatTime(duration.value)}</span>
                       </div>
                     </div>
                   </>
@@ -162,7 +163,7 @@ export const Player = () => {
                     onClick={handlePlayPause}
                     class="p-4 bg-primary rounded-full hover:bg-primary/90 transition-colors"
                   >
-                    {playerState.value.isPlaying ? (
+                    {playerState.value?.isPlaying ? (
                       <Pause class="h-8 w-8 text-white" />
                     ) : (
                       <Play class="h-8 w-8 text-white" />
@@ -201,8 +202,8 @@ export const Player = () => {
             <div class="flex items-center flex-1 min-w-0">
               <div class="relative h-12 w-12 shrink-0">
                 <img
-                  src={playerState.value.imageUrl}
-                  alt={playerState.value.title}
+                  src={playerState.value?.imageUrl}
+                  alt={playerState.value?.title}
                   loading="lazy"
                   class="h-full w-full object-cover rounded-md"
                 />
@@ -210,7 +211,7 @@ export const Player = () => {
                   onClick={handlePlayPause}
                   class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-md hover:bg-black/50 transition-colors"
                 >
-                  {playerState.value.isPlaying ? (
+                  {playerState.value?.isPlaying ? (
                     <Pause class="h-6 w-6 text-white" />
                   ) : (
                     <Play class="h-6 w-6 text-white" />
@@ -221,11 +222,11 @@ export const Player = () => {
                 {' '}
                 <div class="min-w-0 flex-1">
                   <h3 class="text-sm font-medium text-stone-800 dark:text-stone-200 truncate max-w-full">
-                    <a href={playerState.value.pageLocation} class="truncate block">
-                      {playerState.value.title}
+                    <a href={playerState.value?.pageLocation} class="truncate block">
+                      {playerState.value?.title}
                     </a>
                   </h3>
-                  <p class="text-xs text-stone-500 truncate max-w-full">{playerState.value.description}</p>
+                  <p class="text-xs text-stone-500 truncate max-w-full">{playerState.value?.description}</p>
                 </div>
                 {isPodcast && (
                   <div class="shrink-0 flex items-center">

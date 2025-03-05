@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import { computed, signal, useComputed, useSignalEffect } from '@preact/signals';
+import { useCallback, useEffect, useRef } from 'preact/hooks';
 import { playlistUtil } from '~/lib/playlistUtil';
 import { reconnectUtil } from '~/lib/reconnectUtil';
 import { saveStateToDB } from '~/store/db/db';
@@ -6,9 +7,12 @@ import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
 import { playNextRadioStation } from '~/store/signals/radio';
 import { settingsState } from '~/store/signals/settings';
 import { addToast } from '~/store/signals/ui';
-import { Stream } from '~/store/types';
 import { isPlayerMaximized, playerState } from '../../store/signals/player';
 import { useCastApi } from './useCastApi';
+
+export const playbackRateSignal = signal(1);
+export const durationSignal = signal(0);
+export const audioSourcesSignal = computed(() => playerState.value?.streams || []);
 
 export const usePlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -18,9 +22,9 @@ export const usePlayer = () => {
   const sliderRef = useRef<HTMLInputElement>(null);
   const reconnectAttempts = useRef(0);
   const reconnectTimeout = useRef<NodeJS.Timeout>();
-  const [playbackRate, setPlaybackRate] = useState(1);
-  const [audioSources, setAudioSources] = useState<Stream[]>([]);
-  const [duration, setDuration] = useState(0);
+  // const [playbackRate, setPlaybackRate] = useState(1);
+  // const [audioSources, setAudioSources] = useState<Stream[]>([]);
+  // const [duration, setDuration] = useState(0);
   const {
     isCastingAvailable,
     startCasting,
@@ -35,18 +39,15 @@ export const usePlayer = () => {
   const isPodcast = playerState.value?.playType === 'podcast';
   const isPlaylist = playerState.value?.playType === 'playlist';
   const playlistUrl = isPlaylist ? playerState.value?.pageLocation : undefined;
+  const progressPercentage = useComputed(() => (currentTimeRef.current / durationSignal.value) * 100);
 
-  let playlistInterval: NodeJS.Timeout;
+  useSignalEffect(() => {
+    let playlistInterval: NodeJS.Timeout;
 
-  const checkPlaylistCurrentPlaying = useCallback(() => {
-    playlistUtil.playPlaylistByUrl(playerState.value?.pageLocation);
-  }, []);
+    const checkPlaylistCurrentPlaying = () => {
+      playlistUtil.playPlaylistByUrl(playerState.value?.pageLocation);
+    };
 
-  useEffect(() => {
-    console.log('usePlayer useEffect playlistUrl', playlistUrl);
-    if (playlistInterval) {
-      clearInterval(playlistInterval);
-    }
     if (playlistUrl) {
       checkPlaylistCurrentPlaying();
       playlistInterval = setInterval(checkPlaylistCurrentPlaying, 30000); // Check every 30 secs
@@ -57,7 +58,7 @@ export const usePlayer = () => {
         clearInterval(playlistInterval);
       }
     };
-  }, [playlistUrl, checkPlaylistCurrentPlaying]);
+  });
 
   const formatTime = useCallback((time: number) => {
     const minutes = Math.floor(time / 60);
@@ -67,7 +68,7 @@ export const usePlayer = () => {
 
   const updateTimeUI = useCallback(() => {
     const audio = audioRef.current;
-    if (!audio || !playerState.value) return;
+    if (!audio || !audioSourcesSignal.value) return;
     currentTimeRef.current = audio.currentTime;
 
     requestAnimationFrame(() => {
@@ -75,63 +76,43 @@ export const usePlayer = () => {
         currentTimeDisplayRef.current.textContent = formatTime(audio.currentTime);
       }
       if (progressBarRef.current) {
-        progressBarRef.current.style.width = `${(audio.currentTime / duration) * 100}%`;
+        progressBarRef.current.style.width = `${progressPercentage.value}%`;
       }
       if (sliderRef.current) {
         sliderRef.current.value = audio.currentTime.toString();
-        sliderRef.current.style.backgroundImage = `linear-gradient(to right, #ff6000 ${(audio.currentTime / duration) * 100}%, #ccc ${(audio.currentTime / duration) * 100}%)`;
+        sliderRef.current.style.backgroundImage = `linear-gradient(to right, #ff6000 ${progressPercentage.value}%, #ccc ${progressPercentage.value}%)`;
       }
     });
-  }, [duration, formatTime]);
+  }, [progressPercentage, formatTime]);
 
-  useEffect(() => {
-    setAudioSources(playerState.value?.streams || []);
-    // const hlsStream = playerState.value?.streams.find((s) => s.url.endsWith('.m3u8'));
-    // if (!playerState.value?.streams.length || !hlsStream) {
-    //   setAudioSources(playerState.value?.streams || []);
-    // } else {
-    //   // TODO: doesn't work, maybe use hls.js?
-    //   fetch(hlsStream.url)
-    //     .then((response) => {
-    //       //console.log(response);
-    //       return response.blob();
-    //     })
-    //     .then((blob) => {
-    //       const blobUrl = URL.createObjectURL(blob);
-    //       // Cleanup the blob URL when the component unmounts
-    //       const result = playerState.value?.streams.filter((s) => !s.url.endsWith('.m3u8')) || [];
-    //       result.push({ url: blobUrl, mimetype: 'audio/aac' });
-    //       setAudioSources(result);
-    //     })
-    //     .catch((error) => {
-    //       console.error('Error loading HLS stream:', error);
-    //     });
-    // }
-  }, [playerState.value, setAudioSources]);
+  const handleSeek = useCallback(
+    (seconds: number) => {
+      if (castSession && castMediaRef.current) {
+        handleCastSeek(seconds);
+        return;
+      }
 
-  const handleSeek = useCallback((seconds: number) => {
-    if (castSession && castMediaRef.current) {
-      handleCastSeek(seconds);
-      return;
-    }
+      if (audioRef.current) {
+        audioRef.current.currentTime = audioRef.current.currentTime + seconds;
+      }
+    },
+    [castMediaRef, castSession, handleCastSeek],
+  );
 
-    if (audioRef.current) {
-      audioRef.current.currentTime = audioRef.current.currentTime + seconds;
-    }
-  }, []);
+  const handlePlaybackRateChange = useCallback(
+    (rate: number) => {
+      if (castSession && castMediaRef.current) {
+        playbackRateSignal.value = rate;
+        return;
+      }
 
-  const handlePlaybackRateChange = useCallback((rate: number) => {
-    if (castSession && castMediaRef.current) {
-      //handleCastPlaybackRateChange(rate);
-      setPlaybackRate(rate);
-      return;
-    }
-
-    if (audioRef.current) {
-      audioRef.current.playbackRate = rate;
-      setPlaybackRate(rate);
-    }
-  }, []);
+      if (audioRef.current) {
+        audioRef.current.playbackRate = rate;
+        playbackRateSignal.value = rate;
+      }
+    },
+    [castMediaRef, castSession],
+  );
 
   const setToPaused = useCallback(() => {
     if (!audioRef.current || !playerState.value) return;
@@ -146,9 +127,10 @@ export const usePlayer = () => {
     } else {
       audioRef.current.currentTime = 0;
     }
-  }, [audioRef.current, playerState.value, isPodcast, updatePodcastEpisodeCurrentTime]);
+  }, [playerState.value, isPodcast]);
 
   const handlePlayPause = useCallback(() => {
+    console.log('handlePlayPause called');
     if (!playerState.value) return;
     const newIsPlaying = !playerState.value.isPlaying;
 
@@ -166,6 +148,8 @@ export const usePlayer = () => {
       };
 
       if (newIsPlaying) {
+        console.log(audioRef.current.childNodes);
+        console.log('Playing audio', audioRef.current);
         audioRef.current.play().catch((error) => {
           console.error('Error playing audio:', error);
           playerState.value = {
@@ -177,7 +161,7 @@ export const usePlayer = () => {
         setToPaused();
       }
     }
-  }, [castSession, castMediaRef.current, playerState.value, audioRef.current]);
+  }, [playerState.value, castSession, castMediaRef, handleCastPlayPause, setToPaused]);
 
   const handleClose = useCallback(() => {
     setToPaused();
@@ -187,7 +171,7 @@ export const usePlayer = () => {
     reconnectAttempts.current = 0;
     playerState.value = null;
     isPlayerMaximized.value = false;
-  }, [setToPaused, reconnectTimeout.current]);
+  }, [setToPaused]);
 
   const handleSliderChange = useCallback(
     (e: Event) => {
@@ -210,7 +194,9 @@ export const usePlayer = () => {
       audioRef.current.load();
     }
 
-    if (playerState.value.currentTime) audioRef.current.currentTime = playerState.value.currentTime;
+    if (playerState.value.currentTime) {
+      audioRef.current.currentTime = playerState.value.currentTime;
+    }
 
     if (playerState.value.isPlaying && !castSession) {
       const promise = audioRef.current.play();
@@ -223,20 +209,13 @@ export const usePlayer = () => {
     } else {
       setToPaused();
     }
-  }, [playerState.value, audioRef.current, updatePodcastEpisodeCurrentTime, castSession]);
+  }, [playerState.value, castSession, setToPaused]);
 
   useEffect(() => {
     if (!audioRef.current) return;
 
     const audio = audioRef.current;
-    const isRadioStream = !playerState.value?.pageLocation?.startsWith('/podcast/');
-
-    // const handleStalled = () => {
-    //   if (isRadioStream && playerState.value?.isPlaying) {
-    //     console.log('Stream stalled, attempting reconnect...');
-    //     attemptReconnect();
-    //   }
-    // };
+    const isRadioStream = playerState.value?.playType !== 'podcast';
 
     const handleError = (e: ErrorEvent) => {
       if (isRadioStream && playerState.value?.isPlaying) {
@@ -311,7 +290,7 @@ export const usePlayer = () => {
         clearTimeout(reconnectTimeout.current);
       }
     };
-  }, [playerState.value?.isPlaying]);
+  }, [playerState.value, maxReconnectAttempts]);
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -332,7 +311,7 @@ export const usePlayer = () => {
         updateTimeUI();
       }
     };
-    const updateDuration = () => setDuration(audio.duration);
+    const updateDuration = () => (durationSignal.value = audio.duration);
 
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
@@ -343,13 +322,13 @@ export const usePlayer = () => {
       audio.removeEventListener('loadedmetadata', updateDuration);
       audio.removeEventListener('durationchange', updateDuration);
     };
-  }, [duration]);
+  }, [castMediaRef, castSession, updateTimeUI]);
 
   useEffect(() => {
     if (castSession && audioRef.current) {
       audioRef.current.pause();
     }
-  }, [castSession, audioRef.current]);
+  }, [castSession]);
 
   useEffect(() => {
     if (!audioRef.current || !playerState.value || typeof navigator.mediaSession === 'undefined') return;
@@ -389,9 +368,9 @@ export const usePlayer = () => {
 
     if (isPodcast) {
       navigator.mediaSession.setPositionState({
-        duration: duration,
+        duration: durationSignal.value,
         position: currentTimeRef.current,
-        playbackRate: playbackRate,
+        playbackRate: playbackRateSignal.value,
       });
     }
 
@@ -403,7 +382,7 @@ export const usePlayer = () => {
       navigator.mediaSession.setActionHandler('nexttrack', null);
       navigator.mediaSession.setActionHandler('seekto', null);
     };
-  }, [playerState.value, isPodcast, duration, playbackRate]);
+  }, [playerState.value, isPodcast, handlePlayPause, handleSeek, updateTimeUI]);
 
   return {
     audioRef,
@@ -411,11 +390,12 @@ export const usePlayer = () => {
     currentTimeDisplayRef,
     progressBarRef,
     sliderRef,
-    playbackRate,
-    duration,
+    playbackRate: playbackRateSignal,
+    duration: durationSignal,
+    progressPercentage,
     playbackRates,
     isPodcast,
-    audioSources,
+    audioSources: audioSourcesSignal,
     handleSeek,
     handlePlaybackRateChange,
     handlePlayPause,

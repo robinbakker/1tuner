@@ -29,7 +29,7 @@ export const useAppShell = () => {
     return () => {
       observer.disconnect();
     };
-  }, [headerSentinelRef.current]);
+  }, []);
 
   const handleBackClick = () => {
     history.back();

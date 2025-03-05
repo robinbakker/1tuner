@@ -50,7 +50,7 @@ interface TunerDB extends DBSchema {
 
 const dbPromise =
   typeof window !== 'undefined'
-    ? openDB<TunerDB>('1tuner', 2, {
+    ? openDB<TunerDB>('1tuner', 3, {
         upgrade(db) {
           const stores = Object.values(StoreName) as StoreName[];
 

@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import { playerState } from '~/store/signals/player';
 import {
-  addRecentlyVisitedRadioStation,
   followRadioStation,
   getRadioStation,
   getStationPodcasts,
@@ -49,8 +48,8 @@ export const useRadioStation = () => {
   });
 
   const isPlaying = useMemo(() => {
-    return !!(playerState.value && playerState.value.isPlaying && playerState.value.contentID === radioStation?.id);
-  }, [playerState.value, radioStation?.id]);
+    return !!(playerState.value?.isPlaying && playerState.value.contentID === radioStation?.id);
+  }, [radioStation?.id]);
 
   const toggleFollow = () => {
     if (!radioStation) return;
@@ -69,11 +68,7 @@ export const useRadioStation = () => {
 
   useEffect(() => {
     setIsFollowing(isFollowedRadioStation(params.id));
-  }, [setIsFollowing, isFollowedRadioStation, params.id]);
-
-  useEffect(() => {
-    addRecentlyVisitedRadioStation(radioStation?.id);
-  }, [radioStation, addRecentlyVisitedRadioStation]);
+  }, [setIsFollowing, params.id]);
 
   useEffect(() => {
     uiState.value = {

@@ -22,7 +22,9 @@ if (typeof window !== 'undefined') {
   // Load station podcasts data in browser
   import('./assets/data/stations/podcasts.json')
     .then((module) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const podcasts = Object.keys(module.default).reduce((acc: { [key: string]: any[] }, key: string) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         acc[key] = (module.default as { [key: string]: any[] })[key].map((podcast) => ({
           ...podcast,
           id: getPodcastUrlID(podcast.url),
@@ -41,18 +43,22 @@ if (typeof window !== 'undefined') {
 
 export async function prerender() {
   // Load both podcast data and station podcasts during prerender
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (!(globalThis as any).__PRERENDER_PODCASTS__) {
     const [podcastData, stationPodcastsData] = await Promise.all([
       import('./assets/data/podcasts.json'),
       import('./assets/data/stations/podcasts.json'),
     ]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).__PRERENDER_PODCASTS__ = podcastData.default.map((pc) => ({
       ...pc,
       id: getPodcastUrlID(pc.url),
     }));
 
     const formattedStationPodcasts = Object.keys(stationPodcastsData.default).reduce(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (acc: { [key: string]: any[] }, key: string) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         acc[key] = (stationPodcastsData.default as { [key: string]: any[] })[key].map((podcast) => ({
           ...podcast,
           id: getPodcastUrlID(podcast.url),
@@ -66,6 +72,7 @@ export async function prerender() {
   }
   //return await ssr(<App />);
   const { html, links } = await ssr(<App />);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const headData = { ...defaultHeadData, ...((globalThis as any).__HEAD_DATA__ || {}) } as HeadData;
 
   return {

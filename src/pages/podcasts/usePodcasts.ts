@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import {
   clearLastPodcastSearchResult,
@@ -92,13 +92,11 @@ export const usePodcasts = () => {
     };
   }, [searchTerm]);
 
-  const isScrolled = useMemo(() => !!uiIsScrolled.value, [uiIsScrolled.value]);
-
   return {
     searchTerm,
     setSearchTerm,
     searchResults: lastPodcastSearchResult.value?.result || [],
     isLoading,
-    isScrolled,
+    isScrolled: !!uiIsScrolled.value,
   };
 };

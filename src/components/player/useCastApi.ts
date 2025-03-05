@@ -23,28 +23,22 @@ export const useCastApi = () => {
   const castInitialized = useRef(false);
   const APPLICATION_ID = '2CFD5B94';
 
-  const isCastingAvailable = useMemo(
-    () => settingsState.value.enableChromecast && !!castInitialized.current,
-    [settingsState.value.enableChromecast, castInitialized.current],
-  );
+  const isCastingAvailable = useMemo(() => settingsState.value.enableChromecast && !!castInitialized.current, []);
 
-  const setupMediaListeners = useCallback(
-    (media: chrome.cast.media.Media) => {
-      castMediaRef.current = media;
-      media.addUpdateListener((isAlive: boolean) => {
-        if (!isAlive || !media || !playerState.value) return;
+  const setupMediaListeners = useCallback((media: chrome.cast.media.Media) => {
+    castMediaRef.current = media;
+    media.addUpdateListener((isAlive: boolean) => {
+      if (!isAlive || !media || !playerState.value) return;
 
-        const isPlaying = media.playerState === chrome.cast.media.PlayerState.PLAYING;
-        if (playerState.value.isPlaying !== isPlaying) {
-          playerState.value = {
-            ...playerState.value,
-            isPlaying,
-          };
-        }
-      });
-    },
-    [playerState.value],
-  );
+      const isPlaying = media.playerState === chrome.cast.media.PlayerState.PLAYING;
+      if (playerState.value.isPlaying !== isPlaying) {
+        playerState.value = {
+          ...playerState.value,
+          isPlaying,
+        };
+      }
+    });
+  }, []);
 
   const updateCastMedia = useCallback(
     (session: chrome.cast.Session) => {
@@ -162,7 +156,7 @@ export const useCastApi = () => {
         );
       });
     },
-    [createMediaInfo, setupMediaListeners, playerState.value],
+    [createMediaInfo, setupMediaListeners],
   );
 
   const startCasting = useCallback(async () => {
@@ -186,7 +180,7 @@ export const useCastApi = () => {
     } catch (error) {
       console.error('Error starting cast:', error);
     }
-  }, [castSession]);
+  }, [castSession, loadMedia]);
 
   const stopCasting = useCallback(() => {
     if (castSession) {
@@ -202,41 +196,35 @@ export const useCastApi = () => {
     }
   }, [castSession]);
 
-  const handleCastPlayPause = useCallback(
-    (isPlaying: boolean) => {
-      if (!castMediaRef.current) return;
-      if (isPlaying) {
-        castMediaRef.current.play(
-          new chrome.cast.media.PlayRequest(),
-          () => console.log('Playback started (play action)'),
-          (error) => console.error('Error starting playback (play):', error),
-        );
-      } else {
-        castMediaRef.current.pause(
-          new chrome.cast.media.PauseRequest(),
-          () => console.log('Playback paused (pause action)'),
-          (error) => console.error('Error pausing playback:', error),
-        );
-      }
-    },
-    [castMediaRef.current],
-  );
-
-  const handleCastSeek = useCallback(
-    (seconds: number) => {
-      if (!castMediaRef.current) return;
-
-      const newTime = castMediaRef.current.getEstimatedTime() + seconds;
-      const request = new chrome.cast.media.SeekRequest();
-      request.currentTime = newTime;
-      castMediaRef.current.seek(
-        request,
-        () => console.log('Seek (seek action)'),
-        (error) => console.error('Error seeking:', error),
+  const handleCastPlayPause = useCallback((isPlaying: boolean) => {
+    if (!castMediaRef.current) return;
+    if (isPlaying) {
+      castMediaRef.current.play(
+        new chrome.cast.media.PlayRequest(),
+        () => console.log('Playback started (play action)'),
+        (error) => console.error('Error starting playback (play):', error),
       );
-    },
-    [castMediaRef.current],
-  );
+    } else {
+      castMediaRef.current.pause(
+        new chrome.cast.media.PauseRequest(),
+        () => console.log('Playback paused (pause action)'),
+        (error) => console.error('Error pausing playback:', error),
+      );
+    }
+  }, []);
+
+  const handleCastSeek = useCallback((seconds: number) => {
+    if (!castMediaRef.current) return;
+
+    const newTime = castMediaRef.current.getEstimatedTime() + seconds;
+    const request = new chrome.cast.media.SeekRequest();
+    request.currentTime = newTime;
+    castMediaRef.current.seek(
+      request,
+      () => console.log('Seek (seek action)'),
+      (error) => console.error('Error seeking:', error),
+    );
+  }, []);
 
   const handleCastPlaybackRateChange = useCallback(
     //(rate: number) => {
@@ -245,7 +233,7 @@ export const useCastApi = () => {
       // const request = new chrome.cast.media.SetPlaybackRateRequest(rate);
       // castMediaRef.current.setPlaybackRate(request);
     },
-    [castMediaRef.current],
+    [],
   );
 
   // Initialize Chromecast only if enabled in settings
@@ -275,7 +263,7 @@ export const useCastApi = () => {
         castInitialized.current = false;
       };
     }
-  }, [initializeCastApi, settingsState.value.enableChromecast]);
+  }, [initializeCastApi]);
 
   return {
     startCasting,

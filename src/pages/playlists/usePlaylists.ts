@@ -50,7 +50,7 @@ export const usePlaylists = () => {
 
       plItems.forEach((item, index) => {
         let itemTime = new Date(`1970-01-01T${item.time}`);
-        let itemHour = itemTime.getHours();
+        const itemHour = itemTime.getHours();
 
         let endTime: Date;
         const nextItem = plItems[index + 1];
@@ -112,7 +112,7 @@ export const usePlaylists = () => {
 
       return stationPercentages;
     },
-    [playlists.value, currentTimePercentage],
+    [currentTimePercentage],
   );
 
   const playlistsData = useMemo((): PlaylistData[] => {
@@ -127,7 +127,7 @@ export const usePlaylists = () => {
         stationPercentages: getPercentagePerStation(p.items, stations),
       };
     });
-  }, [playlists.value, getPercentagePerStation]);
+  }, [getPercentagePerStation]);
 
   const handleDeletePlaylist = (playlist: PlaylistData) => {
     if (confirm(`Are you sure you want to delete "${playlist.name}"?`)) {

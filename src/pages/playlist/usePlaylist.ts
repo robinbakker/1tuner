@@ -95,13 +95,13 @@ export const usePlaylist = () => {
         height: getBlockTopPercentage(endTime) - top,
       } as ScheduleBlock;
     });
-  }, [query]);
+  }, [getBlockTopPercentage, query, urlTimeZone]);
 
   const playlistQueryString = useMemo(() => {
     const result = playlist.map((i) => getParamFromTime(i.startTime) + '=' + i.station?.id).join('&');
     const timeZone = getValidTimeZone(urlTimeZone);
     return result ? `?${result}&tz=${timeZone}` : '';
-  }, [playlist]);
+  }, [getParamFromTime, playlist, urlTimeZone]);
 
   const playlistUrl = useMemo(() => {
     return playlistName && playlistQueryString
@@ -130,7 +130,7 @@ export const usePlaylist = () => {
       .join('&');
     const timeZone = getValidTimeZone(urlTimeZone);
     return `${import.meta.env.VITE_BASE_URL}/playlist/${encodeURI(editName)}/${query ? `?${query}&tz=${timeZone}` : ''}`;
-  }, [blocks, editName, urlTimeZone]);
+  }, [blocks, editName, getParamFromTime, urlTimeZone]);
 
   useEffect(() => {
     if (isEditMode) {
@@ -139,7 +139,7 @@ export const usePlaylist = () => {
       uiState.value = { ...uiState.value, headerTitle: playlistName || 'Playlist' };
     }
     return () => (uiState.value = { ...uiState.value, headerTitle: '' });
-  }, [isEditMode]);
+  }, [isEditMode, playlistName]);
 
   useEffect(() => {
     if (!(playlists.value || []).some((p) => !!p.url && playlistUtil.isSameUrl(p.url, playlistUrl))) {
@@ -157,16 +157,7 @@ export const usePlaylist = () => {
       }
       setBlocks(newBlocks);
     }
-  }, [
-    playlistUrl,
-    playlists.value,
-    setIsEditMode,
-    setEditName,
-    playlistName,
-    playlist,
-    getBlockTopPercentage,
-    setBlocks,
-  ]);
+  }, [playlistUrl, setIsEditMode, setEditName, playlistName, playlist, getBlockTopPercentage, setBlocks]);
 
   const handleSaveClick = useCallback(() => {
     if (!editName) {
@@ -200,12 +191,12 @@ export const usePlaylist = () => {
     ] as Playlist[];
     route('/playlists');
     setIsEditMode(false);
-  }, [blocks, editName, playlistUrl, playlists.value, getPlaylistUrlFromBlocks, addToast, setIsEditMode]);
+  }, [editName, blocks, getPlaylistUrlFromBlocks, route, playlistUrl]);
 
   const handleCancelClick = useCallback(() => {
     if (isAddNew) route('/playlists');
     setIsEditMode(false);
-  }, []);
+  }, [isAddNew, route]);
 
   const handleNameInput = useCallback((e: Event) => {
     const target = e.currentTarget as HTMLInputElement;
@@ -243,7 +234,7 @@ export const usePlaylist = () => {
       updatedBlocks.splice(blockIndex, 1);
       setBlocks(updatedBlocks);
     },
-    [blocks],
+    [blocks, getBlockTopPercentage],
   );
 
   const handleDragStart = useCallback(
@@ -310,13 +301,13 @@ export const usePlaylist = () => {
         }
       });
     },
-    [blocks, dragInfo, containerRef],
+    [dragInfo, blocks, getBlockTopPercentage],
   );
 
   const handleDragEnd = useCallback(() => {
     containerRef.current?.classList.remove('is-dragging');
     setDragInfo(undefined);
-  }, [handleDrag]);
+  }, []);
 
   useEffect(() => {
     const handleTouchMove = (e: TouchEvent) => handleDrag(e);
@@ -358,7 +349,7 @@ export const usePlaylist = () => {
         height: splitPartHeight,
       },
     ]);
-  }, [blocks]);
+  }, [blocks, getBlockTopPercentage]);
 
   const handleEditClick = useCallback(() => {
     setIsEditMode(true);
@@ -378,7 +369,7 @@ export const usePlaylist = () => {
 
   const handlePlayClick = useCallback(() => {
     playlistUtil.playPlaylistByUrl(playlistUrl, true);
-  }, []);
+  }, [playlistUrl]);
 
   return {
     playlistName: playlistName || 'Playlist',

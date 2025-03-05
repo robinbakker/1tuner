@@ -25,13 +25,10 @@ export const useRadioStations = () => {
 
   const activeLanguages = useMemo(
     () => radioLanguages.value.filter((l) => selectedCountries.includes(l.id)),
-    [selectedCountries, radioLanguages.value],
+    [selectedCountries],
   );
 
-  const activeGenres = useMemo(
-    () => radioGenres.value.filter((g) => selectedGenres.includes(g.id)),
-    [selectedGenres, radioGenres.value],
-  );
+  const activeGenres = useMemo(() => radioGenres.value.filter((g) => selectedGenres.includes(g.id)), [selectedGenres]);
 
   const filteredStations = useMemo(
     () =>
@@ -43,7 +40,7 @@ export const useRadioStations = () => {
         const matchesGenre = !selectedGenres.length || selectedGenres.some((g) => station.genres.includes(g));
         return matchesSearch && matchesCountry && matchesGenre;
       }),
-    [selectedGenres, selectedCountries, lastRadioSearchResult.value?.query, radioStations.value],
+    [selectedGenres, selectedCountries],
   );
 
   const languageOptions = useMemo(
@@ -51,12 +48,12 @@ export const useRadioStations = () => {
       radioLanguages.value
         .filter((language) => !selectedCountries.includes(language.country))
         .map((l) => ({ label: `${l.flag ?? ''} ${l.name}`, minimalLabel: l.flag ?? undefined, value: l.id })),
-    [selectedCountries, radioLanguages.value],
+    [selectedCountries],
   );
 
   const genreOptions = useMemo(() => {
     return radioGenres.value.map((genre) => ({ label: genre.name, value: genre.id }));
-  }, [radioGenres.value]);
+  }, []);
 
   const handleLanguageChange = (countries: string[]) => {
     setSelectedCountries(countries);
@@ -65,8 +62,6 @@ export const useRadioStations = () => {
   const handleGenreChange = (genres: string[]) => {
     setSelectedGenres(genres);
   };
-
-  const isScrolled = useMemo(() => !!uiIsScrolled.value, [uiIsScrolled.value]);
 
   const handleFilterClick = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -90,7 +85,7 @@ export const useRadioStations = () => {
     activeLanguages,
     activeGenres,
     genreOptions,
-    isScrolled,
+    isScrolled: !!uiIsScrolled.value,
     handleLanguageChange,
     handleGenreChange,
     handleFilterClick,

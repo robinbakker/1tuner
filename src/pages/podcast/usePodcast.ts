@@ -20,6 +20,7 @@ export const usePodcast = () => {
   const [isLoading, setIsLoading] = useState(typeof window !== 'undefined');
   const [isFollowing, setIsFollowing] = useState(false);
   const [podcast, setPodcast] = useState<Podcast | null>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any)?.__PRERENDER_PODCASTS__?.find((p: Podcast) => p.id === params.id),
   );
 
@@ -134,7 +135,7 @@ export const usePodcast = () => {
     return () => {
       uiState.value = { ...uiState.value, headerTitle: '' };
     };
-  }, [params.id]);
+  }, [params.id, paramsFeedUrl, getDurationString]);
 
   const toggleFollow = () => {
     if (!podcast) return;

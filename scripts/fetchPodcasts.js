@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as dotenv from 'dotenv';
 import * as fs from 'fs/promises';
 import * as path from 'path';

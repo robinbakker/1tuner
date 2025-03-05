@@ -1,9 +1,7 @@
 import { forwardRef, InputHTMLAttributes } from 'preact/compat';
 import { cn } from '~/lib/utils';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
-
-const Input = forwardRef<HTMLInputElement, InputProps>(({ type, ...props }, ref) => {
+const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(({ type, ...props }, ref) => {
   return (
     <input
       type={type}

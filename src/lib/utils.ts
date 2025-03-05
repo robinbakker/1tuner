@@ -26,8 +26,8 @@ export const slugify = (text: string): string => {
     .replace(/\s+/g, '-') // Replace spaces with -
     .replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
     .replace(/&/g, '-and-') // Replace & with 'and'
-    .replace(/[^\w\-]+/g, '') // Remove all non-word characters
-    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .replace(/[^\w-]+/g, '') // Remove all non-word characters
+    .replace(/--+/g, '-') // Replace multiple - with single -
     .replace(/^-+/, '') // Trim - from start of text
     .replace(/-+$/, ''); // Trim - from end of text
 };
@@ -65,11 +65,11 @@ export const roundTo15Minutes = (minutes: number) => {
 
 export const getColorString = (text: string) => {
   if (!text) return 'rgba(50,50,50,.75)';
-  let idNrTxt = `${[...text].map((c) => c.charCodeAt(0)).reduce((v1, v2) => v1 + v2)}`;
-  let offset = 140;
-  let nr1 = +idNrTxt.substring(0, 2);
-  let nr2 = +idNrTxt.substring(2);
-  let r = offset + nr1 - 90,
+  const idNrTxt = `${[...text].map((c) => c.charCodeAt(0)).reduce((v1, v2) => v1 + v2)}`;
+  const offset = 140;
+  const nr1 = +idNrTxt.substring(0, 2);
+  const nr2 = +idNrTxt.substring(2);
+  const r = offset + nr1 - 90,
     g = offset - nr1 + text.length,
     b = offset + nr2;
   return `rgba(${r},${g},${b},.75)`;
