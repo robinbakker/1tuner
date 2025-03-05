@@ -98,8 +98,8 @@ export const SettingsPage = () => {
       <section class="mb-8 relative">
         <h2 class="text-2xl font-semibold">Reset</h2>
         <p class="text-muted-foreground text-sm mb-4">
-          The following button will reset all your settings backand remove listening data. It means that all data will
-          be reset to their defaults.
+          The following button will reset all your settings and remove listening data. It means that all data will be
+          reset to their defaults.
         </p>
         <Button variant={'outline'} onClick={handleResetClick}>
           <TriangleAlert class="mr-2 w-4 opacity-50" /> Reset

@@ -54,7 +54,7 @@ export const Player = () => {
 
       <div
         class={cn(
-          'h-full w-full bg-white/66 backdrop-blur-md relative',
+          'h-full w-full bg-white/66 dark:bg-stone-700/66 backdrop-blur-md relative',
           isPlayerMaximized.value
             ? 'shadow-lg backdrop-blur-2xl overscroll-none'
             : 'md:shadow-md player-minimized-backdrop',
@@ -194,9 +194,9 @@ export const Player = () => {
           <div class="flex items-center border-t border-b md:border-b-0 h-full px-4">
             <button
               onClick={() => togglePlayerMaximized()}
-              class="mr-2 p-2 hover:bg-stone-200 rounded-full transition-colors"
+              class="mr-2 p-2 hover:bg-stone-200 dark:hover:bg-stone-600 cursor-pointer rounded-full transition-colors"
             >
-              <ChevronUp class="h-6 w-6 text-stone-600" />
+              <ChevronUp class="h-6 w-6 text-stone-600 dark:text-stone-300" />
             </button>
 
             <div class="flex items-center flex-1 min-w-0">
@@ -209,7 +209,7 @@ export const Player = () => {
                 />
                 <button
                   onClick={handlePlayPause}
-                  class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-md hover:bg-black/50 transition-colors"
+                  class="absolute inset-0 flex items-center cursor-pointer justify-center bg-black/40 rounded-md hover:bg-black/50 transition-colors"
                 >
                   {playerState.value?.isPlaying ? (
                     <Pause class="h-6 w-6 text-white" />
@@ -232,20 +232,20 @@ export const Player = () => {
                   <div class="shrink-0 flex items-center">
                     <button
                       onClick={() => handleSeek(-10)}
-                      class="ml-2 p-2 rounded-full transition-colors relative group"
+                      class="ml-2 p-2 rounded-full cursor-pointer transition-colors relative group"
                       title="Rewind 10 seconds"
                     >
-                      <Rewind class="h-5 w-5 text-stone-600" />
+                      <Rewind class="h-5 w-5 text-stone-600 dark:text-stone-300" />
                       <span class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 text-[10px] text-stone-400">
                         10s
                       </span>
                     </button>
                     <button
                       onClick={() => handleSeek(30)}
-                      class="ml-1 p-2 rounded-full transition-colors relative group"
+                      class="ml-1 p-2 rounded-full cursor-pointer transition-colors relative group"
                       title="Forward 30 seconds"
                     >
-                      <FastForward class="h-5 w-5 text-stone-600" />
+                      <FastForward class="h-5 w-5 text-stone-600 dark:text-stone-300" />
                       <span class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 text-[10px] text-stone-400">
                         30s
                       </span>
@@ -255,17 +255,21 @@ export const Player = () => {
                 {isCastingAvailable && (
                   <button
                     onClick={castSession ? stopCasting : startCasting}
-                    class="ml-2 p-2 hover:bg-stone-200 rounded-full transition-colors shrink-0"
+                    class="ml-2 p-2 hover:bg-stone-200 rounded-full cursor-pointer transition-colors shrink-0"
                     title={castSession ? 'Stop casting' : 'Start casting'}
                   >
-                    {castSession ? <Cast class="h-6 w-6 text-primary" /> : <Cast class="h-6 w-6 text-stone-600" />}
+                    {castSession ? (
+                      <Cast class="h-6 w-6 text-primary" />
+                    ) : (
+                      <Cast class="h-6 w-6 text-stone-600 dark:text-stone-300" />
+                    )}
                   </button>
                 )}
                 <button
                   onClick={handleClose}
-                  class="ml-2 mr-4 p-2 hover:bg-stone-200 rounded-full transition-colors shrink-0"
+                  class="ml-2 mr-4 p-2 hover:bg-stone-200 dark:hover:bg-stone-600 cursor-pointer rounded-full transition-colors shrink-0"
                 >
-                  <X class="h-6 w-6 text-stone-600" />
+                  <X class="h-6 w-6 text-stone-600 dark:text-stone-300" />
                 </button>
               </div>
             </div>

@@ -79,7 +79,7 @@ export const PodcastPage = () => {
                     variant="outline"
                     styleSize="icon"
                     class={cn(
-                      'border-stone-300 group-hover:bg-primary group-hover:border-primary',
+                      'border-stone-300 hover:bg-primary group-hover:bg-primary group-hover:border-primary',
                       'group-hover:text-primary-foreground hover:text-primary-foreground transition-colors',
                     )}
                   >

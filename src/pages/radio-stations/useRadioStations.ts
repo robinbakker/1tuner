@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'preact/hooks';
+import { useCallback, useMemo, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import {
   clearLastRadioSearchResult,
@@ -40,7 +40,7 @@ export const useRadioStations = () => {
         const matchesGenre = !selectedGenres.length || selectedGenres.some((g) => station.genres.includes(g));
         return matchesSearch && matchesCountry && matchesGenre;
       }),
-    [selectedGenres, selectedCountries],
+    [lastRadioSearchResult.value?.query, selectedGenres, selectedCountries],
   );
 
   const languageOptions = useMemo(
@@ -67,14 +67,14 @@ export const useRadioStations = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const onSearchInput = (event: InputEvent) => {
+  const onSearchInput = useCallback((event: InputEvent) => {
     const searchInput = (event.target as HTMLInputElement).value;
     if (searchInput.trim()) {
       setLastRadioSearchResult(searchInput, []);
     } else {
       clearLastRadioSearchResult();
     }
-  };
+  }, []);
 
   return {
     searchTerm: lastRadioSearchResult.value?.query || '',

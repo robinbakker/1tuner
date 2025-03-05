@@ -20,11 +20,11 @@ export function ShareButton({ hasDarkBackground }: { hasDarkBackground: boolean 
     <button
       onClick={handleShare}
       class={cn(
-        'p-2 rounded-full  transition-colors duration-200',
-        hasDarkBackground ? 'hover:bg-stone-200/20' : 'hover:bg-stone-200',
+        'p-2 rounded-full cursor-pointer transition-colors duration-200',
+        hasDarkBackground ? 'hover:bg-stone-200/20' : 'hover:bg-stone-200 dark:hover:bg-stone-600',
       )}
     >
-      <Share2 class={cn('h-6 w-6', hasDarkBackground ? 'text-white' : 'text-stone-600')} />
+      <Share2 class={cn('h-6 w-6', hasDarkBackground && 'text-white')} />
     </button>
   );
 }

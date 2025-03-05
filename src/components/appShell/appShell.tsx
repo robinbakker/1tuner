@@ -194,7 +194,7 @@ export const AppShell = ({ children }: AppShellProps) => {
         {!!uiState.value?.headerTitle && (
           <>
             <header
-              class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 backdrop-blur-md shadow-md app-shell-header' : 'bg-transparent'}`}
+              class={`sticky top-0 z-20 transition-all duration-300 ${isScrolled ? 'bg-white/33 dark:bg-stone-600/33 backdrop-blur-md shadow-md app-shell-header' : 'bg-transparent'}`}
             >
               <div class="flex items-center justify-between p-4">
                 {!isMainRoute && (
