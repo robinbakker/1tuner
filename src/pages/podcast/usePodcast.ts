@@ -46,14 +46,14 @@ export const usePodcast = () => {
     return getTimeStringFromSeconds(+duration);
   }, []);
 
-  useEffect(() => {
-    const fetchPodcastData = async () => {
+  const fetchPodcastData = useCallback(
+    async (skipCache = false) => {
       if (!params.id) return;
 
       setIsLoading(true);
       let podcastData = getPodcast(params.id);
 
-      if (!podcastData || Date.now() - podcastData.lastFetched > 24 * 60 * 60 * 1000) {
+      if (!podcastData || skipCache || Date.now() - podcastData.lastFetched > 24 * 60 * 60 * 1000) {
         try {
           let response: Response;
           let xmlData: string;
@@ -126,8 +126,11 @@ export const usePodcast = () => {
       }
 
       setIsLoading(false);
-    };
+    },
+    [uiState.value, getDurationString, params.id, paramsFeedUrl],
+  );
 
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       fetchPodcastData();
     }
@@ -135,7 +138,7 @@ export const usePodcast = () => {
     return () => {
       uiState.value = { ...uiState.value, headerTitle: '' };
     };
-  }, [params.id, paramsFeedUrl, getDurationString]);
+  }, [params.id, paramsFeedUrl, getDurationString, fetchPodcastData]);
 
   const toggleFollow = () => {
     if (!podcast) return;
@@ -166,6 +169,11 @@ export const usePodcast = () => {
     [podcast, params.id, params.name],
   );
 
+  const handleFetchNewEpisodes = async () => {
+    if (isLoading) return;
+    fetchPodcastData(true);
+  };
+
   return {
     params,
     isLoading,
@@ -173,5 +181,6 @@ export const usePodcast = () => {
     isFollowing,
     toggleFollow,
     handleEpisodeClick,
+    handleFetchNewEpisodes,
   };
 };

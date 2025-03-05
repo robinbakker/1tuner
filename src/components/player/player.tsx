@@ -8,7 +8,7 @@ import { usePlayer } from './usePlayer';
 export const Player = () => {
   const {
     audioRef,
-    currentTimeRef,
+    currentTime,
     currentTimeDisplayRef,
     progressBarRef,
     sliderRef,
@@ -133,13 +133,13 @@ export const Player = () => {
                     </div>
                     <div class="w-full px-6 mb-6">
                       <div class="flex items-center space-x-2 text-sm text-stone-500">
-                        <span ref={currentTimeDisplayRef}>{formatTime(currentTimeRef.current)}</span>
+                        <span ref={currentTimeDisplayRef}>{formatTime(currentTime.value)}</span>
                         <input
                           ref={sliderRef}
                           type="range"
                           min="0"
                           max={duration || 0}
-                          value={currentTimeRef.current}
+                          value={currentTime.value}
                           onChange={handleSliderChange}
                           class={cn(
                             'flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-stone-300 dark:bg-stone-600',

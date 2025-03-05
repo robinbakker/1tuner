@@ -13,18 +13,16 @@ import { useCastApi } from './useCastApi';
 export const playbackRateSignal = signal(1);
 export const durationSignal = signal(0);
 export const audioSourcesSignal = computed(() => playerState.value?.streams || []);
+export const currentTime = signal(0);
 
 export const usePlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const currentTimeRef = useRef(0);
   const currentTimeDisplayRef = useRef<HTMLSpanElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLInputElement>(null);
-  const reconnectAttempts = useRef(0);
   const reconnectTimeout = useRef<NodeJS.Timeout>();
-  // const [playbackRate, setPlaybackRate] = useState(1);
-  // const [audioSources, setAudioSources] = useState<Stream[]>([]);
-  // const [duration, setDuration] = useState(0);
+  const reconnectAttempts = signal(0);
+
   const {
     isCastingAvailable,
     startCasting,
@@ -39,7 +37,7 @@ export const usePlayer = () => {
   const isPodcast = playerState.value?.playType === 'podcast';
   const isPlaylist = playerState.value?.playType === 'playlist';
   const playlistUrl = isPlaylist ? playerState.value?.pageLocation : undefined;
-  const progressPercentage = useComputed(() => (currentTimeRef.current / durationSignal.value) * 100);
+  const progressPercentage = useComputed(() => (currentTime.value / durationSignal.value) * 100);
 
   useSignalEffect(() => {
     let playlistInterval: NodeJS.Timeout;
@@ -68,8 +66,8 @@ export const usePlayer = () => {
 
   const updateTimeUI = useCallback(() => {
     const audio = audioRef.current;
-    if (!audio || !audioSourcesSignal.value) return;
-    currentTimeRef.current = audio.currentTime;
+    if (!audio || !playerState.value?.streams) return;
+    currentTime.value = audio.currentTime;
 
     requestAnimationFrame(() => {
       if (currentTimeDisplayRef.current) {
@@ -83,7 +81,7 @@ export const usePlayer = () => {
         sliderRef.current.style.backgroundImage = `linear-gradient(to right, #ff6000 ${progressPercentage.value}%, #ccc ${progressPercentage.value}%)`;
       }
     });
-  }, [progressPercentage, formatTime]);
+  }, [playerState.value?.streams, progressPercentage, formatTime]);
 
   const handleSeek = useCallback(
     (seconds: number) => {
@@ -130,7 +128,6 @@ export const usePlayer = () => {
   }, [playerState.value, isPodcast]);
 
   const handlePlayPause = useCallback(() => {
-    console.log('handlePlayPause called');
     if (!playerState.value) return;
     const newIsPlaying = !playerState.value.isPlaying;
 
@@ -148,8 +145,6 @@ export const usePlayer = () => {
       };
 
       if (newIsPlaying) {
-        console.log(audioRef.current.childNodes);
-        console.log('Playing audio', audioRef.current);
         audioRef.current.play().catch((error) => {
           console.error('Error playing audio:', error);
           playerState.value = {
@@ -168,10 +163,10 @@ export const usePlayer = () => {
     if (reconnectTimeout.current) {
       clearTimeout(reconnectTimeout.current);
     }
-    reconnectAttempts.current = 0;
+    reconnectAttempts.value = 0;
     playerState.value = null;
     isPlayerMaximized.value = false;
-  }, [setToPaused]);
+  }, [reconnectAttempts, setToPaused]);
 
   const handleSliderChange = useCallback(
     (e: Event) => {
@@ -225,14 +220,14 @@ export const usePlayer = () => {
     };
 
     const attemptReconnect = () => {
-      if (reconnectAttempts.current >= maxReconnectAttempts) {
+      if (reconnectAttempts.value >= maxReconnectAttempts) {
         console.log('Max reconnect attempts reached');
         addToast({
           title: '😢 Reconnect failed...',
           description: 'Failed to reconnect to the stream',
           variant: 'error',
         });
-        reconnectAttempts.current = 0;
+        reconnectAttempts.value = 0;
         playerState.value = playerState.value
           ? {
               ...playerState.value,
@@ -242,8 +237,8 @@ export const usePlayer = () => {
         return;
       }
 
-      reconnectAttempts.current += 1;
-      console.log(`Reconnect attempt ${reconnectAttempts.current}/${maxReconnectAttempts}`);
+      reconnectAttempts.value += 1;
+      console.log(`Reconnect attempt ${reconnectAttempts.value}/${maxReconnectAttempts}`);
       addToast({
         title: '🛜 Reconnecting...',
         description: `There was an issue with the stream. Attempting to reconnect...`,
@@ -254,7 +249,7 @@ export const usePlayer = () => {
         clearTimeout(reconnectTimeout.current);
       }
 
-      const timeout = reconnectUtil.getReconnectTimeoutMs(reconnectAttempts.current, maxReconnectAttempts);
+      const timeout = reconnectUtil.getReconnectTimeoutMs(reconnectAttempts.value, maxReconnectAttempts);
 
       reconnectTimeout.current = setTimeout(() => {
         if (!audio || !playerState.value?.isPlaying) return;
@@ -266,7 +261,7 @@ export const usePlayer = () => {
           playPromise
             .then(() => {
               console.log('Reconnect successful');
-              reconnectAttempts.current = 0;
+              reconnectAttempts.value = 0;
             })
             .catch((error) => {
               console.log('Reconnect failed:', error);
@@ -276,21 +271,19 @@ export const usePlayer = () => {
       }, timeout);
     };
 
-    const handlePlaying = () => (reconnectAttempts.current = 0);
+    const handlePlaying = () => (reconnectAttempts.value = 0);
 
-    //audio.addEventListener('stalled', handleStalled);
     audio.addEventListener('error', handleError);
     audio.addEventListener('playing', handlePlaying);
 
     return () => {
-      //audio.removeEventListener('stalled', handleStalled);
       audio.removeEventListener('error', handleError);
       audio.removeEventListener('playing', handlePlaying);
       if (reconnectTimeout.current) {
         clearTimeout(reconnectTimeout.current);
       }
     };
-  }, [playerState.value, maxReconnectAttempts]);
+  }, [playerState.value, reconnectAttempts.value, maxReconnectAttempts]);
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -369,7 +362,7 @@ export const usePlayer = () => {
     if (isPodcast) {
       navigator.mediaSession.setPositionState({
         duration: durationSignal.value,
-        position: currentTimeRef.current,
+        position: currentTime.value,
         playbackRate: playbackRateSignal.value,
       });
     }
@@ -382,11 +375,11 @@ export const usePlayer = () => {
       navigator.mediaSession.setActionHandler('nexttrack', null);
       navigator.mediaSession.setActionHandler('seekto', null);
     };
-  }, [playerState.value, isPodcast, handlePlayPause, handleSeek, updateTimeUI]);
+  }, [playerState.value, currentTime.value, isPodcast, handlePlayPause, handleSeek, updateTimeUI]);
 
   return {
     audioRef,
-    currentTimeRef,
+    currentTime,
     currentTimeDisplayRef,
     progressBarRef,
     sliderRef,

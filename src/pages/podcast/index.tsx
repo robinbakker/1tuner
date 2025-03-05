@@ -1,4 +1,4 @@
-import { Bookmark, Play } from 'lucide-preact';
+import { Bookmark, Play, RefreshCw } from 'lucide-preact';
 import { useLocation } from 'preact-iso';
 import { Loader } from '~/components/loader';
 import { Badge } from '~/components/ui/badge';
@@ -8,7 +8,8 @@ import { usePodcast } from './usePodcast';
 
 export const PodcastPage = () => {
   const { route } = useLocation();
-  const { params, isLoading, podcast, isFollowing, toggleFollow, handleEpisodeClick } = usePodcast();
+  const { params, isLoading, podcast, isFollowing, toggleFollow, handleEpisodeClick, handleFetchNewEpisodes } =
+    usePodcast();
 
   if (typeof window !== 'undefined' && !params.id) {
     route('/podcasts');
@@ -43,10 +44,24 @@ export const PodcastPage = () => {
               </Badge>
             ))}
           </div>
-          <Button onClick={toggleFollow} variant={isFollowing ? 'secondary' : 'default'}>
-            <Bookmark class={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />
-            {isFollowing ? 'Following' : 'Follow'}
-          </Button>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <Button onClick={toggleFollow} variant={isFollowing ? 'secondary' : 'default'}>
+              <Bookmark class={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />
+              {isFollowing ? 'Following' : 'Follow'}
+            </Button>
+            <Button onClick={handleFetchNewEpisodes} variant={'link'}>
+              <RefreshCw class="mr-2 h-4 w-4" />
+              <time dateTime={new Date(podcast.lastFetched).toJSON()} class="text-muted-foreground text-sm">
+                {new Date(podcast.lastFetched).toLocaleDateString(undefined, {
+                  month: 'short',
+                  day: 'numeric',
+                  weekday: 'long',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                })}
+              </time>
+            </Button>
+          </div>
         </div>
       </header>
       <section>
