@@ -26,87 +26,89 @@ export const PodcastPage = () => {
 
   return (
     <div class="container mx-auto p-4">
-      <header class="mb-8 flex flex-col md:flex-row gap-6">
-        <img
-          src={podcast.imageUrl}
-          alt={`${podcast.title} Podcast`}
-          width={200}
-          height={200}
-          class="w-48 h-48 rounded-lg"
-        />
-        <div class="flex-1">
-          <h1 class="text-4xl font-bold mb-2">{podcast.title}</h1>
-          <p class="text-stone-600 mb-4">{stripHtml(podcast.description)}</p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            {podcast?.categories?.map((category, index) => (
-              <Badge key={index} variant="secondary">
-                {category}
-              </Badge>
+      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8">
+        <header class="mb-4 lg:mb-0 lg:sticky lg:top-24 lg:self-start lg:h-[calc(100vh-2rem)]">
+          <img
+            src={podcast.imageUrl}
+            alt={`${podcast.title} Podcast`}
+            width={200}
+            height={200}
+            class="w-48 h-48 mb-4 lg:w-full lg:mb-6 lg:h-auto rounded-lg object-cover"
+          />
+          <div class="flex-1">
+            <h1 class="text-4xl font-bold mb-2">{podcast.title}</h1>
+            <p class="text-stone-600 mb-4 lg:max-h-[30vh] overflow-y-auto">{stripHtml(podcast.description)}</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              {podcast?.categories?.map((category, index) => (
+                <Badge key={index} variant="secondary">
+                  {category}
+                </Badge>
+              ))}
+            </div>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <Button onClick={toggleFollow} variant={isFollowing ? 'secondary' : 'default'}>
+                <Bookmark class={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />
+                {isFollowing ? 'Following' : 'Follow'}
+              </Button>
+              <Button onClick={handleFetchNewEpisodes} variant={'link'}>
+                <RefreshCw class="mr-2 h-4 w-4" />
+                <time dateTime={new Date(podcast.lastFetched).toJSON()} class="text-muted-foreground text-sm">
+                  {new Date(podcast.lastFetched).toLocaleDateString(undefined, {
+                    month: 'short',
+                    day: 'numeric',
+                    weekday: 'long',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })}
+                </time>
+              </Button>
+            </div>
+          </div>
+        </header>
+        <section>
+          <div class="space-y-6">
+            {podcast.episodes?.map((episode, i) => (
+              <div key={`ep-${episode.pubDate}-${i}`} class="border-b border-stone-200 pb-6">
+                <div class="flex group items-center justify-between mb-2">
+                  <div class={'cursor-pointer'} onClick={() => handleEpisodeClick(episode)}>
+                    <h3 class="text-xl font-medium group-hover:text-primary transition-colors">
+                      {episode.title}{' '}
+                      <span class="text-muted-foreground font-normal text-sm">
+                        ({episode.duration}
+                        {episode.currentTime ? ` - ${getTimeStringFromSeconds(episode.currentTime)}` : ''})
+                      </span>
+                    </h3>
+                    <p class="text-muted-foreground text-sm">
+                      <time dateTime={episode.pubDate.toJSON()}>
+                        {episode.pubDate.toLocaleDateString(undefined, {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          weekday: 'long',
+                        })}
+                      </time>
+                    </p>
+                  </div>
+                  <div>
+                    <Button
+                      onClick={() => handleEpisodeClick(episode)}
+                      variant="outline"
+                      styleSize="icon"
+                      class={cn(
+                        'border-stone-300 hover:bg-primary group-hover:bg-primary group-hover:border-primary',
+                        'group-hover:text-primary-foreground hover:text-primary-foreground transition-colors',
+                      )}
+                    >
+                      <Play class="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                <p class="text-stone-600 break-words mb-4">{stripHtml(episode.description)}</p>
+              </div>
             ))}
           </div>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <Button onClick={toggleFollow} variant={isFollowing ? 'secondary' : 'default'}>
-              <Bookmark class={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />
-              {isFollowing ? 'Following' : 'Follow'}
-            </Button>
-            <Button onClick={handleFetchNewEpisodes} variant={'link'}>
-              <RefreshCw class="mr-2 h-4 w-4" />
-              <time dateTime={new Date(podcast.lastFetched).toJSON()} class="text-muted-foreground text-sm">
-                {new Date(podcast.lastFetched).toLocaleDateString(undefined, {
-                  month: 'short',
-                  day: 'numeric',
-                  weekday: 'long',
-                  hour: 'numeric',
-                  minute: 'numeric',
-                })}
-              </time>
-            </Button>
-          </div>
-        </div>
-      </header>
-      <section>
-        <div class="space-y-6">
-          {podcast.episodes?.map((episode, i) => (
-            <div key={`ep-${episode.pubDate}-${i}`} class="border-b border-stone-200 pb-6">
-              <div class="flex group items-center justify-between mb-2">
-                <div class={'cursor-pointer'} onClick={() => handleEpisodeClick(episode)}>
-                  <h3 class="text-xl font-medium group-hover:text-primary transition-colors">
-                    {episode.title}{' '}
-                    <span class="text-muted-foreground font-normal text-sm">
-                      ({episode.duration}
-                      {episode.currentTime ? ` - ${getTimeStringFromSeconds(episode.currentTime)}` : ''})
-                    </span>
-                  </h3>
-                  <p class="text-muted-foreground text-sm">
-                    <time dateTime={episode.pubDate.toJSON()}>
-                      {episode.pubDate.toLocaleDateString(undefined, {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        weekday: 'long',
-                      })}
-                    </time>
-                  </p>
-                </div>
-                <div>
-                  <Button
-                    onClick={() => handleEpisodeClick(episode)}
-                    variant="outline"
-                    styleSize="icon"
-                    class={cn(
-                      'border-stone-300 hover:bg-primary group-hover:bg-primary group-hover:border-primary',
-                      'group-hover:text-primary-foreground hover:text-primary-foreground transition-colors',
-                    )}
-                  >
-                    <Play class="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-              <p class="text-stone-600 break-words mb-4">{stripHtml(episode.description)}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 };

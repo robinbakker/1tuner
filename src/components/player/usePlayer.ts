@@ -362,7 +362,7 @@ export const usePlayer = () => {
     if (isPodcast) {
       navigator.mediaSession.setPositionState({
         duration: durationSignal.value,
-        position: currentTime.value,
+        position: audioRef.current.currentTime,
         playbackRate: playbackRateSignal.value,
       });
     }
@@ -375,7 +375,7 @@ export const usePlayer = () => {
       navigator.mediaSession.setActionHandler('nexttrack', null);
       navigator.mediaSession.setActionHandler('seekto', null);
     };
-  }, [playerState.value, currentTime.value, isPodcast, handlePlayPause, handleSeek, updateTimeUI]);
+  }, [playerState.value, isPodcast, handlePlayPause, handleSeek, updateTimeUI]);
 
   return {
     audioRef,
