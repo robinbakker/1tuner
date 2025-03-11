@@ -127,7 +127,7 @@ export const usePodcast = () => {
 
       setIsLoading(false);
     },
-    [uiState.value, getDurationString, params.id, paramsFeedUrl],
+    [getDurationString, params.id, paramsFeedUrl],
   );
 
   useEffect(() => {
@@ -171,6 +171,7 @@ export const usePodcast = () => {
 
   const handleFetchNewEpisodes = async () => {
     if (isLoading) return;
+    setIsLoading(true);
     fetchPodcastData(true);
   };
 

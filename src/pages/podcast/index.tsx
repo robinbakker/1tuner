@@ -13,10 +13,10 @@ export const PodcastPage = () => {
 
   if (typeof window !== 'undefined' && !params.id) {
     route('/podcasts');
-    return <></>;
+    return null;
   }
 
-  if (isLoading) {
+  if (isLoading && !podcast) {
     return <Loader />;
   }
 
@@ -25,19 +25,19 @@ export const PodcastPage = () => {
   }
 
   return (
-    <div class="container mx-auto p-4">
-      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8">
-        <header class="mb-4 lg:mb-0 lg:sticky lg:top-24 lg:self-start lg:h-[calc(100vh-2rem)]">
+    <div class="container @container mx-auto p-4">
+      <div class="grid grid-cols-1 @md:grid-cols-[16rem_1fr] @lg:grid-cols-[20rem_1fr] gap-8">
+        <header class="mb-4 @md:mb-0 @md:sticky @md:top-24 @md:self-start @md:h-[calc(100vh-2rem)]">
           <img
             src={podcast.imageUrl}
-            alt={`${podcast.title} Podcast`}
+            alt={podcast.title}
             width={200}
             height={200}
-            class="w-48 h-48 mb-4 lg:w-full lg:mb-6 lg:h-auto rounded-lg object-cover"
+            class="w-48 h-48 mb-4 @md:w-full @md:mb-6 @md:h-auto rounded-lg object-cover"
           />
           <div class="flex-1">
             <h1 class="text-4xl font-bold mb-2">{podcast.title}</h1>
-            <p class="text-stone-600 mb-4 lg:max-h-[30vh] overflow-y-auto">{stripHtml(podcast.description)}</p>
+            <p class="text-stone-600 mb-4 @max-h-[30vh] overflow-y-auto">{stripHtml(podcast.description)}</p>
             <div class="flex flex-wrap gap-2 mb-4">
               {podcast?.categories?.map((category, index) => (
                 <Badge key={index} variant="secondary">
@@ -45,18 +45,18 @@ export const PodcastPage = () => {
                 </Badge>
               ))}
             </div>
-            <div class="flex flex-wrap gap-2 mb-4">
+            <div class="flex flex-wrap justify-between gap mb-4">
               <Button onClick={toggleFollow} variant={isFollowing ? 'secondary' : 'default'}>
                 <Bookmark class={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />
                 {isFollowing ? 'Following' : 'Follow'}
               </Button>
               <Button onClick={handleFetchNewEpisodes} variant={'link'}>
-                <RefreshCw class="mr-2 h-4 w-4" />
+                <RefreshCw class={`mr-2 h-4 w-${isLoading ? ' animate-spin' : ''}`} />
                 <time dateTime={new Date(podcast.lastFetched).toJSON()} class="text-muted-foreground text-sm">
-                  {new Date(podcast.lastFetched).toLocaleDateString(undefined, {
+                  {new Date(podcast.lastFetched).toLocaleDateString(navigator.language, {
                     month: 'short',
                     day: 'numeric',
-                    weekday: 'long',
+                    weekday: 'short',
                     hour: 'numeric',
                     minute: 'numeric',
                   })}
@@ -80,7 +80,7 @@ export const PodcastPage = () => {
                     </h3>
                     <p class="text-muted-foreground text-sm">
                       <time dateTime={episode.pubDate.toJSON()}>
-                        {episode.pubDate.toLocaleDateString(undefined, {
+                        {episode.pubDate.toLocaleDateString(navigator.language, {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric',
@@ -103,7 +103,7 @@ export const PodcastPage = () => {
                     </Button>
                   </div>
                 </div>
-                <p class="text-stone-600 break-words mb-4">{stripHtml(episode.description)}</p>
+                <p class="text-stone-600 break-words [word-break:break-word] mb-4">{stripHtml(episode.description)}</p>
               </div>
             ))}
           </div>
