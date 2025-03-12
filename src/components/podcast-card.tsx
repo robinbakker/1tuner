@@ -15,7 +15,7 @@ export const PodcastCard = ({ podcast, size }: Props) => {
           <CardContent class="flex items-start space-x-4 p-4">
             <img src={podcast.imageUrl} alt={podcast.title} class="w-24 h-24 object-cover shrink-0 rounded-md" />
             <div class="flex-1  min-w-0">
-              <h3 class="font-bold text-foreground leading-5 group-hover:text-primary text-lg transition-colors duration-500 mb-2 break-words">
+              <h3 class="font-bold text-foreground leading-5 group-hover:text-primary text-lg transition-colors duration-500 mb-2 break-words line-clamp-2">
                 {podcast.title}
               </h3>
               <p class="text-sm text-stone-600 line-clamp-2">{stripHtml(podcast.description)}</p>

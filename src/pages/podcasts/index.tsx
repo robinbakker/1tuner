@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Search } from 'lucide-preact';
 import { useCallback } from 'preact/hooks';
+import { ContentSection } from '~/components/content-section';
 import { Loader } from '~/components/loader';
 import { PodcastCard } from '~/components/podcast-card';
 import { Input } from '~/components/ui/input';
@@ -13,19 +14,31 @@ export const PodcastsPage = () => {
   const { isLoading, isScrolled, searchTerm, setSearchTerm, searchResults } = usePodcasts();
 
   const renderPodcastList = useCallback(
-    (podcasts: Podcast[] | undefined, title: string) => {
+    (podcasts: Podcast[] | undefined, title: string, nrToSmall?: number) => {
       if (isLoading) return <div>Loading...</div>;
       if (!podcasts?.length) return null;
       const slugTitle = slugify(title);
+      if (podcasts.length <= (nrToSmall || 999)) {
+        return (
+          <ContentSection title={title} hasNoPadding>
+            <div class="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-6 mb-8">
+              {podcasts.map((podcast) => (
+                <PodcastCard key={`${slugTitle}-${podcast.id}`} size="large" podcast={podcast} />
+              ))}
+            </div>
+          </ContentSection>
+        );
+      }
       return (
-        <>
-          <h2 class="text-xl opacity-60 font-semibold mb-4">{title}</h2>
-          <div class="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-6 mb-8">
+        <ContentSection title={title} isScrollable hasNoPadding>
+          <ul class="flex gap-6 md:gap-10">
             {podcasts.map((podcast) => (
-              <PodcastCard key={`${slugTitle}-${podcast.id}`} size="large" podcast={podcast} />
+              <li class="shrink-0">
+                <PodcastCard key={`${slugTitle}-${podcast.id}`} podcast={podcast} />
+              </li>
             ))}
-          </div>
-        </>
+          </ul>
+        </ContentSection>
       );
     },
     [isLoading],
@@ -44,7 +57,8 @@ export const PodcastsPage = () => {
             <div class="relative">
               <h1
                 class={cn(
-                  'text-3xl font-bold transform-gpu transition-transform origin-bottom-left duration-200 pr-12 md:pr-0',
+                  'text-3xl font-bold transform-gpu transition-transform',
+                  'origin-bottom-left duration-200 pr-12 md:pr-0',
                   isScrolled ? 'scale-[0.833]' : 'scale-100',
                 )}
               >
@@ -69,7 +83,7 @@ export const PodcastsPage = () => {
           </div>
         </div>
       </div>
-      <div class="container mx-auto px-8">
+      <div class="container @container mx-auto px-8">
         {typeof window === 'undefined' && (globalThis as any).__PRERENDER_PODCASTS__ && (
           <>{renderPodcastList((globalThis as any).__PRERENDER_PODCASTS__, 'Podcasts')}</>
         )}
@@ -81,8 +95,33 @@ export const PodcastsPage = () => {
               renderPodcastList(searchResults, 'Search Results')
             ) : (
               <>
-                {renderPodcastList(followedPodcasts.value, 'Following')}
-                {renderPodcastList(recentlyVisitedPodcasts.value, 'Last visited')}
+                {renderPodcastList(
+                  [...followedPodcasts.value].sort((a, b) => {
+                    const aIndex = recentlyVisitedPodcasts.value.findIndex((p) => p.id === a.id);
+                    const bIndex = recentlyVisitedPodcasts.value.findIndex((p) => p.id === b.id);
+
+                    // If both podcasts are in recently visited
+                    if (aIndex !== -1 && bIndex !== -1) {
+                      return aIndex - bIndex;
+                    }
+                    // If only a is in recently visited
+                    if (aIndex !== -1) {
+                      return -1;
+                    }
+                    // If only b is in recently visited
+                    if (bIndex !== -1) {
+                      return 1;
+                    }
+                    // If neither is in recently visited, maintain original order
+                    return 0;
+                  }),
+                  'Following',
+                  2,
+                )}
+                {renderPodcastList(
+                  recentlyVisitedPodcasts.value.filter((p) => !followedPodcasts.value.some((fp) => fp.id === p.id)),
+                  'Last visited',
+                )}
               </>
             )}
           </>

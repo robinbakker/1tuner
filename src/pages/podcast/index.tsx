@@ -26,7 +26,7 @@ export const PodcastPage = () => {
 
   return (
     <div class="container @container mx-auto p-4">
-      <div class="grid grid-cols-1 @md:grid-cols-[16rem_1fr] @lg:grid-cols-[20rem_1fr] gap-8">
+      <div class="grid grid-cols-1 @md:grid-cols-[16rem_1fr] @5xl:grid-cols-[20rem_1fr] gap-8">
         <header class="mb-4 @md:mb-0 @md:sticky @md:top-24 @md:self-start @md:h-[calc(100vh-2rem)]">
           <img
             src={podcast.imageUrl}
@@ -36,7 +36,7 @@ export const PodcastPage = () => {
             class="w-48 h-48 mb-4 @md:w-full @md:mb-6 @md:h-auto rounded-lg object-cover"
           />
           <div class="flex-1">
-            <h1 class="text-4xl font-bold mb-2">{podcast.title}</h1>
+            <h1 class="text-2xl @5xl:text-3xl font-bold mb-2">{podcast.title}</h1>
             <p class="text-stone-600 mb-4 @max-h-[30vh] overflow-y-auto">{stripHtml(podcast.description)}</p>
             <div class="flex flex-wrap gap-2 mb-4">
               {podcast?.categories?.map((category, index) => (
