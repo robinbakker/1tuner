@@ -1,5 +1,5 @@
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
-import { playerState } from '../signals/player';
+import { isPlayerMaximized, playerState } from '../signals/player';
 import { playlists } from '../signals/playlist';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../signals/podcast';
 import { followedRadioStationIDs, recentlyVisitedRadioStationIDs } from '../signals/radio';
@@ -14,9 +14,10 @@ enum StoreName {
   Playlists = 'playlists',
   PlayerState = 'playerState',
   SettingsState = 'settingsState',
+  IsPlayerMaximized = 'isPlayerMaximized',
 }
 
-type DBData = Podcast[] | Playlist[] | string[] | PlayerState | SettingsState | null;
+type DBData = Podcast[] | Playlist[] | string[] | PlayerState | SettingsState | boolean | null;
 interface TunerDB extends DBSchema {
   followedPodcasts: {
     key: StoreName.FollowedPodcasts;
@@ -46,11 +47,15 @@ interface TunerDB extends DBSchema {
     key: StoreName.SettingsState;
     value: SettingsState | null;
   };
+  isPlayerMaximized: {
+    key: StoreName.IsPlayerMaximized;
+    value: boolean;
+  };
 }
 
 const dbPromise =
   typeof window !== 'undefined'
-    ? openDB<TunerDB>('1tuner', 3, {
+    ? openDB<TunerDB>('1tuner', 4, {
         upgrade(db) {
           const stores = Object.values(StoreName) as StoreName[];
 
@@ -84,6 +89,7 @@ export async function loadStateFromDB() {
   const dbPlaylists = (await getFromDB<Playlist[]>(db, StoreName.Playlists)) || [];
   const dbPlayerState = (await getFromDB<PlayerState>(db, StoreName.PlayerState)) || null;
   const dbSettingsState = (await getFromDB<SettingsState>(db, StoreName.SettingsState)) || ({} as SettingsState);
+  const dbIsPlayerMaximized = (await getFromDB<boolean>(db, StoreName.IsPlayerMaximized)) || false;
   followedPodcasts.value = dbFollowedPodcasts;
   recentlyVisitedPodcasts.value = dbRecentlyVisitedPodcasts;
   followedRadioStationIDs.value = dbFollowedRadioStationIDs;
@@ -91,6 +97,7 @@ export async function loadStateFromDB() {
   playlists.value = dbPlaylists;
   playerState.value = dbPlayerState;
   settingsState.value = dbSettingsState;
+  isPlayerMaximized.value = dbIsPlayerMaximized;
 }
 
 const putToDB = async (db: IDBPDatabase<TunerDB> | null, storeName: StoreName, data: DBData): Promise<void> => {
@@ -109,6 +116,7 @@ export async function saveStateToDB() {
     await putToDB(db, StoreName.Playlists, playlists.value);
     await putToDB(db, StoreName.PlayerState, { ...playerState.value, isPlaying: false } as DBData); // Stop playing when saving state to DB.
     await putToDB(db, StoreName.SettingsState, settingsState.value);
+    await putToDB(db, StoreName.IsPlayerMaximized, isPlayerMaximized.value);
   } catch (error) {
     console.error('Error saving state to DB:', error);
   }

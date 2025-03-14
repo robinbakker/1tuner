@@ -180,6 +180,8 @@ export const usePodcast = () => {
     isLoading,
     podcast,
     isFollowing,
+    nowPlaying:
+      playerState.value?.playType === 'podcast' && playerState.value.contentID === params.id ? playerState.value : null,
     toggleFollow,
     handleEpisodeClick,
     handleFetchNewEpisodes,

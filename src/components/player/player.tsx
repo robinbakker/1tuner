@@ -90,7 +90,7 @@ export const Player = () => {
                   <img
                     src={playerState.value?.imageUrl}
                     alt={playerState.value?.title}
-                    class={`w-48 h-48${isPodcast ? '' : ' rounded-full'}`}
+                    class={`w-48 h-48 ${isPodcast ? 'rounded-lg' : 'rounded-full'}`}
                   />
                 </div>
                 <div class="text-center w-full">

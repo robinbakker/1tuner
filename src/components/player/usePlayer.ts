@@ -113,7 +113,7 @@ export const usePlayer = () => {
   );
 
   const setToPaused = useCallback(() => {
-    if (!audioRef.current || !playerState.value) return;
+    if (!audioRef.current || !audioRef.current.currentTime || !playerState.value) return;
     audioRef.current.pause();
     if (isPodcast) {
       updatePodcastEpisodeCurrentTime(
@@ -121,6 +121,7 @@ export const usePlayer = () => {
         playerState.value.streams?.[0]?.url || '',
         audioRef.current.currentTime,
       );
+      currentTime.value = audioRef.current.currentTime;
       saveStateToDB();
     } else {
       audioRef.current.currentTime = 0;
@@ -189,7 +190,7 @@ export const usePlayer = () => {
       audioRef.current.load();
     }
 
-    if (playerState.value.currentTime) {
+    if (!audioRef.current.currentTime && playerState.value.currentTime) {
       audioRef.current.currentTime = playerState.value.currentTime;
     }
 
