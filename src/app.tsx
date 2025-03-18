@@ -14,14 +14,20 @@ import { RadioStationsPage } from './pages/radio-stations';
 import { SettingsPage } from './pages/settings';
 import { DatabaseProvider } from './store/db/DatabaseContext';
 import { useDB } from './store/db/db';
+import { migrateOldData } from './store/db/migration';
 import { isPlayerMaximized } from './store/signals/player';
 
 export function App() {
   const db = useDB();
 
   useEffect(() => {
-    console.log('Loading state from DB...');
-    db.loadStateFromDB();
+    async function initializeApp() {
+      await migrateOldData();
+      console.log('Loading state from DB...');
+      await db.loadStateFromDB();
+    }
+
+    initializeApp();
 
     const handleBeforeUnload = () => {
       console.log('Saving state to DB...');

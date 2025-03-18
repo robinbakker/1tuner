@@ -127,7 +127,7 @@ export const usePlaylists = () => {
         stationPercentages: getPercentagePerStation(p.items, stations),
       };
     });
-  }, [getPercentagePerStation]);
+  }, [playlists.value, getPercentagePerStation]);
 
   const handleDeletePlaylist = (playlist: PlaylistData) => {
     if (confirm(`Are you sure you want to delete "${playlist.name}"?`)) {

@@ -6,7 +6,10 @@ import { followedRadioStationIDs, recentlyVisitedRadioStationIDs } from '../sign
 import { settingsState } from '../signals/settings';
 import { PlayerState, Playlist, Podcast, SettingsState } from '../types';
 
-enum StoreName {
+export const dbName = '1tuner';
+export const dbVersion = 4;
+
+export enum StoreName {
   FollowedPodcasts = 'followedPodcasts',
   RecentlyVisitedPodcasts = 'recentlyVisitedPodcasts',
   FollowedRadioStationIDs = 'followedRadioStationIDs',
@@ -55,7 +58,7 @@ interface TunerDB extends DBSchema {
 
 const dbPromise =
   typeof window !== 'undefined'
-    ? openDB<TunerDB>('1tuner', 4, {
+    ? openDB<TunerDB>(dbName, dbVersion, {
         upgrade(db) {
           const stores = Object.values(StoreName) as StoreName[];
 
