@@ -1,7 +1,7 @@
 import { playerState } from '~/store/signals/player';
 import { playlists } from '~/store/signals/playlist';
 import { getRadioStation } from '~/store/signals/radio';
-import { Playlist } from '~/store/types';
+import { Playlist, PlaylistItem } from '~/store/types';
 import { getLocalTimeFromUrlKey } from './convertTime';
 import { getTimeInMinutesFromTimeString } from './utils';
 
@@ -63,8 +63,32 @@ const playPlaylist = (playlist: Playlist | undefined, shouldPlay?: boolean) => {
   };
 };
 
+const getPlaylistDataByUrl = (url: string) => {
+  if (!url) return null;
+  const urlObj = new URL(url.startsWith('http') ? url : `https://1tuner.com/${url}`);
+  const query = Object.fromEntries(urlObj.searchParams.entries());
+  console.log('urlObj.pathname', urlObj.pathname);
+  const name = decodeURIComponent(urlObj.pathname.split('/')?.[2] ?? '');
+  const list: PlaylistItem[] = [];
+  Object.keys(query).forEach((key) => {
+    if (key === 'tz') return;
+    const startTime = getLocalTimeFromUrlKey(key);
+    const station = getRadioStation(query[key] as string);
+    if (startTime && station) {
+      list.push({ time: startTime, stationID: station.id });
+    }
+  });
+  return {
+    name,
+    url: urlObj.pathname + urlObj.search,
+    items: list.sort((a, b) => a.time.localeCompare(b.time)),
+    timeZone: query.tz as string | undefined,
+  } as Playlist;
+};
+
 export const playlistUtil = {
   playPlaylistByUrl,
   playPlaylist,
   isSameUrl,
+  getPlaylistDataByUrl,
 };

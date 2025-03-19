@@ -117,11 +117,14 @@ export const usePlaylists = () => {
 
   const playlistsData = useMemo((): PlaylistData[] => {
     return (playlists.value || []).map((p) => {
-      const stations = [...new Set(p.items.map((i) => i.stationID))]
+      const stations = [...new Set((p.items ?? []).map((i) => i.stationID))]
         .map((id) => getRadioStation(id))
         .filter(Boolean) as RadioStation[];
+      let url = p.url ? p.url.replace(import.meta.env.VITE_BASE_URL, '') : '';
+      if (!url.startsWith('/')) url = `/${url}`;
+      if (url.startsWith('//')) url = url.substring(1);
       return {
-        url: p.url ? p.url.replace(import.meta.env.VITE_BASE_URL, '') : '',
+        url,
         name: p.name,
         stations,
         stationPercentages: getPercentagePerStation(p.items, stations),

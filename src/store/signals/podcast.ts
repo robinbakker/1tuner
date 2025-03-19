@@ -1,12 +1,16 @@
-import { signal } from '@preact/signals';
+import { computed, signal } from '@preact/signals';
 import { Podcast, PodcastSearchResult } from '../types';
 
 export const followedPodcasts = signal<Podcast[]>([]);
 export const recentlyVisitedPodcasts = signal<Podcast[]>([]);
 export const lastPodcastSearchResult = signal<PodcastSearchResult | null>(null);
 
+export const savedPodcasts = computed(() => {
+  return [...followedPodcasts.value, ...recentlyVisitedPodcasts.value];
+});
+
 export const getPodcast = (id: string): Podcast | undefined => {
-  return [...followedPodcasts.value, ...recentlyVisitedPodcasts.value].find((p) => p.id === id);
+  return savedPodcasts.value.find((p) => p.id === id);
 };
 
 export const updatePodcast = (updatedPodcast: Podcast) => {

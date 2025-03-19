@@ -79,9 +79,10 @@ export interface PlaylistItem {
 }
 
 export interface Playlist {
+  url: string;
   name: string;
   items: PlaylistItem[];
-  url: string;
+  timeZone?: string;
 }
 
 export interface PlayerState {

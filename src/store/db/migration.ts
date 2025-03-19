@@ -1,6 +1,7 @@
 import { DBSchema, openDB } from 'idb';
+import { playlistUtil } from '~/lib/playlistUtil';
 import { getPodcastUrlID } from '~/lib/utils';
-import { Playlist, Podcast } from '../types';
+import { Podcast } from '../types';
 import { dbName, dbVersion, StoreName } from './db';
 
 interface OldKeyvalStore extends DBSchema {
@@ -29,7 +30,7 @@ interface OldStation {
 
 interface OldPlaylist {
   name: string;
-  url: string;
+  href: string;
 }
 
 interface OldPodcast {
@@ -118,15 +119,10 @@ export async function migrateOldData() {
     const oldPlaylists = (await oldDb.get('keyval', 'playlists')) as OldPlaylist[];
     if (oldPlaylists?.length > 0) {
       console.log('Migrating playlists...');
-      const migratedPlaylists = oldPlaylists.map(
-        (playlist) =>
-          ({
-            name: playlist.name,
-            url: playlist.url,
-            items: [],
-          }) as Playlist,
-      );
-      await newDb.put(StoreName.Playlists, migratedPlaylists, StoreName.Playlists);
+      const migratedPlaylists = oldPlaylists.map((pl) => playlistUtil.getPlaylistDataByUrl(pl.href)).filter(Boolean);
+      if (migratedPlaylists.length) {
+        await newDb.put(StoreName.Playlists, migratedPlaylists, StoreName.Playlists);
+      }
     }
 
     // Mark old database as migrated
