@@ -1,5 +1,6 @@
-import { ChevronUp, Filter, Globe, Search, SquareLibrary } from 'lucide-preact';
+import { ChevronUp, Filter, Globe, Search, SquareLibrary, X } from 'lucide-preact';
 import { RadioStationCard } from '~/components/radio-station-card';
+import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { TagSelect } from '~/components/ui/tag-select';
 import { cn } from '~/lib/utils';
@@ -15,6 +16,7 @@ export const RadioStationsPage = () => {
     languageOptions,
     genreOptions,
     isScrolled,
+    searchInputRef,
     onSearchInput,
     handleLanguageChange,
     handleGenreChange,
@@ -86,25 +88,33 @@ export const RadioStationsPage = () => {
                 />
               </div>
             </div>
-
             <div class="mt-4">
               <div class="relative w-full">
                 <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400">
                   <Search size={18} />
                 </div>
+                {searchTerm && (
+                  <Button onClick={() => onSearchInput()} class="absolute right-0 top-0 rounded-none rounded-r-lg">
+                    <X size={18} />
+                  </Button>
+                )}
                 <Input
+                  ref={searchInputRef}
                   type="search"
                   placeholder="Search radio stations..."
                   value={searchTerm}
                   onInput={onSearchInput}
-                  class="w-full bg-white/80 dark:bg-black/80 focus:ring-primary pl-10"
+                  class={cn(
+                    'w-full bg-white/80 dark:bg-black/80 focus:ring-primary pl-10',
+                    searchTerm && 'pr-15',
+                    '[&::-webkit-search-cancel-button]:hidden',
+                  )}
                 />
               </div>
             </div>
           </div>
         </div>
       </div>
-
       <div class={cn('md:hidden relative mx-auto px-8 pb-4')}>
         <TagSelect
           options={languageOptions}
@@ -122,7 +132,6 @@ export const RadioStationsPage = () => {
           selectedValues={activeGenres.map((l) => l.id)}
         />
       </div>
-
       <div class="container mx-auto px-8">
         <div class="pt-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 sm:gap-12 justify-items-center">
           {filteredStations.map((station) => (

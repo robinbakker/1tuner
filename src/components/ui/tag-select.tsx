@@ -108,7 +108,7 @@ export function TagSelect({
           class={cn(
             'inline-flex items-center justify-center whitespace-nowrap text-sm font-medium w-full',
             'transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring',
-            'disabled:pointer-events-none disabled:opacity-50 border border-input bg-background',
+            'disabled:pointer-events-none disabled:opacity-50 border border-current/33 bg-background',
             'shadow-xs hover:bg-accent hover:text-accent-foreground h-9 px-3 rounded-lg gap-2',
           )}
         >

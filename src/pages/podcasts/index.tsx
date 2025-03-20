@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Search } from 'lucide-preact';
+import { Search, X } from 'lucide-preact';
 import { useCallback } from 'preact/hooks';
 import { ContentSection } from '~/components/content-section';
 import { Loader } from '~/components/loader';
 import { PodcastCard } from '~/components/podcast-card';
+import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { cn, slugify } from '~/lib/utils';
 import { Podcast } from '~/store/types';
@@ -11,7 +12,7 @@ import { followedPodcasts, recentlyVisitedPodcasts } from '../../store/signals/p
 import { usePodcasts } from './usePodcasts';
 
 export const PodcastsPage = () => {
-  const { isLoading, isScrolled, searchTerm, setSearchTerm, searchResults } = usePodcasts();
+  const { isLoading, isScrolled, searchTerm, searchInputRef, setSearchTerm, searchResults } = usePodcasts();
 
   const renderPodcastList = useCallback(
     (podcasts: Podcast[] | undefined, title: string, nrToSmall?: number) => {
@@ -69,12 +70,22 @@ export const PodcastsPage = () => {
                   <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400">
                     <Search size={18} />
                   </div>
+                  {searchTerm && (
+                    <Button onClick={() => setSearchTerm('')} class="absolute right-0 top-0 rounded-none rounded-r-lg">
+                      <X size={18} />
+                    </Button>
+                  )}
                   <Input
+                    ref={searchInputRef}
                     type="search"
                     placeholder="Search podcasts..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm((e.target as HTMLInputElement).value)}
-                    class="w-full focus:ring-primary pl-10"
+                    class={cn(
+                      'w-full bg-white/80 dark:bg-black/80 focus:ring-primary pl-10',
+                      searchTerm && 'pr-15',
+                      '[&::-webkit-search-cancel-button]:hidden',
+                    )}
                     autofocus={!!searchTerm}
                   />
                 </div>

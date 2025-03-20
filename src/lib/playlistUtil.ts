@@ -67,8 +67,7 @@ const getPlaylistDataByUrl = (url: string) => {
   if (!url) return null;
   const urlObj = new URL(url.startsWith('http') ? url : `https://1tuner.com/${url}`);
   const query = Object.fromEntries(urlObj.searchParams.entries());
-  console.log('urlObj.pathname', urlObj.pathname);
-  const name = decodeURIComponent(urlObj.pathname.split('/')?.[2] ?? '');
+  const name = decodeURIComponent(urlObj.pathname.replaceAll('//', '/').split('/')?.[2] ?? '');
   const list: PlaylistItem[] = [];
   Object.keys(query).forEach((key) => {
     if (key === 'tz') return;

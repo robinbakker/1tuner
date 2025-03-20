@@ -1,7 +1,11 @@
-import { Play } from 'lucide-preact';
+import { Bookmark, Play } from 'lucide-preact';
 import { Badge } from '~/components/ui/badge';
 import { playerState } from '~/store/signals/player';
-import { addRecentlyVisitedRadioStation, getRadioStationLanguage } from '~/store/signals/radio';
+import {
+  addRecentlyVisitedRadioStation,
+  followedRadioStationIDs,
+  getRadioStationLanguage,
+} from '~/store/signals/radio';
 import { RadioStation } from '~/store/types';
 
 interface Props {
@@ -37,9 +41,15 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
     );
   };
 
+  const isFollowing = followedRadioStationIDs.value.includes(station.id);
+
   if (size === 'large') {
     return (
-      <a class="block w-full sm:min-w-72 h-28 group" href={`/radio-station/${station.id}`} title={station.name}>
+      <a
+        class="block w-full sm:min-w-72 h-28 group"
+        href={`/radio-station/${station.id}`}
+        title={isFollowing ? `${station.name} (following)` : station.name}
+      >
         <div class="w-full h-full relative overflow-hidden rounded-xl border bg-card shadow-lg hover:shadow-xl transition-all flex">
           <div class="w-28 h-full shrink-0 opacity-80 group-hover:opacity-100 relative overflow-hidden">
             <div
@@ -75,6 +85,12 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
               ))}
             </div>
           </div>
+          {followedRadioStationIDs.value.includes(station.id) && (
+            <Bookmark
+              title={`Following ${station.name}`}
+              class={`h-6 w-6 absolute -top-0.5 right-3 fill-stone-300 stroke-stone-300 dark:fill-stone-700 dark:stroke-stone-700`}
+            />
+          )}
         </div>
       </a>
     );

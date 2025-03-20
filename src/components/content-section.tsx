@@ -1,3 +1,4 @@
+import { Search } from 'lucide-preact';
 import { JSX } from 'preact';
 import { useCallback } from 'preact/hooks';
 import { Button } from './ui/button';
@@ -8,16 +9,28 @@ interface Props {
   moreLink?: string;
   isScrollable?: boolean;
   hasNoPadding?: boolean;
+  hasSearchButton?: boolean;
 }
 
-export const ContentSection = ({ title, moreLink, children, isScrollable, hasNoPadding }: Props) => {
-  const MoreLink = useCallback(({ location }: { location: string }) => {
-    return (
-      <Button asChild variant="outline">
-        <a href={location}>More</a>
-      </Button>
-    );
-  }, []);
+export const ContentSection = ({
+  title,
+  moreLink,
+  children,
+  isScrollable,
+  hasNoPadding,
+  hasSearchButton = false,
+}: Props) => {
+  const MoreLink = useCallback(
+    ({ isSearch }: { isSearch?: boolean }) => {
+      const link = isSearch ? `${moreLink}?focus-search=true` : moreLink;
+      return (
+        <Button asChild variant="outline">
+          <a href={link}>{isSearch ? <Search size={18} /> : <>More</>}</a>
+        </Button>
+      );
+    },
+    [moreLink],
+  );
 
   const padding = hasNoPadding ? '' : 'px-4 md:px-6';
 
@@ -25,7 +38,10 @@ export const ContentSection = ({ title, moreLink, children, isScrollable, hasNoP
     <section class="mb-8 w-full">
       <div class={`flex justify-between items-center mb-2 ${padding}`}>
         <h2 class="text-xl font-semibold">{title}</h2>
-        {moreLink && <MoreLink location={moreLink} />}
+        <div class="flex items-center gap-2">
+          {moreLink && <MoreLink />}
+          {hasSearchButton && moreLink && <MoreLink isSearch />}
+        </div>
       </div>
       <div class={isScrollable ? 'overflow-x-auto pt-2 pb-4 overscroll-contain' : padding}>{children}</div>
     </section>

@@ -1,7 +1,9 @@
-import { useCallback, useMemo, useState } from 'preact/hooks';
+import { useLocation } from 'preact-iso';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import {
   clearLastRadioSearchResult,
+  followedRadioStationIDs,
   lastRadioSearchResult,
   radioGenres,
   radioLanguages,
@@ -11,8 +13,10 @@ import {
 import { uiIsScrolled } from '~/store/signals/ui';
 
 export const useRadioStations = () => {
+  const { query, route } = useLocation();
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useHead({
     title: 'Radio stations',
@@ -32,15 +36,17 @@ export const useRadioStations = () => {
 
   const filteredStations = useMemo(
     () =>
-      radioStations.value.filter((station) => {
-        const matchesSearch = station.name
-          ?.toLowerCase()
-          .includes((lastRadioSearchResult.value?.query || '').toLowerCase());
-        const matchesCountry = !selectedCountries.length || selectedCountries.includes(station.language);
-        const matchesGenre = !selectedGenres.length || selectedGenres.some((g) => station.genres.includes(g));
-        return matchesSearch && matchesCountry && matchesGenre;
-      }),
-    [lastRadioSearchResult.value?.query, selectedGenres, selectedCountries],
+      [...radioStations.value]
+        .sort((a, b) => +followedRadioStationIDs.value.includes(b.id) - +followedRadioStationIDs.value.includes(a.id))
+        .filter((station) => {
+          const matchesSearch = station.name
+            ?.toLowerCase()
+            .includes((lastRadioSearchResult.value?.query || '').toLowerCase());
+          const matchesCountry = !selectedCountries.length || selectedCountries.includes(station.language);
+          const matchesGenre = !selectedGenres.length || selectedGenres.some((g) => station.genres.includes(g));
+          return matchesSearch && matchesCountry && matchesGenre;
+        }),
+    [lastRadioSearchResult.value?.query, followedRadioStationIDs.value, selectedGenres, selectedCountries],
   );
 
   const languageOptions = useMemo(
@@ -67,7 +73,11 @@ export const useRadioStations = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const onSearchInput = useCallback((event: InputEvent) => {
+  const onSearchInput = useCallback((event?: InputEvent) => {
+    if (!event) {
+      clearLastRadioSearchResult();
+      return;
+    }
     const searchInput = (event.target as HTMLInputElement).value;
     if (searchInput.trim()) {
       setLastRadioSearchResult(searchInput, []);
@@ -76,9 +86,19 @@ export const useRadioStations = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && query['focus-search']) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('focus-search');
+      route(url.pathname + url.search, true);
+      searchInputRef.current?.focus();
+    }
+  }, [query, route]);
+
   return {
     searchTerm: lastRadioSearchResult.value?.query || '',
     onSearchInput,
+    searchInputRef,
     activeFilterCount,
     filteredStations,
     languageOptions,

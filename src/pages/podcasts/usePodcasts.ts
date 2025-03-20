@@ -1,3 +1,4 @@
+import { useLocation } from 'preact-iso';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import {
@@ -10,9 +11,11 @@ import { uiIsScrolled } from '~/store/signals/ui';
 import { Podcast, PodcastSearchProvider } from '~/store/types';
 
 export const usePodcasts = () => {
+  const { query, route } = useLocation();
   const [searchTerm, setSearchTerm] = useState(lastPodcastSearchResult.value?.query || '');
   const [isLoading, setIsLoading] = useState(false);
   const searchTimeout = useRef<NodeJS.Timeout | null>();
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useHead({
     title: 'Podcasts',
@@ -92,9 +95,19 @@ export const usePodcasts = () => {
     };
   }, [searchTerm]);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && query['focus-search']) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('focus-search');
+      route(url.pathname + url.search, true);
+      searchInputRef.current?.focus();
+    }
+  }, [query, route]);
+
   return {
     searchTerm,
     setSearchTerm,
+    searchInputRef,
     searchResults: lastPodcastSearchResult.value?.result || [],
     isLoading,
     isScrolled: !!uiIsScrolled.value,
