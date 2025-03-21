@@ -31,8 +31,13 @@ export const PodcastsPage = () => {
         );
       }
       return (
-        <ContentSection title={title} isScrollable hasNoPadding>
-          <ul class="flex gap-6 md:gap-10">
+        <ContentSection
+          className="max-sm:-mx-8 max-sm:w-screen"
+          insetClassName="max-sm:px-8"
+          title={title}
+          isScrollable
+        >
+          <ul class="flex gap-6 md:gap-10 max-sm:px-8">
             {podcasts.map((podcast) => (
               <li class="shrink-0">
                 <PodcastCard key={`${slugTitle}-${podcast.id}`} podcast={podcast} />

@@ -1,9 +1,11 @@
 import { ChevronUp, Filter, Globe, Search, SquareLibrary, X } from 'lucide-preact';
+import { ContentSection } from '~/components/content-section';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { TagSelect } from '~/components/ui/tag-select';
 import { cn } from '~/lib/utils';
+import { followedRadioStationIDs, radioStations } from '~/store/signals/radio';
 import { useRadioStations } from './useRadioStations';
 
 export const RadioStationsPage = () => {
@@ -133,6 +135,24 @@ export const RadioStationsPage = () => {
         />
       </div>
       <div class="container mx-auto px-8">
+        {!searchTerm && followedRadioStationIDs.value.length > 0 && (
+          <ContentSection
+            className="mt-4 max-sm:-mx-8 max-sm:w-screen"
+            insetClassName="max-sm:px-8"
+            title="Following"
+            isScrollable
+          >
+            <ul class="flex gap-6 md:gap-10 max-sm:px-8">
+              {radioStations.value
+                .filter((s) => followedRadioStationIDs.value.some((id) => id === s.id))
+                .map((s) => (
+                  <li class="shrink-0">
+                    <RadioStationCard key={`fs-${s.id}`} station={s} />
+                  </li>
+                ))}
+            </ul>
+          </ContentSection>
+        )}
         <div class="pt-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 sm:gap-12 justify-items-center">
           {filteredStations.map((station) => (
             <RadioStationCard key={station.id} station={station} size="large" />

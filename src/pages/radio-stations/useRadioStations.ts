@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks'
 import { useHead } from '~/hooks/useHead';
 import {
   clearLastRadioSearchResult,
-  followedRadioStationIDs,
   lastRadioSearchResult,
   radioGenres,
   radioLanguages,
@@ -36,23 +35,22 @@ export const useRadioStations = () => {
 
   const filteredStations = useMemo(
     () =>
-      [...radioStations.value]
-        .sort((a, b) => +followedRadioStationIDs.value.includes(b.id) - +followedRadioStationIDs.value.includes(a.id))
-        .filter((station) => {
-          const matchesSearch = station.name
-            ?.toLowerCase()
-            .includes((lastRadioSearchResult.value?.query || '').toLowerCase());
-          const matchesCountry = !selectedCountries.length || selectedCountries.includes(station.language);
-          const matchesGenre = !selectedGenres.length || selectedGenres.some((g) => station.genres.includes(g));
-          return matchesSearch && matchesCountry && matchesGenre;
-        }),
-    [lastRadioSearchResult.value?.query, followedRadioStationIDs.value, selectedGenres, selectedCountries],
+      [...radioStations.value].filter((station) => {
+        const matchesSearch = station.name
+          ?.toLowerCase()
+          .includes((lastRadioSearchResult.value?.query || '').toLowerCase());
+        const matchesCountry = !selectedCountries.length || selectedCountries.includes(station.language);
+        const matchesGenre = !selectedGenres.length || selectedGenres.some((g) => station.genres.includes(g));
+        return matchesSearch && matchesCountry && matchesGenre;
+      }),
+    [lastRadioSearchResult.value?.query, selectedGenres, selectedCountries],
   );
 
   const languageOptions = useMemo(
     () =>
-      radioLanguages.value
+      [...radioLanguages.value]
         .filter((language) => !selectedCountries.includes(language.country))
+        .sort((a, b) => +!!a.flag - +!!b.flag)
         .map((l) => ({ label: `${l.flag ?? ''} ${l.name}`, minimalLabel: l.flag ?? undefined, value: l.id })),
     [selectedCountries],
   );

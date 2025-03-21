@@ -9,6 +9,8 @@ interface Props {
   moreLink?: string;
   isScrollable?: boolean;
   hasNoPadding?: boolean;
+  className?: string;
+  insetClassName?: string;
   hasSearchButton?: boolean;
 }
 
@@ -18,6 +20,8 @@ export const ContentSection = ({
   children,
   isScrollable,
   hasNoPadding,
+  className,
+  insetClassName,
   hasSearchButton = false,
 }: Props) => {
   const MoreLink = useCallback(
@@ -32,10 +36,10 @@ export const ContentSection = ({
     [moreLink],
   );
 
-  const padding = hasNoPadding ? '' : 'px-4 md:px-6';
+  const padding = hasNoPadding ? '' : insetClassName ? insetClassName : 'px-4 md:px-6';
 
   return (
-    <section class="mb-8 w-full">
+    <section class={`mb-8 w-full${className ? ` ${className}` : ''}`}>
       <div class={`flex justify-between items-center mb-2 ${padding}`}>
         <h2 class="text-xl font-semibold">{title}</h2>
         <div class="flex items-center gap-2">
