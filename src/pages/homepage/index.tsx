@@ -4,7 +4,7 @@ import { RadioStationCard } from '~/components/radio-station-card';
 import { ShareButton } from '~/components/share-button';
 import { styleClass } from '~/lib/styleClass';
 import { recentlyVisitedPodcasts } from '~/store/signals/podcast';
-import { getRecentlyVisitedRadioStations } from '~/store/signals/radio';
+import { recentlyVisitedRadioStations } from '~/store/signals/radio';
 
 export const Homepage = () => {
   return (
@@ -25,11 +25,12 @@ export const Homepage = () => {
 
       <ContentSection title="Radio stations" moreLink="/radio-stations" hasSearchButton isScrollable>
         <ul class="flex gap-6 md:gap-10 px-4 md:px-6">
-          {getRecentlyVisitedRadioStations().map((station) => (
+          {recentlyVisitedRadioStations.value.map((station) => (
             <li class="shrink-0">
               <RadioStationCard key={station.id} station={station} />
             </li>
           ))}
+          <li class="shrink-0 w-0.5"></li>
         </ul>
       </ContentSection>
 
@@ -40,13 +41,14 @@ export const Homepage = () => {
               <PodcastCard key={podcast.id} podcast={podcast} />
             </li>
           ))}
+          <li class="shrink-0 w-0.5"></li>
         </ul>
       </ContentSection>
 
-      <ContentSection title="About 1tuner.com" moreLink="/about">
+      <ContentSection title="About 1tuner.com">
         <>
           <p class="pb-4">
-            This is a free web app. Here you can listen to online{' '}
+            With this free app you can listen to online{' '}
             <a href="/radio-stations" class={styleClass.textLink}>
               radio stations
             </a>

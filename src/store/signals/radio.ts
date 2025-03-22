@@ -1,14 +1,27 @@
-import { signal } from '@preact/signals';
-import { Genre, Language, Podcast, RadioSearchResult, RadioStation } from '~/store/types';
+import { computed, signal } from '@preact/signals';
+import { Genre, Language, Podcast, RadioSearchFilters, RadioSearchResult, RadioStation } from '~/store/types';
 import { playerState } from './player';
 
 export const radioStations = signal<RadioStation[]>([]);
+export const radioSearchFilters = signal<RadioSearchFilters | null>({ languages: [navigator.language], genres: [] });
 export const radioLanguages = signal<Language[]>([]);
 export const radioGenres = signal<Genre[]>([]);
 export const followedRadioStationIDs = signal<string[]>([]);
 export const recentlyVisitedRadioStationIDs = signal<string[]>([]);
 export const lastRadioSearchResult = signal<RadioSearchResult | null>(null);
 export const stationPodcasts = signal<Record<string, Podcast[]>>({});
+export const recentlyVisitedRadioStations = computed(() => {
+  let stations = recentlyVisitedRadioStationIDs.value
+    .map((id) => radioStations.value.find((r) => r.id === id))
+    .filter((r) => !!r);
+  if (stations.length < 10) {
+    stations = [...stations, ...radioStations.value.filter((rs) => !stations.some((s) => s.id === rs.id))];
+  }
+  return stations.slice(0, 10);
+});
+export const activeRadioFilterCount = computed(() => {
+  return (radioSearchFilters.value?.languages?.length || 0) + (radioSearchFilters.value?.genres?.length || 0);
+});
 
 export const getRadioStation = (id: string): RadioStation | undefined => {
   if (!id) return undefined;
@@ -18,14 +31,6 @@ export const getRadioStation = (id: string): RadioStation | undefined => {
 export const getRadioStationLanguage = (radioStation: RadioStation): Language | undefined => {
   if (!radioStation) return undefined;
   return radioLanguages.value.find((l) => l.id === radioStation.language);
-};
-
-export const getRecentlyVisitedRadioStations = (): RadioStation[] => {
-  const stations = recentlyVisitedRadioStationIDs.value.map((id) => getRadioStation(id)).filter((r) => !!r);
-  return [...stations, ...radioStations.value.filter((rs) => !stations.some((s) => s.id === rs.id))].slice(
-    0,
-    10,
-  ) as RadioStation[];
 };
 
 export const addRecentlyVisitedRadioStation = (id: string | undefined) => {
@@ -57,8 +62,8 @@ export const isFollowedRadioStation = (id: string) => {
   return followedRadioStationIDs.value.some((s) => s === id);
 };
 
-export const setLastRadioSearchResult = (query: string, result: RadioStation[]) => {
-  lastRadioSearchResult.value = { query, result };
+export const setLastRadioSearchResultQuery = (query: string) => {
+  lastRadioSearchResult.value = { query };
 };
 
 export const clearLastRadioSearchResult = () => {

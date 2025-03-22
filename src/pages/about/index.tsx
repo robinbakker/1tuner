@@ -11,12 +11,14 @@ export const AboutPage = () => {
 
   useEffect(() => {
     uiState.value = {
+      ...uiState.value,
       headerTitle: 'About',
       headerDefaultTextColor: 'default',
     };
 
     return () =>
       (uiState.value = {
+        ...uiState.value,
         headerTitle: '',
         headerDefaultTextColor: 'default',
       });

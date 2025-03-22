@@ -41,7 +41,7 @@ export const PodcastCard = ({ podcast, size }: Props) => {
             transform: 'scale(2)',
           }}
         />
-        <div class="relative h-full flex flex-col items-center pt-2">
+        <div class="relative h-full flex flex-col items-center pt-2.5">
           <img src={podcast.imageUrl} alt={`${podcast.title} logo`} class="w-16 h-16 rounded-lg" />
           <div class="absolute bottom-0 left-0 right-0 bg-white dark:bg-stone-700 py-1 px-2">
             <span class="text-center font-bold text-foreground group-hover:text-primary text-sm truncate w-full block transition-colors">

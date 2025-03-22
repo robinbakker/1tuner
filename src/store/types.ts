@@ -109,7 +109,11 @@ export interface PodcastSearchResult {
 
 export interface RadioSearchResult {
   query: string;
-  result: RadioStation[];
+}
+
+export interface RadioSearchFilters {
+  languages: string[];
+  genres: string[];
 }
 
 export interface UIState {

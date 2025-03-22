@@ -2,6 +2,7 @@ import { Bookmark, Play, RefreshCw } from 'lucide-preact';
 import { useLocation } from 'preact-iso';
 import { useMemo } from 'preact/hooks';
 import { Loader } from '~/components/loader';
+import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { cn, getTimeStringFromSeconds, stripHtml } from '~/lib/utils';
 import { usePodcast } from './usePodcast';
@@ -80,13 +81,15 @@ export const PodcastPage = () => {
           </div>
           <div class="flex-1">
             <p class="my-3 @xl:mt-1 @max-h-[30vh] p-3 overflow-y-auto">{stripHtml(podcast.description)}</p>
-            {/* <div class="flex flex-wrap gap-2 mb-4">
-              {podcast?.categories?.map((category, index) => (
-                <Badge key={index} variant="secondary">
-                  {category}
-                </Badge>
-              ))}
-            </div> */}
+            {!!podcast?.categories?.length && (
+              <div class="flex flex-wrap gap-2 mb-4">
+                {podcast?.categories?.map((category, index) => (
+                  <Badge key={index} variant="secondary">
+                    {category}
+                  </Badge>
+                ))}
+              </div>
+            )}
             <div class="flex flex-wrap justify-between gap mb-4">
               <Button onClick={toggleFollow} variant={isFollowing ? 'secondary' : 'default'}>
                 <Bookmark class={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />

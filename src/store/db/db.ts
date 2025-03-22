@@ -2,57 +2,31 @@ import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import { isPlayerMaximized, playerState } from '../signals/player';
 import { playlists } from '../signals/playlist';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../signals/podcast';
-import { followedRadioStationIDs, recentlyVisitedRadioStationIDs } from '../signals/radio';
+import { followedRadioStationIDs, radioSearchFilters, recentlyVisitedRadioStationIDs } from '../signals/radio';
 import { settingsState } from '../signals/settings';
-import { PlayerState, Playlist, Podcast, SettingsState } from '../types';
+import { PlayerState, Playlist, Podcast, RadioSearchFilters, SettingsState } from '../types';
 
 export const dbName = '1tuner';
-export const dbVersion = 4;
+export const dbVersion = 5;
+export const storeName = 'appState';
 
-export enum StoreName {
+export enum AppStateKey {
   FollowedPodcasts = 'followedPodcasts',
   RecentlyVisitedPodcasts = 'recentlyVisitedPodcasts',
   FollowedRadioStationIDs = 'followedRadioStationIDs',
   RecentlyVisitedRadioStationIDs = 'recentlyVisitedRadioStationIDs',
+  RadioSearchFilters = 'radioSearchFilters',
   Playlists = 'playlists',
   PlayerState = 'playerState',
   SettingsState = 'settingsState',
   IsPlayerMaximized = 'isPlayerMaximized',
 }
 
-type DBData = Podcast[] | Playlist[] | string[] | PlayerState | SettingsState | boolean | null;
+type DBData = Podcast[] | Playlist[] | string[] | RadioSearchFilters | PlayerState | SettingsState | boolean | null;
 interface TunerDB extends DBSchema {
-  followedPodcasts: {
-    key: StoreName.FollowedPodcasts;
-    value: Podcast[];
-  };
-  recentlyVisitedPodcasts: {
-    key: StoreName.RecentlyVisitedPodcasts;
-    value: Podcast[];
-  };
-  followedRadioStationIDs: {
-    key: StoreName.FollowedRadioStationIDs;
-    value: string[];
-  };
-  recentlyVisitedRadioStationIDs: {
-    key: StoreName.RecentlyVisitedRadioStationIDs;
-    value: string[];
-  };
-  playlists: {
-    key: StoreName.Playlists;
-    value: Playlist[] | null;
-  };
-  playerState: {
-    key: StoreName.PlayerState;
-    value: PlayerState | null;
-  };
-  settingsState: {
-    key: StoreName.SettingsState;
-    value: SettingsState | null;
-  };
-  isPlayerMaximized: {
-    key: StoreName.IsPlayerMaximized;
-    value: boolean;
+  appState: {
+    key: string;
+    value: DBData;
   };
 }
 
@@ -60,66 +34,53 @@ const dbPromise =
   typeof window !== 'undefined'
     ? openDB<TunerDB>(dbName, dbVersion, {
         upgrade(db) {
-          const stores = Object.values(StoreName) as StoreName[];
-
-          // Only create stores that don't exist
-          stores.forEach((storeName) => {
-            if (!db.objectStoreNames.contains(storeName)) {
-              db.createObjectStore(storeName);
-            }
-          });
+          if (!db.objectStoreNames.contains(storeName)) {
+            db.createObjectStore(storeName);
+          }
         },
       })
     : null;
 
-const getFromDB = async <T>(db: IDBPDatabase<TunerDB> | null, storeName: StoreName): Promise<T | null> => {
+const getFromDB = async <T>(db: IDBPDatabase<TunerDB> | null, key: AppStateKey): Promise<T | null> => {
   if (!db) return null;
-  const storeNames = db.objectStoreNames ? [...db.objectStoreNames] : [];
-  if (!storeNames.includes(storeName)) {
-    return null;
-  }
-  return (await db.get(storeName, storeName)) as T | null;
+  return (await db.get(storeName, key)) as T | null;
 };
 
 export async function loadStateFromDB() {
   if (typeof window === 'undefined') return;
   const db = await dbPromise;
-  const dbFollowedPodcasts = (await getFromDB<Podcast[]>(db, StoreName.FollowedPodcasts)) || [];
-  const dbRecentlyVisitedPodcasts = (await getFromDB<Podcast[]>(db, StoreName.RecentlyVisitedPodcasts)) || [];
-  const dbFollowedRadioStationIDs = (await getFromDB<string[]>(db, StoreName.FollowedRadioStationIDs)) || [];
-  const dbRecentlyVisitedRadioStationIDs =
-    (await getFromDB<string[]>(db, StoreName.RecentlyVisitedRadioStationIDs)) || [];
-  const dbPlaylists = (await getFromDB<Playlist[]>(db, StoreName.Playlists)) || [];
-  const dbPlayerState = (await getFromDB<PlayerState>(db, StoreName.PlayerState)) || null;
-  const dbSettingsState = (await getFromDB<SettingsState>(db, StoreName.SettingsState)) || ({} as SettingsState);
-  const dbIsPlayerMaximized = (await getFromDB<boolean>(db, StoreName.IsPlayerMaximized)) || false;
-  followedPodcasts.value = dbFollowedPodcasts;
-  recentlyVisitedPodcasts.value = dbRecentlyVisitedPodcasts;
-  followedRadioStationIDs.value = dbFollowedRadioStationIDs;
-  recentlyVisitedRadioStationIDs.value = dbRecentlyVisitedRadioStationIDs;
-  playlists.value = dbPlaylists;
-  playerState.value = dbPlayerState;
-  settingsState.value = dbSettingsState;
-  isPlayerMaximized.value = dbIsPlayerMaximized;
-}
 
-const putToDB = async (db: IDBPDatabase<TunerDB> | null, storeName: StoreName, data: DBData): Promise<void> => {
-  if (!db) return;
-  await db.put(storeName, data, storeName);
-};
+  followedPodcasts.value = (await getFromDB<Podcast[]>(db, AppStateKey.FollowedPodcasts)) || [];
+  recentlyVisitedPodcasts.value = (await getFromDB<Podcast[]>(db, AppStateKey.RecentlyVisitedPodcasts)) || [];
+  followedRadioStationIDs.value = (await getFromDB<string[]>(db, AppStateKey.RecentlyVisitedRadioStationIDs)) || [];
+  recentlyVisitedRadioStationIDs.value =
+    (await getFromDB<string[]>(db, AppStateKey.RecentlyVisitedRadioStationIDs)) || [];
+  radioSearchFilters.value = (await getFromDB<RadioSearchFilters>(db, AppStateKey.RadioSearchFilters)) || null;
+  playlists.value = (await getFromDB<Playlist[]>(db, AppStateKey.Playlists)) || [];
+  playerState.value = (await getFromDB<PlayerState>(db, AppStateKey.PlayerState)) || null;
+  settingsState.value = (await getFromDB<SettingsState>(db, AppStateKey.SettingsState)) || ({} as SettingsState);
+  isPlayerMaximized.value = (await getFromDB<boolean>(db, AppStateKey.IsPlayerMaximized)) || false;
+}
 
 export async function saveStateToDB() {
   if (typeof window === 'undefined') return;
+  const db = await dbPromise;
+  if (!db) return;
+
   try {
-    const db = await dbPromise;
-    await putToDB(db, StoreName.FollowedPodcasts, followedPodcasts.value);
-    await putToDB(db, StoreName.RecentlyVisitedPodcasts, recentlyVisitedPodcasts.value);
-    await putToDB(db, StoreName.FollowedRadioStationIDs, followedRadioStationIDs.value);
-    await putToDB(db, StoreName.RecentlyVisitedRadioStationIDs, recentlyVisitedRadioStationIDs.value);
-    await putToDB(db, StoreName.Playlists, playlists.value);
-    await putToDB(db, StoreName.PlayerState, { ...playerState.value, isPlaying: false } as DBData); // Stop playing when saving state to DB.
-    await putToDB(db, StoreName.SettingsState, settingsState.value);
-    await putToDB(db, StoreName.IsPlayerMaximized, isPlayerMaximized.value);
+    const tx = db.transaction(storeName, 'readwrite');
+    await Promise.all([
+      tx.store.put(followedPodcasts.value, AppStateKey.FollowedPodcasts),
+      tx.store.put(recentlyVisitedPodcasts.value, AppStateKey.RecentlyVisitedPodcasts),
+      tx.store.put(followedRadioStationIDs.value, AppStateKey.FollowedRadioStationIDs),
+      tx.store.put(recentlyVisitedRadioStationIDs.value, AppStateKey.RecentlyVisitedRadioStationIDs),
+      tx.store.put(radioSearchFilters.value, AppStateKey.RadioSearchFilters),
+      tx.store.put(playlists.value, AppStateKey.Playlists),
+      tx.store.put(playerState.value, AppStateKey.PlayerState),
+      tx.store.put(settingsState.value, AppStateKey.SettingsState),
+      tx.store.put(isPlayerMaximized.value, AppStateKey.IsPlayerMaximized),
+    ]);
+    await tx.done;
   } catch (error) {
     console.error('Error saving state to DB:', error);
   }

@@ -43,6 +43,7 @@ export const PodcastsPage = () => {
                 <PodcastCard key={`${slugTitle}-${podcast.id}`} podcast={podcast} />
               </li>
             ))}
+            <li class="shrink-0 w-0.5"></li>
           </ul>
         </ContentSection>
       );

@@ -2,7 +2,7 @@ import { DBSchema, openDB } from 'idb';
 import { playlistUtil } from '~/lib/playlistUtil';
 import { getPodcastUrlID } from '~/lib/utils';
 import { Podcast } from '../types';
-import { dbName, dbVersion, StoreName } from './db';
+import { AppStateKey, dbName, dbVersion, storeName } from './db';
 
 interface OldKeyvalStore extends DBSchema {
   keyval: {
@@ -77,7 +77,7 @@ export async function migrateOldData() {
     if (lastStationList?.length > 0) {
       console.log('Migrating radio station data...');
       const stationIds = lastStationList.map((station) => station.id);
-      await newDb.put(StoreName.RecentlyVisitedRadioStationIDs, stationIds, StoreName.RecentlyVisitedRadioStationIDs);
+      await newDb.put(storeName, stationIds, AppStateKey.RecentlyVisitedRadioStationIDs);
     }
 
     // Migrate podcasts
@@ -112,7 +112,7 @@ export async function migrateOldData() {
           }) as Podcast,
       );
 
-      await newDb.put(StoreName.RecentlyVisitedPodcasts, migratedPodcasts, StoreName.RecentlyVisitedPodcasts);
+      await newDb.put(storeName, migratedPodcasts, AppStateKey.RecentlyVisitedPodcasts);
     }
 
     // Migrate playlists
@@ -121,7 +121,7 @@ export async function migrateOldData() {
       console.log('Migrating playlists...');
       const migratedPlaylists = oldPlaylists.map((pl) => playlistUtil.getPlaylistDataByUrl(pl.href)).filter(Boolean);
       if (migratedPlaylists.length) {
-        await newDb.put(StoreName.Playlists, migratedPlaylists, StoreName.Playlists);
+        await newDb.put(storeName, migratedPlaylists, AppStateKey.Playlists);
       }
     }
 

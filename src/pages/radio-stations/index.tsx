@@ -12,13 +12,13 @@ export const RadioStationsPage = () => {
   const {
     searchTerm,
     filteredStations,
-    activeLanguages,
-    activeGenres,
     activeFilterCount,
     languageOptions,
     genreOptions,
     isScrolled,
     searchInputRef,
+    activeGenres,
+    activeLanguages,
     onSearchInput,
     handleLanguageChange,
     handleGenreChange,
@@ -150,6 +150,7 @@ export const RadioStationsPage = () => {
                     <RadioStationCard key={`fs-${s.id}`} station={s} />
                   </li>
                 ))}
+              <li class="shrink-0 w-0.5"></li>
             </ul>
           </ContentSection>
         )}

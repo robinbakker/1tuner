@@ -1,58 +1,57 @@
+import { computed } from '@preact/signals';
 import { useLocation } from 'preact-iso';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { useCallback, useEffect, useMemo, useRef } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import {
+  activeRadioFilterCount,
   clearLastRadioSearchResult,
   lastRadioSearchResult,
   radioGenres,
   radioLanguages,
+  radioSearchFilters,
   radioStations,
-  setLastRadioSearchResult,
+  setLastRadioSearchResultQuery,
 } from '~/store/signals/radio';
 import { uiIsScrolled } from '~/store/signals/ui';
 
 export const useRadioStations = () => {
   const { query, route } = useLocation();
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useHead({
     title: 'Radio stations',
   });
 
-  const activeFilterCount = useMemo(
-    () => selectedCountries.length + selectedGenres.length,
-    [selectedCountries, selectedGenres],
-  );
+  const activeLanguages = computed(() => {
+    const filter = radioSearchFilters.value?.languages || [];
+    return radioLanguages.value.filter((l) => filter.includes(l.id));
+  });
 
-  const activeLanguages = useMemo(
-    () => radioLanguages.value.filter((l) => selectedCountries.includes(l.id)),
-    [selectedCountries],
-  );
+  const activeGenres = computed(() => {
+    const filter = radioSearchFilters.value?.genres || [];
+    return radioGenres.value.filter((g) => filter.includes(g.id));
+  });
 
-  const activeGenres = useMemo(() => radioGenres.value.filter((g) => selectedGenres.includes(g.id)), [selectedGenres]);
-
-  const filteredStations = useMemo(
-    () =>
-      [...radioStations.value].filter((station) => {
-        const matchesSearch = station.name
-          ?.toLowerCase()
-          .includes((lastRadioSearchResult.value?.query || '').toLowerCase());
-        const matchesCountry = !selectedCountries.length || selectedCountries.includes(station.language);
-        const matchesGenre = !selectedGenres.length || selectedGenres.some((g) => station.genres.includes(g));
-        return matchesSearch && matchesCountry && matchesGenre;
-      }),
-    [lastRadioSearchResult.value?.query, selectedGenres, selectedCountries],
+  const filteredStations = computed(() =>
+    [...radioStations.value].filter((station) => {
+      const matchesSearch = station.name
+        ?.toLowerCase()
+        .includes((lastRadioSearchResult.value?.query || '').toLowerCase());
+      const langs = radioSearchFilters.value?.languages || [];
+      const genres = radioSearchFilters.value?.genres || [];
+      const matchesCountry = !langs.length || langs.includes(station.language);
+      const matchesGenre = !genres.length || genres.some((g) => station.genres.includes(g));
+      return matchesSearch && matchesCountry && matchesGenre;
+    }),
   );
 
   const languageOptions = useMemo(
     () =>
       [...radioLanguages.value]
-        .filter((language) => !selectedCountries.includes(language.country))
+        .filter((language) => !(radioSearchFilters.value?.languages || []).includes(language.country))
         .sort((a, b) => +!!a.flag - +!!b.flag)
         .map((l) => ({ label: `${l.flag ?? ''} ${l.name}`, minimalLabel: l.flag ?? undefined, value: l.id })),
-    [selectedCountries],
+    [radioSearchFilters.value?.languages],
   );
 
   const genreOptions = useMemo(() => {
@@ -60,11 +59,11 @@ export const useRadioStations = () => {
   }, []);
 
   const handleLanguageChange = (countries: string[]) => {
-    setSelectedCountries(countries);
+    radioSearchFilters.value = { languages: countries, genres: radioSearchFilters.value?.genres || [] };
   };
 
   const handleGenreChange = (genres: string[]) => {
-    setSelectedGenres(genres);
+    radioSearchFilters.value = { languages: radioSearchFilters.value?.languages || [], genres };
   };
 
   const handleFilterClick = () => {
@@ -76,9 +75,9 @@ export const useRadioStations = () => {
       clearLastRadioSearchResult();
       return;
     }
-    const searchInput = (event.target as HTMLInputElement).value;
-    if (searchInput.trim()) {
-      setLastRadioSearchResult(searchInput, []);
+    const searchInput = (event.target as HTMLInputElement).value?.trim();
+    if (searchInput) {
+      setLastRadioSearchResultQuery(searchInput);
     } else {
       clearLastRadioSearchResult();
     }
@@ -97,11 +96,11 @@ export const useRadioStations = () => {
     searchTerm: lastRadioSearchResult.value?.query || '',
     onSearchInput,
     searchInputRef,
-    activeFilterCount,
-    filteredStations,
+    activeFilterCount: activeRadioFilterCount.value,
+    filteredStations: filteredStations.value,
     languageOptions,
-    activeLanguages,
-    activeGenres,
+    activeLanguages: activeLanguages.value,
+    activeGenres: activeGenres.value,
     genreOptions,
     isScrolled: !!uiIsScrolled.value,
     handleLanguageChange,

@@ -72,12 +72,14 @@ export const useRadioStation = () => {
 
   useEffect(() => {
     uiState.value = {
+      ...uiState.value,
       headerTitle: radioStation?.name ?? '',
       headerDefaultTextColor: 'light',
     };
 
     return () =>
       (uiState.value = {
+        ...uiState.value,
         headerTitle: '',
         headerDefaultTextColor: 'default',
       });
