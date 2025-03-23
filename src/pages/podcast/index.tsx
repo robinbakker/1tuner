@@ -1,6 +1,5 @@
 import { Bookmark, Play, RefreshCw } from 'lucide-preact';
 import { useLocation } from 'preact-iso';
-import { useMemo } from 'preact/hooks';
 import { Loader } from '~/components/loader';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -13,16 +12,13 @@ export const PodcastPage = () => {
     params,
     isLoading,
     podcast,
+    lastPlayedEpisode,
     isFollowing,
-    nowPlaying,
+    nowPlayingState,
     toggleFollow,
     handleEpisodeClick,
     handleFetchNewEpisodes,
   } = usePodcast();
-
-  const lastPlayedEpisode = useMemo(() => {
-    return podcast?.episodes?.find((e) => e.currentTime && e.currentTime > 0);
-  }, [podcast?.episodes]);
 
   if (typeof window !== 'undefined' && !params.id) {
     route('/podcasts');
@@ -114,8 +110,8 @@ export const PodcastPage = () => {
           <div class="space-y-6">
             {podcast.episodes?.map((episode, i) => {
               const currentTime =
-                nowPlaying?.streams[0].url === episode.audio && nowPlaying.currentTime
-                  ? nowPlaying.currentTime
+                nowPlayingState?.streams[0].url === episode.audio && nowPlayingState.currentTime
+                  ? nowPlayingState.currentTime
                   : episode.currentTime;
               return (
                 <div key={`ep-${episode.pubDate}-${i}`} class="border-b border-stone-200 pb-6">

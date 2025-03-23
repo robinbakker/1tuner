@@ -1,7 +1,10 @@
 import { Cast, ChevronDown, ChevronUp, FastForward, Pause, Play, Rewind, Timer, X } from 'lucide-preact';
 import { styleClass } from '~/lib/styleClass';
 import { cn } from '~/lib/utils';
+import { recentlyVisitedRadioStations } from '~/store/signals/radio';
 import { isPlayerMaximized, playerState, togglePlayerMaximized } from '../../store/signals/player';
+import { ContentSection } from '../content-section';
+import { RadioStationCard } from '../radio-station-card';
 import { Button } from '../ui/button';
 import { usePlayer } from './usePlayer';
 
@@ -17,6 +20,7 @@ export const Player = () => {
     progressPercentage,
     playbackRates,
     isPodcast,
+    isRadio,
     isCastingAvailable,
     castSession,
     audioSources,
@@ -86,11 +90,13 @@ export const Player = () => {
             </div>
             <div class="flex-1 overflow-y-auto p-6">
               <div class="flex flex-col items-center justify-center space-y-6">
-                <div class={`relative flex flex-col items-center justify-center overflow-hidden w-64 h-64`}>
+                <div
+                  class={`relative flex flex-col items-center justify-center overflow-hidden ${isPodcast ? 'w-64 h-64' : 'w-56 h-56'}`}
+                >
                   <img
                     src={playerState.value?.imageUrl}
                     alt={playerState.value?.title}
-                    class={`w-48 h-48 ${isPodcast ? 'rounded-lg' : 'rounded-full'}`}
+                    class={`${isPodcast ? 'w-48 h-48 rounded-lg' : 'w-40 h-40 rounded-full'}`}
                   />
                 </div>
                 <div class="text-center w-full">
@@ -110,7 +116,6 @@ export const Player = () => {
                         <Rewind class="h-6 w-6 text-stone-600" />
                         <span class="text-xs text-stone-400 mt-1">10s</span>
                       </button>
-
                       <button
                         onClick={handlePlayPause}
                         class="p-4 bg-primary rounded-full hover:bg-primary/90 transition-colors"
@@ -121,7 +126,6 @@ export const Player = () => {
                           <Play class="h-8 w-8 text-white" />
                         )}
                       </button>
-
                       <button
                         onClick={() => handleSeek(30)}
                         class="p-2 pt-6 rounded-full transition-colors flex flex-col items-center"
@@ -157,7 +161,6 @@ export const Player = () => {
                     </div>
                   </>
                 )}
-
                 {!isPodcast && (
                   <button
                     onClick={handlePlayPause}
@@ -170,7 +173,6 @@ export const Player = () => {
                     )}
                   </button>
                 )}
-
                 {isPodcast && (
                   <div class="flex items-center space-x-2">
                     <Timer class="h-4 w-4 text-stone-500" />
@@ -186,6 +188,20 @@ export const Player = () => {
                       ))}
                     </select>
                   </div>
+                )}
+                {isRadio && (
+                  <ContentSection className="fixed mb-2 inset-x-0 bottom-0 z-10" isScrollable>
+                    <ul class="flex gap-6 md:gap-10 px-4 md:px-6">
+                      {recentlyVisitedRadioStations.value
+                        .filter((s) => s.id !== playerState.value?.contentID)
+                        .map((station) => (
+                          <li class="shrink-0">
+                            <RadioStationCard key={station.id} station={station} />
+                          </li>
+                        ))}
+                      <li class="shrink-0 w-0.5"></li>
+                    </ul>
+                  </ContentSection>
                 )}
               </div>
             </div>

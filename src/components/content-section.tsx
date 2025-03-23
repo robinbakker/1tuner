@@ -5,7 +5,7 @@ import { cn } from '~/lib/utils';
 import { Button } from './ui/button';
 
 interface Props {
-  title: string;
+  title?: string;
   children: JSX.Element;
   moreLink?: string;
   isScrollable?: boolean;
@@ -42,9 +42,11 @@ export const ContentSection = ({
   return (
     <section class={cn('mb-8 w-full', className)}>
       <div class={`flex justify-between items-center mb-2 ${padding}`}>
-        <h2 class="text-xl font-semibold">
-          {title} {moreLink && <MoreLink />}
-        </h2>
+        {!!title && (
+          <h2 class="text-xl font-semibold">
+            {title} {moreLink && <MoreLink />}
+          </h2>
+        )}
         <div class="flex items-center gap-2">{hasSearchButton && moreLink && <MoreLink isSearch />}</div>
       </div>
       <div class={isScrollable ? 'overflow-x-auto pt-2 pb-4 overscroll-contain' : padding}>{children}</div>

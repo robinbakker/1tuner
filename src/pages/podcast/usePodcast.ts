@@ -3,6 +3,7 @@ import { useRoute } from 'preact-iso';
 import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import { getPodcastUrlID, getTimeStringFromSeconds, normalizedUrlWithoutScheme, slugify, stripHtml } from '~/lib/utils';
+import { isDBLoaded } from '~/store/db/db';
 import { playerState } from '~/store/signals/player';
 import {
   addRecentlyVisitedPodcast,
@@ -46,9 +47,19 @@ export const usePodcast = () => {
     return getTimeStringFromSeconds(+duration);
   }, []);
 
+  const lastPlayedEpisode = useMemo(() => {
+    return podcast?.episodes?.find((e) => e.currentTime && e.currentTime > 0);
+  }, [podcast?.episodes]);
+
+  const nowPlayingState = useMemo(() => {
+    return playerState.value?.playType === 'podcast' && playerState.value.contentID === params.id
+      ? playerState.value
+      : null;
+  }, [playerState.value, params.id]);
+
   const fetchPodcastData = useCallback(
     async (skipCache = false) => {
-      if (!params.id) return;
+      if (!params.id || !isDBLoaded.value) return;
 
       setIsLoading(true);
       let podcastData = getPodcast(params.id);
@@ -127,7 +138,7 @@ export const usePodcast = () => {
 
       setIsLoading(false);
     },
-    [getDurationString, params.id, paramsFeedUrl],
+    [getDurationString, params.id, isDBLoaded.value, paramsFeedUrl],
   );
 
   useEffect(() => {
@@ -138,7 +149,13 @@ export const usePodcast = () => {
     return () => {
       uiState.value = { ...uiState.value, headerTitle: '' };
     };
-  }, [params.id, paramsFeedUrl, getDurationString, fetchPodcastData]);
+  }, [fetchPodcastData]);
+
+  useEffect(() => {
+    if (nowPlayingState) {
+      fetchPodcastData();
+    }
+  }, [nowPlayingState]);
 
   const toggleFollow = () => {
     if (!podcast) return;
@@ -179,9 +196,9 @@ export const usePodcast = () => {
     params,
     isLoading,
     podcast,
+    lastPlayedEpisode,
     isFollowing,
-    nowPlaying:
-      playerState.value?.playType === 'podcast' && playerState.value.contentID === params.id ? playerState.value : null,
+    nowPlayingState,
     toggleFollow,
     handleEpisodeClick,
     handleFetchNewEpisodes,

@@ -36,6 +36,7 @@ export const usePlayer = () => {
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
   const isPodcast = playerState.value?.playType === 'podcast';
   const isPlaylist = playerState.value?.playType === 'playlist';
+  const isRadio = playerState.value?.playType === 'radio';
   const playlistUrl = isPlaylist ? playerState.value?.pageLocation : undefined;
   const progressPercentage = useComputed(() => (currentTime.value / durationSignal.value) * 100);
 
@@ -122,6 +123,7 @@ export const usePlayer = () => {
         audioRef.current.currentTime,
       );
       currentTime.value = audioRef.current.currentTime;
+      playerState.value.currentTime = audioRef.current.currentTime;
       saveStateToDB();
     } else {
       audioRef.current.currentTime = 0;
@@ -325,7 +327,13 @@ export const usePlayer = () => {
   }, [castSession]);
 
   useEffect(() => {
-    if (!audioRef.current || !playerState.value || typeof navigator.mediaSession === 'undefined') return;
+    if (
+      !audioRef.current ||
+      !playerState.value ||
+      typeof navigator.mediaSession === 'undefined' ||
+      (isPodcast && durationSignal.value === 0)
+    )
+      return;
 
     navigator.mediaSession.metadata = new MediaMetadata({
       title: playerState.value.title,
@@ -376,7 +384,7 @@ export const usePlayer = () => {
       navigator.mediaSession.setActionHandler('nexttrack', null);
       navigator.mediaSession.setActionHandler('seekto', null);
     };
-  }, [playerState.value, isPodcast, handlePlayPause, handleSeek, updateTimeUI]);
+  }, [playerState.value, durationSignal.value, isPodcast, handlePlayPause, handleSeek, updateTimeUI]);
 
   return {
     audioRef,
@@ -389,6 +397,7 @@ export const usePlayer = () => {
     progressPercentage,
     playbackRates,
     isPodcast,
+    isRadio,
     audioSources: audioSourcesSignal,
     handleSeek,
     handlePlaybackRateChange,

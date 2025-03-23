@@ -3,7 +3,7 @@ import { Genre, Language, Podcast, RadioSearchFilters, RadioSearchResult, RadioS
 import { playerState } from './player';
 
 export const radioStations = signal<RadioStation[]>([]);
-export const radioSearchFilters = signal<RadioSearchFilters | null>({ languages: [navigator.language], genres: [] });
+export const radioSearchFilters = signal<RadioSearchFilters | null>(null);
 export const radioLanguages = signal<Language[]>([]);
 export const radioGenres = signal<Genre[]>([]);
 export const followedRadioStationIDs = signal<string[]>([]);
@@ -20,7 +20,7 @@ export const recentlyVisitedRadioStations = computed(() => {
   return stations.slice(0, 10);
 });
 export const activeRadioFilterCount = computed(() => {
-  return (radioSearchFilters.value?.languages?.length || 0) + (radioSearchFilters.value?.genres?.length || 0);
+  return (radioSearchFilters.value?.regions?.length || 0) + (radioSearchFilters.value?.genres?.length || 0);
 });
 
 export const getRadioStation = (id: string): RadioStation | undefined => {

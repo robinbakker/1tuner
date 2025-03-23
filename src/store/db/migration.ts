@@ -45,6 +45,15 @@ interface OldPodcast {
 
 export async function migrateOldData() {
   try {
+    // First check if old database exists
+    const databases = await window.indexedDB.databases();
+    const oldDbExists = databases.some((db) => db.name === 'keyval-store');
+
+    if (!oldDbExists) {
+      console.log('No old database found, skipping migration');
+      return;
+    }
+
     // Open old database
     const oldDb = await openDB<OldKeyvalStore>('keyval-store', 1, {
       blocked() {
@@ -54,6 +63,13 @@ export async function migrateOldData() {
 
     if (!oldDb) {
       console.log('No old database found, skipping migration');
+      return;
+    }
+
+    // Verify the required store exists
+    if (!oldDb.objectStoreNames.contains('keyval')) {
+      console.log('Old database structure invalid, skipping migration');
+      oldDb.close();
       return;
     }
 

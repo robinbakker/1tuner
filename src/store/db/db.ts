@@ -1,3 +1,4 @@
+import { signal } from '@preact/signals';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import { isPlayerMaximized, playerState } from '../signals/player';
 import { playlists } from '../signals/playlist';
@@ -5,6 +6,8 @@ import { followedPodcasts, recentlyVisitedPodcasts } from '../signals/podcast';
 import { followedRadioStationIDs, radioSearchFilters, recentlyVisitedRadioStationIDs } from '../signals/radio';
 import { settingsState } from '../signals/settings';
 import { PlayerState, Playlist, Podcast, RadioSearchFilters, SettingsState } from '../types';
+
+export const isDBLoaded = signal(false);
 
 export const dbName = '1tuner';
 export const dbVersion = 5;
@@ -49,7 +52,6 @@ const getFromDB = async <T>(db: IDBPDatabase<TunerDB> | null, key: AppStateKey):
 export async function loadStateFromDB() {
   if (typeof window === 'undefined') return;
   const db = await dbPromise;
-
   followedPodcasts.value = (await getFromDB<Podcast[]>(db, AppStateKey.FollowedPodcasts)) || [];
   recentlyVisitedPodcasts.value = (await getFromDB<Podcast[]>(db, AppStateKey.RecentlyVisitedPodcasts)) || [];
   followedRadioStationIDs.value = (await getFromDB<string[]>(db, AppStateKey.RecentlyVisitedRadioStationIDs)) || [];
@@ -60,6 +62,7 @@ export async function loadStateFromDB() {
   playerState.value = (await getFromDB<PlayerState>(db, AppStateKey.PlayerState)) || null;
   settingsState.value = (await getFromDB<SettingsState>(db, AppStateKey.SettingsState)) || ({} as SettingsState);
   isPlayerMaximized.value = (await getFromDB<boolean>(db, AppStateKey.IsPlayerMaximized)) || false;
+  isDBLoaded.value = true;
 }
 
 export async function saveStateToDB() {

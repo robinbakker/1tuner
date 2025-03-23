@@ -88,10 +88,10 @@ export const SettingsPage = () => {
         </select>
       </section>
       <section class="mb-8 relative">
-        <h2 class="text-2xl font-semibold">Google Cast (Chromecast) support</h2>
+        <h2 class="text-2xl font-semibold">Google Cast (Chromecast) support (experimental)</h2>
         <p class="text-muted-foreground text-sm mb-4">
           Enable this option to support playing to a Chromecast or Google Cast enabled device (this is behind a toggle
-          because it loads an extra external script from gstatic.com).
+          because it loads an extra external script from gstatic.com, and the functionalaity is still experimental).
         </p>
         <Switch id="googleCastSupport" checked={hasGoogleCastsSupport} onClick={handleGoogleCastSupportChange} />
       </section>

@@ -112,7 +112,7 @@ export interface RadioSearchResult {
 }
 
 export interface RadioSearchFilters {
-  languages: string[];
+  regions: string[];
   genres: string[];
 }
 
