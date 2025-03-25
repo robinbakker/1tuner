@@ -1,6 +1,7 @@
 import { useLocation } from 'preact-iso';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
+import { isDBLoaded } from '~/store/db/db';
 import {
   clearLastPodcastSearchResult,
   lastPodcastSearchResult,
@@ -16,16 +17,46 @@ export const usePodcasts = () => {
   const [isLoading, setIsLoading] = useState(false);
   const searchTimeout = useRef<NodeJS.Timeout | null>();
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const isInitialized = useRef(false);
 
   useHead({
     title: 'Podcasts',
   });
 
   useEffect(() => {
+    if (!isDBLoaded.value || isInitialized.current) return;
+
+    const initialSearchQuery = query['q'] ? decodeURIComponent(query['q']) || '' : '';
+
+    if (initialSearchQuery) {
+      setSearchTerm(initialSearchQuery);
+    } else {
+      setSearchTerm('');
+    }
+    isInitialized.current = true;
+  }, [query, isDBLoaded.value]);
+
+  const updateURLParams = useCallback(
+    (search?: string) => {
+      const url = new URL(window.location.href);
+
+      if (search) {
+        url.searchParams.set('q', encodeURIComponent(search));
+      } else {
+        url.searchParams.delete('q');
+      }
+
+      route(url.pathname + url.search, true);
+    },
+    [route],
+  );
+
+  useEffect(() => {
     const searchQuery = searchTerm.trim();
 
     if (searchQuery && searchQuery !== lastPodcastSearchResult.value?.query) {
       setIsLoading(true);
+      updateURLParams(searchQuery);
 
       // Clear existing timeout
       if (searchTimeout.current) {
