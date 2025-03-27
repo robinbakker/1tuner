@@ -74,3 +74,5 @@ export const getColorString = (text: string) => {
     b = offset + nr2;
   return `rgba(${r},${g},${b},.75)`;
 };
+
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

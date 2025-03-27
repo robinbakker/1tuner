@@ -1,4 +1,4 @@
-import { TriangleAlert } from 'lucide-preact';
+import { ArrowRightFromLine, Download, TriangleAlert } from 'lucide-preact';
 import { Button } from '~/components/ui/button';
 import { RadioButtonList } from '~/components/ui/radio-button-list';
 import { Switch } from '~/components/ui/switch';
@@ -18,6 +18,8 @@ export const SettingsPage = () => {
     handleSearchProviderChange,
     handleRadioReconnectsValueChange,
     handleGoogleCastSupportChange,
+    handleExportOpml,
+    handleImportOpml,
     handleResetClick,
   } = useSettings();
 
@@ -94,6 +96,29 @@ export const SettingsPage = () => {
           because it loads an extra external script from gstatic.com, and the functionalaity is still experimental).
         </p>
         <Switch id="googleCastSupport" checked={hasGoogleCastsSupport} onClick={handleGoogleCastSupportChange} />
+      </section>
+      <section class="mb-8 relative">
+        <h2 class="text-2xl font-semibold">Import/Export</h2>
+        <p class="text-muted-foreground text-sm mb-4">
+          Export your followed podcasts to an OPML file (which can be imported into other podcast apps), or import from
+          an OPML file.
+        </p>
+        <div class="flex gap-4">
+          <Button variant="outline" onClick={handleExportOpml}>
+            <ArrowRightFromLine class="mr-2 w-4" /> Export to OPML
+          </Button>
+          <div class="relative">
+            <input
+              type="file"
+              accept=".opml,.xml"
+              onChange={handleImportOpml}
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+            <Button variant="outline">
+              <Download class="mr-2 w-4" /> Import from OPML
+            </Button>
+          </div>
+        </div>
       </section>
       <section class="mb-8 relative">
         <h2 class="text-2xl font-semibold">Reset</h2>

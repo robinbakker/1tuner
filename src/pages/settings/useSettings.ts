@@ -1,12 +1,18 @@
+import { XMLParser } from 'fast-xml-parser';
 import { ChangeEvent } from 'preact/compat';
-import { useEffect } from 'preact/hooks';
+import { useCallback, useEffect } from 'preact/hooks';
 import { RadioButtonListOption } from '~/components/ui/radio-button-list';
+import { usePodcastData } from '~/hooks/usePodcastData';
+import { opmlUtil } from '~/lib/opmlUtil';
+import { delay, getPodcastUrlID, normalizedUrlWithoutScheme } from '~/lib/utils';
+import { followedPodcasts, followPodcast } from '~/store/signals/podcast';
 import { settingsState } from '~/store/signals/settings';
 import { uiState } from '~/store/signals/ui';
-import { PodcastSearchProvider } from '~/store/types';
+import { Podcast, PodcastSearchProvider } from '~/store/types';
 import { ThemeOption } from './types';
 
 export const useSettings = () => {
+  const { fetchPodcastData } = usePodcastData();
   const themeOptions: RadioButtonListOption[] = [
     { label: 'System default', value: 'default' },
     { label: 'Light', value: 'light' },
@@ -54,6 +60,105 @@ export const useSettings = () => {
     settingsState.value.enableChromecast = input.checked;
   };
 
+  const handleExportOpml = useCallback(async () => {
+    const opml = opmlUtil.generatePodcastsOpml(followedPodcasts.value);
+    const blob = new Blob([opml], { type: 'text/x-opml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = '1tuner-export.opml';
+
+    // Instead of appending to body, just click it
+    a.style.display = 'none';
+    a.click();
+
+    // Clean up by revoking the blob URL
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+    }, 100);
+  }, [followedPodcasts.value]);
+
+  const handleImportOpml = useCallback(
+    async (e: Event) => {
+      const input = e.target as HTMLInputElement;
+      const file = input.files?.[0];
+      if (!file) return;
+
+      try {
+        const text = await file.text();
+        const parser = new XMLParser({
+          ignoreAttributes: false,
+          attributeNamePrefix: '@_',
+        });
+
+        const result = parser.parse(text);
+        const outlines = result.opml?.body?.outline;
+
+        if (!outlines) {
+          throw new Error('No valid outlines found in OPML file');
+        }
+
+        // Handle both single outline and array of outlines
+        interface OutlineItem {
+          '@_text'?: string;
+          '@_type'?: string;
+          '@_xmlUrl'?: string;
+          outline?: OutlineItem[]; // Recursive type for nested outlines
+        }
+
+        const podcasts: Podcast[] = [];
+        const podcastIDUrls: { id: string; feedUrl: string }[] = [];
+
+        const processOutlines = async (items: OutlineItem | OutlineItem[]) => {
+          // If it's a podcasts category
+          if (!Array.isArray(items) && Array.isArray(items.outline)) {
+            for (const outline of items.outline) {
+              if (outline['@_type'] === 'rss' && outline['@_xmlUrl']) {
+                const feedUrl = `https://${normalizedUrlWithoutScheme(outline['@_xmlUrl'])}`;
+                const id = getPodcastUrlID(outline['@_xmlUrl']);
+                podcastIDUrls.push({ id, feedUrl });
+                // try {
+                //   debugger;
+                //   const podcast = await fetchPodcastData(id, feedUrl);
+                //   if (podcast) {
+                //     //followPodcast({ ...podcast });
+                //     podcasts.push(podcast);
+                //   }
+                // } catch (err) {
+                //   console.warn(`Failed to import podcast: ${outline['@_text']}`, err);
+                // }
+              }
+            }
+          } else if (Array.isArray(items)) {
+            for (const item of items) {
+              await processOutlines(item);
+            }
+          }
+        };
+
+        await processOutlines(outlines);
+        for (const p of podcastIDUrls) {
+          const podcast = await fetchPodcastData(p.id, p.feedUrl);
+          await delay(500);
+          if (podcast) {
+            followPodcast({ ...podcast });
+            podcasts.push(podcast);
+          }
+        }
+        // Save podcasts to local storage or state as needed
+        console.log('Imported podcasts:', podcastIDUrls, podcasts);
+        alert('Import completed successfully!');
+      } catch (error) {
+        console.error('Import failed:', error);
+        alert('Failed to import OPML file. Please check the file format.');
+      } finally {
+        // Clear the input
+        input.value = '';
+      }
+    },
+    [fetchPodcastData],
+  );
+
   const handleResetClick = async () => {
     if (
       confirm(
@@ -94,6 +199,8 @@ export const useSettings = () => {
     handleThemeChange,
     handleGoogleCastSupportChange,
     handleResetClick,
+    handleExportOpml,
+    handleImportOpml,
     searchProviderOptions,
     themeOptions,
     theme: settingsState.value.theme ?? 'default',
