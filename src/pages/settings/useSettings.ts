@@ -1,6 +1,6 @@
 import { XMLParser } from 'fast-xml-parser';
 import { ChangeEvent } from 'preact/compat';
-import { useCallback, useEffect } from 'preact/hooks';
+import { useCallback, useEffect, useState } from 'preact/hooks';
 import { RadioButtonListOption } from '~/components/ui/radio-button-list';
 import { usePodcastData } from '~/hooks/usePodcastData';
 import { opmlUtil } from '~/lib/opmlUtil';
@@ -13,6 +13,7 @@ import { ThemeOption } from './types';
 
 export const useSettings = () => {
   const { fetchPodcastData } = usePodcastData();
+  const [isImporting, setIsImporting] = useState(false);
   const themeOptions: RadioButtonListOption[] = [
     { label: 'System default', value: 'default' },
     { label: 'Light', value: 'light' },
@@ -83,7 +84,7 @@ export const useSettings = () => {
       const input = e.target as HTMLInputElement;
       const file = input.files?.[0];
       if (!file) return;
-
+      setIsImporting(true);
       try {
         const text = await file.text();
         const parser = new XMLParser({
@@ -117,16 +118,6 @@ export const useSettings = () => {
                 const feedUrl = `https://${normalizedUrlWithoutScheme(outline['@_xmlUrl'])}`;
                 const id = getPodcastUrlID(outline['@_xmlUrl']);
                 podcastIDUrls.push({ id, feedUrl });
-                // try {
-                //   debugger;
-                //   const podcast = await fetchPodcastData(id, feedUrl);
-                //   if (podcast) {
-                //     //followPodcast({ ...podcast });
-                //     podcasts.push(podcast);
-                //   }
-                // } catch (err) {
-                //   console.warn(`Failed to import podcast: ${outline['@_text']}`, err);
-                // }
               }
             }
           } else if (Array.isArray(items)) {
@@ -154,6 +145,7 @@ export const useSettings = () => {
       } finally {
         // Clear the input
         input.value = '';
+        setIsImporting(false);
       }
     },
     [fetchPodcastData],
@@ -201,6 +193,7 @@ export const useSettings = () => {
     handleResetClick,
     handleExportOpml,
     handleImportOpml,
+    isImporting,
     searchProviderOptions,
     themeOptions,
     theme: settingsState.value.theme ?? 'default',

@@ -1,7 +1,7 @@
 {
   "name": "some.1tuner.com",
   "private": true,
-  "version": "0.0.57",
+  "version": "0.0.58",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -27,7 +27,7 @@
     "class-variance-authority": "^0.7.1",
     "fast-xml-parser": "^5.0.9",
     "idb": "^8.0.2",
-    "lucide-preact": "^0.484.0",
+    "lucide-preact": "^0.485.0",
     "preact": "^10.26.4",
     "preact-iso": "^2.9.1",
     "tailwindcss-animate": "^1.0.7"

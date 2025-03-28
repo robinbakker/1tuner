@@ -1,4 +1,4 @@
-import { ArrowRightFromLine, Download, TriangleAlert } from 'lucide-preact';
+import { ArrowRightFromLine, Download, LoaderCircle, TriangleAlert } from 'lucide-preact';
 import { Button } from '~/components/ui/button';
 import { RadioButtonList } from '~/components/ui/radio-button-list';
 import { Switch } from '~/components/ui/switch';
@@ -14,6 +14,7 @@ export const SettingsPage = () => {
     searchProviderValue,
     radioStreamMaxReconnectsValue,
     hasGoogleCastsSupport,
+    isImporting,
     handleThemeChange,
     handleSearchProviderChange,
     handleRadioReconnectsValueChange,
@@ -103,8 +104,8 @@ export const SettingsPage = () => {
           Export your followed podcasts to an OPML file (which can be imported into other podcast apps), or import from
           an OPML file.
         </p>
-        <div class="flex gap-4">
-          <Button variant="outline" onClick={handleExportOpml}>
+        <div class="flex gap-4 items-center">
+          <Button disabled={isImporting} variant="outline" onClick={handleExportOpml}>
             <ArrowRightFromLine class="mr-2 w-4" /> Export to OPML
           </Button>
           <div class="relative">
@@ -114,10 +115,11 @@ export const SettingsPage = () => {
               onChange={handleImportOpml}
               class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
-            <Button variant="outline">
+            <Button disabled={isImporting} variant="outline">
               <Download class="mr-2 w-4" /> Import from OPML
             </Button>
           </div>
+          <LoaderCircle class={`w-5 h-5 ${isImporting ? 'animate-spin' : 'hidden'}`} />
         </div>
       </section>
       <section class="mb-8 relative">
