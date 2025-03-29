@@ -2,6 +2,7 @@ import { computed } from '@preact/signals';
 import { useLocation } from 'preact-iso';
 import { useCallback, useEffect, useMemo, useRef } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
+import { validationUtil } from '~/lib/validationUtil';
 import { isDBLoaded } from '~/store/db/db';
 import {
   activeRadioFilterCount,
@@ -34,7 +35,8 @@ export const useRadioStations = () => {
     const initialGenres = query['genre']?.split(',').filter(Boolean) || [];
 
     if (initialSearchQuery) {
-      setLastRadioSearchResultQuery(initialSearchQuery);
+      const validatedQuery = validationUtil.validateSearchQuery(initialSearchQuery);
+      setLastRadioSearchResultQuery(validatedQuery);
     } else {
       clearLastRadioSearchResult();
     }
@@ -53,7 +55,8 @@ export const useRadioStations = () => {
       const url = new URL(window.location.href);
 
       if (search) {
-        url.searchParams.set('q', encodeURIComponent(search));
+        const validatedSearch = validationUtil.validateSearchQuery(search);
+        url.searchParams.set('q', encodeURIComponent(validatedSearch));
       } else {
         url.searchParams.delete('q');
       }
@@ -135,7 +138,7 @@ export const useRadioStations = () => {
         return;
       }
       const searchInput = (event.target as HTMLInputElement).value;
-      if (searchInput?.trim()) {
+      if (validationUtil.validateSearchQuery(searchInput)) {
         setLastRadioSearchResultQuery(searchInput);
         updateURLParams(searchInput, radioSearchFilters.value);
       } else {

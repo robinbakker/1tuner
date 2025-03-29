@@ -1,6 +1,7 @@
 import { useLocation } from 'preact-iso';
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
+import { validationUtil } from '~/lib/validationUtil';
 import { isDBLoaded } from '~/store/db/db';
 import {
   clearLastPodcastSearchResult,
@@ -29,7 +30,8 @@ export const usePodcasts = () => {
     const initialSearchQuery = query['q'] ? decodeURIComponent(query['q']) || '' : '';
 
     if (initialSearchQuery) {
-      setSearchTerm(initialSearchQuery);
+      const validatedQuery = validationUtil.validateSearchQuery(initialSearchQuery);
+      setSearchTerm(validatedQuery);
     } else {
       setSearchTerm('');
     }
@@ -41,7 +43,8 @@ export const usePodcasts = () => {
       const url = new URL(window.location.href);
 
       if (search) {
-        url.searchParams.set('q', encodeURIComponent(search));
+        const validatedSearch = validationUtil.validateSearchQuery(search);
+        url.searchParams.set('q', encodeURIComponent(validatedSearch));
       } else {
         url.searchParams.delete('q');
       }
@@ -52,7 +55,7 @@ export const usePodcasts = () => {
   );
 
   useEffect(() => {
-    const searchQuery = searchTerm.trim();
+    const searchQuery = validationUtil.validateSearchQuery(searchTerm);
 
     if (searchQuery && searchQuery !== lastPodcastSearchResult.value?.query) {
       setIsLoading(true);

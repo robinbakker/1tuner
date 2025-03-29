@@ -5,6 +5,7 @@ import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { TagSelect } from '~/components/ui/tag-select';
 import { cn } from '~/lib/utils';
+import { MAX_SEARCH_LENGTH } from '~/lib/validationUtil';
 import { followedRadioStationIDs, radioStations } from '~/store/signals/radio';
 import { useRadioStations } from './useRadioStations';
 
@@ -111,6 +112,7 @@ export const RadioStationsPage = () => {
                     searchTerm && 'pr-15',
                     '[&::-webkit-search-cancel-button]:hidden',
                   )}
+                  maxLength={MAX_SEARCH_LENGTH}
                 />
               </div>
             </div>

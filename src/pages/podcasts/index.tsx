@@ -7,6 +7,7 @@ import { PodcastCard } from '~/components/podcast-card';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { cn, slugify } from '~/lib/utils';
+import { MAX_SEARCH_LENGTH } from '~/lib/validationUtil';
 import { Podcast } from '~/store/types';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../../store/signals/podcast';
 import { usePodcasts } from './usePodcasts';
@@ -93,6 +94,7 @@ export const PodcastsPage = () => {
                       '[&::-webkit-search-cancel-button]:hidden',
                     )}
                     autofocus={!!searchTerm}
+                    maxLength={MAX_SEARCH_LENGTH}
                   />
                 </div>
               </div>
