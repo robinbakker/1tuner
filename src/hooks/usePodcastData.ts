@@ -6,6 +6,22 @@ import { Podcast } from '~/store/types';
 
 const FETCH_TIMEOUT = 10000; // 10 seconds
 const MAX_RETRIES = 2;
+const VALID_CONTENT_TYPES = [
+  'application/rss+xml',
+  'application/xml',
+  'text/xml',
+  'application/rdf+xml',
+  'application/text',
+];
+
+const isValidPodcastFeed = (xmlData: string): boolean => {
+  const hasRssTag = /<rss[^>]*>/i.test(xmlData);
+  const hasChannelTag = /<channel[^>]*>/i.test(xmlData);
+  const hasItemTag = /<item[^>]*>/i.test(xmlData);
+  const hasEnclosureTag = /<enclosure[^>]*>/i.test(xmlData);
+
+  return hasRssTag && hasChannelTag && hasItemTag && hasEnclosureTag;
+};
 
 export const usePodcastData = () => {
   const [isLoading, setIsLoading] = useState(typeof window !== 'undefined');
@@ -35,13 +51,32 @@ export const usePodcastData = () => {
     }
   }, []);
 
+  const getResponseText = useCallback(async (response: Response) => {
+    if (!response.ok) throw new Error('Network response failed');
+
+    // Validate content type
+    const contentType = response.headers.get('content-type')?.toLowerCase() || '';
+    const isValidContentType = VALID_CONTENT_TYPES.some((type) => contentType.includes(type));
+
+    if (!isValidContentType) {
+      throw new Error('Invalid content type: Not a valid RSS feed');
+    }
+
+    const xmlData = await response.text();
+
+    if (!isValidPodcastFeed(xmlData)) {
+      throw new Error('Invalid feed: Not a podcast RSS feed');
+    }
+
+    return xmlData;
+  }, []);
+
   const fetchFeed = useCallback(
     async (feedUrl: string, retryCount = 0): Promise<string> => {
       // Try direct fetch first
       try {
         const response = await fetchWithTimeout(feedUrl);
-        if (!response.ok) throw new Error('Direct fetch failed');
-        return await response.text();
+        return await getResponseText(response);
       } catch {
         // If direct fetch fails, try proxy
         try {
@@ -49,8 +84,7 @@ export const usePodcastData = () => {
             method: 'POST',
             body: feedUrl,
           });
-          if (!proxyResponse.ok) throw new Error('Proxy fetch failed');
-          return await proxyResponse.text();
+          return await getResponseText(proxyResponse);
         } catch (proxyError) {
           // If we haven't reached max retries, try again after a delay
           if (retryCount < MAX_RETRIES) {
@@ -65,7 +99,7 @@ export const usePodcastData = () => {
         }
       }
     },
-    [fetchWithTimeout],
+    [fetchWithTimeout, getResponseText],
   );
 
   const fetchPodcastData = useCallback(

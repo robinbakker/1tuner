@@ -9,7 +9,7 @@ const validateSearchQuery = (query: string | null | undefined): string => {
   if (sanitizedQuery.length < MIN_SEARCH_LENGTH) {
     return '';
   }
-  console.log('validateSearchQuery', query, sanitizedQuery.replace(/[^a-zA-Z0-9\s\-_]/g, ''));
+
   // Remove any characters that are not letters, numbers, spaces, hyphens, or underscores
   return sanitizedQuery.replace(/[^a-zA-Z0-9\s\-_]/g, '');
 };

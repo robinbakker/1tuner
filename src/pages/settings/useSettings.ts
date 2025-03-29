@@ -84,15 +84,31 @@ export const useSettings = () => {
       const input = e.target as HTMLInputElement;
       const file = input.files?.[0];
       if (!file) return;
+
+      const maxFileSizeMB = 2;
+      const maxInputSize = maxFileSizeMB * 1024 * 1024;
+      if (file.size > maxInputSize) {
+        alert(`File is too large. Maximum size is ${maxFileSizeMB}MB.`);
+        input.value = '';
+        return;
+      }
+
       setIsImporting(true);
       try {
         const text = await file.text();
+        if (!text.includes('<?xml') || !text.includes('<opml')) {
+          throw new Error('Invalid OPML file format');
+        }
         const parser = new XMLParser({
           ignoreAttributes: false,
           attributeNamePrefix: '@_',
         });
 
         const result = parser.parse(text);
+        if (!result.opml?.version) {
+          throw new Error('Invalid OPML structure');
+        }
+
         const outlines = result.opml?.body?.outline;
 
         if (!outlines) {
