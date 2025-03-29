@@ -26,6 +26,13 @@ export const useRadioStations = () => {
     title: 'Radio stations',
   });
 
+  const userLanguage = useMemo(() => {
+    const navLang = navigator.language;
+    if (radioLanguages.value.some((lang) => lang.id === navLang)) return navLang;
+    const lang = radioLanguages.value.find((lang) => navLang.startsWith(lang.id))?.id;
+    return lang || '';
+  }, [radioLanguages.value]);
+
   // Sync URL params with state on initial load
   useEffect(() => {
     if (!isDBLoaded.value || isInitialized.current) return;
@@ -40,14 +47,14 @@ export const useRadioStations = () => {
     } else {
       clearLastRadioSearchResult();
     }
-    const savedLanguages = radioSearchFilters.value?.regions || [navigator.language];
+    const savedLanguages = radioSearchFilters.value?.regions || (userLanguage ? [userLanguage] : []);
     radioSearchFilters.value = {
       regions: initialLanguages.length ? initialLanguages : savedLanguages,
       genres: initialGenres,
     };
 
     isInitialized.current = true;
-  }, [query, isDBLoaded.value, radioSearchFilters.value]);
+  }, [query, userLanguage]);
 
   // Update URL helper function
   const updateURLParams = useCallback(
@@ -88,18 +95,18 @@ export const useRadioStations = () => {
     return radioGenres.value.filter((g) => filter.includes(g.id));
   });
 
-  const filteredStations = computed(() =>
-    [...radioStations.value].filter((station) => {
+  const filteredStations = computed(() => {
+    const langs = radioSearchFilters.value?.regions || [];
+    const genres = radioSearchFilters.value?.genres || [];
+    return [...radioStations.value].filter((station) => {
       const matchesSearch = station.name
         ?.toLowerCase()
         .includes((lastRadioSearchResult.value?.query || '').toLowerCase());
-      const langs = radioSearchFilters.value?.regions || [];
-      const genres = radioSearchFilters.value?.genres || [];
       const matchesCountry = !langs.length || langs.includes(station.language);
       const matchesGenre = !genres.length || genres.some((g) => station.genres.includes(g));
       return matchesSearch && matchesCountry && matchesGenre;
-    }),
-  );
+    });
+  });
 
   const languageOptions = useMemo(
     () =>
