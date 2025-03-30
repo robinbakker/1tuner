@@ -66,6 +66,7 @@ export interface Podcast {
 export interface Episode {
   title: string;
   description: string;
+  guid?: string;
   pubDate: Date;
   duration: string;
   audio: string;
@@ -95,6 +96,7 @@ export interface PlayerState {
   streams: Stream[];
   pageLocation: string;
   currentTime?: number;
+  shareUrl?: string;
 }
 
 export interface PodcastJsonGenre {

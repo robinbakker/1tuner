@@ -1,4 +1,4 @@
-import { useRoute } from 'preact-iso';
+import { useLocation, useRoute } from 'preact-iso';
 import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import { usePodcastData } from '~/hooks/usePodcastData';
@@ -11,7 +11,7 @@ import { Episode, Podcast } from '~/store/types';
 
 export const usePodcast = () => {
   const { params } = useRoute();
-  // const [isLoading, setIsLoading] = useState(typeof window !== 'undefined');
+  const { route } = useLocation();
   const [isFollowing, setIsFollowing] = useState(false);
   const [podcast, setPodcast] = useState<Podcast | null>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,6 +43,22 @@ export const usePodcast = () => {
       : null;
   }, [playerState.value, params.id]);
 
+  const selectedEpisodeID = useMemo(() => {
+    if (!podcast?.episodes) return -1;
+    const episodeID = params.episodeID ? decodeURIComponent(params.episodeID) : null;
+    console.log('selectedEpisodeID', episodeID, params);
+    if (episodeID && podcast?.episodes?.some((ep) => ep.guid === episodeID)) {
+      return episodeID;
+    }
+    return null;
+  }, [params.episodeID, podcast?.episodes]);
+
+  useEffect(() => {
+    if (isDBLoaded.value && params.episodeID && !selectedEpisodeID) {
+      route(`/podcast/${params.name}/${params.id}`, true);
+    }
+  }, [isDBLoaded.value, params.episodeID, params.id, params.name, route, selectedEpisodeID]);
+
   const getPodcastData = useCallback(
     async (skipCache = false) => {
       if (!params.id || !isDBLoaded.value) return;
@@ -59,7 +75,7 @@ export const usePodcast = () => {
         setIsFollowing(true);
       }
     },
-    [params.id, fetchPodcastData, paramsFeedUrl],
+    [params.id, fetchPodcastData, paramsFeedUrl, isDBLoaded.value],
   );
 
   useEffect(() => {
@@ -102,6 +118,7 @@ export const usePodcast = () => {
         streams: [{ mimetype: episode.mimeType || 'audio/mpeg', url: episode.audio }],
         pageLocation: `/podcast/${params.name}/${params.id}`,
         currentTime: episode.currentTime || 0,
+        shareUrl: `/podcast/${params.name}/${params.id}${episode.guid ? `/${encodeURIComponent(episode.guid)}` : ''}`,
       };
     },
     [podcast, params.id, params.name],
@@ -112,6 +129,10 @@ export const usePodcast = () => {
     getPodcastData(true);
   };
 
+  const handleShowAllEpisodesClick = () => {
+    route(`/podcast/${params.name}/${params.id}`);
+  };
+
   return {
     params,
     isLoading,
@@ -119,8 +140,10 @@ export const usePodcast = () => {
     lastPlayedEpisode,
     isFollowing,
     nowPlayingState,
+    selectedEpisodeID,
     toggleFollow,
     handleEpisodeClick,
     handleFetchNewEpisodes,
+    handleShowAllEpisodesClick,
   };
 };

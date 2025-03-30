@@ -1,7 +1,7 @@
 {
   "name": "some.1tuner.com",
   "private": true,
-  "version": "0.0.59",
+  "version": "0.0.60",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -52,6 +52,6 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.28.0",
     "vite": "^6.2.3",
-    "vite-plugin-pwa": "^0.21.2"
+    "vite-plugin-pwa": "^1.0.0"
   }
 }

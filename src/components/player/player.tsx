@@ -5,6 +5,7 @@ import { recentlyVisitedRadioStations } from '~/store/signals/radio';
 import { isPlayerMaximized, playerState, togglePlayerMaximized } from '../../store/signals/player';
 import { ContentSection } from '../content-section';
 import { RadioStationCard } from '../radio-station-card';
+import { ShareButton } from '../share-button';
 import { Button } from '../ui/button';
 import { usePlayer } from './usePlayer';
 
@@ -82,6 +83,13 @@ export const Player = () => {
                   <Button variant="outline" styleSize="icon" onClick={castSession ? stopCasting : startCasting}>
                     {castSession ? <Cast class="h-6 w-6 text-color-primary" /> : <Cast class="h-6 w-6" />}
                   </Button>
+                )}
+                {playerState.value?.shareUrl && (
+                  <ShareButton
+                    className="h-12 w-12 flex align-middle justify-center items-center"
+                    hasDarkBackground={false}
+                    shareUrl={playerState.value?.shareUrl}
+                  />
                 )}
                 <Button variant="outline" styleSize="icon" onClick={handleClose}>
                   <X class="h-6 w-6" />

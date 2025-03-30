@@ -83,7 +83,7 @@ export function App() {
               <Route path="/radio-stations" component={RadioStationsPage} />
               <Route path="/radio-station/:id?" component={RadioStationPage} />
               <Route path="/podcasts" component={PodcastsPage} />
-              <Route path="/podcast/:name?/:id?" component={PodcastPage} />
+              <Route path="/podcast/:name?/:id?/:episodeID?" component={PodcastPage} />
               <Route path="/playlists" component={PlaylistsPage} />
               <Route path="/playlist/:name?" component={PlaylistPage} />
               <Route path="/settings" component={SettingsPage} />

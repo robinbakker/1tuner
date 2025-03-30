@@ -24,7 +24,7 @@ const isValidPodcastFeed = (xmlData: string): boolean => {
 };
 
 export const usePodcastData = () => {
-  const [isLoading, setIsLoading] = useState(typeof window !== 'undefined');
+  const [isLoading, setIsLoading] = useState(false);
 
   const getDurationString = useCallback((duration: string) => {
     const durationParts = duration.split(':');
@@ -141,6 +141,7 @@ export const usePodcastData = () => {
                 (item: {
                   title: string;
                   description: string;
+                  guid?: { '#text': string };
                   pubDate: string;
                   enclosure?: { '@_url': string; '@_type': string };
                   'itunes:duration'?: string;
@@ -148,6 +149,7 @@ export const usePodcastData = () => {
                 }) => ({
                   title: item.title,
                   description: item.description,
+                  guid: item.guid?.['#text'],
                   pubDate: new Date(item.pubDate),
                   audio: item.enclosure?.['@_url'],
                   mimeType: item.enclosure?.['@_type'],
@@ -158,7 +160,6 @@ export const usePodcastData = () => {
               ),
           } as Podcast;
         }
-
         return podcastData;
       } catch (error) {
         console.error('Error fetching podcast:', error);

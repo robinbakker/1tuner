@@ -1,4 +1,4 @@
-import { Bookmark, Play, RefreshCw } from 'lucide-preact';
+import { Bookmark, ChevronRight, Play, RefreshCw } from 'lucide-preact';
 import { useLocation } from 'preact-iso';
 import { Loader } from '~/components/loader';
 import { Badge } from '~/components/ui/badge';
@@ -15,9 +15,11 @@ export const PodcastPage = () => {
     lastPlayedEpisode,
     isFollowing,
     nowPlayingState,
+    selectedEpisodeID,
     toggleFollow,
     handleEpisodeClick,
     handleFetchNewEpisodes,
+    handleShowAllEpisodesClick,
   } = usePodcast();
 
   if (typeof window !== 'undefined' && !params.id) {
@@ -76,7 +78,7 @@ export const PodcastPage = () => {
             </div>
           </div>
           <div class="flex-1">
-            <p class="my-3 @xl:mt-1 @max-h-[30vh] p-3 overflow-y-auto">{stripHtml(podcast.description)}</p>
+            <p class="my-3 @xl:mt-1 max-h-[30vh] p-3 overflow-y-auto">{stripHtml(podcast.description)}</p>
             {!!podcast?.categories?.length && (
               <div class="flex flex-wrap gap-2 mb-4">
                 {podcast?.categories?.map((category, index) => (
@@ -108,51 +110,61 @@ export const PodcastPage = () => {
         </header>
         <section>
           <div class="space-y-6">
-            {podcast.episodes?.map((episode, i) => {
-              const currentTime =
-                nowPlayingState?.streams[0].url === episode.audio && nowPlayingState.currentTime
-                  ? nowPlayingState.currentTime
-                  : episode.currentTime;
-              return (
-                <div key={`ep-${episode.pubDate}-${i}`} class="border-b border-stone-200 pb-6">
-                  <div class="flex group items-center justify-between mb-2">
-                    <div class="cursor-pointer" onClick={() => handleEpisodeClick(episode)}>
-                      <h3 class="text-xl font-medium group-hover:text-primary transition-colors">
-                        {episode.title}{' '}
-                        <span class="text-muted-foreground font-normal text-sm">
-                          ({currentTime ? `${getTimeStringFromSeconds(currentTime)} / ` : ''}
-                          {episode.duration})
-                        </span>
-                      </h3>
-                      <p class="text-muted-foreground text-sm">
-                        <time dateTime={episode.pubDate.toJSON()}>
-                          {episode.pubDate.toLocaleDateString(navigator.language, {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            weekday: 'long',
-                          })}
-                        </time>
-                      </p>
+            {podcast.episodes
+              ?.filter((ep) => !selectedEpisodeID || selectedEpisodeID === ep.guid)
+              .map((ep, i) => {
+                const currentTime =
+                  nowPlayingState?.streams[0].url === ep.audio && nowPlayingState.currentTime
+                    ? nowPlayingState.currentTime
+                    : ep.currentTime;
+                return (
+                  <div key={`ep-${ep.pubDate}-${i}`} class="border-b border-stone-200 pb-6">
+                    <div class="flex group items-center justify-between mb-2">
+                      <div class="cursor-pointer" onClick={() => handleEpisodeClick(ep)}>
+                        <h3 class="text-xl font-medium group-hover:text-primary transition-colors">
+                          {ep.title}{' '}
+                          <span class="text-muted-foreground font-normal text-sm">
+                            ({currentTime ? `${getTimeStringFromSeconds(currentTime)} / ` : ''}
+                            {ep.duration})
+                          </span>
+                        </h3>
+                        <p class="text-muted-foreground text-sm">
+                          <time dateTime={ep.pubDate.toJSON()}>
+                            {ep.pubDate.toLocaleDateString(navigator.language, {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                              weekday: 'long',
+                            })}
+                          </time>
+                        </p>
+                      </div>
+                      <div>
+                        <Button
+                          onClick={() => handleEpisodeClick(ep)}
+                          variant="outline"
+                          styleSize="icon"
+                          class={cn(
+                            'border-stone-300 hover:bg-primary group-hover:bg-primary group-hover:border-primary',
+                            'group-hover:text-primary-foreground hover:text-primary-foreground transition-colors',
+                            selectedEpisodeID ? 'bg-primary text-primary-foreground' : '',
+                          )}
+                        >
+                          <Play class="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                    <div>
-                      <Button
-                        onClick={() => handleEpisodeClick(episode)}
-                        variant="outline"
-                        styleSize="icon"
-                        class={cn(
-                          'border-stone-300 hover:bg-primary group-hover:bg-primary group-hover:border-primary',
-                          'group-hover:text-primary-foreground hover:text-primary-foreground transition-colors',
-                        )}
-                      >
-                        <Play class="h-4 w-4" />
-                      </Button>
-                    </div>
+                    <p class="break-words [word-break:break-word] mb-4">{stripHtml(ep.description)}</p>
                   </div>
-                  <p class="break-words [word-break:break-word] mb-4">{stripHtml(episode.description)}</p>
-                </div>
-              );
-            })}
+                );
+              })}
+            {selectedEpisodeID && (
+              <div class="flex justify-end">
+                <Button variant={'outline'} onClick={handleShowAllEpisodesClick}>
+                  Show all episodes <ChevronRight class="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            )}
           </div>
         </section>
       </div>
