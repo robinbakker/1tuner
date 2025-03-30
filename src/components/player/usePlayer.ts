@@ -22,6 +22,9 @@ export const usePlayer = () => {
   const sliderRef = useRef<HTMLInputElement>(null);
   const reconnectTimeout = useRef<NodeJS.Timeout>();
   const reconnectAttempts = signal(0);
+  const audioContextRef = useRef<AudioContext | null>(null); // Reference for Web Audio API context
+  const noiseSourceRef = useRef<AudioBufferSourceNode | null>(null); // Reference for noise source
+  const gainNodeRef = useRef<GainNode | null>(null); // Reference for the gain node
 
   const {
     isCastingAvailable,
@@ -182,6 +185,59 @@ export const usePlayer = () => {
     [updateTimeUI],
   );
 
+  const startNoise = useCallback(() => {
+    if (!audioContextRef.current) {
+      audioContextRef.current = new AudioContext();
+    }
+
+    const audioContext = audioContextRef.current;
+
+    // Create a buffer with random noise
+    const bufferSize = audioContext.sampleRate * 1; // 1 second of audio
+    const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
+
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1; // Generate random noise
+    }
+
+    // Create a buffer source
+    const noiseSource = audioContext.createBufferSource();
+    noiseSource.buffer = buffer;
+    noiseSource.loop = true;
+
+    // Create a gain node to control the volume
+    const gainNode = audioContext.createGain();
+    gainNode.gain.value = 0.1; // Set the volume (0.1 = 10% of full volume)
+
+    // Connect the noise source to the gain node, then to the destination
+    noiseSource.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    noiseSource.start();
+
+    noiseSourceRef.current = noiseSource;
+    gainNodeRef.current = gainNode;
+  }, []);
+
+  const stopNoise = useCallback(() => {
+    if (noiseSourceRef.current) {
+      noiseSourceRef.current.stop();
+      noiseSourceRef.current.disconnect();
+      noiseSourceRef.current = null;
+    }
+
+    if (gainNodeRef.current) {
+      gainNodeRef.current.disconnect();
+      gainNodeRef.current = null;
+    }
+
+    if (audioContextRef.current) {
+      audioContextRef.current.close();
+      audioContextRef.current = null;
+    }
+  }, []);
+
   useEffect(() => {
     if (!audioRef.current || !playerState.value || !playerState.value.streams?.length) return;
 
@@ -197,6 +253,12 @@ export const usePlayer = () => {
     }
 
     if (playerState.value.isPlaying && !castSession) {
+      if (!navigator.onLine) {
+        console.log('Network is offline, should pausing playback?');
+        //setToPaused();
+        return;
+      }
+
       const promise = audioRef.current.play();
       if (promise) {
         promise.catch((error) => {
@@ -208,6 +270,159 @@ export const usePlayer = () => {
       setToPaused();
     }
   }, [playerState.value, castSession, setToPaused]);
+
+  const BUFFER_THRESHOLD = 5; // Minimum buffered time (in seconds) before reconnecting
+
+  const hasSufficientBuffer = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return false;
+
+    const currentTime = audio.currentTime;
+    for (let i = 0; i < audio.buffered.length; i++) {
+      const start = audio.buffered.start(i);
+      const end = audio.buffered.end(i);
+      if (currentTime >= start && currentTime <= end) {
+        const bufferedTime = end - currentTime;
+        console.log(`Buffered time: ${bufferedTime}s`);
+        return bufferedTime > BUFFER_THRESHOLD;
+      }
+    }
+    return false;
+  }, []);
+
+  const attemptReconnect = useCallback(() => {
+    const audio = audioRef.current;
+    console.log('Attempting to reconnect...', audio?.readyState, audio?.networkState, audio?.error);
+
+    if (hasSufficientBuffer()) {
+      console.log('Sufficient buffer available, skipping reconnect.');
+      return;
+    }
+
+    if (reconnectAttempts.value >= maxReconnectAttempts) {
+      console.log('Max reconnect attempts reached');
+      stopNoise(); // Stop noise
+      addToast({
+        title: '😢 Reconnect failed...',
+        description: 'Failed to reconnect to the stream',
+        variant: 'error',
+      });
+      reconnectAttempts.value = 0;
+      playerState.value = playerState.value
+        ? {
+            ...playerState.value,
+            isPlaying: false,
+          }
+        : null;
+      return;
+    }
+
+    reconnectAttempts.value += 1;
+    console.log(`Reconnect attempt ${reconnectAttempts.value}/${maxReconnectAttempts}`);
+    addToast({
+      title: '🛜 Reconnecting...',
+      description: `There was an issue with the stream. Attempting to reconnect...`,
+      variant: 'default',
+    });
+
+    if (reconnectTimeout.current) {
+      clearTimeout(reconnectTimeout.current);
+    }
+
+    // Start noise
+    startNoise();
+
+    const timeout = reconnectUtil.getReconnectTimeoutMs(reconnectAttempts.value, maxReconnectAttempts);
+
+    reconnectTimeout.current = setTimeout(() => {
+      if (!audio || !playerState.value?.isPlaying) {
+        if (!navigator.onLine) stopNoise(); // Stop noise
+        return;
+      }
+
+      audio.load();
+      const playPromise = audio.play();
+
+      if (playPromise) {
+        playPromise
+          .then(() => {
+            console.log('Reconnect successful');
+            reconnectAttempts.value = 0;
+            stopNoise(); // Stop noise
+          })
+          .catch((error) => {
+            console.log('Reconnect failed:', error);
+            attemptReconnect();
+          });
+      }
+    }, timeout);
+  }, [maxReconnectAttempts, reconnectAttempts.value, playerState.value, startNoise, stopNoise, hasSufficientBuffer]);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+
+    const audio = audioRef.current;
+
+    const handleError = (e: ErrorEvent) => {
+      console.log('Stream error detected:', e);
+      attemptReconnect();
+    };
+
+    const handlePlaying = () => {
+      reconnectAttempts.value = 0;
+      stopNoise(); // Stop noise
+    };
+
+    const checkStream = () => {
+      if (!audio.paused && audio.readyState < 3 && playerState.value?.isPlaying && !hasSufficientBuffer()) {
+        console.log('Stream appears to be stalled, attempting reconnect...');
+        attemptReconnect();
+      }
+    };
+
+    const interval = setInterval(checkStream, 5000); // Check every 5 seconds
+
+    console.log('Adding audio event listeners');
+    audio.addEventListener('error', handleError);
+    audio.addEventListener('playing', handlePlaying);
+
+    return () => {
+      console.log('Cleaning up audio event listeners');
+      audio.removeEventListener('error', handleError);
+      audio.removeEventListener('playing', handlePlaying);
+      clearInterval(interval);
+      if (reconnectTimeout.current) {
+        clearTimeout(reconnectTimeout.current);
+      }
+      stopNoise(); // Stop noise
+    };
+  }, [attemptReconnect, stopNoise, hasSufficientBuffer]);
+
+  useEffect(() => {
+    const handleNetworkChange = () => {
+      console.log('Network status changed:', navigator.onLine ? 'Online' : 'Offline');
+      if (!navigator.onLine) {
+        console.log('Network disconnected, pausing player and attempting reconnect...');
+        if (playerState.value?.isPlaying) {
+          //setToPaused();
+          attemptReconnect();
+        }
+      } else {
+        console.log('Network restored, attempting reconnect...');
+        if (playerState.value?.isPlaying) {
+          attemptReconnect();
+        }
+      }
+    };
+
+    window.addEventListener('offline', handleNetworkChange);
+    window.addEventListener('online', handleNetworkChange);
+
+    return () => {
+      window.removeEventListener('offline', handleNetworkChange);
+      window.removeEventListener('online', handleNetworkChange);
+    };
+  }, [attemptReconnect, setToPaused, playerState.value?.isPlaying]);
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -222,59 +437,10 @@ export const usePlayer = () => {
       }
     };
 
-    const attemptReconnect = () => {
-      if (reconnectAttempts.value >= maxReconnectAttempts) {
-        console.log('Max reconnect attempts reached');
-        addToast({
-          title: '😢 Reconnect failed...',
-          description: 'Failed to reconnect to the stream',
-          variant: 'error',
-        });
-        reconnectAttempts.value = 0;
-        playerState.value = playerState.value
-          ? {
-              ...playerState.value,
-              isPlaying: false,
-            }
-          : null;
-        return;
-      }
-
-      reconnectAttempts.value += 1;
-      console.log(`Reconnect attempt ${reconnectAttempts.value}/${maxReconnectAttempts}`);
-      addToast({
-        title: '🛜 Reconnecting...',
-        description: `There was an issue with the stream. Attempting to reconnect...`,
-        variant: 'default',
-      });
-
-      if (reconnectTimeout.current) {
-        clearTimeout(reconnectTimeout.current);
-      }
-
-      const timeout = reconnectUtil.getReconnectTimeoutMs(reconnectAttempts.value, maxReconnectAttempts);
-
-      reconnectTimeout.current = setTimeout(() => {
-        if (!audio || !playerState.value?.isPlaying) return;
-
-        audio.load();
-        const playPromise = audio.play();
-
-        if (playPromise) {
-          playPromise
-            .then(() => {
-              console.log('Reconnect successful');
-              reconnectAttempts.value = 0;
-            })
-            .catch((error) => {
-              console.log('Reconnect failed:', error);
-              attemptReconnect();
-            });
-        }
-      }, timeout);
+    const handlePlaying = () => {
+      reconnectAttempts.value = 0;
+      stopNoise();
     };
-
-    const handlePlaying = () => (reconnectAttempts.value = 0);
 
     audio.addEventListener('error', handleError);
     audio.addEventListener('playing', handlePlaying);
@@ -285,8 +451,9 @@ export const usePlayer = () => {
       if (reconnectTimeout.current) {
         clearTimeout(reconnectTimeout.current);
       }
+      stopNoise();
     };
-  }, [playerState.value, reconnectAttempts.value, maxReconnectAttempts]);
+  }, [playerState.value, reconnectAttempts.value, maxReconnectAttempts, startNoise, stopNoise, attemptReconnect]);
 
   useEffect(() => {
     if (!audioRef.current) return;

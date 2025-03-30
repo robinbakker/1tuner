@@ -15,10 +15,10 @@ export const RadioStationPage = () => {
 
   if (typeof window !== 'undefined' && !radioStation) {
     if (params.id) {
-      route('/404-page-not-found');
+      route('/404-page-not-found', true);
       return <></>;
     }
-    route('/radio-stations');
+    route('/radio-stations', true);
     return <></>;
   }
 

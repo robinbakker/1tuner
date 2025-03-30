@@ -30,7 +30,9 @@ export const ContentSection = ({
       const link = isSearch ? `${moreLink}?focus-search=true` : moreLink;
       return (
         <Button asChild variant={isSearch ? 'outline' : 'link'}>
-          <a href={link}>{isSearch ? <Search size={18} /> : <>More...</>}</a>
+          <a href={link} title={isSearch ? 'Search' : undefined}>
+            {isSearch ? <Search size={18} /> : <>More...</>}
+          </a>
         </Button>
       );
     },
