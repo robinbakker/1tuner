@@ -1,3 +1,4 @@
+import { polyfillCountryFlagEmojis } from 'country-flag-emoji-polyfill';
 import { hydrate, prerender as ssr } from 'preact-iso';
 import { App } from './app.tsx';
 import podcasts from './assets/data/featured/podcasts.json';
@@ -6,11 +7,9 @@ import { languages } from './assets/data/languages.json';
 import { stations } from './assets/data/stations.json';
 import { defaultHeadData, HeadData } from './hooks/useHead.ts';
 import { getPodcastUrlID } from './lib/utils.ts';
+import { featuredPodcasts } from './store/signals/podcast.ts';
 import { radioGenres, radioLanguages, radioStations, setStationPodcasts } from './store/signals/radio.ts';
 import { RadioStation } from './store/types.ts';
-
-import { polyfillCountryFlagEmojis } from 'country-flag-emoji-polyfill';
-import { featuredPodcasts } from './store/signals/podcast.ts';
 
 polyfillCountryFlagEmojis();
 
@@ -53,10 +52,12 @@ export async function prerender() {
       import('./assets/data/stations/podcasts.json'),
     ]);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (globalThis as any).__PRERENDER_PODCASTS__ = podcastData.default.map((pc) => ({
-      ...pc,
-      id: getPodcastUrlID(pc.url),
-    }));
+    (globalThis as any).__PRERENDER_PODCASTS__ = podcastData.default
+      .map((pc) => ({
+        ...pc,
+        id: getPodcastUrlID(pc.url),
+      }))
+      .concat(featuredPodcasts.value.map((fp) => ({ ...fp, categories: [], episodes: [] })));
 
     const formattedStationPodcasts = Object.keys(stationPodcastsData.default).reduce(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

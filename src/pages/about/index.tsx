@@ -38,12 +38,20 @@ export const AboutPage = () => {
         </a>
         . And create your own ideal radio listening day, so the player switches between radio streams automatically.
       </p>
-      <p class="pb-4">This is a free web app - just add this site to your homescreen and you're good to go!</p>
+      <p class="pb-4">
+        This is a free web app, no account needed and no ads. Add or install this site to your homescreen for the best
+        experience!
+      </p>
       <h2 class="text-2xl font-semibold">Cookies, tracking, privacy...</h2>
       <p class="pb-4">I guess I'm not that much interested in you! However, to keep things functional:</p>
       <ul class="pb-4 list-disc pl-6">
         <li class="pb-2">
-          Some basic information is stored in your browser for your preferences and to store your playlists.
+          Some basic information is stored in your browser for your preferences and to store your playlists. You can
+          manage some of this data at the{' '}
+          <a href="/settings" class={styleClass.textLink}>
+            settings
+          </a>{' '}
+          page. You can also delete you browser data to remove all stored information.{' '}
         </li>
         <li class="pb-2">
           For visitor statistics I use{' '}
@@ -60,11 +68,19 @@ export const AboutPage = () => {
           . Radio stations or podcast providers may use some sort of tracking on the media requests.
         </li>
         <li class="pb-2">
-          The Apple iTunes Search API is used for the{' '}
+          Either the{' '}
+          <a href="https://podcastindex.org" target="_blank" rel="noopener" class={styleClass.textLink}>
+            podcastindex.org
+          </a>{' '}
+          API or the Apple iTunes Search API is used for the{' '}
           <a href="/podcasts" class={styleClass.textLink}>
             podcast
           </a>{' '}
-          search functionality.
+          search functionality. You can change this at the{' '}
+          <a href="/settings" class={styleClass.textLink}>
+            settings
+          </a>{' '}
+          page.
         </li>
         <li class="pb-2">
           If needed, the podcast RSS feed will be requested via a pass-through website, currently via a{' '}
@@ -76,7 +92,7 @@ export const AboutPage = () => {
       </ul>
       <h2 class="text-2xl font-semibold">Who?</h2>
       <p class="pb-4">
-        This is a little side project from{' '}
+        This is a side project from{' '}
         <a href="https://robinbakker.nl" class={styleClass.textLink} target="_blank" rel="noopener me">
           Robin Bakker
         </a>

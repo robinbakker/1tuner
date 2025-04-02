@@ -28,24 +28,8 @@ export const SettingsPage = () => {
     <div class="container mx-auto px-8 pb-6">
       <h1 class="text-3xl font-bold mb-6">Settings</h1>
       <p class="pb-4">
-        1tuner is a free web app. Here you can listen to online{' '}
-        <a href="/radio-stations" class={styleClass.textLink}>
-          radio stations
-        </a>
-        ,{' '}
-        <a href="/podcasts" class={styleClass.textLink}>
-          podcasts
-        </a>{' '}
-        and create{' '}
-        <a href="/playlists" class={styleClass.textLink}>
-          playlists
-        </a>
-        .<br />
-        Just add this site to your homescreen and you're good to go!
-      </p>
-      <p class="pb-4">
         This app stores information in your browser to save your preferences and Cloudflare Web Analytics is used for
-        basic analytics.{' '}
+        basic analytics. Below you can change settings and manage your data.
       </p>
       <p class="pb-4">
         <Button asChild variant={`outline`}>
@@ -56,7 +40,7 @@ export const SettingsPage = () => {
       </p>
       <section class="mb-8 relative">
         <h2 class="text-2xl font-semibold">Theme</h2>
-        <p class="text-muted-foreground text-sm mb-4">Just like Star Wars - choose your theme preference here.</p>
+        <p class="text-muted-foreground text-sm mb-4">Just like Star Wars - choose your theme preference wisely.</p>
         <RadioButtonList options={themeOptions} name="theme" value={theme} onChange={handleThemeChange} />
       </section>
       <section class="mb-8 relative">
@@ -84,10 +68,10 @@ export const SettingsPage = () => {
           onChange={handleRadioReconnectsValueChange}
           class={styleClass.select}
         >
-          <option value="0">Never</option>
-          <option value="10">10 times</option>
-          <option value="50">50 times</option>
-          <option value="100">100 times</option>
+          <option value="0">Never reconnect</option>
+          <option value="10">Try reconnecting up to 10 times</option>
+          <option value="50">Try reconnecting up to 50 times</option>
+          <option value="100">Try reconnecting up to 100 times</option>
         </select>
       </section>
       <section class="mb-8 relative">
@@ -105,9 +89,6 @@ export const SettingsPage = () => {
           an OPML file.
         </p>
         <div class="flex gap-4 items-center">
-          <Button disabled={isImporting} variant="outline" onClick={handleExportOpml}>
-            <ArrowRightFromLine class="mr-2 w-4" /> Export to OPML
-          </Button>
           <div class="relative">
             <input
               type="file"
@@ -119,6 +100,9 @@ export const SettingsPage = () => {
               <Download class="mr-2 w-4" /> Import from OPML
             </Button>
           </div>
+          <Button disabled={isImporting} variant="outline" onClick={handleExportOpml}>
+            <ArrowRightFromLine class="mr-2 w-4" /> Export to OPML
+          </Button>
           <LoaderCircle class={`w-5 h-5 ${isImporting ? 'animate-spin' : 'hidden'}`} />
         </div>
       </section>
@@ -126,7 +110,7 @@ export const SettingsPage = () => {
         <h2 class="text-2xl font-semibold">Reset</h2>
         <p class="text-muted-foreground text-sm mb-4">
           The following button will reset all your settings and remove listening data. It means that all data will be
-          reset to their defaults.
+          reset to their defaults. No way back.
         </p>
         <Button variant={'outline'} onClick={handleResetClick}>
           <TriangleAlert class="mr-2 w-4 opacity-50" /> Reset
