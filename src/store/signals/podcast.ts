@@ -4,6 +4,7 @@ import { Podcast, PodcastSearchResult } from '../types';
 export const followedPodcasts = signal<Podcast[]>([]);
 export const recentlyVisitedPodcasts = signal<Podcast[]>([]);
 export const lastPodcastSearchResult = signal<PodcastSearchResult | null>(null);
+export const featuredPodcasts = signal<Podcast[]>([]);
 
 export const savedPodcasts = computed(() => {
   return [...followedPodcasts.value, ...recentlyVisitedPodcasts.value];

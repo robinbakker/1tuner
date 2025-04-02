@@ -1,5 +1,6 @@
 import { computed, signal, useComputed, useSignalEffect } from '@preact/signals';
 import { useCallback, useEffect, useRef } from 'preact/hooks';
+import { useNoise } from '~/hooks/useNoise';
 import { playlistUtil } from '~/lib/playlistUtil';
 import { reconnectUtil } from '~/lib/reconnectUtil';
 import { saveStateToDB } from '~/store/db/db';
@@ -22,10 +23,6 @@ export const usePlayer = () => {
   const sliderRef = useRef<HTMLInputElement>(null);
   const reconnectTimeout = useRef<NodeJS.Timeout>();
   const reconnectAttempts = signal(0);
-  const audioContextRef = useRef<AudioContext | null>(null); // Reference for Web Audio API context
-  const noiseSourceRef = useRef<AudioBufferSourceNode | null>(null); // Reference for noise source
-  const gainNodeRef = useRef<GainNode | null>(null); // Reference for the gain node
-
   const {
     isCastingAvailable,
     startCasting,
@@ -35,6 +32,7 @@ export const usePlayer = () => {
     castSession,
     castMediaRef,
   } = useCastApi();
+  const { startNoise, stopNoise } = useNoise();
   const maxReconnectAttempts = settingsState.value.radioStreamMaxReconnects || 50;
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
   const isPodcast = playerState.value?.playType === 'podcast';
@@ -185,59 +183,6 @@ export const usePlayer = () => {
     [updateTimeUI],
   );
 
-  const startNoise = useCallback(() => {
-    if (!audioContextRef.current) {
-      audioContextRef.current = new AudioContext();
-    }
-
-    const audioContext = audioContextRef.current;
-
-    // Create a buffer with random noise
-    const bufferSize = audioContext.sampleRate * 1; // 1 second of audio
-    const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-    const data = buffer.getChannelData(0);
-
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = Math.random() * 2 - 1; // Generate random noise
-    }
-
-    // Create a buffer source
-    const noiseSource = audioContext.createBufferSource();
-    noiseSource.buffer = buffer;
-    noiseSource.loop = true;
-
-    // Create a gain node to control the volume
-    const gainNode = audioContext.createGain();
-    gainNode.gain.value = 0.1; // Set the volume (0.1 = 10% of full volume)
-
-    // Connect the noise source to the gain node, then to the destination
-    noiseSource.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-
-    noiseSource.start();
-
-    noiseSourceRef.current = noiseSource;
-    gainNodeRef.current = gainNode;
-  }, []);
-
-  const stopNoise = useCallback(() => {
-    if (noiseSourceRef.current) {
-      noiseSourceRef.current.stop();
-      noiseSourceRef.current.disconnect();
-      noiseSourceRef.current = null;
-    }
-
-    if (gainNodeRef.current) {
-      gainNodeRef.current.disconnect();
-      gainNodeRef.current = null;
-    }
-
-    if (audioContextRef.current) {
-      audioContextRef.current.close();
-      audioContextRef.current = null;
-    }
-  }, []);
-
   useEffect(() => {
     if (!audioRef.current || !playerState.value || !playerState.value.streams?.length) return;
 
@@ -271,7 +216,7 @@ export const usePlayer = () => {
     }
   }, [playerState.value, castSession, setToPaused]);
 
-  const BUFFER_THRESHOLD = 5; // Minimum buffered time (in seconds) before reconnecting
+  const BUFFER_THRESHOLD = 2; // Minimum buffered time (in seconds) before reconnecting
 
   const hasSufficientBuffer = useCallback(() => {
     const audio = audioRef.current;

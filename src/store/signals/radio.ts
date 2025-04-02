@@ -10,12 +10,26 @@ export const followedRadioStationIDs = signal<string[]>([]);
 export const recentlyVisitedRadioStationIDs = signal<string[]>([]);
 export const lastRadioSearchResult = signal<RadioSearchResult | null>(null);
 export const stationPodcasts = signal<Record<string, Podcast[]>>({});
+
+export const userLanguage = computed(() => {
+  const navLang = navigator.language;
+  if (radioLanguages.value.some((lang) => lang.id === navLang)) return navLang;
+  const lang = radioLanguages.value.find((lang) => navLang.startsWith(lang.id))?.id;
+  return lang || '';
+});
+
 export const recentlyVisitedRadioStations = computed(() => {
   let stations = recentlyVisitedRadioStationIDs.value
     .map((id) => radioStations.value.find((r) => r.id === id))
     .filter((r) => !!r);
   if (stations.length < 10) {
-    stations = [...stations, ...radioStations.value.filter((rs) => !stations.some((s) => s.id === rs.id))];
+    const langs = [...new Set([userLanguage.value, 'en-UK', 'en-US', 'en'])].filter(Boolean);
+    stations = [
+      ...stations,
+      ...[...radioStations.value]
+        .sort((a, b) => langs.indexOf(a.language) - langs.indexOf(b.language))
+        .filter((rs) => langs.includes(rs.language) && !stations.some((s) => s.id === rs.id)),
+    ];
   }
   return stations.slice(0, 10);
 });

@@ -13,6 +13,7 @@ import {
   radioSearchFilters,
   radioStations,
   setLastRadioSearchResultQuery,
+  userLanguage,
 } from '~/store/signals/radio';
 import { uiIsScrolled } from '~/store/signals/ui';
 import { RadioSearchFilters } from '~/store/types';
@@ -25,13 +26,6 @@ export const useRadioStations = () => {
   useHead({
     title: 'Radio stations',
   });
-
-  const userLanguage = useMemo(() => {
-    const navLang = navigator.language;
-    if (radioLanguages.value.some((lang) => lang.id === navLang)) return navLang;
-    const lang = radioLanguages.value.find((lang) => navLang.startsWith(lang.id))?.id;
-    return lang || '';
-  }, [radioLanguages.value]);
 
   // Sync URL params with state on initial load
   useEffect(() => {
@@ -47,14 +41,14 @@ export const useRadioStations = () => {
     } else {
       clearLastRadioSearchResult();
     }
-    const savedLanguages = radioSearchFilters.value?.regions || (userLanguage ? [userLanguage] : []);
+    const savedLanguages = radioSearchFilters.value?.regions || (userLanguage.value ? [userLanguage.value] : []);
     radioSearchFilters.value = {
       regions: initialLanguages.length ? initialLanguages : savedLanguages,
       genres: initialGenres,
     };
 
     isInitialized.current = true;
-  }, [query, userLanguage]);
+  }, [query, userLanguage.value]);
 
   // Update URL helper function
   const updateURLParams = useCallback(

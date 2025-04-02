@@ -1,10 +1,20 @@
+import { computed } from '@preact/signals';
 import { ContentSection } from '~/components/content-section';
 import { PodcastCard } from '~/components/podcast-card';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { ShareButton } from '~/components/share-button';
 import { styleClass } from '~/lib/styleClass';
-import { recentlyVisitedPodcasts } from '~/store/signals/podcast';
+import { featuredPodcasts, recentlyVisitedPodcasts } from '~/store/signals/podcast';
 import { recentlyVisitedRadioStations } from '~/store/signals/radio';
+
+const homepagePodcasts = computed(() => {
+  if (recentlyVisitedPodcasts.value.length > 10) {
+    return recentlyVisitedPodcasts.value.slice(0, 10);
+  }
+  return (recentlyVisitedPodcasts.value || [])
+    .concat(featuredPodcasts.value.filter((p) => !recentlyVisitedPodcasts.value.some((rp) => p.id === rp.id)))
+    .slice(0, 10);
+});
 
 export const Homepage = () => {
   return (
@@ -22,7 +32,6 @@ export const Homepage = () => {
           </div>
         </div>
       </header>
-
       <ContentSection title="Radio stations" moreLink="/radio-stations" hasSearchButton isScrollable>
         <ul class="flex gap-6 md:gap-10 px-4 md:px-6">
           {recentlyVisitedRadioStations.value.map((station) => (
@@ -33,10 +42,9 @@ export const Homepage = () => {
           <li class="shrink-0 w-0.5"></li>
         </ul>
       </ContentSection>
-
       <ContentSection title="Podcasts" moreLink="/podcasts" hasSearchButton isScrollable>
         <ul class="flex gap-6 md:gap-10 px-4 md:px-6">
-          {recentlyVisitedPodcasts.value.map((podcast) => (
+          {homepagePodcasts.value.map((podcast) => (
             <li class="shrink-0">
               <PodcastCard key={podcast.id} podcast={podcast} />
             </li>
@@ -44,7 +52,6 @@ export const Homepage = () => {
           <li class="shrink-0 w-0.5"></li>
         </ul>
       </ContentSection>
-
       <ContentSection title="About 1tuner.com">
         <>
           <p class="pb-4">

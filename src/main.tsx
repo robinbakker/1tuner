@@ -1,5 +1,6 @@
 import { hydrate, prerender as ssr } from 'preact-iso';
 import { App } from './app.tsx';
+import podcasts from './assets/data/featured/podcasts.json';
 import { genres } from './assets/data/genres.json';
 import { languages } from './assets/data/languages.json';
 import { stations } from './assets/data/stations.json';
@@ -9,6 +10,7 @@ import { radioGenres, radioLanguages, radioStations, setStationPodcasts } from '
 import { RadioStation } from './store/types.ts';
 
 import { polyfillCountryFlagEmojis } from 'country-flag-emoji-polyfill';
+import { featuredPodcasts } from './store/signals/podcast.ts';
 
 polyfillCountryFlagEmojis();
 
@@ -16,6 +18,7 @@ polyfillCountryFlagEmojis();
 radioStations.value = stations as RadioStation[];
 radioLanguages.value = languages;
 radioGenres.value = genres;
+featuredPodcasts.value = podcasts;
 
 // Load station podcasts data
 if (typeof window !== 'undefined') {

@@ -9,7 +9,7 @@ import { Input } from '~/components/ui/input';
 import { cn, slugify } from '~/lib/utils';
 import { MAX_SEARCH_LENGTH } from '~/lib/validationUtil';
 import { Podcast } from '~/store/types';
-import { followedPodcasts, recentlyVisitedPodcasts } from '../../store/signals/podcast';
+import { featuredPodcasts, followedPodcasts, recentlyVisitedPodcasts } from '../../store/signals/podcast';
 import { usePodcasts } from './usePodcasts';
 
 export const PodcastsPage = () => {
@@ -141,6 +141,7 @@ export const PodcastsPage = () => {
                   recentlyVisitedPodcasts.value.filter((p) => !followedPodcasts.value.some((fp) => fp.id === p.id)),
                   'Last visited',
                 )}
+                {renderPodcastList(featuredPodcasts.value, 'Featured')}
               </>
             )}
           </>

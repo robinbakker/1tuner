@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ZmVlZHMuc2ltcGxlY2FzdC5jb20vNTRuQUdjSWw=",
+    "title": "The Daily",
+    "description": "This is what the news should sound like. The biggest stories of our time, told by the best journalists in the world. Twenty minutes a day, five days a week, ready by 6 a.m.",
+    "imageUrl": "https://is2-ssl.mzstatic.com/image/thumb/Podcasts124/v4/92/61/e6/9261e6a3-0d4a-8d4f-bd30-6c72562868ac/mza_15829936928695092211.jpeg/600x600bb.jpg",
+    "url": "https://feeds.simplecast.com/54nAGcIl",
+    "feedUrl": "https://feeds.simplecast.com/54nAGcIl",
+    "addedDate": 1743541655611,
+    "lastFetched": 1743541655611
+  },
+  {
+    "id": "cnNzLmFydDE5LmNvbS92YW5kYWFn",
+    "title": "NRC Vandaag",
+    "description": "Vandaag is de dagelijkse podcast van NRC. Elke werkdag hoor je hét verhaal van de dag, verteld door onze beste journalisten.",
+    "imageUrl": "https://content.production.cdn.art19.com/images/2e/d0/18/ab/2ed018ab-e157-4212-9f27-910ee353f0e1/91502b4bd0fde49ef44f4d5a3d8bc772ebc052dc6a2a3fea3f1473035e78fa243366aaf45d3376d959c28075262335c58da6cf79c1cf6890be2ee46354818675.jpeg",
+    "url": "https://rss.art19.com/vandaag",
+    "feedUrl": "https://rss.art19.com/vandaag",
+    "addedDate": 1743541655610,
+    "lastFetched": 1743541655610
+  },
+  {
+    "id": "cG9kY2FzdC5ucG8ubmwvZmVlZC9kZS1kYWcueG1s",
+    "title": "De Dag",
+    "description": "Elke werkdag biedt 'De Dag' je twintig minuten verdieping bij één onderwerp uit het nieuws.",
+    "imageUrl": "https://is5-ssl.mzstatic.com/image/thumb/Podcasts123/v4/95/55/fa/9555fabb-343e-3859-4c05-8f421f5a4885/mza_1355691311593021135.jpg/600x600bb.jpg",
+    "url": "https://podcast.npo.nl/feed/de-dag.xml",
+    "feedUrl": "https://podcast.npo.nl/feed/de-dag.xml",
+    "addedDate": 1743541655611,
+    "lastFetched": 1743541655611
+  },
+  {
+    "id": "cYW5jaG9yLmZtL3MvMjFjNzM0YzQvcG9kY2FzdC9yc3M=",
+    "title": "Maarten van Rossem en Tom Jessen",
+    "description": "Maarten van Rossem en Tom Jessen geven hun kijk op het nieuws en de actualiteit. Ook wisselende onderwerpen uit de geschiedenis komen voorbij.",
+    "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/5567033/5567033-1682276210669-9c8c45b803bd.jpg",
+    "url": "https://anchor.fm/s/21c734c4/podcast/rss",
+    "feedUrl": "https://anchor.fm/s/21c734c4/podcast/rss",
+    "addedDate": 1743541655611,
+    "lastFetched": 1743541655611
+  },
+  {
+    "id": "cG9kY2FzdC5kYXJrbmV0ZGlhcmllcy5jb20=",
+    "title": "Darknet Diaries",
+    "description": "Explore true stories of the dark side of the Internet with host Jack Rhysider as he takes you on a journey through the chilling world of hacking, data breaches, and cyber crime.",
+    "imageUrl": "https://f.prxu.org/7057/images/18744d5d-8091-4bb8-b41a-1ed06efcd508/uploads_2F1562951997273-pdd2keiryql-99f75240ab90a579e25720d85d3057b2_2Fdarknet-diaries-rss.jpg",
+    "url": "https://podcast.darknetdiaries.com/",
+    "feedUrl": "https://podcast.darknetdiaries.com/",
+    "addedDate": 1743541655611,
+    "lastFetched": 1743541655611
+  },
+  {
+    "id": "ZmVlZHMuc2ltcGxlY2FzdC5jb20vbDJpOVluVGQ=",
+    "title": "Hard Fork",
+    "description": "“Hard Fork” is a show about the future that’s already here. Each week, journalists Kevin Roose and Casey Newton explore and make sense of the latest in the rapidly changing world of tech",
+    "imageUrl": "https://image.simplecastcdn.com/images/4105a47a-42e5-4ccc-887a-832af7989986/23965394-f5e4-4fdb-b150-639f4910353e/3000x3000/nyt-hf-album-art-3000-2.jpg?aid=rss_feed",
+    "url": "https://feeds.simplecast.com/l2i9YnTd",
+    "feedUrl": "https://feeds.simplecast.com/l2i9YnTd",
+    "addedDate": 1743541655611,
+    "lastFetched": 1743541655611
+  }
+]

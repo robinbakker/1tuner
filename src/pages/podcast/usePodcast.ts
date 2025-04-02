@@ -46,7 +46,6 @@ export const usePodcast = () => {
   const selectedEpisodeID = useMemo(() => {
     if (!podcast?.episodes) return -1;
     const episodeID = params.episodeID ? decodeURIComponent(params.episodeID) : null;
-    console.log('selectedEpisodeID', episodeID, params);
     if (episodeID && podcast?.episodes?.some((ep) => ep.guid === episodeID)) {
       return episodeID;
     }
