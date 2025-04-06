@@ -130,9 +130,10 @@ export enum PodcastSearchProvider {
 
 export interface SettingsState {
   theme?: ThemeOption;
-  radioStreamMaxReconnects: number;
-  podcastSearchProvider: PodcastSearchProvider;
-  enableChromecast: boolean;
+  radioStreamMaxReconnects?: number;
+  podcastSearchProvider?: PodcastSearchProvider;
+  enableChromecast?: boolean;
+  disableReconnectNoise?: boolean;
 }
 
 export enum PlaylistRuleType {

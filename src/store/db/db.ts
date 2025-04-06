@@ -10,7 +10,7 @@ import { PlayerState, Playlist, PlaylistRule, Podcast, RadioSearchFilters, Setti
 export const isDBLoaded = signal(false);
 
 export const dbName = '1tuner';
-export const dbVersion = 6;
+export const dbVersion = 7;
 export const storeName = 'appState';
 
 export enum AppStateKey {

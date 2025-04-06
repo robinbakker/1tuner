@@ -61,6 +61,12 @@ export const useSettings = () => {
     settingsState.value.enableChromecast = input.checked;
   };
 
+  const handleMuteNoiseChange = (e: MouseEvent) => {
+    if (!settingsState.value) return;
+    const input = e.currentTarget as HTMLInputElement;
+    settingsState.value.disableReconnectNoise = input.checked;
+  };
+
   const handleExportOpml = useCallback(async () => {
     const opml = opmlUtil.generatePodcastsOpml(followedPodcasts.value);
     const blob = new Blob([opml], { type: 'text/x-opml' });
@@ -206,6 +212,7 @@ export const useSettings = () => {
     handleSearchProviderChange,
     handleThemeChange,
     handleGoogleCastSupportChange,
+    handleMuteNoiseChange,
     handleResetClick,
     handleExportOpml,
     handleImportOpml,
@@ -216,5 +223,6 @@ export const useSettings = () => {
     searchProviderValue: settingsState.value.podcastSearchProvider ?? PodcastSearchProvider.PodcastIndex,
     radioStreamMaxReconnectsValue: settingsState.value.radioStreamMaxReconnects ?? 50,
     hasGoogleCastsSupport: !!settingsState.value.enableChromecast,
+    hasNoiseMuted: !!settingsState.value.disableReconnectNoise,
   };
 };

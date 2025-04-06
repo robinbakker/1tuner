@@ -13,11 +13,13 @@ export const SettingsPage = () => {
     searchProviderOptions,
     searchProviderValue,
     radioStreamMaxReconnectsValue,
+    hasNoiseMuted,
     hasGoogleCastsSupport,
     isImporting,
     handleThemeChange,
     handleSearchProviderChange,
     handleRadioReconnectsValueChange,
+    handleMuteNoiseChange,
     handleGoogleCastSupportChange,
     handleExportOpml,
     handleImportOpml,
@@ -73,6 +75,11 @@ export const SettingsPage = () => {
           <option value="50">Try reconnecting up to 50 times</option>
           <option value="100">Try reconnecting up to 100 times</option>
         </select>
+        <p class="text-muted-foreground text-sm my-4">
+          When reconnecting, a bit of noise will be played to let you know the player is trying to reconnect. Don't want
+          to hear the noise? Flip the switch below.
+        </p>
+        <Switch checked={hasNoiseMuted} onClick={handleMuteNoiseChange} label="Mute noise" />
       </section>
       <section class="mb-8 relative">
         <h2 class="text-2xl font-semibold">Google Cast (Chromecast) support (experimental)</h2>
@@ -80,7 +87,13 @@ export const SettingsPage = () => {
           Enable this option to support playing to a Chromecast or Google Cast enabled device (this is behind a toggle
           because it loads an extra external script from gstatic.com, and the functionalaity is still experimental).
         </p>
-        <Switch id="googleCastSupport" checked={hasGoogleCastsSupport} onClick={handleGoogleCastSupportChange} />
+        <p>
+          <Switch
+            checked={hasGoogleCastsSupport}
+            onClick={handleGoogleCastSupportChange}
+            label="Enable Google Cast support"
+          />
+        </p>
       </section>
       <section class="mb-8 relative">
         <h2 class="text-2xl font-semibold">Import/Export</h2>

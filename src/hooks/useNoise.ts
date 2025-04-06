@@ -1,4 +1,5 @@
 import { useCallback, useRef } from 'preact/hooks';
+import { settingsState } from '~/store/signals/settings';
 
 export const useNoise = () => {
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -6,8 +7,8 @@ export const useNoise = () => {
   const gainNodeRef = useRef<GainNode | null>(null);
 
   const startNoise = useCallback(() => {
-    if (noiseSourceRef.current) {
-      return; // Noise is already playing
+    if (noiseSourceRef.current || settingsState.value.disableReconnectNoise) {
+      return; // Noise is already playing or reconnect noise is disabled
     }
     if (!audioContextRef.current) {
       audioContextRef.current = new AudioContext();
@@ -41,7 +42,7 @@ export const useNoise = () => {
 
     noiseSourceRef.current = noiseSource;
     gainNodeRef.current = gainNode;
-  }, []);
+  }, [settingsState.value.disableReconnectNoise]);
 
   const stopNoise = useCallback(() => {
     if (noiseSourceRef.current) {
