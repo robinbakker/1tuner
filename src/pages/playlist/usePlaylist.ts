@@ -128,7 +128,7 @@ export const usePlaylist = () => {
         return `${time}=${station}`;
       })
       .join('&');
-    const timeZone = getValidTimeZone(urlTimeZone);
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Always set to the user's timezone when saving a playlist
     return `${import.meta.env.VITE_BASE_URL}/playlist/${encodeURI(editName)}/${query ? `?${query}&tz=${timeZone}` : ''}`;
   }, [blocks, editName, getParamFromTime, urlTimeZone]);
 
@@ -181,12 +181,14 @@ export const usePlaylist = () => {
       });
       return;
     }
+    const newUrl = getPlaylistUrlFromBlocks();
     playlists.value = [
       ...(playlists.value || []).filter((p) => !playlistUrl || p.url !== playlistUrl),
       {
         name: editName,
-        url: getPlaylistUrlFromBlocks(),
+        url: newUrl,
         items: blocks.map((b) => ({ time: b.startTime, stationID: b.station?.id })),
+        oldUrl: newUrl === window.location.href ? undefined : playlistUrl,
       },
     ] as Playlist[];
     route('/playlists');
