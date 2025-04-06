@@ -37,7 +37,7 @@ export const activeRadioFilterCount = computed(() => {
   return (radioSearchFilters.value?.regions?.length || 0) + (radioSearchFilters.value?.genres?.length || 0);
 });
 
-export const getRadioStation = (id: string): RadioStation | undefined => {
+export const getRadioStation = (id: string | undefined): RadioStation | undefined => {
   if (!id) return undefined;
   return radioStations.value.find((r) => r.id === id);
 };
@@ -84,8 +84,15 @@ export const clearLastRadioSearchResult = () => {
   lastRadioSearchResult.value = null;
 };
 
-export const playRadioStation = (station: RadioStation | undefined) => {
+export const playRadioStationByID = (stationID: string | undefined) => {
+  playRadioStation(getRadioStation(stationID));
+};
+
+export const playRadioStation = (station: RadioStation | undefined, shouldAddToRecentlyVisited = true) => {
   if (!station) return;
+  if (shouldAddToRecentlyVisited) {
+    addRecentlyVisitedRadioStation(station.id);
+  }
   playerState.value = {
     playType: 'radio',
     isPlaying: playerState.value?.isPlaying || true,
@@ -106,9 +113,15 @@ export const playNextRadioStation = (isPrev?: boolean) => {
   if (newIndex < 0) newIndex = recentlyVisitedRadioStationIDs.value.length - 1;
   if (newIndex >= recentlyVisitedRadioStationIDs.value.length) newIndex = 0;
   if (currentIndex === recentlyVisitedRadioStationIDs.value.length - 1) {
-    playRadioStation(radioStations.value.find((s) => s.id === recentlyVisitedRadioStationIDs.value[newIndex]));
+    playRadioStation(
+      radioStations.value.find((s) => s.id === recentlyVisitedRadioStationIDs.value[newIndex]),
+      false,
+    );
   } else {
-    playRadioStation(radioStations.value.find((s) => s.id === recentlyVisitedRadioStationIDs.value[newIndex]));
+    playRadioStation(
+      radioStations.value.find((s) => s.id === recentlyVisitedRadioStationIDs.value[newIndex]),
+      false,
+    );
   }
 };
 

@@ -1,7 +1,8 @@
+import { RuleDestination } from '~/pages/playlists/types';
 import { playerState } from '~/store/signals/player';
 import { playlists } from '~/store/signals/playlist';
 import { getRadioStation } from '~/store/signals/radio';
-import { Playlist, PlaylistItem } from '~/store/types';
+import { Playlist, PlaylistItem, PlaylistRuleType } from '~/store/types';
 import { getLocalTimeFromUrlKey } from './convertTime';
 import { getTimeInMinutesFromTimeString } from './utils';
 
@@ -85,9 +86,21 @@ const getPlaylistDataByUrl = (url: string) => {
   } as Playlist;
 };
 
+const ruleTypeToDestination = (ruleType: PlaylistRuleType): RuleDestination => {
+  switch (ruleType) {
+    case PlaylistRuleType.podcastToStation:
+      return RuleDestination.RadioStation;
+    case PlaylistRuleType.podcastToPlaylist:
+      return RuleDestination.Playlist;
+    default:
+      return RuleDestination.Nothing;
+  }
+};
+
 export const playlistUtil = {
   playPlaylistByUrl,
   playPlaylist,
   isSameUrl,
   getPlaylistDataByUrl,
+  ruleTypeToDestination,
 };

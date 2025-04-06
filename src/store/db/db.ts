@@ -1,16 +1,16 @@
 import { signal } from '@preact/signals';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import { isPlayerMaximized, playerState } from '../signals/player';
-import { playlists } from '../signals/playlist';
+import { playlistRules, playlists } from '../signals/playlist';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../signals/podcast';
 import { followedRadioStationIDs, radioSearchFilters, recentlyVisitedRadioStationIDs } from '../signals/radio';
 import { settingsState } from '../signals/settings';
-import { PlayerState, Playlist, Podcast, RadioSearchFilters, SettingsState } from '../types';
+import { PlayerState, Playlist, PlaylistRule, Podcast, RadioSearchFilters, SettingsState } from '../types';
 
 export const isDBLoaded = signal(false);
 
 export const dbName = '1tuner';
-export const dbVersion = 5;
+export const dbVersion = 6;
 export const storeName = 'appState';
 
 export enum AppStateKey {
@@ -20,12 +20,22 @@ export enum AppStateKey {
   RecentlyVisitedRadioStationIDs = 'recentlyVisitedRadioStationIDs',
   RadioSearchFilters = 'radioSearchFilters',
   Playlists = 'playlists',
+  PlaylistRules = 'playlistRules',
   PlayerState = 'playerState',
   SettingsState = 'settingsState',
   IsPlayerMaximized = 'isPlayerMaximized',
 }
 
-type DBData = Podcast[] | Playlist[] | string[] | RadioSearchFilters | PlayerState | SettingsState | boolean | null;
+type DBData =
+  | Podcast[]
+  | Playlist[]
+  | PlaylistRule[]
+  | string[]
+  | RadioSearchFilters
+  | PlayerState
+  | SettingsState
+  | boolean
+  | null;
 interface TunerDB extends DBSchema {
   appState: {
     key: string;
@@ -59,6 +69,7 @@ export async function loadStateFromDB() {
     (await getFromDB<string[]>(db, AppStateKey.RecentlyVisitedRadioStationIDs)) || [];
   radioSearchFilters.value = (await getFromDB<RadioSearchFilters>(db, AppStateKey.RadioSearchFilters)) || null;
   playlists.value = (await getFromDB<Playlist[]>(db, AppStateKey.Playlists)) || [];
+  playlistRules.value = (await getFromDB<PlaylistRule[]>(db, AppStateKey.PlaylistRules)) || [];
   playerState.value = (await getFromDB<PlayerState>(db, AppStateKey.PlayerState)) || null;
   settingsState.value = (await getFromDB<SettingsState>(db, AppStateKey.SettingsState)) || ({} as SettingsState);
   isPlayerMaximized.value = (await getFromDB<boolean>(db, AppStateKey.IsPlayerMaximized)) || false;
@@ -79,6 +90,7 @@ export async function saveStateToDB() {
       tx.store.put(recentlyVisitedRadioStationIDs.value, AppStateKey.RecentlyVisitedRadioStationIDs),
       tx.store.put(radioSearchFilters.value, AppStateKey.RadioSearchFilters),
       tx.store.put(playlists.value, AppStateKey.Playlists),
+      tx.store.put(playlistRules.value, AppStateKey.PlaylistRules),
       tx.store.put(playerState.value, AppStateKey.PlayerState),
       tx.store.put(settingsState.value, AppStateKey.SettingsState),
       tx.store.put(isPlayerMaximized.value, AppStateKey.IsPlayerMaximized),

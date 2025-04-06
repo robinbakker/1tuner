@@ -43,7 +43,7 @@ export const PlaylistPage = () => {
             <Button onClick={handleSaveClick}>Save</Button>
           </div>
         ) : (
-          <div class="flex items-center -mt-8 space-x-4 w-full sm:w-auto justify-between sm:justify-normal">
+          <div class="flex items-center -mt-8 space-x-4 w-full justify-end">
             <Button class="mr-6" variant="outline" onClick={handleEditClick}>
               <Pencil class="h-3.5 w-3.5 mr-2" /> Edit
             </Button>

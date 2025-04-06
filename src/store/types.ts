@@ -134,3 +134,15 @@ export interface SettingsState {
   podcastSearchProvider: PodcastSearchProvider;
   enableChromecast: boolean;
 }
+
+export enum PlaylistRuleType {
+  podcastToStation = 'podcastToStation',
+  podcastToPlaylist = 'podcastToPlaylist',
+}
+
+export interface PlaylistRule {
+  ruleType: PlaylistRuleType;
+  podcastID?: string;
+  stationID?: string;
+  playlistUrl?: string;
+}

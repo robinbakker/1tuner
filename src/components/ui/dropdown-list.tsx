@@ -42,6 +42,15 @@ export function DropdownList({
     return searchableText.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
+  const closePopover = () => {
+    if (useNativePopover && popoverRef.current) {
+      popoverRef.current.hidePopover();
+    } else {
+      setIsOpen(false);
+    }
+    setSearchTerm('');
+  };
+
   const handleKeyDown = (e: KeyboardEvent) => {
     switch (e.key) {
       case 'ArrowDown':
@@ -56,12 +65,12 @@ export function DropdownList({
         e.preventDefault();
         if (filteredOptions[highlightedIndex]) {
           onChangeOption(filteredOptions[highlightedIndex].value);
-          setIsOpen(false);
+          closePopover();
           setSearchTerm('');
         }
         break;
       case 'Escape':
-        setIsOpen(false);
+        closePopover();
         setSearchTerm('');
         break;
     }
@@ -96,7 +105,7 @@ export function DropdownList({
         'bg-white dark:bg-black border rounded-lg shadow-lg',
         'w-max min-w-full whitespace-nowrap',
         useNativePopover
-          ? 'p-2 mx-auto min-w-[16rem] backdrop:bg-black/50 backdrop:backdrop-blur-md'
+          ? 'p-2 mt-6 mx-auto min-w-[16rem] backdrop:bg-black/50 backdrop:backdrop-blur-md'
           : 'absolute z-10 mt-1',
         !useNativePopover && (align === 'right' ? 'right-0' : 'left-0'),
       )}
@@ -125,7 +134,10 @@ export function DropdownList({
               key={option.value}
               id={`option-${index}`}
               role="option"
-              onClick={() => onChangeOption(option.value)}
+              onClick={() => {
+                onChangeOption(option.value);
+                closePopover();
+              }}
               class={cn(
                 'px-4 py-2 cursor-pointer flex items-center gap-2',
                 'hover:bg-accent hover:text-accent-foreground',

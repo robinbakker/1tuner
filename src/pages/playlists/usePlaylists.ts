@@ -1,30 +1,18 @@
-import { useCallback, useMemo } from 'preact/hooks';
+import { ChangeEvent } from 'preact/compat';
+import { useCallback, useMemo, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import { playlistUtil } from '~/lib/playlistUtil';
-import { playlists } from '~/store/signals/playlist';
+import { playlistRules, playlists } from '~/store/signals/playlist';
 import { getRadioStation } from '~/store/signals/radio';
-import { PlaylistItem, RadioStation } from '~/store/types';
-
-interface PlaylistData {
-  url: string;
-  name: string;
-  stations: RadioStation[];
-  stationPercentages: StationPercentage[];
-}
-interface StationPercentage {
-  stationID: string;
-  logo: string;
-  name: string;
-  startTime: string;
-  endTime: string;
-  percentage: number;
-  startPercentage: number;
-  isActive: boolean;
-}
+import { PlaylistItem, PlaylistRuleType, RadioStation } from '~/store/types';
+import { PlaylistData, RuleDestination, StationPercentage } from './types';
 
 export const usePlaylists = () => {
   const startHour = 6;
   const endHour = 21;
+  const [ruleDestinationValue, setRuleDestinationValue] = useState<RuleDestination>(
+    playlistUtil.ruleTypeToDestination(playlistRules.value?.[0]?.ruleType),
+  );
 
   useHead({
     title: 'Playlists',
@@ -144,10 +132,30 @@ export const usePlaylists = () => {
     playlistUtil.playPlaylistByUrl(playlist.url, true);
   };
 
+  const handleRuleDestinationChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const newValue = e.currentTarget.value as unknown as RuleDestination;
+    setRuleDestinationValue(newValue);
+    if (+newValue === +RuleDestination.Nothing) {
+      playlistRules.value = [];
+    }
+  };
+
+  const handleRuleStationChange = (value: string) => {
+    playlistRules.value = [{ ruleType: PlaylistRuleType.podcastToStation, stationID: value }];
+  };
+
+  const handleRulePlaylistChange = (value: string) => {
+    playlistRules.value = [{ ruleType: PlaylistRuleType.podcastToPlaylist, playlistUrl: value }];
+  };
+
   return {
     playlistsData,
     currentTimePercentage,
+    ruleDestinationValue,
     handlePlay,
     handleDeletePlaylist,
+    handleRuleDestinationChange,
+    handleRuleStationChange,
+    handleRulePlaylistChange,
   };
 };

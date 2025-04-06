@@ -1,15 +1,95 @@
 import { Play, Plus, Trash2 } from 'lucide-preact';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
+import { DropdownList } from '~/components/ui/dropdown-list';
+import { styleClass } from '~/lib/styleClass';
 import { getColorString } from '~/lib/utils';
+import { playlistRules } from '~/store/signals/playlist';
+import { followedRadioStationIDs, getRadioStation, radioStations } from '~/store/signals/radio';
+import { RuleDestination } from './types';
 import { usePlaylists } from './usePlaylists';
 
 export const PlaylistsPage = () => {
-  const { playlistsData, currentTimePercentage, handlePlay, handleDeletePlaylist } = usePlaylists();
+  const {
+    playlistsData,
+    currentTimePercentage,
+    ruleDestinationValue,
+    handlePlay,
+    handleDeletePlaylist,
+    handleRuleDestinationChange,
+    handleRuleStationChange,
+    handleRulePlaylistChange,
+  } = usePlaylists();
 
   return (
     <div class="container mx-auto px-8 py-6">
       <h1 class="text-3xl font-bold mb-6">Playlists</h1>
+      <section class="mb-8 relative">
+        <h2 class="text-xl font-semibold">Rules</h2>
+        <p>
+          When a podcast episode is finished, play{' '}
+          <select
+            title="Destination source"
+            value={ruleDestinationValue}
+            onChange={handleRuleDestinationChange}
+            class={`${styleClass.selectSmall} inline-block`}
+          >
+            <option value={RuleDestination.Nothing}>nothing</option>
+            <option value={RuleDestination.RadioStation}>radio station</option>
+            <option value={RuleDestination.Playlist} disabled={!playlistsData.length}>
+              playlist
+            </option>
+          </select>
+          {+ruleDestinationValue === +RuleDestination.RadioStation && (
+            <DropdownList
+              id={`button-station`}
+              class="ml-2 inline-block"
+              options={[...radioStations.value]
+                .sort(
+                  (a, b) =>
+                    +followedRadioStationIDs.value.includes(b.id) - +followedRadioStationIDs.value.includes(a.id),
+                )
+                .map((s) => ({ label: s.name, value: s.id }))}
+              value={playlistRules.value?.[0]?.stationID}
+              onChangeOption={(value) => handleRuleStationChange(value)}
+              useNativePopover={true}
+              trigger={
+                <button type="button" popoverTarget={`button-station-popover`} title="Select station...">
+                  {playlistRules.value?.[0]?.stationID ? (
+                    <span class="text-sm text-stone-600 underline">
+                      {getRadioStation(playlistRules.value?.[0]?.stationID)?.name}
+                    </span>
+                  ) : (
+                    <span class="text-sm text-stone-600 underline">Select station...</span>
+                  )}
+                </button>
+              }
+            />
+          )}
+          {+ruleDestinationValue === +RuleDestination.Playlist && (
+            <DropdownList
+              id={`button-playlist`}
+              class="ml-2 inline-block"
+              options={[...playlistsData].map((s) => ({ label: s.name, value: s.url }))}
+              value={playlistRules.value?.[0]?.playlistUrl}
+              onChangeOption={(value) => handleRulePlaylistChange(value)}
+              useNativePopover={true}
+              trigger={
+                <button type="button" popoverTarget={`button-playlist-popover`} title="Select playlist...">
+                  {playlistRules.value?.[0]?.playlistUrl ? (
+                    <span class="text-sm text-stone-600 underline">
+                      {playlistsData.find((pd) => pd.url === playlistRules.value?.[0]?.playlistUrl)?.name}
+                    </span>
+                  ) : (
+                    <span class="text-sm text-stone-600 underline">Select playlist...</span>
+                  )}
+                </button>
+              }
+            />
+          )}
+        </p>
+      </section>
+      <hr class="mb-8" />
       <div class="mb-6">
         <Button asChild>
           <a href="/playlist">
