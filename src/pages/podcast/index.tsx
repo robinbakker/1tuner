@@ -32,7 +32,12 @@ export const PodcastPage = () => {
   }
 
   if (!podcast) {
-    return <div>Podcast not found</div>;
+    //return route('404-not-found', true);
+    return (
+      <div class="container @container mx-auto p-4 md:p-8">
+        <h1 class="text-2xl @5xl:text-3xl font-bold mb-4">Podcast not found...</h1>
+      </div>
+    );
   }
 
   return (

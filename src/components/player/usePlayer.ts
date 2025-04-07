@@ -1,5 +1,6 @@
 import { computed, signal, useComputed, useSignalEffect } from '@preact/signals';
 import { useCallback, useEffect, useRef } from 'preact/hooks';
+import { useNoise } from '~/hooks/useNoise';
 import { playlistUtil } from '~/lib/playlistUtil';
 import { reconnectUtil } from '~/lib/reconnectUtil';
 import { saveStateToDB } from '~/store/db/db';
@@ -24,6 +25,7 @@ export const usePlayer = () => {
   const sliderRef = useRef<HTMLInputElement>(null);
   const reconnectTimeout = useRef<NodeJS.Timeout>();
   const reconnectAttempts = signal(0);
+  const { startNoise, stopNoise } = useNoise();
 
   const {
     isCastingAvailable,
@@ -214,18 +216,22 @@ export const usePlayer = () => {
   useEffect(() => {
     if (!audioRef.current) return;
 
+    console.log('Setting up audio event listeners');
+
     const audio = audioRef.current;
     const isRadioStream = playerState.value?.playType !== 'podcast';
 
     const handleError = (e: ErrorEvent) => {
       if (isRadioStream && playerState.value?.isPlaying) {
         console.log('Stream error, attempting reconnect...', e);
+        startNoise();
         attemptReconnect();
       }
     };
 
     const attemptReconnect = () => {
       if (reconnectAttempts.value >= maxReconnectAttempts) {
+        stopNoise();
         console.log('Max reconnect attempts reached');
         addToast({
           title: '😢 Reconnect failed...',
@@ -267,6 +273,7 @@ export const usePlayer = () => {
           playPromise
             .then(() => {
               console.log('Reconnect successful');
+              stopNoise();
               reconnectAttempts.value = 0;
             })
             .catch((error) => {

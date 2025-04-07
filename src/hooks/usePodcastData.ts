@@ -12,6 +12,8 @@ const VALID_CONTENT_TYPES = [
   'text/xml',
   'application/rdf+xml',
   'application/text',
+  'text/plain',
+  'text/plain;charset=utf-8',
 ];
 
 const isValidPodcastFeed = (xmlData: string): boolean => {
@@ -113,11 +115,15 @@ export const usePodcastData = () => {
         if (!podcastData || skipCache || Date.now() - podcastData.lastFetched > 24 * 60 * 60 * 1000) {
           const xmlData = await fetchFeed(feedUrl);
 
+          console.log(xmlData);
+
           const parser = new XMLParser({
             ignoreAttributes: false,
             attributeNamePrefix: '@_',
           });
           const result = parser.parse(xmlData);
+
+          console.log(result);
 
           if (!result.rss || !result.rss.channel) {
             throw new Error('Invalid podcast RSS feed structure');
@@ -129,7 +135,7 @@ export const usePodcastData = () => {
             id,
             title: channel.title,
             description: channel.description,
-            imageUrl: channel.image?.url || '',
+            imageUrl: channel.image?.url || channel['itunes:image']?.['@_href'] || '',
             url: feedUrl,
             feedUrl: feedUrl,
             categories: channel.categories,
