@@ -186,6 +186,7 @@
       "id": "bayern1"
     },
     {
+      "stationuuid": "fdbdc2b0-c184-437b-8643-9a5bfa45c253",
       "displayorder": 18,
       "genres": ["dance", "pop", "rock"],
       "language": "en-UK",
@@ -194,14 +195,15 @@
       "streams": [
         {
           "mimetype": "application/vnd.apple.mpegurl",
-          "url": "https://as-hls-ww-live.akamaized.net/pool_904/live/ww/bbc_radio_one/bbc_radio_one.isml/bbc_radio_one-audio=320000.m3u8"
+          "url": "https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/hls/nonuk/pc_hd_abr_v2/ak/bbc_radio_one.m3u8"
         }
       ],
       "website": "https://www.bbc.co.uk/radio1",
-      "related": ["bbcradio2", "bbcradio4", "bbcradio5live"],
+      "related": ["bbcradio2", "bbcradio4", "bbcradio5live", "bbcworldservice"],
       "id": "bbcradio1"
     },
     {
+      "stationuuid": "3606ef8c-cd58-4440-8c47-dbf1e0cacdac",
       "displayorder": 2,
       "genres": ["oldies", "pop", "rock"],
       "language": "en-UK",
@@ -210,14 +212,15 @@
       "streams": [
         {
           "mimetype": "application/vnd.apple.mpegurl",
-          "url": "https://as-hls-ww-live.akamaized.net/pool_904/live/ww/bbc_radio_two/bbc_radio_two.isml/bbc_radio_two-audio=320000.m3u8"
+          "url": "https://as-hls-ww-live.akamaized.net/pool_74208725/live/ww/bbc_radio_two/bbc_radio_two.isml/bbc_radio_two-audio%3d128000.norewind.m3u8"
         }
       ],
       "website": "https://www.bbc.co.uk/radio2",
-      "related": ["bbcradio1", "bbcradio4", "bbcradio5live"],
+      "related": ["bbcradio1", "bbcradio4", "bbcradio5live", "bbcworldservice"],
       "id": "bbcradio2"
     },
     {
+      "stationuuid": "98137c2d-ce68-4e33-8cb7-ddf3692ecc9d",
       "displayorder": 4,
       "genres": ["talk", "news", "comedy", "drama", "history"],
       "language": "en-UK",
@@ -226,11 +229,11 @@
       "streams": [
         {
           "mimetype": "application/vnd.apple.mpegurl",
-          "url": "https://as-hls-ww-live.akamaized.net/pool_904/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio=320000.m3u8"
+          "url": "https://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d128000.norewind.m3u8"
         }
       ],
       "website": "https://www.bbc.co.uk/radio4",
-      "related": ["bbcradio1", "bbcradio2", "bbcradio5live"],
+      "related": ["bbcradio1", "bbcradio2", "bbcradio5live", "bbcworldservice"],
       "podcasts": [
         "https://podcasts.files.bbci.co.uk/b006qykl.rss",
         "https://podcasts.files.bbci.co.uk/p02pc9pj.rss",
@@ -239,6 +242,7 @@
       "id": "bbcradio4"
     },
     {
+      "stationuuid": "cae35448-1285-4f12-b3e0-2f4fdde00002",
       "displayorder": 21,
       "genres": ["news", "talk"],
       "language": "en-UK",
@@ -247,11 +251,11 @@
       "streams": [
         {
           "mimetype": "application/vnd.apple.mpegurl",
-          "url": "https://as-hls-ww-live.akamaized.net/pool_904/live/ww/bbc_radio_five_live/bbc_radio_five_live.isml/bbc_radio_five_live-audio=320000.m3u8"
+          "url": "https://as-hls-ww-live.akamaized.net/pool_89021708/live/ww/bbc_radio_five_live/bbc_radio_five_live.isml/bbc_radio_five_live-audio%3d128000.norewind.m3u8"
         }
       ],
       "website": "https://www.bbc.co.uk/5live",
-      "related": ["bbcradio1", "bbcradio2", "bbcradio4"],
+      "related": ["bbcradio1", "bbcradio2", "bbcradio4", "bbcworldservice"],
       "podcasts": ["https://podcasts.files.bbci.co.uk/p02nq0gn.rss"],
       "id": "bbcradio5live"
     },
@@ -293,7 +297,8 @@
       "website": "https://www.bnr.nl",
       "podcasts": [
         "https://www.bnr.nl/podcast/newsroom?widget=rssfeed&view=podcastFeed",
-        "https://www.bnr.nl/podcast/de-technoloog?widget=rssfeed&view=podcastFeed"
+        "https://www.bnr.nl/podcast/de-technoloog?widget=rssfeed&view=podcastFeed",
+        "https://www.omnycontent.com/d/playlist/8257a063-6be9-42fa-b892-acd4013b1255/183dc0a5-9b77-48f3-9970-acef00cf8471/790dd6fa-cb55-4956-ba88-acef00cfc0f6/podcast.rss"
       ],
       "social": [
         {
@@ -1694,7 +1699,7 @@
       "streams": [
         {
           "mimetype": "audio/mp3",
-          "url": "https://swr-swr3-live.sslcast.addradio.de/swr/swr3/live/mp3/128/stream.mp3"
+          "url": "https://liveradio.swr.de/sw282p3/swr3/play.mp3"
         }
       ],
       "website": "https://www.swr3.de",
@@ -1887,7 +1892,7 @@
         },
         {
           "mimetype": "audio/mp3",
-          "url": "http://www.listenlive.eu/streams/germany/de_wdr2rheinland_128.m3u"
+          "url": "https://wdr-wdr2-rheinruhr.icecastssl.wdr.de/wdr/wdr2/rheinruhr/mp3/128/stream.mp3"
         }
       ],
       "website": "https://www1.wdr.de/radio/wdr2",
@@ -3804,6 +3809,235 @@
           "type": "youtube",
           "account": "rtvutrecht",
           "url": "https://www.youtube.com/rtvutrecht"
+        }
+      ]
+    },
+    {
+      "id": "radionoordzee",
+      "displayorder": 137,
+      "genres": ["folk", "pop"],
+      "language": "nl",
+      "logosource": "https://www.radionoordzee.nl/icons/radionoordzee/apple-icon-144x144.png",
+      "name": "Radio Noordzee",
+      "streams": [
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/TLPSTR17.mp3"
+        }
+      ],
+      "website": "https://www.radionoordzee.nl",
+      "social": [
+        {
+          "title": "@Radio-Noordzee",
+          "type": "facebook",
+          "account": "Radio-Noordzee",
+          "url": "https://www.facebook.com/people/Radio-Noordzee/61572821921350"
+        }
+      ]
+    },
+    {
+      "id": "rythmos",
+      "stationuuid": "96b37cae-4795-4e9a-92be-178f16216ecf",
+      "displayorder": 138,
+      "genres": ["pop", "folk"],
+      "language": "el",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/rythmos949fm",
+      "name": "Rythmos 94.9",
+      "streams": [
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://stream.radiojar.com/aw1w2xfx1vduv"
+        }
+      ],
+      "website": "https://www.soundis.gr/rythmos949",
+      "social": [
+        {
+          "title": "@rythmos949fm",
+          "type": "facebook",
+          "account": "rythmos949fm",
+          "url": "https://www.facebook.com/rythmos949fm"
+        },
+        {
+          "title": "@rythmos949fm",
+          "type": "instagram",
+          "account": "rythmos949fm",
+          "url": "https://www.instagram.com/rythmos949fm"
+        },
+        {
+          "title": "@rythmostube",
+          "type": "youtube",
+          "account": "rythmostube",
+          "url": "https://www.youtube.com/rythmostube"
+        },
+        {
+          "title": "@rythmos949fm",
+          "type": "tiktok",
+          "account": "rythmos949fm",
+          "url": "https://www.tiktok.com/@rythmos949fm"
+        }
+      ]
+    },
+    {
+      "id": "sportfm",
+      "stationuuid": "96185f35-0601-11e8-ae97-52543be04c81",
+      "displayorder": 139,
+      "genres": ["sports"],
+      "language": "el",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/SPORFMOFFICIAL",
+      "name": "Sport FM 94.6",
+      "streams": [
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://netradio.live24.gr/sportfm7712"
+        }
+      ],
+      "website": "https://www.sport-fm.gr",
+      "social": [
+        {
+          "title": "@SPORFMOFFICIAL",
+          "type": "facebook",
+          "account": "SPORFMOFFICIAL",
+          "url": "https://www.facebook.com/SPORFMOFFICIAL"
+        },
+        {
+          "title": "@sportfm946",
+          "type": "instagram",
+          "account": "sportfm946",
+          "url": "https://www.instagram.com/sportfm946"
+        },
+        {
+          "title": "@NovaSPORFM946",
+          "type": "youtube",
+          "account": "NovaSPORFM946",
+          "url": "https://www.youtube.com/user/NovaSPORFM946"
+        },
+        {
+          "title": "@sporfm946",
+          "type": "tiktok",
+          "account": "sporfm946",
+          "url": "https://www.tiktok.com/@sporfm946"
+        }
+      ]
+    },
+    {
+      "id": "okradio",
+      "stationuuid": "c97e2821-9f9e-4ee3-b043-25823e459832",
+      "displayorder": 140,
+      "genres": ["pop", "folk"],
+      "language": "sr",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/okradio.beograd.9",
+      "name": "Ok Radio",
+      "streams": [
+        {
+          "mimetype": "audio/aac",
+          "url": "https://sslstream.okradio.net/;?type=http&nocache=8804"
+        }
+      ],
+      "website": "https://www.okradio.net",
+      "social": [
+        {
+          "title": "@okradio.beograd.9",
+          "type": "facebook",
+          "account": "okradio.beograd.9",
+          "url": "https://www.facebook.com/okradio.beograd.9"
+        },
+        {
+          "title": "@okradiobeograd",
+          "type": "instagram",
+          "account": "okradiobeograd",
+          "url": "https://www.instagram.com/okradiobeograd"
+        }
+      ]
+    },
+    {
+      "id": "naxiradio",
+      "stationuuid": "695183bd-3a60-11e8-b74d-52543be04c81",
+      "displayorder": 141,
+      "genres": ["pop", "folk"],
+      "language": "sr",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/naxiradio",
+      "name": "Naxi Radio",
+      "streams": [
+        {
+          "mimetype": "audio/mpeg",
+          "url": "https://naxi128ssl.streaming.rs:9152/;stream.nsv"
+        }
+      ],
+      "website": "https://www.naxi.rs",
+      "social": [
+        {
+          "title": "@naxiradio",
+          "type": "facebook",
+          "account": "naxiradio",
+          "url": "https://www.facebook.com/naxiradio"
+        },
+        {
+          "title": "@naxiradio",
+          "type": "instagram",
+          "account": "naxiradio",
+          "url": "https://www.instagram.com/naxiradio"
+        }
+      ]
+    },
+    {
+      "id": "bbcworldservice",
+      "stationuuid": "98adecf7-2683-4408-9be7-02d3f9098eb8",
+      "displayorder": 142,
+      "genres": ["news", "talk"],
+      "language": "en-UK",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/bbcworldservice",
+      "name": "BBC World Service",
+      "streams": [
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_world_service"
+        }
+      ],
+      "website": "https://www.bbc.co.uk/programmes/w172xzjgf6lxp7y",
+      "related": ["bbcradio1", "bbcradio2", "bbcradio3", "bbcradio4", "bbcradio5live"],
+      "social": [
+        {
+          "title": "@bbcworldservice",
+          "type": "facebook",
+          "account": "bbcworldservice",
+          "url": "https://www.facebook.com/bbcworldservice"
+        },
+        {
+          "title": "@bbcworldservice",
+          "type": "instagram",
+          "account": "bbcworldservice",
+          "url": "https://www.instagram.com/bbcworldservice"
+        }
+      ]
+    },
+    {
+      "id": "deutschlandfunk",
+      "stationuuid": "1c3e8be2-5b14-4933-bad3-87cbc227cba4",
+      "displayorder": 143,
+      "genres": ["news", "talk"],
+      "language": "de",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/deutschlandfunk",
+      "name": "Deutschlandfunk",
+      "streams": [
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://st01.sslstream.dlf.de/dlf/01/128/mp3/stream.mp3?aggregator=web"
+        }
+      ],
+      "website": "https://www.deutschlandfunk.de",
+      "related": ["bbcworldservice"],
+      "social": [
+        {
+          "title": "@deutschlandfunk",
+          "type": "facebook",
+          "account": "deutschlandfunk",
+          "url": "https://www.facebook.com/deutschlandfunk"
+        },
+        {
+          "title": "@deutschlandfunk",
+          "type": "instagram",
+          "account": "deutschlandfunk",
+          "url": "https://www.instagram.com/deutschlandfunk"
         }
       ]
     }

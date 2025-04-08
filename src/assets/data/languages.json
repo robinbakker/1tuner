@@ -85,7 +85,7 @@
       "country_en": "Belgium",
       "displayorder": 5,
       "flag": "🇧🇪",
-      "name": "Nederlands",
+      "name": "Vlaams",
       "name_en": "Dutch",
       "id": "nl-BE"
     },
@@ -128,6 +128,26 @@
       "name": "украї́нська мо́ва",
       "name_en": "Ukrainian",
       "id": "uk"
+    },
+    {
+      "abbr": "GR",
+      "country": "Ελλάδα",
+      "country_en": "Greece",
+      "displayorder": 14,
+      "flag": "🇬🇷",
+      "name": "Ελληνικά",
+      "name_en": "Greek",
+      "id": "el"
+    },
+    {
+      "abbr": "RS",
+      "country": "Република Србија",
+      "country_en": "Serbia",
+      "displayorder": 14,
+      "flag": "🇷🇸",
+      "name": "српски",
+      "name_en": "Serbian",
+      "id": "sr"
     }
   ]
 }
