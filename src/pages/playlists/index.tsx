@@ -26,7 +26,7 @@ export const PlaylistsPage = () => {
       <h1 class="text-3xl font-bold mb-6">Playlists</h1>
       <section class="mb-8 relative">
         <h2 class="text-xl font-semibold">Rules</h2>
-        <p>
+        <div>
           When a podcast episode is finished, play{' '}
           <select
             title="Destination source"
@@ -87,7 +87,7 @@ export const PlaylistsPage = () => {
               }
             />
           )}
-        </p>
+        </div>
       </section>
       <hr class="mb-8" />
       <div class="mb-6">

@@ -34,7 +34,7 @@ export const PlaylistPage = () => {
   return (
     <div class="container mx-auto px-8 py-6">
       <div class="flex justify-between">
-        <h1 class="text-3xl font-bold mb-6">{`${isEditMode ? 'Edit' : ''} ${playlistName}`}</h1>
+        <h1 class="text-3xl font-bold md:w-full mb-6">{`${isEditMode ? 'Edit' : ''} ${playlistName}`}</h1>
         {isEditMode ? (
           <div>
             <Button class="mr-2" variant="outline" onClick={handleCancelClick}>

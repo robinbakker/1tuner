@@ -148,6 +148,16 @@
       "name": "српски",
       "name_en": "Serbian",
       "id": "sr"
+    },
+    {
+      "abbr": "IT",
+      "country": "Italia",
+      "country_en": "Italy",
+      "displayorder": 15,
+      "flag": "🇮🇹",
+      "name": "Italiano",
+      "name_en": "Italian",
+      "id": "it"
     }
   ]
 }

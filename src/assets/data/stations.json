@@ -4025,7 +4025,7 @@
         }
       ],
       "website": "https://www.deutschlandfunk.de",
-      "related": ["bbcworldservice"],
+      "related": ["bbcworldservice", "rairadio1"],
       "social": [
         {
           "title": "@deutschlandfunk",
@@ -4038,6 +4038,123 @@
           "type": "instagram",
           "account": "deutschlandfunk",
           "url": "https://www.instagram.com/deutschlandfunk"
+        }
+      ]
+    },
+    {
+      "id": "rairadio1",
+      "stationuuid": "96185693-0601-11e8-ae97-52543be04c81",
+      "displayorder": 144,
+      "genres": ["news", "talk"],
+      "language": "it",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/Radio1Rai",
+      "name": "Rai Radio 1",
+      "streams": [
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://icestreaming.rai.it/1.mp3"
+        }
+      ],
+      "website": "https://www.raiplaysound.it/radio1",
+      "related": ["rairadio2", "rairadio3", "bbcworldservice", "deutschlandfunk"],
+      "social": [
+        {
+          "title": "@Radio1Rai",
+          "type": "facebook",
+          "account": "Radio1Rai",
+          "url": "https://www.facebook.com/Radio1Rai"
+        },
+        {
+          "title": "@Radio1Rai",
+          "type": "instagram",
+          "account": "Radio1Rai",
+          "url": "https://www.instagram.com/Radio1Rai"
+        }
+      ]
+    },
+    {
+      "id": "rairadio2",
+      "stationuuid": "96181819-0601-11e8-ae97-52543be04c81",
+      "displayorder": 145,
+      "genres": ["pop", "folk", "chanson"],
+      "language": "it",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/RaiRadio2",
+      "name": "Rai Radio 2",
+      "streams": [
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://icestreaming.rai.it/2.mp3"
+        }
+      ],
+      "website": "https://www.raiplaysound.it/radio2",
+      "related": ["rairadio1", "rairadio3"],
+      "social": [
+        {
+          "title": "@RaiRadio2",
+          "type": "facebook",
+          "account": "RaiRadio2",
+          "url": "https://www.facebook.com/RaiRadio2"
+        },
+        {
+          "title": "@RaiRadio2",
+          "type": "instagram",
+          "account": "RaiRadio2",
+          "url": "https://www.instagram.com/RaiRadio2"
+        }
+      ]
+    },
+    {
+      "id": "rairadio3",
+      "stationuuid": "9608eb3e-0601-11e8-ae97-52543be04c81",
+      "displayorder": 146,
+      "genres": ["classical", "jazz", "alternative"],
+      "language": "it",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/RaiRadio3",
+      "name": "Rai Radio 3",
+      "streams": [
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://icestreaming.rai.it/3.mp3"
+        }
+      ],
+      "website": "https://www.raiplaysound.it/radio3",
+      "related": ["rairadio1", "rairadio2"],
+      "social": [
+        {
+          "title": "@RaiRadio3",
+          "type": "facebook",
+          "account": "RaiRadio3",
+          "url": "https://www.facebook.com/RaiRadio3"
+        }
+      ]
+    },
+    {
+      "id": "radio105",
+      "stationuuid": "9619ea14-0601-11e8-ae97-52543be04c81",
+      "displayorder": 147,
+      "genres": ["pop"],
+      "language": "it",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/Radio105",
+      "name": "Radio 105",
+      "streams": [
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://icecast.unitedradio.it/Radio105.mp3"
+        }
+      ],
+      "website": "https://www.105.net",
+      "social": [
+        {
+          "title": "@Radio105",
+          "type": "facebook",
+          "account": "Radio105",
+          "url": "https://www.facebook.com/Radio105"
+        },
+        {
+          "title": "@Radio105",
+          "type": "instagram",
+          "account": "Radio105",
+          "url": "https://www.instagram.com/Radio105"
         }
       ]
     }

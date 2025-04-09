@@ -64,7 +64,7 @@ export async function loadStateFromDB() {
   const db = await dbPromise;
   followedPodcasts.value = (await getFromDB<Podcast[]>(db, AppStateKey.FollowedPodcasts)) || [];
   recentlyVisitedPodcasts.value = (await getFromDB<Podcast[]>(db, AppStateKey.RecentlyVisitedPodcasts)) || [];
-  followedRadioStationIDs.value = (await getFromDB<string[]>(db, AppStateKey.RecentlyVisitedRadioStationIDs)) || [];
+  followedRadioStationIDs.value = (await getFromDB<string[]>(db, AppStateKey.FollowedRadioStationIDs)) || [];
   recentlyVisitedRadioStationIDs.value =
     (await getFromDB<string[]>(db, AppStateKey.RecentlyVisitedRadioStationIDs)) || [];
   radioSearchFilters.value = (await getFromDB<RadioSearchFilters>(db, AppStateKey.RadioSearchFilters)) || null;

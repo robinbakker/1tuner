@@ -1,7 +1,7 @@
 {
   "name": "some.1tuner.com",
   "private": true,
-  "version": "0.0.69",
+  "version": "0.0.70",
   "type": "module",
   "scripts": {
     "start": "vite",
