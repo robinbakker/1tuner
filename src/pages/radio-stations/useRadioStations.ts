@@ -41,7 +41,9 @@ export const useRadioStations = () => {
     } else {
       clearLastRadioSearchResult();
     }
-    const savedLanguages = radioSearchFilters.value?.regions || (userLanguage.value ? [userLanguage.value] : []);
+    const userLanguages =
+      !userLanguage.value || userLanguage.value === 'en' ? ['en', 'en-US', 'en-UK'] : [userLanguage.value];
+    const savedLanguages = radioSearchFilters.value?.regions || userLanguages;
     radioSearchFilters.value = {
       regions: initialLanguages.length ? initialLanguages : savedLanguages,
       genres: initialGenres,

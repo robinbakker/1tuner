@@ -530,7 +530,7 @@
       "streams": [
         {
           "mimetype": "audio/mpeg",
-          "url": "https://hot108jamz.hot108.com/;stream.nsv"
+          "url": "http://hot108jamz.hot108.com:4040"
         }
       ],
       "website": "https://hot108.com",
@@ -568,7 +568,7 @@
       "streams": [
         {
           "mimetype": "audio/mp3",
-          "url": "https://kcrw.streamguys1.com/kcrw_192k_mp3_on_air"
+          "url": "https://streams.kcrw.com/kcrw_mp3"
         }
       ],
       "website": "https://www.kcrw.com",
@@ -606,7 +606,7 @@
       "streams": [
         {
           "mimetype": "audio/mpeg",
-          "url": "https://tunein.streamguys1.com/msnbc-free"
+          "url": "https://tunein.cdnstream1.com/3511_96.mp3"
         }
       ],
       "website": "https://www.msnbc.com",
@@ -629,7 +629,7 @@
       "streams": [
         {
           "mimetype": "audio/aac",
-          "url": "http://c2icyelb.prod.playlists.ihrhls.com/185_icy"
+          "url": "https://stream.revma.ihrhls.com/zc185"
         }
       ],
       "website": "https://kiisfm.iheart.com",
@@ -652,7 +652,7 @@
       "streams": [
         {
           "mimetype": "audio/mp3",
-          "url": "http://icy-e-ba-01-gos.sharp-stream.com/kissnational.mp3"
+          "url": "https://live-kiss.sharp-stream.com/kiss100.mp3"
         }
       ],
       "website": "https://planetradio.co.uk/kiss",
@@ -1923,8 +1923,8 @@
       "name": "Z100 New York",
       "streams": [
         {
-          "mimetype": "audio/aacp",
-          "url": "ttp://c5icyelb.prod.playlists.ihrhls.com/1469_icy"
+          "mimetype": "audio/aac",
+          "url": "https://stream.revma.ihrhls.com/zc1469"
         }
       ],
       "website": "https://z100.iheart.com",
@@ -2246,8 +2246,8 @@
       "name": "FOX News Radio",
       "streams": [
         {
-          "mimetype": "audio/mpeg",
-          "url": "https://tunein.streamguys1.com/foxnews"
+          "mimetype": "audio/aac",
+          "url": "https://live.amperwave.net/direct/foxnewsradio-foxnewsradioaac-imc"
         }
       ],
       "website": "https://radio.foxnews.com",

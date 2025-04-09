@@ -23,7 +23,8 @@ export const recentlyVisitedRadioStations = computed(() => {
     .map((id) => radioStations.value.find((r) => r.id === id))
     .filter((r) => !!r);
   if (stations.length < 10) {
-    const langs = [...new Set([userLanguage.value, 'en-UK', 'en-US', 'en'])].filter(Boolean);
+    const userLang = userLanguage.value === 'en' ? '' : userLanguage.value;
+    const langs = [...new Set([userLang, 'en-UK', 'en-US', 'en'])].filter(Boolean);
     stations = [
       ...stations,
       ...[...radioStations.value]
