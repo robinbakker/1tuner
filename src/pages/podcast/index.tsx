@@ -159,7 +159,7 @@ export const PodcastPage = () => {
                         </Button>
                       </div>
                     </div>
-                    <p class="break-words [word-break:break-word] mb-4">{stripHtml(ep.description)}</p>
+                    <p class="break-words [word-break:break-word] mb-4">{stripHtml(ep.description).slice(0, 1500)}</p>
                   </div>
                 );
               })}

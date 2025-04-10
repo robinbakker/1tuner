@@ -18,7 +18,7 @@ export const SettingsPage = () => {
     isImporting,
     handleThemeChange,
     handleSearchProviderChange,
-    handleRadioReconnectsValueChange,
+    handleAutomaticRadioReconnect,
     handleMuteNoiseChange,
     handleGoogleCastSupportChange,
     handleExportOpml,
@@ -60,26 +60,23 @@ export const SettingsPage = () => {
       <section class="mb-8 relative">
         <h2 class="text-2xl font-semibold">Radio stream reconnect</h2>
         <p class="text-muted-foreground text-sm mb-4">
-          When switching from networks (e.g. going from wifi to cellular), the radio stream may be interrupted. This
-          setting allows you to specify a number of times the player will try to reconnect to the stream automatically
-          (or never).
+          When switching from networks (e.g. going from wifi to cellular), the radio stream may be interrupted and the
+          app will try to reconnect automatically. This setting allows you to opt-out of automatic reconnects.
         </p>
-        <select
-          title="Radio stream reconnect"
-          value={radioStreamMaxReconnectsValue}
-          onChange={handleRadioReconnectsValueChange}
-          class={styleClass.select}
-        >
-          <option value="0">Never reconnect</option>
-          <option value="10">Try reconnecting up to 10 times</option>
-          <option value="50">Try reconnecting up to 50 times</option>
-          <option value="100">Try reconnecting up to 100 times</option>
-        </select>
-        <p class="text-muted-foreground text-sm my-4">
-          When reconnecting, a bit of noise will be played to let you know the player is trying to reconnect. Don't want
-          to hear the noise? Flip the switch below.
-        </p>
-        <Switch checked={hasNoiseMuted} onClick={handleMuteNoiseChange} label="Mute noise" />
+        <Switch
+          checked={radioStreamMaxReconnectsValue > 0}
+          onClick={handleAutomaticRadioReconnect}
+          label="Reconnect automatically"
+        />
+        {radioStreamMaxReconnectsValue > 0 && (
+          <>
+            <p class="text-muted-foreground text-sm my-4">
+              When reconnecting, a bit of noise will be played to let you know the player is trying to reconnect. Don't
+              want to hear the noise? Flip the switch below.
+            </p>
+            <Switch checked={hasNoiseMuted} onClick={handleMuteNoiseChange} label="Mute noise" />
+          </>
+        )}
       </section>
       <section class="mb-8 relative">
         <h2 class="text-2xl font-semibold">Google Cast (Chromecast) support (experimental)</h2>

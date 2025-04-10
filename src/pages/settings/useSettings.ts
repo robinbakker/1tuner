@@ -1,5 +1,4 @@
 import { XMLParser } from 'fast-xml-parser';
-import { ChangeEvent } from 'preact/compat';
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { RadioButtonListOption } from '~/components/ui/radio-button-list';
 import { usePodcastData } from '~/hooks/usePodcastData';
@@ -50,9 +49,10 @@ export const useSettings = () => {
     settingsState.value.podcastSearchProvider = value as PodcastSearchProvider;
   };
 
-  const handleRadioReconnectsValueChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    if (!settingsState.value || !e.currentTarget?.value) return;
-    settingsState.value.radioStreamMaxReconnects = +e.currentTarget.value;
+  const handleAutomaticRadioReconnect = (e: MouseEvent) => {
+    if (!settingsState.value) return;
+    const input = e.currentTarget as HTMLInputElement;
+    settingsState.value.radioStreamMaxReconnects = input.checked ? 50 : 0;
   };
 
   const handleGoogleCastSupportChange = (e: MouseEvent) => {
@@ -208,7 +208,7 @@ export const useSettings = () => {
   });
 
   return {
-    handleRadioReconnectsValueChange,
+    handleAutomaticRadioReconnect,
     handleSearchProviderChange,
     handleThemeChange,
     handleGoogleCastSupportChange,

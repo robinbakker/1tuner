@@ -23,22 +23,28 @@ export const useCastApi = () => {
   const castInitialized = useRef(false);
   const APPLICATION_ID = '2CFD5B94';
 
-  const isCastingAvailable = useMemo(() => settingsState.value.enableChromecast && !!castInitialized.current, []);
+  const isCastingAvailable = useMemo(
+    () => settingsState.value.enableChromecast && !!castInitialized.current,
+    [settingsState.value.enableChromecast],
+  );
 
-  const setupMediaListeners = useCallback((media: chrome.cast.media.Media) => {
-    castMediaRef.current = media;
-    media.addUpdateListener((isAlive: boolean) => {
-      if (!isAlive || !media || !playerState.value) return;
+  const setupMediaListeners = useCallback(
+    (media: chrome.cast.media.Media) => {
+      castMediaRef.current = media;
+      media.addUpdateListener((isAlive: boolean) => {
+        if (!isAlive || !media || !playerState.value) return;
 
-      const isPlaying = media.playerState === chrome.cast.media.PlayerState.PLAYING;
-      if (playerState.value.isPlaying !== isPlaying) {
-        playerState.value = {
-          ...playerState.value,
-          isPlaying,
-        };
-      }
-    });
-  }, []);
+        const isPlaying = media.playerState === chrome.cast.media.PlayerState.PLAYING;
+        if (playerState.value.isPlaying !== isPlaying) {
+          playerState.value = {
+            ...playerState.value,
+            isPlaying,
+          };
+        }
+      });
+    },
+    [playerState.value],
+  );
 
   const updateCastMedia = useCallback(
     (session: chrome.cast.Session) => {
@@ -106,7 +112,7 @@ export const useCastApi = () => {
     mediaInfo.metadata.images = [{ url: playerState.value.imageUrl }];
 
     return mediaInfo;
-  }, []);
+  }, [playerState.value]);
 
   const loadMedia = useCallback(
     async (session: chrome.cast.Session) => {
@@ -156,7 +162,7 @@ export const useCastApi = () => {
         );
       });
     },
-    [createMediaInfo, setupMediaListeners],
+    [createMediaInfo, setupMediaListeners, playerState.value],
   );
 
   const startCasting = useCallback(async () => {
@@ -180,7 +186,7 @@ export const useCastApi = () => {
     } catch (error) {
       console.error('Error starting cast:', error);
     }
-  }, [castSession, loadMedia]);
+  }, [castSession, loadMedia, playerState.value]);
 
   const stopCasting = useCallback(() => {
     if (castSession) {
@@ -263,7 +269,7 @@ export const useCastApi = () => {
         castInitialized.current = false;
       };
     }
-  }, [initializeCastApi]);
+  }, [initializeCastApi, settingsState.value.enableChromecast]);
 
   return {
     startCasting,
