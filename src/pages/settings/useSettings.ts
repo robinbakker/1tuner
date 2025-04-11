@@ -159,7 +159,6 @@ export const useSettings = () => {
           }
         }
         // Save podcasts to local storage or state as needed
-        console.log('Imported podcasts:', podcastIDUrls, podcasts);
         alert('Import completed successfully!');
       } catch (error) {
         console.error('Import failed:', error);

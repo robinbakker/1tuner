@@ -15,7 +15,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       manifest: false,
       workbox: {
-        globPatterns: ['index.html', 'assets/**/*.{js,css,ico,png,svg}'],
+        globPatterns: ['index.html', 'assets/**/*.{js,css,ico,png,jpg,svg,gif}', '*.{ico,png,jpg,svg,gif}'],
         cacheId: `1tuner-${APP_VERSION}`,
         clientsClaim: true,
         skipWaiting: true,
@@ -23,12 +23,12 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/.*\.(png|jpg|jpeg|svg|gif)$/,
+            urlPattern: /^https:\/\/.*\.(png|jpg|jpeg|svg|gif|ico)$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'image-cache',
               expiration: {
-                maxEntries: 50,
+                maxEntries: 200,
                 maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
               },
             },

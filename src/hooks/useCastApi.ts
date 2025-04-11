@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { playerState } from '~/store/signals/player';
 import { settingsState } from '~/store/signals/settings';
 
@@ -22,11 +22,6 @@ export const useCastApi = () => {
   const castMediaRef = useRef<chrome.cast.media.Media | null>(null);
   const castInitialized = useRef(false);
   const APPLICATION_ID = '2CFD5B94';
-
-  const isCastingAvailable = useMemo(
-    () => settingsState.value.enableChromecast && !!castInitialized.current,
-    [settingsState.value.enableChromecast],
-  );
 
   const setupMediaListeners = useCallback(
     (media: chrome.cast.media.Media) => {
@@ -67,36 +62,45 @@ export const useCastApi = () => {
   );
 
   const initializeCastApi = useCallback(() => {
-    if (typeof window === 'undefined' || window.chrome?.cast?.isAvailable || castInitialized.current) return;
+    if (typeof window === 'undefined' || !window.chrome?.cast || castInitialized.current) return;
 
-    const sessionRequest = new window.chrome.cast.SessionRequest(APPLICATION_ID);
-    const apiConfig = new window.chrome.cast.ApiConfig(
-      sessionRequest,
-      (session) => {
-        console.log('Cast session established:', session);
-        setCastSession(session);
-        updateCastMedia(session);
-      },
-      (availability) => {
-        console.log('Receiver availability:', availability);
-        // Check for existing session using the current API method
-        // if (chrome.cast && chrome.cast.session) {
-        //   console.log('Found existing session:', chrome.cast.session);
-        //   setCastSession(chrome.cast.session);
-        //   updateCastMedia(chrome.cast.session);
-        // }
-      },
-      chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
-    );
+    try {
+      // Ensure the cast API is actually available
+      if (!window.chrome.cast.isAvailable) {
+        console.log('Cast API not yet available, waiting...');
+        return;
+      }
 
-    window.chrome.cast.initialize(
-      apiConfig,
-      () => {
-        console.log('Cast API initialized');
-        castInitialized.current = true;
-      },
-      (error) => console.error('Cast API initialization error:', error),
-    );
+      const sessionRequest = new window.chrome.cast.SessionRequest(APPLICATION_ID);
+      if (!sessionRequest) {
+        console.error('Failed to create session request');
+        return;
+      }
+
+      const apiConfig = new window.chrome.cast.ApiConfig(
+        sessionRequest,
+        (session) => {
+          console.log('Cast session established:', session);
+          setCastSession(session);
+          updateCastMedia(session);
+        },
+        (availability) => {
+          console.log('Receiver availability:', availability);
+        },
+        chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
+      );
+
+      window.chrome.cast.initialize(
+        apiConfig,
+        () => {
+          console.log('Cast API initialized');
+          castInitialized.current = true;
+        },
+        (error) => console.error('Cast API initialization error:', error),
+      );
+    } catch (error) {
+      console.error('Error during Cast API initialization:', error);
+    }
   }, [updateCastMedia]);
 
   const createMediaInfo = useCallback(() => {
@@ -245,11 +249,16 @@ export const useCastApi = () => {
   // Initialize Chromecast only if enabled in settings
   useEffect(() => {
     if (settingsState.value.enableChromecast && typeof window !== 'undefined') {
+      let initializationTimer: number;
+
       loadCastSDK()
         .then(() => {
           window.__onGCastApiAvailable = (isAvailable: boolean) => {
             if (isAvailable) {
-              initializeCastApi();
+              // Add a small delay to ensure the API is fully loaded
+              initializationTimer = window.setTimeout(() => {
+                initializeCastApi();
+              }, 100);
             }
           };
         })
@@ -259,6 +268,7 @@ export const useCastApi = () => {
 
       return () => {
         // Cleanup when Chromecast is disabled
+        clearTimeout(initializationTimer);
         delete window.__onGCastApiAvailable;
         const scriptTag = document.querySelector('script[src*="cast_sender.js"]');
         if (scriptTag) {
@@ -277,7 +287,7 @@ export const useCastApi = () => {
     handleCastPlayPause,
     handleCastSeek,
     handleCastPlaybackRateChange,
-    isCastingAvailable,
+    isCastingAvailable: settingsState.value.enableChromecast && !!castInitialized.current,
     castSession,
     castMediaRef,
   };

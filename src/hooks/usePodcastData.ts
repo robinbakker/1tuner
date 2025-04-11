@@ -115,15 +115,11 @@ export const usePodcastData = () => {
         if (!podcastData || skipCache || Date.now() - podcastData.lastFetched > 24 * 60 * 60 * 1000) {
           const xmlData = await fetchFeed(feedUrl);
 
-          console.log(xmlData);
-
           const parser = new XMLParser({
             ignoreAttributes: false,
             attributeNamePrefix: '@_',
           });
           const result = parser.parse(xmlData);
-
-          console.log(result);
 
           if (!result.rss || !result.rss.channel) {
             throw new Error('Invalid podcast RSS feed structure');

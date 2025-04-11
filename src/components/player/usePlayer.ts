@@ -10,8 +10,8 @@ import { playNextRadioStation, playRadioStationByID } from '~/store/signals/radi
 import { settingsState } from '~/store/signals/settings';
 import { addToast } from '~/store/signals/ui';
 import { PlaylistRuleType } from '~/store/types';
+import { useCastApi } from '../../hooks/useCastApi';
 import { isPlayerMaximized, playerState } from '../../store/signals/player';
-import { useCastApi } from './useCastApi';
 
 export const playbackRateSignal = signal(1);
 export const durationSignal = signal(0);
@@ -152,6 +152,7 @@ export const usePlayer = () => {
       };
 
       if (newIsPlaying) {
+        stopNoise();
         audioRef.current.play().catch((error) => {
           console.error('Error playing audio:', error);
           playerState.value = {
@@ -163,7 +164,7 @@ export const usePlayer = () => {
         setToPaused();
       }
     }
-  }, [playerState.value, castSession, castMediaRef, handleCastPlayPause, setToPaused]);
+  }, [playerState.value, castSession, castMediaRef, handleCastPlayPause, stopNoise, setToPaused]);
 
   const handleClose = useCallback(() => {
     setToPaused();
