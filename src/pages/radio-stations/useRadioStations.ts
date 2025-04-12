@@ -94,14 +94,16 @@ export const useRadioStations = () => {
   const filteredStations = computed(() => {
     const langs = radioSearchFilters.value?.regions || [];
     const genres = radioSearchFilters.value?.genres || [];
-    return [...radioStations.value].filter((station) => {
-      const matchesSearch = station.name
-        ?.toLowerCase()
-        .includes((lastRadioSearchResult.value?.query || '').toLowerCase());
-      const matchesCountry = !langs.length || langs.includes(station.language);
-      const matchesGenre = !genres.length || genres.some((g) => station.genres.includes(g));
-      return matchesSearch && matchesCountry && matchesGenre;
-    });
+    return [...radioStations.value]
+      .sort((a, b) => a.displayorder - b.displayorder)
+      .filter((station) => {
+        const matchesSearch = station.name
+          ?.toLowerCase()
+          .includes((lastRadioSearchResult.value?.query || '').toLowerCase());
+        const matchesCountry = !langs.length || langs.includes(station.language);
+        const matchesGenre = !genres.length || genres.some((g) => station.genres.includes(g));
+        return matchesSearch && matchesCountry && matchesGenre;
+      });
   });
 
   const languageOptions = useMemo(

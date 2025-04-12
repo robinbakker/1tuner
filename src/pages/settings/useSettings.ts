@@ -4,6 +4,7 @@ import { RadioButtonListOption } from '~/components/ui/radio-button-list';
 import { usePodcastData } from '~/hooks/usePodcastData';
 import { opmlUtil } from '~/lib/opmlUtil';
 import { delay, getPodcastUrlID, normalizedUrlWithoutScheme } from '~/lib/utils';
+import { isDBLoaded } from '~/store/db/db';
 import { followedPodcasts, followPodcast } from '~/store/signals/podcast';
 import { settingsState } from '~/store/signals/settings';
 import { uiState } from '~/store/signals/ui';
@@ -202,9 +203,10 @@ export const useSettings = () => {
   };
 
   useEffect(() => {
+    if (!isDBLoaded.value) return;
     uiState.value = { ...uiState.value, headerTitle: 'Settings' };
     return () => (uiState.value = { ...uiState.value, headerTitle: '' });
-  });
+  }, [isDBLoaded.value, uiState.value]);
 
   return {
     handleAutomaticRadioReconnect,

@@ -28,6 +28,7 @@ export const recentlyVisitedRadioStations = computed(() => {
     stations = [
       ...stations,
       ...[...radioStations.value]
+        .sort((a, b) => a.displayorder - b.displayorder)
         .sort((a, b) => langs.indexOf(a.language) - langs.indexOf(b.language))
         .filter((rs) => langs.includes(rs.language) && !stations.some((s) => s.id === rs.id)),
     ];
