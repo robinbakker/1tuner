@@ -7,6 +7,7 @@ export const uiState = signal<UIState>({
   headerDefaultTextColor: 'default',
 });
 export const uiIsScrolled = signal<boolean>(false);
+export const hasAppUpdatedMessage = signal<boolean>(false);
 export const toasts = signal<ToastProps[]>([]);
 
 const TOAST_DURATION = 5000;

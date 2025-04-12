@@ -1,6 +1,7 @@
 import { DBSchema, openDB } from 'idb';
 import { playlistUtil } from '~/lib/playlistUtil';
 import { getPodcastUrlID } from '~/lib/utils';
+import { hasAppUpdatedMessage } from '../signals/ui';
 import { Podcast } from '../types';
 import { AppStateKey, dbName, dbVersion, storeName } from './db';
 
@@ -53,6 +54,8 @@ export async function migrateOldData() {
       console.log('No old database found, skipping migration');
       return;
     }
+
+    hasAppUpdatedMessage.value = true;
 
     // Open old database
     const oldDb = await openDB<OldKeyvalStore>('keyval-store', 1, {

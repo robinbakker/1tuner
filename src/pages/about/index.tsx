@@ -28,30 +28,24 @@ export const AboutPage = () => {
     <div class="container mx-auto px-8 py-6">
       <h1 class="text-3xl font-bold mb-6">About</h1>
       <p class="pb-4">
-        Here you can listen to online{' '}
-        <a href="/radio-stations" class={styleClass.textLink}>
-          radio stations
-        </a>{' '}
-        and{' '}
-        <a href="/podcasts" class={styleClass.textLink}>
-          podcasts
-        </a>
-        . And create your own ideal radio listening day, so the player switches between radio streams automatically.
+        Welcome to 1tuner.com — your personal mix of online radio and podcasts!
+        <br />
+        Create your perfect listening day by building a playlist that automatically switches between your favorite radio
+        streams.
       </p>
       <p class="pb-4">
-        This is a free web app, no account needed and no ads. Add or install this site to your homescreen for the best
-        experience!
+        This is a free web app. No account needed. No ads. 💡 Tip: Add it to your home screen for the best experience!
       </p>
-      <h2 class="text-2xl font-semibold">Cookies, tracking, privacy...</h2>
-      <p class="pb-4">I guess I'm not that much interested in you! However, to keep things functional:</p>
+      <h2 class="text-2xl mb-2 font-semibold">Privacy, cookies, tracking...</h2>
+      <p class="pb-4">I guess I'm not that much interested in you! But here’s what you should know:</p>
       <ul class="pb-4 list-disc pl-6">
         <li class="pb-2">
-          Some basic information is stored in your browser for your preferences and to store your playlists. You can
-          manage some of this data at the{' '}
+          Your recently played stations/podcasts, your playlists and settings, are stored in your browser (locally) to
+          keep things running smoothly. You can manage this data on the{' '}
           <a href="/settings" class={styleClass.textLink}>
-            settings
+            Settings
           </a>{' '}
-          page. You can also delete you browser data to remove all stored information.{' '}
+          page — or just clear your browser data to reset everything.
         </li>
         <li class="pb-2">
           For visitor statistics I use{' '}
@@ -61,42 +55,40 @@ export const AboutPage = () => {
           . No personal data is shared or stored.
         </li>
         <li class="pb-2">
-          The audio and logos are loaded from the radio stations / podcast sources directly or via{' '}
+          Audio and logos are loaded directly from radio stations or podcast sources, or via{' '}
           <a href="https://cloudinary.com" class={styleClass.textLink} target="_blank" rel="noopener">
             cloudinary.com
           </a>
-          . Radio stations or podcast providers may use some sort of tracking on the media requests.
+          . Some of these sources may track media requests (just FYI).
         </li>
         <li class="pb-2">
-          Either the{' '}
+          Podcast search is powered by{' '}
           <a href="https://podcastindex.org" target="_blank" rel="noopener" class={styleClass.textLink}>
             podcastindex.org
           </a>{' '}
-          API or the Apple iTunes Search API is used for the{' '}
-          <a href="/podcasts" class={styleClass.textLink}>
-            podcast
-          </a>{' '}
-          search functionality. You can change this at the{' '}
+          or the Apple iTunes Search API — you can change this on the{' '}
           <a href="/settings" class={styleClass.textLink}>
-            settings
+            Settings
           </a>{' '}
           page.
         </li>
         <li class="pb-2">
-          If needed, the podcast RSS feed will be requested via a pass-through website, currently via a{' '}
+          For podcast episode data, the RSS feed is fetched directly from the podcast source. If it fails, it is fetched
+          via a pass-through server (currently using a{' '}
           <a href="https://www.cloudflare.com" class={styleClass.textLink} target="_blank" rel="noopener">
             Cloudflare Worker
           </a>
-          .
+          ).
         </li>
       </ul>
-      <h2 class="text-2xl font-semibold">Who?</h2>
+      <h2 class="text-2xl mb-2 font-semibold">Who made this?</h2>
       <p class="pb-4">
-        This is a side project from{' '}
+        This is a side project by{' '}
         <a href="https://robinbakker.nl" class={styleClass.textLink} target="_blank" rel="noopener me">
           Robin Bakker
         </a>
-        . Read more:{' '}
+        .<br />
+        Curious how it was made? Check out:{' '}
         <a
           href="https://robinbakker.nl/en/blog/creating-a-web-app-as-side-project"
           class={styleClass.textLink}
@@ -105,11 +97,11 @@ export const AboutPage = () => {
         >
           Creating a web app as side project
         </a>
-        . You can find 1tuner at{' '}
+        . Find the code on{' '}
         <a href="https://github.com/robinbakker/1tuner" class={styleClass.textLink} rel="noopener" target="_blank">
           GitHub
-        </a>{' '}
-        as well.
+        </a>
+        .
         <br />
         Do you miss a feature? Spotted a bug? Oh no! Please let me know:{' '}
         <a href="https://bsky.app/profile/1tuner.com" class={styleClass.textLink} rel="noopener me" target="_blank">

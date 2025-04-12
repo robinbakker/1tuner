@@ -6,6 +6,7 @@ import { ShareButton } from '~/components/share-button';
 import { styleClass } from '~/lib/styleClass';
 import { featuredPodcasts, recentlyVisitedPodcasts } from '~/store/signals/podcast';
 import { recentlyVisitedRadioStations } from '~/store/signals/radio';
+import { hasAppUpdatedMessage } from '~/store/signals/ui';
 
 const homepagePodcasts = computed(() => {
   if (recentlyVisitedPodcasts.value.length > 10) {
@@ -54,6 +55,12 @@ export const Homepage = () => {
       </ContentSection>
       <ContentSection title="About 1tuner.com">
         <>
+          {hasAppUpdatedMessage.value && (
+            <p class="pb-4 text-sm text-gray-500">
+              ℹ️ 1tuner has been updated! You can now "follow" radio stations and podcasts, and lots of other
+              improvements where made. I hope you like it!
+            </p>
+          )}
           <p class="pb-4">
             With this free app you can listen to online{' '}
             <a href="/radio-stations" class={styleClass.textLink}>
