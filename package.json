@@ -1,7 +1,10 @@
 {
-  "name": "some.1tuner.com",
+  "name": "1tuner",
   "private": true,
-  "version": "0.0.75",
+  "version": "3.0.0",
+  "description": "1 web app to listen to radio and podcasts",
+  "author": "Robin Bakker",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "start": "vite",
