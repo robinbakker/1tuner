@@ -78,9 +78,7 @@ export const usePodcast = () => {
   );
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      getPodcastData();
-    }
+    getPodcastData();
 
     return () => {
       uiState.value = { ...uiState.value, headerTitle: '' };

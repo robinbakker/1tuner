@@ -155,7 +155,7 @@ export const useRadioStations = () => {
   );
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && query['focus-search']) {
+    if (query['focus-search']) {
       const url = new URL(window.location.href);
       url.searchParams.delete('focus-search');
       route(url.pathname + url.search, true);

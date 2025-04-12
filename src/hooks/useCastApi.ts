@@ -248,7 +248,7 @@ export const useCastApi = () => {
 
   // Initialize Chromecast only if enabled in settings
   useEffect(() => {
-    if (settingsState.value.enableChromecast && typeof window !== 'undefined') {
+    if (settingsState.value.enableChromecast) {
       let initializationTimer: number;
 
       loadCastSDK()
