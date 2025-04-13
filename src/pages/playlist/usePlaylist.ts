@@ -4,6 +4,7 @@ import { useHead } from '~/hooks/useHead';
 import { getLocalTimeFromUrlKey, getValidTimeZone } from '~/lib/convertTime';
 import { playlistUtil } from '~/lib/playlistUtil';
 import { getTimeInMinutesFromTimeString, getTimeStringFromMinutes, roundTo15Minutes } from '~/lib/utils';
+import { isDBLoaded } from '~/store/db/db';
 import { playerState } from '~/store/signals/player';
 import { playlists } from '~/store/signals/playlist';
 import { getRadioStation } from '~/store/signals/radio';
@@ -133,13 +134,14 @@ export const usePlaylist = () => {
   }, [blocks, editName, getParamFromTime, urlTimeZone]);
 
   useEffect(() => {
+    if (!isDBLoaded.value) return;
     if (isEditMode) {
       uiState.value = { ...uiState.value, headerTitle: '' };
     } else {
       uiState.value = { ...uiState.value, headerTitle: playlistName || 'Playlist' };
     }
     return () => (uiState.value = { ...uiState.value, headerTitle: '' });
-  }, [isEditMode, playlistName]);
+  }, [isDBLoaded.value, uiState.value, isEditMode, playlistName]);
 
   useEffect(() => {
     if (!(playlists.value || []).some((p) => !!p.url && playlistUtil.isSameUrl(p.url, playlistUrl))) {

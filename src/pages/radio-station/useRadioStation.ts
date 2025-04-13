@@ -1,6 +1,7 @@
 import { useRoute } from 'preact-iso';
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
+import { isDBLoaded } from '~/store/db/db';
 import { playerState } from '~/store/signals/player';
 import {
   followRadioStation,
@@ -71,6 +72,7 @@ export const useRadioStation = () => {
   }, [setIsFollowing, params.id]);
 
   useEffect(() => {
+    if (!isDBLoaded.value) return;
     uiState.value = {
       ...uiState.value,
       headerTitle: radioStation?.name ?? '',
@@ -83,7 +85,7 @@ export const useRadioStation = () => {
         headerTitle: '',
         headerDefaultTextColor: 'default',
       });
-  });
+  }, [isDBLoaded.value, uiState.value]);
 
   return {
     params,
