@@ -57,6 +57,7 @@ export const RadioStationsPage = () => {
                     'inline-flex items-center gap-1 opacity-0 transition-opacity duration-200',
                     isScrolled && 'opacity-100',
                   )}
+                  aria-label={`Scroll to filters (${activeFilterCount} active)`}
                 >
                   {activeFilterCount > 0 && (
                     <div
@@ -97,7 +98,11 @@ export const RadioStationsPage = () => {
                   <Search size={18} />
                 </div>
                 {searchTerm && (
-                  <Button onClick={() => onSearchInput()} class="absolute right-0 top-0 rounded-none rounded-r-lg">
+                  <Button
+                    onClick={() => onSearchInput()}
+                    class="absolute right-0 top-0 rounded-none rounded-r-lg"
+                    title="Clear search"
+                  >
                     <X size={18} />
                   </Button>
                 )}

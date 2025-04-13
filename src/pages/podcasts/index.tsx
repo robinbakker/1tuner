@@ -78,7 +78,11 @@ export const PodcastsPage = () => {
                     <Search size={18} />
                   </div>
                   {searchTerm && (
-                    <Button onClick={() => setSearchTerm('')} class="absolute right-0 top-0 rounded-none rounded-r-lg">
+                    <Button
+                      onClick={() => setSearchTerm('')}
+                      class="absolute right-0 top-0 rounded-none rounded-r-lg"
+                      title="Clear search"
+                    >
                       <X size={18} />
                     </Button>
                   )}

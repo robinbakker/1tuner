@@ -204,6 +204,7 @@ export const AppShell = ({ children }: AppShellProps) => {
                       'p-2 rounded-full  transition-colors duration-200',
                       isLightHeaderText ? 'hover:bg-stone-200/20' : 'hover:bg-stone-200',
                     )}
+                    aria-label="Go back"
                   >
                     <ArrowLeft class={cn('h-6 w-6', isLightHeaderText ? 'text-white' : 'text-stone-600')} />
                   </button>

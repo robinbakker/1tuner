@@ -74,6 +74,7 @@ export const PodcastPage = () => {
                         'border-stone-300 hover:bg-primary group-hover:bg-primary group-hover:border-primary',
                         'group-hover:text-primary-foreground hover:text-primary-foreground transition-colors',
                       )}
+                      aria-label="Play"
                     >
                       <Play class="h-4 w-4" />
                     </Button>
@@ -98,7 +99,7 @@ export const PodcastPage = () => {
                 <Bookmark class={`mr-2 h-4 w-4 ${isFollowing ? 'fill-current' : ''}`} />
                 {isFollowing ? 'Following' : 'Follow'}
               </Button>
-              <Button onClick={handleFetchNewEpisodes} variant={'link'}>
+              <Button onClick={handleFetchNewEpisodes} variant={'link'} title="Refresh episodes">
                 <RefreshCw class={`mr-2 h-4 w-${isLoading ? ' animate-spin' : ''}`} />
                 <time dateTime={new Date(podcast.lastFetched).toJSON()} class="text-muted-foreground text-sm">
                   {new Date(podcast.lastFetched).toLocaleDateString(navigator.language, {
@@ -154,6 +155,7 @@ export const PodcastPage = () => {
                             'group-hover:text-primary-foreground hover:text-primary-foreground transition-colors',
                             selectedEpisodeID ? 'bg-primary text-primary-foreground' : '',
                           )}
+                          aria-label="Play"
                         >
                           <Play class="h-4 w-4" />
                         </Button>

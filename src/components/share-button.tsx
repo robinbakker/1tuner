@@ -30,6 +30,7 @@ export function ShareButton({ hasDarkBackground, shareUrl, className }: Props) {
         hasDarkBackground ? 'hover:bg-stone-200/20' : 'hover:bg-stone-200 dark:hover:bg-stone-600',
         className,
       )}
+      title="Share"
     >
       <Share2 class={cn('h-6 w-6', hasDarkBackground && 'text-white')} />
     </button>

@@ -47,7 +47,7 @@ export const PlaylistPage = () => {
             <Button class="mr-6" variant="outline" onClick={handleEditClick}>
               <Pencil class="h-3.5 w-3.5 mr-2" /> Edit
             </Button>
-            <Button onClick={handlePlayClick} styleSize="icon">
+            <Button onClick={handlePlayClick} styleSize="icon" aria-label={isPlaying ? 'Pause' : 'Play'}>
               {isPlaying ? <Pause class="h-5 w-5" /> : <Play class="h-5 w-5" />}
             </Button>
           </div>
@@ -66,6 +66,7 @@ export const PlaylistPage = () => {
             onClick={toggleNightSchedule}
             variant="secondary"
             class="absolute -top-2 bg-background hover:bg-background left-1/2 -translate-x-1/2 z-30"
+            aria-label={showNightSchedule ? 'Hide night schedule' : 'Show night schedule'}
           >
             <ChevronDown class={cn('w-5 h-5 transition-transform', showNightSchedule && 'rotate-180')} />
           </Button>

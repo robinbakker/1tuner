@@ -109,6 +109,7 @@ export const RadioStationPage = () => {
                   };
                 }}
                 styleSize="icon"
+                aria-label={isPlaying ? 'Pause' : 'Play'}
               >
                 {isPlaying ? <Pause class="h-5 w-5" /> : <Play class="h-5 w-5" />}
               </Button>
