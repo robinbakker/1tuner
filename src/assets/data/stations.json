@@ -3547,7 +3547,7 @@
       "genres": ["local", "news"],
       "language": "nl",
       "logosource": "https://res.cloudinary.com/onetuner/image/facebook/omroepflevoland",
-      "name": "Omroep Brabant",
+      "name": "Omroep Flevoland",
       "streams": [
         {
           "mimetype": "audio/mp3",
