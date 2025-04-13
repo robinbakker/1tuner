@@ -70,22 +70,50 @@
     {
       "src": "/assets/screenshots/screenshot-01-home.jpg",
       "type": "image/jpeg",
-      "sizes": "750x1334"
+      "sizes": "1170x2532",
+      "form_factor": "narrow"
     },
     {
       "src": "/assets/screenshots/screenshot-02-radio.jpg",
       "type": "image/jpeg",
-      "sizes": "750x1334"
+      "sizes": "1170x2532",
+      "form_factor": "narrow"
     },
     {
       "src": "/assets/screenshots/screenshot-04-podcast.jpg",
       "type": "image/jpeg",
-      "sizes": "750x1334"
+      "sizes": "1170x2532",
+      "form_factor": "narrow"
     },
     {
       "src": "/assets/screenshots/screenshot-03-radio-page.jpg",
       "type": "image/jpeg",
-      "sizes": "750x1334"
+      "sizes": "1170x2532",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/assets/screenshots/screenshot-01-home-wide.jpg",
+      "type": "image/jpeg",
+      "sizes": "2732x2048",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/assets/screenshots/screenshot-02-radio-wide.jpg",
+      "type": "image/jpeg",
+      "sizes": "2732x2048",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/assets/screenshots/screenshot-04-podcast-wide.jpg",
+      "type": "image/jpeg",
+      "sizes": "2732x2048",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/assets/screenshots/screenshot-03-radio-page-wide.jpg",
+      "type": "image/jpeg",
+      "sizes": "2732x2048",
+      "form_factor": "wide"
     }
   ],
   "categories": ["entertainment", "music", "news"]
