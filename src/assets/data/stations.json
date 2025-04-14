@@ -1794,13 +1794,13 @@
           "title": "@radioveronica",
           "type": "instagram",
           "account": "radioveronica",
-          "url": "http://instagram.com/radioveronica"
+          "url": "https://instagram.com/radioveronica"
         },
         {
           "title": "RadioVeronica",
           "type": "youtube",
           "account": "RadioVeronica",
-          "url": "http://www.youtube.com/user/RadioVeronica"
+          "url": "https://www.youtube.com/user/RadioVeronica"
         }
       ],
       "id": "veronica"
@@ -2630,7 +2630,7 @@
           "url": "https://radio.ukr.radio/ur1-ck-mp3"
         }
       ],
-      "website": "http://ukr.radio",
+      "website": "https://ukr.radio",
       "social": [
         {
           "title": "@ukrainianradio",
@@ -3029,11 +3029,11 @@
       "streams": [
         {
           "mimetype": "audio/mpeg",
-          "url": "http://icecast.omroep.nl/radio6-bb-mp3"
+          "url": "https://icecast.omroep.nl/radio6-bb-mp3"
         },
         {
           "mimetype": "audio/aac",
-          "url": "http://icecast.omroep.nl/radio6-bb-aac"
+          "url": "https://icecast.omroep.nl/radio6-bb-aac"
         }
       ],
       "website": "https://www.nporadio2.nl/soulenjazz",
