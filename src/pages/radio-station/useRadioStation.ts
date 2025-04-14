@@ -73,19 +73,20 @@ export const useRadioStation = () => {
 
   useEffect(() => {
     if (!isDBLoaded.value) return;
+    const previousState = { ...uiState.value };
     uiState.value = {
-      ...uiState.value,
+      ...previousState,
       headerTitle: radioStation?.name ?? '',
       headerDefaultTextColor: 'light',
     };
 
     return () =>
       (uiState.value = {
-        ...uiState.value,
+        ...previousState,
         headerTitle: '',
         headerDefaultTextColor: 'default',
       });
-  }, [isDBLoaded.value, uiState.value]);
+  }, [isDBLoaded.value, radioStation?.name]);
 
   return {
     params,

@@ -2,6 +2,7 @@ import { useEffect } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import { styleClass } from '~/lib/styleClass';
 import { APP_VERSION } from '~/lib/version';
+import { isDBLoaded } from '~/store/db/db';
 import { uiState } from '~/store/signals/ui';
 
 export const AboutPage = () => {
@@ -10,19 +11,21 @@ export const AboutPage = () => {
   });
 
   useEffect(() => {
+    if (!isDBLoaded.value) return;
+    const previousState = { ...uiState.value };
     uiState.value = {
-      ...uiState.value,
+      ...previousState,
       headerTitle: 'About',
       headerDefaultTextColor: 'default',
     };
 
     return () =>
       (uiState.value = {
-        ...uiState.value,
+        ...previousState,
         headerTitle: '',
         headerDefaultTextColor: 'default',
       });
-  });
+  }, [isDBLoaded.value]);
 
   return (
     <div class="container mx-auto px-8 py-6">

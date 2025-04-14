@@ -204,9 +204,10 @@ export const useSettings = () => {
 
   useEffect(() => {
     if (!isDBLoaded.value) return;
-    uiState.value = { ...uiState.value, headerTitle: 'Settings' };
-    return () => (uiState.value = { ...uiState.value, headerTitle: '' });
-  }, [isDBLoaded.value, uiState.value]);
+    const previousState = { ...uiState.value };
+    uiState.value = { ...previousState, headerTitle: 'Settings' };
+    return () => (uiState.value = { ...previousState, headerTitle: '' });
+  }, [isDBLoaded.value]);
 
   return {
     handleAutomaticRadioReconnect,

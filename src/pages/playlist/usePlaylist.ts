@@ -135,13 +135,14 @@ export const usePlaylist = () => {
 
   useEffect(() => {
     if (!isDBLoaded.value) return;
+    const previousState = { ...uiState.value };
     if (isEditMode) {
-      uiState.value = { ...uiState.value, headerTitle: '' };
+      uiState.value = { ...previousState, headerTitle: '' };
     } else {
-      uiState.value = { ...uiState.value, headerTitle: playlistName || 'Playlist' };
+      uiState.value = { ...previousState, headerTitle: playlistName || 'Playlist' };
     }
     return () => (uiState.value = { ...uiState.value, headerTitle: '' });
-  }, [isDBLoaded.value, uiState.value, isEditMode, playlistName]);
+  }, [isDBLoaded.value, isEditMode, playlistName]);
 
   useEffect(() => {
     if (!(playlists.value || []).some((p) => !!p.url && playlistUtil.isSameUrl(p.url, playlistUrl))) {
