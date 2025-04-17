@@ -1,9 +1,11 @@
-import { ChevronUp, Filter, Globe, Search, SquareLibrary, X } from 'lucide-preact';
+import { ChevronUp, Filter, Globe, Loader2, Search, SquareLibrary, X } from 'lucide-preact';
 import { ContentSection } from '~/components/content-section';
+import { Loader } from '~/components/loader';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { TagSelect } from '~/components/ui/tag-select';
+import { styleClass } from '~/lib/styleClass';
 import { cn } from '~/lib/utils';
 import { MAX_SEARCH_LENGTH } from '~/lib/validationUtil';
 import { followedRadioStationIDs, radioStations } from '~/store/signals/radio';
@@ -13,6 +15,7 @@ export const RadioStationsPage = () => {
   const {
     searchTerm,
     filteredStations,
+    radioBrowserSearchResult,
     activeFilterCount,
     languageOptions,
     genreOptions,
@@ -24,6 +27,9 @@ export const RadioStationsPage = () => {
     handleLanguageChange,
     handleGenreChange,
     handleFilterClick,
+    isLoadingMore,
+    searchMoreStations,
+    hasSearchTerm,
   } = useRadioStations();
 
   return (
@@ -161,11 +167,60 @@ export const RadioStationsPage = () => {
             </ul>
           </ContentSection>
         )}
-        <div class="pt-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 sm:gap-12 justify-items-center">
-          {filteredStations.map((station) => (
-            <RadioStationCard key={station.id} station={station} size="large" />
-          ))}
-        </div>
+        <>
+          {filteredStations.length > 0 && (
+            <div class="pt-4 mb-12">
+              <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 sm:gap-12 justify-items-center">
+                {filteredStations.map((station) => (
+                  <RadioStationCard key={station.id} station={station} size="large" />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {!!radioBrowserSearchResult.length && (
+            <div class="mt-4 mb-12">
+              <h2 class="text-xl font-semibold mb-1">More stations from radio-browser.info</h2>
+              <p class="text-sm text-muted-foreground mb-6">
+                All information about these radio stations is provided by{' '}
+                <a href="https://radio-browser.info" target="_blank" rel="noopener">
+                  radio-browser.info
+                </a>{' '}
+                — an open source directory of internet radio stations.
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 sm:gap-12 justify-items-center">
+                {radioBrowserSearchResult.map((station) => (
+                  <RadioStationCard key={station.id} station={station} size="large" />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {hasSearchTerm && !radioBrowserSearchResult.length && (
+            <div class="flex justify-center mt-8 mb-8">
+              <Button
+                onClick={searchMoreStations}
+                variant="outline"
+                class={styleClass.textLink}
+                disabled={isLoadingMore}
+              >
+                {isLoadingMore ? (
+                  <>
+                    <Loader2 class="mr-2 h-4 w-4 animate-spin" />
+                    Searching more stations...
+                  </>
+                ) : (
+                  <>
+                    <Globe class="mr-2 h-4 w-4" />
+                    Find more stations...
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
+
+          {hasSearchTerm && !radioBrowserSearchResult.length && isLoadingMore && <Loader />}
+        </>
       </div>
     </div>
   );

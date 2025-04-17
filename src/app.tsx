@@ -11,7 +11,6 @@ import { PodcastPage } from './pages/podcast';
 import { PodcastsPage } from './pages/podcasts';
 import { RadioStationPage } from './pages/radio-station';
 import { RadioStationsPage } from './pages/radio-stations';
-import { RBTestPage } from './pages/rbtest';
 import { SettingsPage } from './pages/settings';
 import { DatabaseProvider } from './store/db/DatabaseContext';
 import { useDB } from './store/db/db';
@@ -84,7 +83,6 @@ export function App() {
               <Route path="/playlist/:name?" component={PlaylistPage} />
               <Route path="/settings" component={SettingsPage} />
               <Route path="/about" component={AboutPage} />
-              <Route path="/radio-browser" component={RBTestPage} />
               <Route default component={NotFound} />
             </Router>
           </AppShell>

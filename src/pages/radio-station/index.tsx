@@ -1,5 +1,6 @@
 import { Bookmark, Facebook, Globe, Instagram, Pause, Play, Twitter, Youtube } from 'lucide-preact';
 import { useLocation } from 'preact-iso';
+import { Loader } from '~/components/loader';
 import { PodcastCard } from '~/components/podcast-card';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Button } from '~/components/ui/button';
@@ -11,7 +12,12 @@ import { useRadioStation } from './useRadioStation';
 
 export const RadioStationPage = () => {
   const { route } = useLocation();
-  const { params, radioStation, isPlaying, isFollowing, stationPodcasts, toggleFollow } = useRadioStation();
+  const { params, radioStation, isPlaying, isFetchingData, isFollowing, stationPodcasts, toggleFollow } =
+    useRadioStation();
+
+  if (isFetchingData) {
+    return <Loader />;
+  }
 
   if (typeof window !== 'undefined' && !radioStation) {
     if (params.id) {

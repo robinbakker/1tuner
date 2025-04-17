@@ -30,7 +30,7 @@ export const usePodcasts = () => {
     const initialSearchQuery = query['q'] ? decodeURIComponent(query['q']) || '' : '';
 
     if (initialSearchQuery) {
-      const validatedQuery = validationUtil.validateSearchQuery(initialSearchQuery);
+      const validatedQuery = validationUtil.getSanitizedSearchQuery(initialSearchQuery);
       setSearchTerm(validatedQuery);
     } else {
       setSearchTerm('');
@@ -43,7 +43,7 @@ export const usePodcasts = () => {
       const url = new URL(window.location.href);
 
       if (search) {
-        const validatedSearch = validationUtil.validateSearchQuery(search);
+        const validatedSearch = validationUtil.getSanitizedSearchQuery(search);
         url.searchParams.set('q', encodeURIComponent(validatedSearch));
       } else {
         url.searchParams.delete('q');
@@ -55,7 +55,7 @@ export const usePodcasts = () => {
   );
 
   useEffect(() => {
-    const searchQuery = validationUtil.validateSearchQuery(searchTerm);
+    const searchQuery = validationUtil.getSanitizedSearchQuery(searchTerm);
 
     if (searchQuery && searchQuery !== lastPodcastSearchResult.value?.query) {
       setIsLoading(true);

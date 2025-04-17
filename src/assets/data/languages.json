@@ -158,6 +158,486 @@
       "name": "Italiano",
       "name_en": "Italian",
       "id": "it"
+    },
+    {
+      "abbr": "AT",
+      "country": "Österreich",
+      "country_en": "Austria",
+      "displayorder": 16,
+      "flag": "🇦🇹",
+      "name": "Deutsch",
+      "name_en": "German",
+      "id": "de-AT"
+    },
+    {
+      "abbr": "BG",
+      "country": "България",
+      "country_en": "Bulgaria",
+      "displayorder": 17,
+      "flag": "🇧🇬",
+      "name": "български",
+      "name_en": "Bulgarian",
+      "id": "bg"
+    },
+    {
+      "abbr": "HR",
+      "country": "Hrvatska",
+      "country_en": "Croatia",
+      "displayorder": 18,
+      "flag": "🇭🇷",
+      "name": "Hrvatski",
+      "name_en": "Croatian",
+      "id": "hr"
+    },
+    {
+      "abbr": "CY",
+      "country": "Κύπρος",
+      "country_en": "Cyprus",
+      "displayorder": 19,
+      "flag": "🇨🇾",
+      "name": "Ελληνικά",
+      "name_en": "Greek",
+      "id": "el-CY"
+    },
+    {
+      "abbr": "CZ",
+      "country": "Česko",
+      "country_en": "Czechia",
+      "displayorder": 20,
+      "flag": "🇨🇿",
+      "name": "Čeština",
+      "name_en": "Czech",
+      "id": "cs"
+    },
+    {
+      "abbr": "DK",
+      "country": "Danmark",
+      "country_en": "Denmark",
+      "displayorder": 21,
+      "flag": "🇩🇰",
+      "name": "Dansk",
+      "name_en": "Danish",
+      "id": "da"
+    },
+    {
+      "abbr": "EE",
+      "country": "Eesti",
+      "country_en": "Estonia",
+      "displayorder": 22,
+      "flag": "🇪🇪",
+      "name": "Eesti",
+      "name_en": "Estonian",
+      "id": "et"
+    },
+    {
+      "abbr": "FI",
+      "country": "Suomi",
+      "country_en": "Finland",
+      "displayorder": 23,
+      "flag": "🇫🇮",
+      "name": "Suomi",
+      "name_en": "Finnish",
+      "id": "fi"
+    },
+    {
+      "abbr": "HU",
+      "country": "Magyarország",
+      "country_en": "Hungary",
+      "displayorder": 24,
+      "flag": "🇭🇺",
+      "name": "Magyar",
+      "name_en": "Hungarian",
+      "id": "hu"
+    },
+    {
+      "abbr": "IE",
+      "country": "Éire",
+      "country_en": "Ireland",
+      "displayorder": 25,
+      "flag": "🇮🇪",
+      "name": "Gaeilge",
+      "name_en": "Irish",
+      "id": "ga"
+    },
+    {
+      "abbr": "LV",
+      "country": "Latvija",
+      "country_en": "Latvia",
+      "displayorder": 26,
+      "flag": "🇱🇻",
+      "name": "Latviešu",
+      "name_en": "Latvian",
+      "id": "lv"
+    },
+    {
+      "abbr": "LT",
+      "country": "Lietuva",
+      "country_en": "Lithuania",
+      "displayorder": 27,
+      "flag": "🇱🇹",
+      "name": "Lietuvių",
+      "name_en": "Lithuanian",
+      "id": "lt"
+    },
+    {
+      "abbr": "LU",
+      "country": "Lëtzebuerg",
+      "country_en": "Luxembourg",
+      "displayorder": 28,
+      "flag": "🇱🇺",
+      "name": "Lëtzebuergesch",
+      "name_en": "Luxembourgish",
+      "id": "lb"
+    },
+    {
+      "abbr": "MT",
+      "country": "Malta",
+      "country_en": "Malta",
+      "displayorder": 29,
+      "flag": "🇲🇹",
+      "name": "Malti",
+      "name_en": "Maltese",
+      "id": "mt"
+    },
+    {
+      "abbr": "PT",
+      "country": "Portugal",
+      "country_en": "Portugal",
+      "displayorder": 30,
+      "flag": "🇵🇹",
+      "name": "Português",
+      "name_en": "Portuguese",
+      "id": "pt"
+    },
+    {
+      "abbr": "RO",
+      "country": "România",
+      "country_en": "Romania",
+      "displayorder": 31,
+      "flag": "🇷🇴",
+      "name": "Română",
+      "name_en": "Romanian",
+      "id": "ro"
+    },
+    {
+      "abbr": "SK",
+      "country": "Slovensko",
+      "country_en": "Slovakia",
+      "displayorder": 32,
+      "flag": "🇸🇰",
+      "name": "Slovenčina",
+      "name_en": "Slovak",
+      "id": "sk"
+    },
+    {
+      "abbr": "SI",
+      "country": "Slovenija",
+      "country_en": "Slovenia",
+      "displayorder": 33,
+      "flag": "🇸🇮",
+      "name": "Slovenščina",
+      "name_en": "Slovenian",
+      "id": "sl"
+    },
+    {
+      "abbr": "CN",
+      "country": "中国",
+      "country_en": "China",
+      "displayorder": 34,
+      "flag": "🇨🇳",
+      "name": "中文",
+      "name_en": "Chinese (Mandarin)",
+      "id": "zh"
+    },
+    {
+      "abbr": "JP",
+      "country": "日本",
+      "country_en": "Japan",
+      "displayorder": 35,
+      "flag": "🇯🇵",
+      "name": "日本語",
+      "name_en": "Japanese",
+      "id": "ja"
+    },
+    {
+      "abbr": "KR",
+      "country": "대한민국",
+      "country_en": "South Korea",
+      "displayorder": 36,
+      "flag": "🇰🇷",
+      "name": "한국어",
+      "name_en": "Korean",
+      "id": "ko"
+    },
+    {
+      "abbr": "RU",
+      "country": "Россия",
+      "country_en": "Russia",
+      "displayorder": 37,
+      "flag": "🇷🇺",
+      "name": "Русский",
+      "name_en": "Russian",
+      "id": "ru"
+    },
+    {
+      "abbr": "AR",
+      "country": "الأرجنتين",
+      "country_en": "Argentina",
+      "displayorder": 38,
+      "flag": "🇦🇷",
+      "name": "Español",
+      "name_en": "Spanish",
+      "id": "es-AR"
+    },
+    {
+      "abbr": "MX",
+      "country": "México",
+      "country_en": "Mexico",
+      "displayorder": 39,
+      "flag": "🇲🇽",
+      "name": "Español",
+      "name_en": "Spanish",
+      "id": "es-MX"
+    },
+    {
+      "abbr": "BR",
+      "country": "Brasil",
+      "country_en": "Brazil",
+      "displayorder": 40,
+      "flag": "🇧🇷",
+      "name": "Português",
+      "name_en": "Portuguese",
+      "id": "pt-BR"
+    },
+    {
+      "abbr": "SA",
+      "country": "المملكة العربية السعودية",
+      "country_en": "Saudi Arabia",
+      "displayorder": 41,
+      "flag": "🇸🇦",
+      "name": "العربية",
+      "name_en": "Arabic",
+      "id": "ar-SA"
+    },
+    {
+      "abbr": "EG",
+      "country": "مصر",
+      "country_en": "Egypt",
+      "displayorder": 42,
+      "flag": "🇪🇬",
+      "name": "العربية",
+      "name_en": "Arabic",
+      "id": "ar-EG"
+    },
+    {
+      "abbr": "TR",
+      "country": "Türkiye",
+      "country_en": "Turkey",
+      "displayorder": 43,
+      "flag": "🇹🇷",
+      "name": "Türkçe",
+      "name_en": "Turkish",
+      "id": "tr"
+    },
+    {
+      "abbr": "ID",
+      "country": "Indonesia",
+      "country_en": "Indonesia",
+      "displayorder": 44,
+      "flag": "🇮🇩",
+      "name": "Bahasa Indonesia",
+      "name_en": "Indonesian",
+      "id": "id"
+    },
+    {
+      "abbr": "MY",
+      "country": "Malaysia",
+      "country_en": "Malaysia",
+      "displayorder": 45,
+      "flag": "🇲🇾",
+      "name": "Bahasa Melayu",
+      "name_en": "Malay",
+      "id": "ms"
+    },
+    {
+      "abbr": "TH",
+      "country": "ประเทศไทย",
+      "country_en": "Thailand",
+      "displayorder": 46,
+      "flag": "🇹🇭",
+      "name": "ภาษาไทย",
+      "name_en": "Thai",
+      "id": "th"
+    },
+    {
+      "abbr": "VN",
+      "country": "Việt Nam",
+      "country_en": "Vietnam",
+      "displayorder": 47,
+      "flag": "🇻🇳",
+      "name": "Tiếng Việt",
+      "name_en": "Vietnamese",
+      "id": "vi"
+    },
+    {
+      "abbr": "PH",
+      "country": "Pilipinas",
+      "country_en": "Philippines",
+      "displayorder": 48,
+      "flag": "🇵🇭",
+      "name": "Filipino",
+      "name_en": "Filipino",
+      "id": "fil"
+    },
+    {
+      "abbr": "BD",
+      "country": "বাংলাদেশ",
+      "country_en": "Bangladesh",
+      "displayorder": 49,
+      "flag": "🇧🇩",
+      "name": "বাংলা",
+      "name_en": "Bengali",
+      "id": "bn"
+    },
+    {
+      "abbr": "PK",
+      "country": "پاکستان",
+      "country_en": "Pakistan",
+      "displayorder": 50,
+      "flag": "🇵🇰",
+      "name": "اردو",
+      "name_en": "Urdu",
+      "id": "ur"
+    },
+    {
+      "abbr": "IR",
+      "country": "ایران",
+      "country_en": "Iran",
+      "displayorder": 51,
+      "flag": "🇮🇷",
+      "name": "فارسی",
+      "name_en": "Persian",
+      "id": "fa"
+    },
+    {
+      "abbr": "NG",
+      "country": "Nigeria",
+      "country_en": "Nigeria",
+      "displayorder": 52,
+      "flag": "🇳🇬",
+      "name": "Yorùbá",
+      "name_en": "Yoruba",
+      "id": "yo"
+    },
+    {
+      "abbr": "ZA",
+      "country": "South Africa",
+      "country_en": "South Africa",
+      "displayorder": 53,
+      "flag": "🇿🇦",
+      "name": "isiZulu",
+      "name_en": "Zulu",
+      "id": "zu"
+    },
+    {
+      "abbr": "ET",
+      "country": "ኢትዮጵያ",
+      "country_en": "Ethiopia",
+      "displayorder": 54,
+      "flag": "🇪🇹",
+      "name": "አማርኛ",
+      "name_en": "Amharic",
+      "id": "am"
+    },
+    {
+      "abbr": "MA",
+      "country": "المغرب",
+      "country_en": "Morocco",
+      "displayorder": 55,
+      "flag": "🇲🇦",
+      "name": "العربية",
+      "name_en": "Arabic",
+      "id": "ar-MA"
+    },
+    {
+      "abbr": "DZ",
+      "country": "الجزائر",
+      "country_en": "Algeria",
+      "displayorder": 56,
+      "flag": "🇩🇿",
+      "name": "العربية",
+      "name_en": "Arabic",
+      "id": "ar-DZ"
+    },
+    {
+      "abbr": "CA",
+      "country": "Canada",
+      "country_en": "Canada",
+      "displayorder": 57,
+      "flag": "🇨🇦",
+      "name": "English",
+      "name_en": "English",
+      "id": "en-CA"
+    },
+    {
+      "abbr": "CA-FR",
+      "country": "Canada",
+      "country_en": "Canada (French)",
+      "displayorder": 58,
+      "flag": "🇨🇦",
+      "name": "Français",
+      "name_en": "French",
+      "id": "fr-CA"
+    },
+    {
+      "abbr": "CH",
+      "country": "Schweiz",
+      "country_en": "Switzerland",
+      "displayorder": 59,
+      "flag": "🇨🇭",
+      "name": "Deutsch",
+      "name_en": "German",
+      "id": "de-CH"
+    },
+    {
+      "abbr": "AU",
+      "country": "Australia",
+      "country_en": "Australia",
+      "displayorder": 60,
+      "flag": "🇦🇺",
+      "name": "English",
+      "name_en": "English",
+      "id": "en-AU"
+    },
+    {
+      "abbr": "NZ",
+      "country": "New Zealand",
+      "country_en": "New Zealand",
+      "displayorder": 61,
+      "flag": "🇳🇿",
+      "name": "English",
+      "name_en": "English",
+      "id": "en-NZ"
+    },
+    {
+      "abbr": "NO",
+      "country": "Norge",
+      "country_en": "Norway",
+      "displayorder": 62,
+      "flag": "🇳🇴",
+      "name": "Norsk",
+      "name_en": "Norwegian",
+      "id": "no"
+    },
+    {
+      "abbr": "KZ",
+      "country": "Қазақстан",
+      "country_en": "Kazakhstan",
+      "displayorder": 63,
+      "flag": "🇰🇿",
+      "name": "қазақ тілі",
+      "name_en": "Kazakh",
+      "id": "kk"
     }
   ]
 }
