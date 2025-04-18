@@ -7,6 +7,7 @@ import { validationUtil } from '~/lib/validationUtil';
 import { isDBLoaded } from '~/store/db/db';
 import {
   activeRadioFilterCount,
+  allRadioStations,
   clearLastRadioSearchResult,
   lastRadioSearchResult,
   radioGenres,
@@ -38,7 +39,7 @@ export const useRadioStations = () => {
 
     if (initialSearchQuery) {
       const validatedQuery = validationUtil.getSanitizedSearchQuery(initialSearchQuery);
-      setLastRadioSearchResultQuery(validatedQuery);
+      if (lastRadioSearchResult.value?.query !== validatedQuery) setLastRadioSearchResultQuery(validatedQuery);
     } else {
       clearLastRadioSearchResult();
     }
@@ -89,7 +90,6 @@ export const useRadioStations = () => {
 
       const existingIds = new Set(radioStations.value.map((s) => s.id));
       const filteredStations = stations.filter((s) => !existingIds.has(s.id));
-
       lastRadioSearchResult.value = {
         query: lastRadioSearchResult.value.query,
         radioBrowserSearchResult: filteredStations,
@@ -110,10 +110,14 @@ export const useRadioStations = () => {
   });
 
   const filteredStations = computed(() => {
+    const initialSearchQuery = query['q'] ? decodeURIComponent(query['q']) || '' : '';
+    if (initialSearchQuery && !lastRadioSearchResult.value?.query) {
+      return [];
+    }
     const langs = radioSearchFilters.value?.regions || [];
     const genres = radioSearchFilters.value?.genres || [];
 
-    return [...radioStations.value]
+    return [...allRadioStations.value]
       .sort((a, b) => a.displayorder - b.displayorder)
       .filter((station) => {
         const matchesSearch = station.name

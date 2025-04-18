@@ -5,6 +5,7 @@ import { useRadioBrowser } from '~/hooks/useRadioBrowser';
 import { isDBLoaded } from '~/store/db/db';
 import { playerState } from '~/store/signals/player';
 import {
+  addRadioBrowserStation,
   followRadioStation,
   getRadioStation,
   getStationPodcasts,
@@ -22,7 +23,6 @@ export const useRadioStation = () => {
   const [isFetchingData, setIsFetchingData] = useState(typeof window !== 'undefined' && !localRadioStationData);
 
   useEffect(() => {
-    console.log('useRadioStation', params.id, localRadioStationData, radioStation?.id);
     if (radioStation?.id && localRadioStationData?.id && localRadioStationData?.id !== radioStation?.id) {
       setRadioStation(localRadioStationData);
     }
@@ -31,12 +31,14 @@ export const useRadioStation = () => {
   useEffect(() => {
     const fetchRadioStation = async () => {
       const station = await getRadioBrowserStation(params.id);
-      if (station) setRadioStation(station);
+      if (station) {
+        setRadioStation(station);
+        addRadioBrowserStation(station);
+      }
       setIsFetchingData(false);
     };
 
     if (isFetchingData && isDBLoaded.value) {
-      console.log('fetch radiostation');
       fetchRadioStation();
     }
   }, [isFetchingData, isDBLoaded.value, getRadioBrowserStation, params.id]);

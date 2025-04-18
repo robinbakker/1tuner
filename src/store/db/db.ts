@@ -3,19 +3,33 @@ import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import { isPlayerMaximized, playerState } from '../signals/player';
 import { playlistRules, playlists } from '../signals/playlist';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../signals/podcast';
-import { followedRadioStationIDs, radioSearchFilters, recentlyVisitedRadioStationIDs } from '../signals/radio';
+import {
+  followedRadioStationIDs,
+  radioBrowserStations,
+  radioSearchFilters,
+  recentlyVisitedRadioStationIDs,
+} from '../signals/radio';
 import { settingsState } from '../signals/settings';
-import { PlayerState, Playlist, PlaylistRule, Podcast, RadioSearchFilters, SettingsState } from '../types';
+import {
+  PlayerState,
+  Playlist,
+  PlaylistRule,
+  Podcast,
+  RadioSearchFilters,
+  RadioStation,
+  SettingsState,
+} from '../types';
 
 export const isDBLoaded = signal(false);
 
 export const dbName = '1tuner';
-export const dbVersion = 7;
+export const dbVersion = 8;
 export const storeName = 'appState';
 
 export enum AppStateKey {
   FollowedPodcasts = 'followedPodcasts',
   RecentlyVisitedPodcasts = 'recentlyVisitedPodcasts',
+  RadioBrowserStations = 'radioBrowserStations',
   FollowedRadioStationIDs = 'followedRadioStationIDs',
   RecentlyVisitedRadioStationIDs = 'recentlyVisitedRadioStationIDs',
   RadioSearchFilters = 'radioSearchFilters',
@@ -28,6 +42,7 @@ export enum AppStateKey {
 
 type DBData =
   | Podcast[]
+  | RadioStation[]
   | Playlist[]
   | PlaylistRule[]
   | string[]
@@ -64,6 +79,7 @@ export async function loadStateFromDB() {
   const db = await dbPromise;
   followedPodcasts.value = (await getFromDB<Podcast[]>(db, AppStateKey.FollowedPodcasts)) || [];
   recentlyVisitedPodcasts.value = (await getFromDB<Podcast[]>(db, AppStateKey.RecentlyVisitedPodcasts)) || [];
+  radioBrowserStations.value = (await getFromDB<RadioStation[]>(db, AppStateKey.RadioBrowserStations)) || [];
   followedRadioStationIDs.value = (await getFromDB<string[]>(db, AppStateKey.FollowedRadioStationIDs)) || [];
   recentlyVisitedRadioStationIDs.value =
     (await getFromDB<string[]>(db, AppStateKey.RecentlyVisitedRadioStationIDs)) || [];
@@ -86,6 +102,7 @@ export async function saveStateToDB() {
     await Promise.all([
       tx.store.put(followedPodcasts.value, AppStateKey.FollowedPodcasts),
       tx.store.put(recentlyVisitedPodcasts.value, AppStateKey.RecentlyVisitedPodcasts),
+      tx.store.put(radioBrowserStations.value, AppStateKey.RadioBrowserStations),
       tx.store.put(followedRadioStationIDs.value, AppStateKey.FollowedRadioStationIDs),
       tx.store.put(recentlyVisitedRadioStationIDs.value, AppStateKey.RecentlyVisitedRadioStationIDs),
       tx.store.put(radioSearchFilters.value, AppStateKey.RadioSearchFilters),

@@ -5,7 +5,7 @@ import { DropdownList } from '~/components/ui/dropdown-list';
 import { styleClass } from '~/lib/styleClass';
 import { getColorString } from '~/lib/utils';
 import { playlistRules } from '~/store/signals/playlist';
-import { followedRadioStationIDs, getRadioStation, radioStations } from '~/store/signals/radio';
+import { allRadioStations, followedRadioStationIDs, getRadioStation } from '~/store/signals/radio';
 import { RuleDestination } from './types';
 import { usePlaylists } from './usePlaylists';
 
@@ -44,7 +44,7 @@ export const PlaylistsPage = () => {
             <DropdownList
               id={`button-station`}
               class="ml-2 inline-block"
-              options={[...radioStations.value]
+              options={[...allRadioStations.value]
                 .sort(
                   (a, b) =>
                     +followedRadioStationIDs.value.includes(b.id) - +followedRadioStationIDs.value.includes(a.id),

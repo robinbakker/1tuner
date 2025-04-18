@@ -8,7 +8,7 @@ import { TagSelect } from '~/components/ui/tag-select';
 import { styleClass } from '~/lib/styleClass';
 import { cn } from '~/lib/utils';
 import { MAX_SEARCH_LENGTH } from '~/lib/validationUtil';
-import { followedRadioStationIDs, radioStations } from '~/store/signals/radio';
+import { allRadioStations, followedRadioStationIDs } from '~/store/signals/radio';
 import { useRadioStations } from './useRadioStations';
 
 export const RadioStationsPage = () => {
@@ -156,7 +156,7 @@ export const RadioStationsPage = () => {
             isScrollable
           >
             <ul class="flex gap-6 md:gap-10 max-sm:px-8">
-              {radioStations.value
+              {allRadioStations.value
                 .filter((s) => followedRadioStationIDs.value.some((id) => id === s.id))
                 .map((s) => (
                   <li class="shrink-0">

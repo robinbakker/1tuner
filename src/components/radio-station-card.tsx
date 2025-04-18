@@ -1,7 +1,9 @@
 import { Bookmark, Play } from 'lucide-preact';
 import { Badge } from '~/components/ui/badge';
+import { useRadioBrowser } from '~/hooks/useRadioBrowser';
 import { playerState } from '~/store/signals/player';
 import {
+  addRadioBrowserStation,
   addRecentlyVisitedRadioStation,
   followedRadioStationIDs,
   getRadioStationLanguage,
@@ -14,9 +16,12 @@ interface Props {
 }
 
 export const RadioStationCard = ({ station, size = 'default' }: Props) => {
+  const { setStationClick } = useRadioBrowser();
+
   const onClickPlay = (e: { preventDefault: () => void; stopPropagation: () => void }) => {
     e.preventDefault();
     e.stopPropagation();
+    addRadioBrowserStation(station);
     addRecentlyVisitedRadioStation(station.id);
     playerState.value = {
       playType: 'radio',
@@ -28,6 +33,9 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
       streams: station.streams,
       pageLocation: `/radio-station/${station.id}`,
     };
+    if (station.stationuuid) {
+      setStationClick(station.stationuuid);
+    }
   };
 
   const RadioFlag = () => {

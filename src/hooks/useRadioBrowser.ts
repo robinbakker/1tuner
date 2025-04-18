@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'preact/hooks';
 import { validationUtil } from '~/lib/validationUtil';
-import { lastRadioSearchResult, radioLanguages } from '~/store/signals/radio';
+import { lastRadioSearchResult, RADIO_BROWSER_PARAM_PREFIX, radioLanguages } from '~/store/signals/radio';
 import { RadioStation } from '~/store/types';
 
 type RadioBrowserStation = {
@@ -15,8 +15,6 @@ type RadioBrowserStation = {
   homepage: string;
   lastchangetime_iso8601: string;
 };
-
-const RADIO_BROWSER_PARAM_PREFIX = 'rb-';
 
 export const useRadioBrowser = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -127,9 +125,25 @@ export const useRadioBrowser = () => {
     [mapRadioBrowserStation],
   );
 
+  const setStationClick = useCallback(async (uuid: string) => {
+    if (!uuid) return;
+    try {
+      fetch(`${import.meta.env.VITE_RADIO_BROWSER_WORKER_URL}/station-click`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({ uuid: uuid }),
+      });
+    } catch (error) {
+      console.error('Error station click:', error);
+    }
+  }, []);
+
   return {
     isLoading,
     searchStations,
     getStation,
+    setStationClick,
   };
 };
