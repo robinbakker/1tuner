@@ -12,8 +12,16 @@ import { useRadioStation } from './useRadioStation';
 
 export const RadioStationPage = () => {
   const { route } = useLocation();
-  const { params, radioStation, isPlaying, isFetchingData, isFollowing, stationPodcasts, toggleFollow } =
-    useRadioStation();
+  const {
+    params,
+    radioStation,
+    isPlaying,
+    isFetchingData,
+    isRadioBrowserStation,
+    isFollowing,
+    stationPodcasts,
+    toggleFollow,
+  } = useRadioStation();
 
   if (isFetchingData) {
     return <Loader />;
@@ -124,32 +132,55 @@ export const RadioStationPage = () => {
         </div>
       </header>
       <div class="container mx-auto px-8 py-6">
-        <>
-          {!!radioStation.related?.length && (
-            <section class="@container">
-              <h2 class="text-2xl font-semibold mb-4">Related</h2>
-              <div class="grid grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3 gap-6">
-                {allRadioStations.value
-                  .filter((rs) => radioStation.related?.includes(rs.id))
-                  .map((s) => (
-                    <RadioStationCard key={`related-${s.id}`} station={s} size="large" />
-                  ))}
-              </div>
-            </section>
-          )}
-        </>
-        <>
-          {!!stationPodcasts.length && (
-            <section class="@container">
-              <h2 class="text-2xl font-semibold mt-12 mb-4">Related podcasts</h2>
-              <div class="grid grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3 gap-6">
-                {stationPodcasts.map((p) => (
-                  <PodcastCard key={`p${p.id}`} podcast={p} size={'large'} />
+        {!!radioStation.related?.length && (
+          <section class="@container">
+            <h2 class="text-2xl font-semibold mb-4">Related</h2>
+            <div class="grid grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3 gap-6">
+              {allRadioStations.value
+                .filter((rs) => radioStation.related?.includes(rs.id))
+                .map((s) => (
+                  <RadioStationCard key={`related-${s.id}`} station={s} size="large" />
                 ))}
-              </div>
-            </section>
-          )}
-        </>
+            </div>
+          </section>
+        )}
+        {!!stationPodcasts.length && (
+          <section class="@container">
+            <h2 class="text-2xl font-semibold mt-12 mb-4">Related podcasts</h2>
+            <div class="grid grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3 gap-6">
+              {stationPodcasts.map((p) => (
+                <PodcastCard key={`p${p.id}`} podcast={p} size={'large'} />
+              ))}
+            </div>
+          </section>
+        )}
+        {isRadioBrowserStation && (
+          <section class="opacity-75 mt-12">
+            <h3 class="text-xl font-semibold mb-2">ℹ️ RadioBrowser</h3>
+            <p>
+              The data for this station is provided by{' '}
+              <a
+                href="https://www.radio-browser.info"
+                class="text-primary hover:underline"
+                target="_blank"
+                rel="noopener"
+              >
+                radio-browser.info
+              </a>
+              . This is a community-driven project that provides a free and open API for radio stations. For more
+              information, to report an issue, or to contribute, please visit{' '}
+              <a
+                href="https://www.radio-browser.info"
+                class="text-primary hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                their website
+              </a>
+              .
+            </p>
+          </section>
+        )}
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import {
   getRadioStation,
   getStationPodcasts,
   isFollowedRadioStation,
+  RADIO_BROWSER_PARAM_PREFIX,
   unfollowRadioStation,
 } from '~/store/signals/radio';
 import { uiState } from '~/store/signals/ui';
@@ -118,6 +119,7 @@ export const useRadioStation = () => {
     params,
     isPlaying,
     isFetchingData,
+    isRadioBrowserStation: params.id.startsWith(RADIO_BROWSER_PARAM_PREFIX),
     radioStation,
     stationPodcasts,
     isFollowing,
