@@ -5,7 +5,7 @@ import { Button } from '~/components/ui/button';
 import { DropdownList } from '~/components/ui/dropdown-list';
 import { Input } from '~/components/ui/input';
 import { cn } from '~/lib/utils';
-import { followedRadioStationIDs, radioStations } from '~/store/signals/radio';
+import { allRadioStations, followedRadioStationIDs } from '~/store/signals/radio';
 import { usePlaylist } from './usePlaylist';
 
 export const PlaylistPage = () => {
@@ -162,7 +162,7 @@ export const PlaylistPage = () => {
                       <DropdownList
                         id={`button-${block.startTime}-${block.station?.id}`}
                         class="flex items-center justify-center"
-                        options={[...radioStations.value]
+                        options={[...allRadioStations.value]
                           .sort(
                             (a, b) =>
                               +followedRadioStationIDs.value.includes(b.id) -

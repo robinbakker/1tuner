@@ -44,7 +44,8 @@
           "url": "https://www.youtube.com/user/radio538"
         }
       ],
-      "id": "538"
+      "id": "538",
+      "related": ["radionoordzee", "radio10"]
     },
     {
       "displayorder": 7,
@@ -557,7 +558,8 @@
         }
       ],
       "website": "https://www.indiexl.nl",
-      "id": "indiexl"
+      "id": "indiexl",
+      "related": ["kink", "pinguinradio"]
     },
     {
       "displayorder": 56,
@@ -963,7 +965,8 @@
           "url": "https://twitter.com/PinguinRadio"
         }
       ],
-      "id": "pinguinradio"
+      "id": "pinguinradio",
+      "related": ["kink", "indiexl"]
     },
     {
       "displayorder": 66,
@@ -1173,7 +1176,8 @@
           "url": "https://www.youtube.com/Radio10NL"
         }
       ],
-      "id": "radio10"
+      "id": "radio10",
+      "related": ["radionoordzee", "538"]
     },
     {
       "displayorder": 15,
@@ -1200,7 +1204,8 @@
           "url": "https://twitter.com/100pnl"
         }
       ],
-      "id": "radio100pnl"
+      "id": "radio100pnl",
+      "related": ["radionoordzee", "radionl"]
     },
     {
       "displayorder": 1,
@@ -3283,7 +3288,8 @@
         },
         { "title": "@RADIONLTV", "type": "youtube", "account": "RADIONLTV", "url": "https://youtube.com/RADIONLTV" },
         { "title": "@radionlfm", "type": "tiktok", "account": "radionlfm", "url": "https://www.tiktok.com/@radionlfm" }
-      ]
+      ],
+      "related": ["radionoordzee", "radio100pnl"]
     },
     {
       "id": "xdradio",
@@ -3833,7 +3839,8 @@
           "account": "Radio-Noordzee",
           "url": "https://www.facebook.com/people/Radio-Noordzee/61572821921350"
         }
-      ]
+      ],
+      "related": ["radionl", "radio100pnl", "radio10"]
     },
     {
       "id": "rythmos",

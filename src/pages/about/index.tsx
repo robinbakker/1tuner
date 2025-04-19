@@ -83,6 +83,17 @@ export const AboutPage = () => {
           </a>
           ).
         </li>
+        <li class="pb-2">
+          For extended radio data I use{' '}
+          <a href="https://www.radio-browser.info" class={styleClass.textLink} target="_blank" rel="noopener">
+            radio-browser.info
+          </a>
+          , which is a free and open API for radio stations.
+          <br />
+          If a regular search doesn't return results or you'd like to explore more, an extra search can be performed via
+          their server. When you play a station, a click is registered on their end for stats purposes — but no personal
+          data is shared or stored.
+        </li>
       </ul>
       <h2 class="text-2xl mb-2 font-semibold">Who made this?</h2>
       <p class="pb-4">
@@ -91,7 +102,7 @@ export const AboutPage = () => {
           Robin Bakker
         </a>
         .<br />
-        Curious how it was made? Check out:{' '}
+        Curious how it all started? Check out:{' '}
         <a
           href="https://robinbakker.nl/en/blog/creating-a-web-app-as-side-project"
           class={styleClass.textLink}

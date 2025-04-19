@@ -84,7 +84,7 @@ export const PodcastPage = () => {
             </div>
           </div>
           <div class="flex-1">
-            <p class="my-3 @xl:mt-1 max-h-[30vh] p-3 overflow-y-auto">{stripHtml(podcast.description)}</p>
+            <p class="my-3 @xl:mt-1 max-h-[30vh] py-3 overflow-y-auto">{stripHtml(podcast.description)}</p>
             {!!podcast?.categories?.length && (
               <div class="flex flex-wrap gap-2 mb-4">
                 {podcast?.categories?.map((category, index) => (

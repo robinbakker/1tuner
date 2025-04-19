@@ -32,6 +32,8 @@ export interface RadioStation {
   social?: SocialAccount[];
   podcasts?: string[];
   related?: string[];
+  stationuuid?: string;
+  lastChanged?: string;
 }
 
 export interface Language {
@@ -112,6 +114,7 @@ export interface PodcastSearchResult {
 
 export interface RadioSearchResult {
   query: string;
+  radioBrowserSearchResult?: RadioStation[];
 }
 
 export interface RadioSearchFilters {

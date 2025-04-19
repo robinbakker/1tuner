@@ -1,21 +1,48 @@
 import { useRoute } from 'preact-iso';
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
+import { useRadioBrowser } from '~/hooks/useRadioBrowser';
 import { isDBLoaded } from '~/store/db/db';
 import { playerState } from '~/store/signals/player';
 import {
+  addRadioBrowserStation,
   followRadioStation,
   getRadioStation,
   getStationPodcasts,
   isFollowedRadioStation,
+  RADIO_BROWSER_PARAM_PREFIX,
   unfollowRadioStation,
 } from '~/store/signals/radio';
 import { uiState } from '~/store/signals/ui';
 
 export const useRadioStation = () => {
   const { params } = useRoute();
-  const radioStation = getRadioStation(params.id);
+  const { getStation: getRadioBrowserStation } = useRadioBrowser();
   const [isFollowing, setIsFollowing] = useState(isFollowedRadioStation(params.id));
+  const localRadioStationData = getRadioStation(params.id);
+  const [radioStation, setRadioStation] = useState(localRadioStationData);
+  const [isFetchingData, setIsFetchingData] = useState(typeof window !== 'undefined' && !localRadioStationData);
+
+  useEffect(() => {
+    if (radioStation?.id && localRadioStationData?.id && localRadioStationData?.id !== radioStation?.id) {
+      setRadioStation(localRadioStationData);
+    }
+  }, [localRadioStationData, params.id, radioStation?.id]);
+
+  useEffect(() => {
+    const fetchRadioStation = async () => {
+      const station = await getRadioBrowserStation(params.id);
+      if (station) {
+        setRadioStation(station);
+        addRadioBrowserStation(station);
+      }
+      setIsFetchingData(false);
+    };
+
+    if (isFetchingData && isDBLoaded.value) {
+      fetchRadioStation();
+    }
+  }, [isFetchingData, isDBLoaded.value, getRadioBrowserStation, params.id]);
 
   const radioStationDescription = useMemo(() => {
     if (!radioStation) return undefined;
@@ -72,7 +99,7 @@ export const useRadioStation = () => {
   }, [setIsFollowing, params.id]);
 
   useEffect(() => {
-    if (!isDBLoaded.value) return;
+    if (!isDBLoaded.value || isFetchingData) return;
     const previousState = { ...uiState.value };
     uiState.value = {
       ...previousState,
@@ -86,11 +113,13 @@ export const useRadioStation = () => {
         headerTitle: '',
         headerDefaultTextColor: 'default',
       });
-  }, [isDBLoaded.value, radioStation?.name]);
+  }, [isDBLoaded.value, isFetchingData, radioStation?.name]);
 
   return {
     params,
     isPlaying,
+    isFetchingData,
+    isRadioBrowserStation: params.id.startsWith(RADIO_BROWSER_PARAM_PREFIX),
     radioStation,
     stationPodcasts,
     isFollowing,

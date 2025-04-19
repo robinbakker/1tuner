@@ -2,7 +2,10 @@ import { computed, signal } from '@preact/signals';
 import { Genre, Language, Podcast, RadioSearchFilters, RadioSearchResult, RadioStation } from '~/store/types';
 import { playerState } from './player';
 
+export const RADIO_BROWSER_PARAM_PREFIX = 'rb-';
+
 export const radioStations = signal<RadioStation[]>([]);
+export const radioBrowserStations = signal<RadioStation[]>([]);
 export const radioSearchFilters = signal<RadioSearchFilters | null>(null);
 export const radioLanguages = signal<Language[]>([]);
 export const radioGenres = signal<Genre[]>([]);
@@ -10,6 +13,8 @@ export const followedRadioStationIDs = signal<string[]>([]);
 export const recentlyVisitedRadioStationIDs = signal<string[]>([]);
 export const lastRadioSearchResult = signal<RadioSearchResult | null>(null);
 export const stationPodcasts = signal<Record<string, Podcast[]>>({});
+
+export const allRadioStations = computed(() => [...radioStations.value, ...radioBrowserStations.value]);
 
 export const userLanguage = computed(() => {
   const navLang = navigator.language;
@@ -20,14 +25,14 @@ export const userLanguage = computed(() => {
 
 export const recentlyVisitedRadioStations = computed(() => {
   let stations = recentlyVisitedRadioStationIDs.value
-    .map((id) => radioStations.value.find((r) => r.id === id))
+    .map((id) => allRadioStations.value.find((r) => r.id === id))
     .filter((r) => !!r);
   if (stations.length < 10) {
     const userLang = userLanguage.value === 'en' ? '' : userLanguage.value;
     const langs = [...new Set([userLang, 'en-UK', 'en-US', 'en'])].filter(Boolean);
     stations = [
       ...stations,
-      ...[...radioStations.value]
+      ...[...allRadioStations.value]
         .sort((a, b) => a.displayorder - b.displayorder)
         .sort((a, b) => langs.indexOf(a.language) - langs.indexOf(b.language))
         .filter((rs) => langs.includes(rs.language) && !stations.some((s) => s.id === rs.id)),
@@ -35,13 +40,14 @@ export const recentlyVisitedRadioStations = computed(() => {
   }
   return stations.slice(0, 10);
 });
+
 export const activeRadioFilterCount = computed(() => {
   return (radioSearchFilters.value?.regions?.length || 0) + (radioSearchFilters.value?.genres?.length || 0);
 });
 
 export const getRadioStation = (id: string | undefined): RadioStation | undefined => {
   if (!id) return undefined;
-  return radioStations.value.find((r) => r.id === id);
+  return allRadioStations.value.find((r) => r.id === id);
 };
 
 export const getRadioStationLanguage = (radioStation: RadioStation): Language | undefined => {
@@ -57,9 +63,17 @@ export const addRecentlyVisitedRadioStation = (id: string | undefined) => {
   );
 };
 
+export const addRadioBrowserStation = (radioStation: RadioStation) => {
+  if (!radioStation?.id.startsWith(RADIO_BROWSER_PARAM_PREFIX)) return;
+  radioBrowserStations.value = [
+    { ...radioStation },
+    ...radioBrowserStations.value.filter((s) => s.id !== radioStation.id),
+  ].slice(0, 100);
+};
+
 export const getRadioGenres = (): Genre[] =>
   radioGenres.value
-    .filter((g) => radioStations.value.some((r) => r.genres.includes(g.id)))
+    .filter((g) => allRadioStations.value.some((r) => r.genres.includes(g.id)))
     .sort((a, b) => a.name.localeCompare(b.name));
 
 export const followRadioStation = (id: string) => {
@@ -116,12 +130,12 @@ export const playNextRadioStation = (isPrev?: boolean) => {
   if (newIndex >= recentlyVisitedRadioStationIDs.value.length) newIndex = 0;
   if (currentIndex === recentlyVisitedRadioStationIDs.value.length - 1) {
     playRadioStation(
-      radioStations.value.find((s) => s.id === recentlyVisitedRadioStationIDs.value[newIndex]),
+      allRadioStations.value.find((s) => s.id === recentlyVisitedRadioStationIDs.value[newIndex]),
       false,
     );
   } else {
     playRadioStation(
-      radioStations.value.find((s) => s.id === recentlyVisitedRadioStationIDs.value[newIndex]),
+      allRadioStations.value.find((s) => s.id === recentlyVisitedRadioStationIDs.value[newIndex]),
       false,
     );
   }

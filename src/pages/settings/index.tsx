@@ -34,7 +34,7 @@ export const SettingsPage = () => {
         basic analytics. Below you can change settings and manage your data.
       </p>
       <p class="pb-4">
-        <Button asChild variant={`outline`}>
+        <Button asChild variant="outline">
           <a href="/about" class={styleClass.textLink}>
             More about 1tuner.com
           </a>

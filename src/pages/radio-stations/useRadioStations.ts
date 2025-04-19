@@ -2,10 +2,12 @@ import { computed } from '@preact/signals';
 import { useLocation } from 'preact-iso';
 import { useCallback, useEffect, useMemo, useRef } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
+import { useRadioBrowser } from '~/hooks/useRadioBrowser';
 import { validationUtil } from '~/lib/validationUtil';
 import { isDBLoaded } from '~/store/db/db';
 import {
   activeRadioFilterCount,
+  allRadioStations,
   clearLastRadioSearchResult,
   lastRadioSearchResult,
   radioGenres,
@@ -22,12 +24,12 @@ export const useRadioStations = () => {
   const { query, route } = useLocation();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isInitialized = useRef(false);
+  const { isLoading: isLoadingMore, searchStations } = useRadioBrowser();
 
   useHead({
     title: 'Radio stations',
   });
 
-  // Sync URL params with state on initial load
   useEffect(() => {
     if (!isDBLoaded.value || isInitialized.current) return;
 
@@ -36,8 +38,8 @@ export const useRadioStations = () => {
     const initialGenres = query['genre']?.split(',').filter(Boolean) || [];
 
     if (initialSearchQuery) {
-      const validatedQuery = validationUtil.validateSearchQuery(initialSearchQuery);
-      setLastRadioSearchResultQuery(validatedQuery);
+      const validatedQuery = validationUtil.getSanitizedSearchQuery(initialSearchQuery);
+      if (lastRadioSearchResult.value?.query !== validatedQuery) setLastRadioSearchResultQuery(validatedQuery);
     } else {
       clearLastRadioSearchResult();
     }
@@ -50,15 +52,14 @@ export const useRadioStations = () => {
     };
 
     isInitialized.current = true;
-  }, [query, userLanguage.value]);
+  }, [query, isDBLoaded.value, userLanguage.value]);
 
-  // Update URL helper function
   const updateURLParams = useCallback(
     (search?: string, searchFilters?: RadioSearchFilters | null) => {
       const url = new URL(window.location.href);
 
       if (search) {
-        const validatedSearch = validationUtil.validateSearchQuery(search);
+        const validatedSearch = validationUtil.getSanitizedSearchQuery(search);
         url.searchParams.set('q', encodeURIComponent(validatedSearch));
       } else {
         url.searchParams.delete('q');
@@ -81,6 +82,23 @@ export const useRadioStations = () => {
     [route],
   );
 
+  const searchMoreStations = useCallback(async () => {
+    if (!lastRadioSearchResult.value?.query) return;
+
+    try {
+      const stations = await searchStations(lastRadioSearchResult.value.query);
+
+      const existingIds = new Set(radioStations.value.map((s) => s.id));
+      const filteredStations = stations.filter((s) => !existingIds.has(s.id));
+      lastRadioSearchResult.value = {
+        query: lastRadioSearchResult.value.query,
+        radioBrowserSearchResult: filteredStations,
+      };
+    } catch (error) {
+      console.error('Error fetching stations:', error);
+    }
+  }, [lastRadioSearchResult.value?.query]);
+
   const activeLanguages = computed(() => {
     const filter = radioSearchFilters.value?.regions || [];
     return radioLanguages.value.filter((l) => filter.includes(l.id));
@@ -92,9 +110,14 @@ export const useRadioStations = () => {
   });
 
   const filteredStations = computed(() => {
+    const initialSearchQuery = query['q'] ? decodeURIComponent(query['q']) || '' : '';
+    if (initialSearchQuery && !lastRadioSearchResult.value?.query) {
+      return [];
+    }
     const langs = radioSearchFilters.value?.regions || [];
     const genres = radioSearchFilters.value?.genres || [];
-    return [...radioStations.value]
+
+    return [...allRadioStations.value]
       .sort((a, b) => a.displayorder - b.displayorder)
       .filter((station) => {
         const matchesSearch = station.name
@@ -143,7 +166,7 @@ export const useRadioStations = () => {
         return;
       }
       const searchInput = (event.target as HTMLInputElement).value;
-      if (validationUtil.validateSearchQuery(searchInput)) {
+      if (validationUtil.getSanitizedSearchQuery(searchInput)) {
         setLastRadioSearchResultQuery(searchInput);
         updateURLParams(searchInput, radioSearchFilters.value);
       } else {
@@ -151,7 +174,7 @@ export const useRadioStations = () => {
         updateURLParams('', radioSearchFilters.value);
       }
     },
-    [radioSearchFilters.value],
+    [radioSearchFilters.value, setLastRadioSearchResultQuery, clearLastRadioSearchResult],
   );
 
   useEffect(() => {
@@ -168,6 +191,7 @@ export const useRadioStations = () => {
     onSearchInput,
     searchInputRef,
     activeFilterCount: activeRadioFilterCount.value,
+    radioBrowserSearchResult: lastRadioSearchResult.value?.radioBrowserSearchResult || [],
     filteredStations: filteredStations.value,
     languageOptions,
     activeLanguages: activeLanguages.value,
@@ -177,5 +201,8 @@ export const useRadioStations = () => {
     handleLanguageChange,
     handleGenreChange,
     handleFilterClick,
+    isLoadingMore,
+    searchMoreStations,
+    hasSearchTerm: !!lastRadioSearchResult.value?.query,
   };
 };

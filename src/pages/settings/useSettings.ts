@@ -1,6 +1,7 @@
 import { XMLParser } from 'fast-xml-parser';
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { RadioButtonListOption } from '~/components/ui/radio-button-list';
+import { useHead } from '~/hooks/useHead';
 import { usePodcastData } from '~/hooks/usePodcastData';
 import { opmlUtil } from '~/lib/opmlUtil';
 import { delay, getPodcastUrlID, normalizedUrlWithoutScheme } from '~/lib/utils';
@@ -19,6 +20,10 @@ export const useSettings = () => {
     { label: 'Light', value: 'light' },
     { label: 'Dark', value: 'dark' },
   ];
+
+  useHead({
+    title: 'Settings',
+  });
 
   const searchProviderOptions: RadioButtonListOption[] = [
     {
