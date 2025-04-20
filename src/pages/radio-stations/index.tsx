@@ -199,7 +199,7 @@ export const RadioStationsPage = () => {
 
           {!radioBrowserSearchResult.length && (
             <>
-              <div class="flex justify-center mt-8 mb-8 gap-3">
+              <div class="flex justify-center mt-8 mb-8 gap-3 flex-wrap">
                 {hasSearchTerm && (
                   <Button
                     onClick={searchMoreStations}

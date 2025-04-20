@@ -152,7 +152,11 @@ export const useRadioStations = () => {
       [...radioLanguages.value]
         .filter((language) => !(radioSearchFilters.value?.regions || []).includes(language.country))
         .sort((a, b) => +!!a.flag - +!!b.flag)
-        .map((l) => ({ label: `${l.flag ?? ''} ${l.name}`, minimalLabel: l.flag ?? undefined, value: l.id })),
+        .map((l) => ({
+          label: `${l.flag ?? ''} ${l.name}${l.id !== 'en' ? ` (${l.country_en})` : ''}`,
+          minimalLabel: l.flag ?? undefined,
+          value: l.id,
+        })),
     [radioSearchFilters.value?.regions],
   );
 
