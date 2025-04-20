@@ -191,7 +191,7 @@ export const RadioStationsPage = () => {
               </p>
               <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 sm:gap-12 justify-items-center">
                 {radioBrowserSearchResult.map((station) => (
-                  <RadioStationCard key={station.id} station={station} size="large" />
+                  <RadioStationCard key={station.id} station={station} size="large" hasDeleteHidden />
                 ))}
               </div>
             </div>

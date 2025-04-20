@@ -71,6 +71,12 @@ export const addRadioBrowserStation = (radioStation: RadioStation) => {
   ].slice(0, 100);
 };
 
+export const deleteBrowserStation = (id: string) => {
+  radioBrowserStations.value = radioBrowserStations.value.filter((s) => s.id !== id);
+  recentlyVisitedRadioStationIDs.value = recentlyVisitedRadioStationIDs.value.filter((s) => s !== id);
+  followedRadioStationIDs.value = followedRadioStationIDs.value.filter((s) => s !== id);
+};
+
 export const getRadioGenres = (): Genre[] =>
   radioGenres.value
     .filter((g) => allRadioStations.value.some((r) => r.genres.includes(g.id)))

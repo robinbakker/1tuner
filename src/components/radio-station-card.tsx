@@ -1,21 +1,26 @@
-import { Bookmark, Play } from 'lucide-preact';
+import { Bookmark, Play, Trash2 } from 'lucide-preact';
 import { Badge } from '~/components/ui/badge';
 import { useRadioBrowser } from '~/hooks/useRadioBrowser';
+import { cn } from '~/lib/utils';
 import { playerState } from '~/store/signals/player';
 import {
   addRadioBrowserStation,
   addRecentlyVisitedRadioStation,
+  deleteBrowserStation,
   followedRadioStationIDs,
   getRadioStationLanguage,
+  RADIO_BROWSER_PARAM_PREFIX,
 } from '~/store/signals/radio';
 import { RadioStation } from '~/store/types';
+import { Button } from './ui/button';
 
 interface Props {
   station: RadioStation;
   size?: 'default' | 'large';
+  hasDeleteHidden?: boolean;
 }
 
-export const RadioStationCard = ({ station, size = 'default' }: Props) => {
+export const RadioStationCard = ({ station, size = 'default', hasDeleteHidden = false }: Props) => {
   const { setStationClick } = useRadioBrowser();
 
   const onClickPlay = (e: { preventDefault: () => void; stopPropagation: () => void }) => {
@@ -35,6 +40,19 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
     };
     if (station.stationuuid) {
       setStationClick(station.stationuuid);
+    }
+  };
+
+  const handleDeleteStation = (e: { preventDefault: () => void; stopPropagation: () => void }) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (
+      station.id.startsWith(RADIO_BROWSER_PARAM_PREFIX) &&
+      confirm(
+        `This is a locally saved station (from RadioBrowser).\n\nAre you sure you want to delete "${station.name}"?`,
+      )
+    ) {
+      deleteBrowserStation(station.id);
     }
   };
 
@@ -81,8 +99,26 @@ export const RadioStationCard = ({ station, size = 'default' }: Props) => {
             </button>
           </div>
           <div class="flex-1 sm:min-w-[288px] px-4 pt-2">
-            <h3 class="font-bold text-foreground group-hover:text-primary text-lg transition-colors duration-500 line-clamp-1">
+            <h3
+              class={cn(
+                'font-bold text-foreground group-hover:text-primary text-lg transition-colors duration-500 line-clamp-1',
+                !hasDeleteHidden &&
+                  station.id.startsWith(RADIO_BROWSER_PARAM_PREFIX) &&
+                  'flex items-top justify-between',
+              )}
+            >
               {station.name}
+              {!hasDeleteHidden && station.id.startsWith(RADIO_BROWSER_PARAM_PREFIX) && (
+                <Button
+                  variant="outline"
+                  styleSize="sm"
+                  onClick={handleDeleteStation}
+                  title="Delete block"
+                  class="shrink-0 ml-2 mt-2"
+                >
+                  <Trash2 class="w-4 h-4" />
+                </Button>
+              )}
             </h3>
             <div class="flex flex-wrap gap-2 mt-2">
               <RadioFlag />
