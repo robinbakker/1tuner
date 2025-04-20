@@ -95,7 +95,7 @@ export const useRadioBrowser = () => {
   );
 
   const searchStations = useCallback(
-    async (query: string) => {
+    async (params: Record<string, string>) => {
       setIsLoading(true);
       try {
         const response = await fetch(`${import.meta.env.VITE_RADIO_BROWSER_WORKER_URL}/stations`, {
@@ -103,7 +103,7 @@ export const useRadioBrowser = () => {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: new URLSearchParams({ name: query }),
+          body: new URLSearchParams(params),
         });
 
         if (!response.ok) {
@@ -125,6 +125,25 @@ export const useRadioBrowser = () => {
     [mapRadioBrowserStation],
   );
 
+  const searchStationsByQuery = useCallback(
+    async (query: string) => {
+      return searchStations({ name: query });
+    },
+    [searchStations],
+  );
+
+  const searchStationsByCountry = useCallback(
+    async (country: string) => {
+      return searchStations({
+        countrycode: country.toLowerCase() === 'uk' ? 'gb' : country,
+        reverse: 'true',
+        order: 'clickcount',
+        limit: '10',
+      });
+    },
+    [searchStations],
+  );
+
   const setStationClick = useCallback(async (uuid: string) => {
     if (!uuid) return;
     try {
@@ -142,7 +161,8 @@ export const useRadioBrowser = () => {
 
   return {
     isLoading,
-    searchStations,
+    searchStationsByQuery,
+    searchStationsByCountry,
     getStation,
     setStationClick,
   };

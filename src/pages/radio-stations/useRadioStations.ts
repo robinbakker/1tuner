@@ -24,7 +24,7 @@ export const useRadioStations = () => {
   const { query, route } = useLocation();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isInitialized = useRef(false);
-  const { isLoading: isLoadingMore, searchStations } = useRadioBrowser();
+  const { isLoading: isLoadingMore, searchStationsByQuery, searchStationsByCountry } = useRadioBrowser();
 
   useHead({
     title: 'Radio stations',
@@ -86,7 +86,7 @@ export const useRadioStations = () => {
     if (!lastRadioSearchResult.value?.query) return;
 
     try {
-      const stations = await searchStations(lastRadioSearchResult.value.query);
+      const stations = await searchStationsByQuery(lastRadioSearchResult.value.query);
 
       const existingIds = new Set(radioStations.value.map((s) => s.id));
       const filteredStations = stations.filter((s) => !existingIds.has(s.id));
@@ -98,6 +98,24 @@ export const useRadioStations = () => {
       console.error('Error fetching stations:', error);
     }
   }, [lastRadioSearchResult.value?.query]);
+
+  const searchMoreStationsFromCountry = useCallback(
+    async (country: string) => {
+      try {
+        const stations = await searchStationsByCountry(country);
+
+        const existingIds = new Set(radioStations.value.map((s) => s.id));
+        const filteredStations = stations.filter((s) => !existingIds.has(s.id));
+        lastRadioSearchResult.value = {
+          query: lastRadioSearchResult.value?.query || '',
+          radioBrowserSearchResult: filteredStations,
+        };
+      } catch (error) {
+        console.error('Error fetching stations:', error);
+      }
+    },
+    [lastRadioSearchResult.value?.query],
+  );
 
   const activeLanguages = computed(() => {
     const filter = radioSearchFilters.value?.regions || [];
@@ -146,6 +164,7 @@ export const useRadioStations = () => {
     const newSearchFilters = { regions: countries, genres: radioSearchFilters.value?.genres || [] };
     radioSearchFilters.value = newSearchFilters;
     updateURLParams(lastRadioSearchResult.value?.query, newSearchFilters);
+    lastRadioSearchResult.value = { query: lastRadioSearchResult.value?.query || '', radioBrowserSearchResult: [] };
   };
 
   const handleGenreChange = (genres: string[]) => {
@@ -203,6 +222,7 @@ export const useRadioStations = () => {
     handleFilterClick,
     isLoadingMore,
     searchMoreStations,
+    searchMoreStationsFromCountry,
     hasSearchTerm: !!lastRadioSearchResult.value?.query,
   };
 };

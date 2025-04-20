@@ -3,10 +3,11 @@ import { useLocation } from 'preact-iso';
 import { Loader } from '~/components/loader';
 import { PodcastCard } from '~/components/podcast-card';
 import { RadioStationCard } from '~/components/radio-station-card';
+import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { normalizedUrlWithoutScheme } from '~/lib/utils';
 import { playerState } from '~/store/signals/player';
-import { allRadioStations } from '~/store/signals/radio';
+import { allRadioStations, getRadioStationLanguage } from '~/store/signals/radio';
 import { SocialAccountType } from '~/store/types';
 import { useRadioStation } from './useRadioStation';
 
@@ -55,6 +56,17 @@ export const RadioStationPage = () => {
     }
   };
 
+  const getRadioFlag = () => {
+    const stationLanguage = getRadioStationLanguage(radioStation);
+    if (!stationLanguage?.flag) return null;
+
+    return (
+      <Badge title={stationLanguage.name} class="uppercase mr-5" variant="secondary">
+        {stationLanguage.flag}
+      </Badge>
+    );
+  };
+
   return (
     <div class="min-h-screen">
       <header class="relative w-full overflow-hidden pt-24 pb-8 bg-black/75 -skew-y-3 transform -mt-32 mb-8">
@@ -73,22 +85,25 @@ export const RadioStationPage = () => {
               />
               <div>
                 <h1 class="text-3xl font-bold sm:mb-3 text-white drop-shadow-lg">{radioStation.name}</h1>
-                {!!radioStation.social?.length && (
-                  <div class="flex opacity-60 space-x-2 my-2">
-                    {radioStation.social?.map((s) => {
-                      return (
-                        <a
-                          href={s.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="text-white/90 drop-shadow-sm hover:text-white w-6"
-                        >
-                          {getSocialIcon(s.type)}
-                        </a>
-                      );
-                    })}
-                  </div>
-                )}
+                <div class={`flex items-center space-x-2 ${!!radioStation.social?.length ? 'mb-2' : ''}`}>
+                  {getRadioFlag()}
+                  {!!radioStation.social?.length && (
+                    <div class="flex opacity-60 space-x-2 my-2">
+                      {radioStation.social?.map((s) => {
+                        return (
+                          <a
+                            href={s.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-white/90 drop-shadow-sm hover:text-white w-6"
+                          >
+                            {getSocialIcon(s.type)}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
                 {!!radioStation.website && (
                   <p>
                     <a
