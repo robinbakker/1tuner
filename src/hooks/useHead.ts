@@ -11,7 +11,7 @@ export type HeadData = {
 export const defaultHeadData = {
   title: '1tuner | listen to radio and podcasts',
   description: 'Listen to radio and podcasts for free. Discover new music and shows, create your own playlists.',
-  image: `${import.meta.env.VITE_BASE_URL}/assets/icons/icon-512x512.png`,
+  image: `${import.meta.env.VITE_BASE_URL}/assets/social-share.jpg`,
   url: import.meta.env.VITE_BASE_URL,
   type: 'website',
 };
