@@ -138,7 +138,7 @@ export const useRadioBrowser = () => {
         countrycode: country.toLowerCase() === 'uk' ? 'gb' : country,
         reverse: 'true',
         order: 'clickcount',
-        limit: '10',
+        limit: '20',
       });
     },
     [searchStations],
