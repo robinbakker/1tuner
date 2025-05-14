@@ -1760,9 +1760,16 @@
           "type": "twitter",
           "account": "trafficradionl",
           "url": "https://twitter.com/trafficradionl"
+        },
+        {
+          "title": "@trafficradionl",
+          "type": "facebook",
+          "account": "trafficradionl",
+          "url": "https://www.facebook.com/trafficradionl"
         }
       ],
-      "id": "trafficradio"
+      "id": "trafficradio",
+      "related": ["goodliferadio"]
     },
     {
       "displayorder": 6,
@@ -4164,6 +4171,42 @@
           "url": "https://www.instagram.com/Radio105"
         }
       ]
+    },
+    {
+      "id": "goodliferadio",
+      "displayorder": 148,
+      "genres": ["pop", "talk"],
+      "language": "nl",
+      "logosource": "https://goodliferadio.nl/favicon/goodliferadio/apple-touch-icon.png",
+      "name": "GoodLIFE Radio",
+      "streams": [
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://streaming.hofhosting.nl/proxy/goodlife_main?mp=/stream"
+        }
+      ],
+      "website": "https://goodliferadio.nl",
+      "social": [
+        {
+          "title": "@Goodlife-Radio",
+          "type": "facebook",
+          "account": "Goodlife-Radio",
+          "url": "https://www.facebook.com/Goodlife-Radio-118351319981597"
+        },
+        {
+          "title": "@goodliferadionl",
+          "type": "twitter",
+          "account": "goodliferadionl",
+          "url": "https://www.twitter.com/goodliferadionl"
+        },
+        {
+          "title": "@goodliferadionl",
+          "type": "instagram",
+          "account": "goodliferadionl",
+          "url": "https://www.instagram.com/goodliferadionl"
+        }
+      ],
+      "related": ["trafficradio"]
     }
   ]
 }
