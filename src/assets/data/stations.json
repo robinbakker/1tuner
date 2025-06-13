@@ -498,7 +498,7 @@
         }
       ],
       "website": "https://www.funx.nl",
-      "related": ["3fm", "npoblend", "npocampus", "nposouljazz"],
+      "related": ["3fm", "npoblend", "npocampus", "nposouljazz", "glxyradio"],
       "social": [
         {
           "title": "@funx",
@@ -3154,7 +3154,7 @@
         }
       ],
       "website": "https://www.npoblend.nl",
-      "related": ["3fm", "funx", "radio2", "nposouljazz"],
+      "related": ["3fm", "funx", "radio2", "nposouljazz", "glxyradio"],
       "social": [
         {
           "title": "@npoblend",
@@ -4389,6 +4389,37 @@
         }
       ],
       "related": ["trafficradio"]
+    },
+    {
+      "id": "glxyradio",
+      "displayorder": 149,
+      "genres": ["hiphop", "rap", "rnb", "pop"],
+      "language": "nl",
+      "logosource": "https://glxy.radio/wp-content/uploads/2021/04/cropped-GLXY-Favicon-192x192.png",
+      "name": "GLXY RADIO",
+      "streams": [
+        {
+          "mimetype": "audio/mpeg",
+          "url": "https://stream23.gal.io/GLXY_CF01"
+        }
+      ],
+      "website": "https://glxy.radio",
+      "social": [
+        {
+          "title": "@glxy.radio",
+          "type": "tiktok",
+          "account": "glxy.radio",
+          "url": "https://www.tiktok.com/@glxy.radio"
+        },
+        {
+          "title": "@glxyradio",
+          "type": "instagram",
+          "account": "glxyradio",
+          "url": "https://www.instagram.com/glxyradio"
+        }
+      ],
+      "stationuuid": "115ad1e3-8ab6-4ce7-9d03-0126dcea8a8c",
+      "related": ["funx", "npoblend"]
     }
   ]
 }

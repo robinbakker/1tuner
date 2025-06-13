@@ -1,5 +1,6 @@
 import { Bookmark, Facebook, Globe, Instagram, Pause, Play, Twitter, Youtube } from 'lucide-preact';
 import { useLocation } from 'preact-iso';
+import tiktokUrl from '~/assets/icons/tiktok.svg';
 import { Loader } from '~/components/loader';
 import { PodcastCard } from '~/components/podcast-card';
 import { RadioStationCard } from '~/components/radio-station-card';
@@ -51,6 +52,8 @@ export const RadioStationPage = () => {
         return <Twitter size={20} />;
       case SocialAccountType.Youtube:
         return <Youtube size={20} />;
+      case SocialAccountType.TikTok:
+        return <img src={tiktokUrl} width={20} height={20} alt="TikTok" />;
       default:
         return null;
     }
@@ -85,7 +88,7 @@ export const RadioStationPage = () => {
               />
               <div>
                 <h1 class="text-3xl font-bold sm:mb-3 text-white drop-shadow-lg">{radioStation.name}</h1>
-                <div class={`flex items-center space-x-2 ${!!radioStation.social?.length ? 'mb-2' : ''}`}>
+                <div class={`flex items-center space-x-2 ${radioStation.social?.length ? 'mb-2' : ''}`}>
                   {getRadioFlag()}
                   {!!radioStation.social?.length && (
                     <div class="flex opacity-60 space-x-2 my-2">
@@ -95,7 +98,7 @@ export const RadioStationPage = () => {
                             href={s.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="text-white/90 drop-shadow-sm hover:text-white w-6"
+                            class="text-white opacity-80 drop-shadow-sm hover:opacity-100 w-6 transition-opacity"
                           >
                             {getSocialIcon(s.type)}
                           </a>
