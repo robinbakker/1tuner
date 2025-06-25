@@ -190,19 +190,28 @@ export const usePlayer = () => {
   useEffect(() => {
     if (!audioRef.current || !playerState.value || !playerState.value.streams?.length) return;
 
-    const currentSrc = audioRef.current.currentSrc;
+    const audio = audioRef.current;
     const newSrc = playerState.value.streams[0].url;
 
-    if (!currentSrc || !currentSrc.includes(newSrc)) {
-      audioRef.current.load();
+    // If src was set programmatically for reconnect, we must remove it
+    // to allow the audio element to use its <source> children again.
+    if (audio.hasAttribute('src')) {
+      audio.removeAttribute('src');
+      // After removing src, we must call load() to apply the <source> elements.
+      audio.load();
+    } else {
+      // If src was not set, check if the source is different and load if needed.
+      if (!audio.currentSrc || !audio.currentSrc.includes(newSrc)) {
+        audio.load();
+      }
     }
 
-    if (!audioRef.current.currentTime && playerState.value.currentTime) {
-      audioRef.current.currentTime = playerState.value.currentTime;
+    if (!audio.currentTime && playerState.value.currentTime) {
+      audio.currentTime = playerState.value.currentTime;
     }
 
     if (playerState.value.isPlaying && !castSession) {
-      const promise = audioRef.current.play();
+      const promise = audio.play();
       if (promise) {
         promise.catch((error) => {
           if (playerState.value) playerState.value = { ...playerState.value, isPlaying: false };
@@ -222,9 +231,10 @@ export const usePlayer = () => {
     const audio = audioRef.current;
     const isRadioStream = playerState.value?.playType !== 'podcast';
 
-    const handleError = (e: ErrorEvent) => {
-      if (isRadioStream && playerState.value?.isPlaying) {
-        console.log('Stream error, attempting reconnect...', e);
+    const handleError = (e: Event) => {
+      // Prevent multiple reconnect loops from starting
+      if (isRadioStream && playerState.value?.isPlaying && reconnectAttempts.value === 0) {
+        console.log(`Stream ${e.type} event, attempting reconnect...`, e);
         startNoise();
         attemptReconnect();
       }
@@ -264,10 +274,13 @@ export const usePlayer = () => {
       const timeout = reconnectUtil.getReconnectTimeoutMs(reconnectAttempts.value, maxReconnectAttempts);
 
       reconnectTimeout.current = setTimeout(() => {
-        if (!audio || !playerState.value?.isPlaying) return;
+        if (!audio || !playerState.value?.isPlaying || !playerState.value.streams?.[0]?.url) return;
 
-        audio.currentTime = 0;
-        audio.load();
+        const streamUrl = playerState.value.streams[0].url;
+        // Force reload with a cache-busting query param
+        const cacheBustingUrl = `${streamUrl}${streamUrl.includes('?') ? '&' : '?'}_=${new Date().getTime()}`;
+        audio.src = cacheBustingUrl;
+
         const playPromise = audio.play();
 
         if (playPromise) {
@@ -279,11 +292,6 @@ export const usePlayer = () => {
             })
             .catch((error) => {
               console.log('Reconnect failed:', error);
-              // addToast({
-              //   title: '❌ Reconnect failed...',
-              //   description: error.message,
-              //   variant: 'error',
-              // });
               attemptReconnect();
             });
         }
@@ -293,10 +301,12 @@ export const usePlayer = () => {
     const handlePlaying = () => (reconnectAttempts.value = 0);
 
     audio.addEventListener('error', handleError);
+    audio.addEventListener('stalled', handleError);
     audio.addEventListener('playing', handlePlaying);
 
     return () => {
       audio.removeEventListener('error', handleError);
+      audio.removeEventListener('stalled', handleError);
       audio.removeEventListener('playing', handlePlaying);
       if (reconnectTimeout.current) {
         clearTimeout(reconnectTimeout.current);

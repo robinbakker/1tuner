@@ -1,7 +1,7 @@
 {
   "name": "1tuner",
   "private": true,
-  "version": "3.1.5",
+  "version": "3.1.6",
   "description": "1 web app to listen to radio and podcasts",
   "author": "Robin Bakker",
   "license": "MIT",
@@ -30,7 +30,7 @@
     "class-variance-authority": "^0.7.1",
     "fast-xml-parser": "^5.2.5",
     "idb": "^8.0.3",
-    "lucide-preact": "^0.515.0",
+    "lucide-preact": "^0.523.0",
     "preact": "^10.26.9",
     "preact-iso": "^2.9.2",
     "tailwindcss-animate": "^1.0.7"
@@ -40,7 +40,7 @@
     "@preact/preset-vite": "^2.10.1",
     "@tailwindcss/container-queries": "^0.1.1",
     "@types/chromecast-caf-sender": "^1.0.11",
-    "@types/node": "^24.0.1",
+    "@types/node": "^24.0.4",
     "clsx": "^2.1.1",
     "country-flag-emoji-polyfill": "^0.1.8",
     "dotenv": "^16.5.0",
@@ -48,13 +48,13 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^16.2.0",
-    "postcss": "^8.5.5",
+    "postcss": "^8.5.6",
     "prettier-plugin-organize-imports": "^4.1.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.10",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.34.0",
-    "vite": "^6.3.5",
+    "typescript-eslint": "^8.35.0",
+    "vite": "^7.0.0",
     "vite-plugin-pwa": "^1.0.0"
   }
 }
