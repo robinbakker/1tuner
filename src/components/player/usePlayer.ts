@@ -223,16 +223,97 @@ export const usePlayer = () => {
     }
   }, [playerState.value, castSession, setToPaused]);
 
+  const reconnectFnRef = useRef<() => void>();
+
+  const retryConnection = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio || !playerState.value?.isPlaying || !playerState.value.streams?.[0]?.url) {
+      if (reconnectAttempts.value > 0) {
+        console.log('Aborting reconnect sequence.');
+        reconnectAttempts.value = 0;
+        stopNoise();
+      }
+      return;
+    }
+
+    console.log('Attempting to play stream...');
+    const streamUrl = playerState.value.streams[0].url;
+    const cacheBustingUrl = `${streamUrl}${streamUrl.includes('?') ? '&' : '?'}_=${new Date().getTime()}`;
+    audio.src = cacheBustingUrl;
+    audio.load();
+
+    const playPromise = audio.play();
+    if (playPromise) {
+      playPromise
+        .then(() => {
+          console.log('Reconnect successful');
+          stopNoise();
+          reconnectAttempts.value = 0;
+        })
+        .catch((error) => {
+          console.log('Reconnect attempt failed:', error);
+          if (reconnectFnRef.current) {
+            reconnectFnRef.current();
+          }
+        });
+    }
+  }, [audioRef, playerState, reconnectAttempts, stopNoise]);
+
+  const attemptReconnect = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (reconnectAttempts.value >= maxReconnectAttempts) {
+      stopNoise();
+      console.log('Max reconnect attempts reached');
+      addToast({
+        title: '😢 Reconnect failed...',
+        description: 'Failed to reconnect to the stream',
+        variant: 'error',
+      });
+      reconnectAttempts.value = 0;
+      playerState.value = playerState.value
+        ? {
+            ...playerState.value,
+            isPlaying: false,
+          }
+        : null;
+      return;
+    }
+
+    reconnectAttempts.value += 1;
+    console.log(`Reconnect attempt ${reconnectAttempts.value}/${maxReconnectAttempts}`);
+    addToast({
+      title: '🛜 Reconnecting...',
+      description: `There was an issue with the stream. Attempting to reconnect...`,
+      variant: 'default',
+    });
+
+    if (reconnectTimeout.current) {
+      clearTimeout(reconnectTimeout.current);
+    }
+
+    const timeout = reconnectUtil.getReconnectTimeoutMs(reconnectAttempts.value, maxReconnectAttempts);
+    reconnectTimeout.current = setTimeout(retryConnection, timeout);
+  }, [
+    audioRef,
+    reconnectAttempts,
+    maxReconnectAttempts,
+    reconnectTimeout,
+    playerState.value,
+    retryConnection,
+    stopNoise,
+  ]);
+
+  reconnectFnRef.current = attemptReconnect;
+
   useEffect(() => {
     if (!audioRef.current) return;
-
-    console.log('Setting up audio event listeners');
 
     const audio = audioRef.current;
     const isRadioStream = playerState.value?.playType !== 'podcast';
 
     const handleError = (e: Event) => {
-      // Prevent multiple reconnect loops from starting
       if (isRadioStream && playerState.value?.isPlaying && reconnectAttempts.value === 0) {
         console.log(`Stream ${e.type} event, attempting reconnect...`, e);
         startNoise();
@@ -240,65 +321,13 @@ export const usePlayer = () => {
       }
     };
 
-    const attemptReconnect = () => {
-      if (reconnectAttempts.value >= maxReconnectAttempts) {
-        stopNoise();
-        console.log('Max reconnect attempts reached');
-        addToast({
-          title: '😢 Reconnect failed...',
-          description: 'Failed to reconnect to the stream',
-          variant: 'error',
-        });
+    const handlePlaying = () => {
+      if (reconnectAttempts.value > 0) {
+        console.log('Stream is playing, resetting reconnect attempts.');
         reconnectAttempts.value = 0;
-        playerState.value = playerState.value
-          ? {
-              ...playerState.value,
-              isPlaying: false,
-            }
-          : null;
-        return;
+        stopNoise();
       }
-
-      reconnectAttempts.value += 1;
-      console.log(`Reconnect attempt ${reconnectAttempts.value}/${maxReconnectAttempts}`);
-      addToast({
-        title: '🛜 Reconnecting...',
-        description: `There was an issue with the stream. Attempting to reconnect...`,
-        variant: 'default',
-      });
-
-      if (reconnectTimeout.current) {
-        clearTimeout(reconnectTimeout.current);
-      }
-
-      const timeout = reconnectUtil.getReconnectTimeoutMs(reconnectAttempts.value, maxReconnectAttempts);
-
-      reconnectTimeout.current = setTimeout(() => {
-        if (!audio || !playerState.value?.isPlaying || !playerState.value.streams?.[0]?.url) return;
-
-        const streamUrl = playerState.value.streams[0].url;
-        // Force reload with a cache-busting query param
-        const cacheBustingUrl = `${streamUrl}${streamUrl.includes('?') ? '&' : '?'}_=${new Date().getTime()}`;
-        audio.src = cacheBustingUrl;
-
-        const playPromise = audio.play();
-
-        if (playPromise) {
-          playPromise
-            .then(() => {
-              console.log('Reconnect successful');
-              stopNoise();
-              reconnectAttempts.value = 0;
-            })
-            .catch((error) => {
-              console.log('Reconnect failed:', error);
-              attemptReconnect();
-            });
-        }
-      }, timeout);
     };
-
-    const handlePlaying = () => (reconnectAttempts.value = 0);
 
     audio.addEventListener('error', handleError);
     audio.addEventListener('stalled', handleError);
@@ -312,7 +341,47 @@ export const usePlayer = () => {
         clearTimeout(reconnectTimeout.current);
       }
     };
-  }, [playerState.value, reconnectAttempts.value, maxReconnectAttempts]);
+  }, [playerState.value?.playType, playerState.value?.isPlaying, attemptReconnect, startNoise, stopNoise]);
+
+  useEffect(() => {
+    const forceRetry = (reason: string) => {
+      if (reconnectAttempts.value > 0) {
+        console.log(`${reason} during reconnect. Forcing immediate retry.`);
+        if (reconnectTimeout.current) {
+          clearTimeout(reconnectTimeout.current);
+        }
+        // A short delay to allow the browser to stabilize
+        setTimeout(retryConnection, 250);
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        forceRetry('App became visible');
+      }
+    };
+
+    const handleOnline = () => {
+      forceRetry('Network came online');
+    };
+
+    const handleOffline = () => {
+      if (reconnectTimeout.current) {
+        console.log('Network went offline. Clearing reconnect timeout.');
+        clearTimeout(reconnectTimeout.current);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, [retryConnection]);
 
   const handleEnded = useCallback(() => {
     if (isPodcast) {
