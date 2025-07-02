@@ -1,5 +1,6 @@
 import { signal } from '@preact/signals';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
+import { logState } from '../signals/log';
 import { isPlayerMaximized, playerState } from '../signals/player';
 import { playlistRules, playlists } from '../signals/playlist';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../signals/podcast';
@@ -11,6 +12,7 @@ import {
 } from '../signals/radio';
 import { settingsState } from '../signals/settings';
 import {
+  LogState,
   PlayerState,
   Playlist,
   PlaylistRule,
@@ -23,7 +25,7 @@ import {
 export const isDBLoaded = signal(false);
 
 export const dbName = '1tuner';
-export const dbVersion = 8;
+export const dbVersion = 9;
 export const storeName = 'appState';
 
 export enum AppStateKey {
@@ -37,6 +39,7 @@ export enum AppStateKey {
   PlaylistRules = 'playlistRules',
   PlayerState = 'playerState',
   SettingsState = 'settingsState',
+  LogState = 'logState',
   IsPlayerMaximized = 'isPlayerMaximized',
 }
 
@@ -46,6 +49,7 @@ type DBData =
   | Playlist[]
   | PlaylistRule[]
   | string[]
+  | LogState[]
   | RadioSearchFilters
   | PlayerState
   | SettingsState
@@ -88,6 +92,7 @@ export async function loadStateFromDB() {
   playlistRules.value = (await getFromDB<PlaylistRule[]>(db, AppStateKey.PlaylistRules)) || [];
   playerState.value = (await getFromDB<PlayerState>(db, AppStateKey.PlayerState)) || null;
   settingsState.value = (await getFromDB<SettingsState>(db, AppStateKey.SettingsState)) || ({} as SettingsState);
+  logState.value = (await getFromDB<LogState[]>(db, AppStateKey.LogState)) || [];
   isPlayerMaximized.value = (await getFromDB<boolean>(db, AppStateKey.IsPlayerMaximized)) || false;
   isDBLoaded.value = true;
 }
@@ -110,6 +115,7 @@ export async function saveStateToDB() {
       tx.store.put(playlistRules.value, AppStateKey.PlaylistRules),
       tx.store.put(playerState.value, AppStateKey.PlayerState),
       tx.store.put(settingsState.value, AppStateKey.SettingsState),
+      tx.store.put(logState.value, AppStateKey.LogState),
       tx.store.put(isPlayerMaximized.value, AppStateKey.IsPlayerMaximized),
     ]);
     await tx.done;

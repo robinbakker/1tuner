@@ -4,10 +4,11 @@ import { useNoise } from '~/hooks/useNoise';
 import { playlistUtil } from '~/lib/playlistUtil';
 import { reconnectUtil } from '~/lib/reconnectUtil';
 import { saveStateToDB } from '~/store/db/db';
+import { addLogEntry } from '~/store/signals/log';
 import { playlistRules } from '~/store/signals/playlist';
 import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
 import { playNextRadioStation, playRadioStationByID } from '~/store/signals/radio';
-import { settingsState } from '~/store/signals/settings';
+import { DEFAULT_MAX_RECONNECT_ATTEMPTS, settingsState } from '~/store/signals/settings';
 import { addToast } from '~/store/signals/ui';
 import { PlaylistRuleType } from '~/store/types';
 import { useCastApi } from '../../hooks/useCastApi';
@@ -36,7 +37,7 @@ export const usePlayer = () => {
     castSession,
     castMediaRef,
   } = useCastApi();
-  const maxReconnectAttempts = settingsState.value.radioStreamMaxReconnects || 50;
+  const maxReconnectAttempts = settingsState.value.radioStreamMaxReconnects ?? DEFAULT_MAX_RECONNECT_ATTEMPTS;
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
   const isPodcast = playerState.value?.playType === 'podcast';
   const isPlaylist = playerState.value?.playType === 'playlist';
@@ -155,6 +156,10 @@ export const usePlayer = () => {
         stopNoise();
         audioRef.current.play().catch((error) => {
           console.error('Error playing audio:', error);
+          addLogEntry({
+            level: 'error',
+            message: `Error playing audio (${playerState.value?.streams?.[0]?.url}): ${error.message}`,
+          });
           playerState.value = {
             ...playerState.value!,
             isPlaying: false,
@@ -216,6 +221,10 @@ export const usePlayer = () => {
         promise.catch((error) => {
           if (playerState.value) playerState.value = { ...playerState.value, isPlaying: false };
           console.error('Error playing audio:', error);
+          addLogEntry({
+            level: 'error',
+            message: `Error playing audio (${newSrc}): ${error.message}`,
+          });
         });
       }
     } else {
@@ -232,6 +241,10 @@ export const usePlayer = () => {
         console.log('Aborting reconnect sequence.');
         reconnectAttempts.value = 0;
         stopNoise();
+        addLogEntry({
+          level: 'info',
+          message: `Reconnect aborted due to ${audio ? '' : 'missing audio element and'} ${playerState.value?.isPlaying ? 'playing' : 'paused'} player state, stream URL: ${playerState.value?.streams?.[0]?.url}`,
+        });
       }
       return;
     }
@@ -241,6 +254,10 @@ export const usePlayer = () => {
     const cacheBustingUrl = `${streamUrl}${streamUrl.includes('?') ? '&' : '?'}_=${new Date().getTime()}`;
     audio.src = cacheBustingUrl;
     audio.load();
+    addLogEntry({
+      level: 'info',
+      message: `Attempting to reconnect to stream: ${cacheBustingUrl}`,
+    });
 
     const playPromise = audio.play();
     if (playPromise) {
@@ -248,10 +265,18 @@ export const usePlayer = () => {
         .then(() => {
           console.log('Reconnect successful');
           stopNoise();
+          addLogEntry({
+            level: 'info',
+            message: `Reconnect (${reconnectAttempts.value}) successful to stream: ${cacheBustingUrl}`,
+          });
           reconnectAttempts.value = 0;
         })
         .catch((error) => {
           console.log('Reconnect attempt failed:', error);
+          addLogEntry({
+            level: 'error',
+            message: `Reconnect attempt failed for stream ${cacheBustingUrl}: ${error.message}`,
+          });
           if (reconnectFnRef.current) {
             reconnectFnRef.current();
           }
@@ -266,6 +291,10 @@ export const usePlayer = () => {
     if (reconnectAttempts.value >= maxReconnectAttempts) {
       stopNoise();
       console.log('Max reconnect attempts reached');
+      addLogEntry({
+        level: 'error',
+        message: `Max reconnect attempts (${maxReconnectAttempts}) reached for stream: ${playerState.value?.streams?.[0]?.url}`,
+      });
       addToast({
         title: '😢 Reconnect failed...',
         description: 'Failed to reconnect to the stream',
@@ -283,6 +312,10 @@ export const usePlayer = () => {
 
     reconnectAttempts.value += 1;
     console.log(`Reconnect attempt ${reconnectAttempts.value}/${maxReconnectAttempts}`);
+    addLogEntry({
+      level: 'info',
+      message: `Reconnect attempt ${reconnectAttempts.value}/${maxReconnectAttempts} for stream: ${playerState.value?.streams?.[0]?.url}`,
+    });
     addToast({
       title: '🛜 Reconnecting...',
       description: `There was an issue with the stream. Attempting to reconnect...`,
@@ -318,6 +351,10 @@ export const usePlayer = () => {
         console.log(`Stream ${e.type} event, attempting reconnect...`, e);
         startNoise();
         attemptReconnect();
+        addLogEntry({
+          level: 'warn',
+          message: `Stream ${e.type} event, attempting reconnect for stream: ${playerState.value?.streams?.[0]?.url}`,
+        });
       }
     };
 
@@ -326,6 +363,10 @@ export const usePlayer = () => {
         console.log('Stream is playing, resetting reconnect attempts.');
         reconnectAttempts.value = 0;
         stopNoise();
+        addLogEntry({
+          level: 'info',
+          message: `Stream is playing, resetting reconnect attempts for stream: ${playerState.value?.streams?.[0]?.url}`,
+        });
       }
     };
 
@@ -347,6 +388,10 @@ export const usePlayer = () => {
     const forceRetry = (reason: string) => {
       if (reconnectAttempts.value > 0) {
         console.log(`${reason} during reconnect. Forcing immediate retry.`);
+        addLogEntry({
+          level: 'info',
+          message: `${reason} during reconnect. Forcing immediate retry.`,
+        });
         if (reconnectTimeout.current) {
           clearTimeout(reconnectTimeout.current);
         }
@@ -368,6 +413,10 @@ export const usePlayer = () => {
     const handleOffline = () => {
       if (reconnectTimeout.current) {
         console.log('Network went offline. Clearing reconnect timeout.');
+        addLogEntry({
+          level: 'info',
+          message: 'Network went offline. Clearing reconnect timeout.',
+        });
         clearTimeout(reconnectTimeout.current);
       }
     };
@@ -381,7 +430,7 @@ export const usePlayer = () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, [retryConnection]);
+  }, [reconnectAttempts.value, retryConnection]);
 
   const handleEnded = useCallback(() => {
     if (isPodcast) {

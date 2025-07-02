@@ -4,6 +4,7 @@ import { RadioButtonList } from '~/components/ui/radio-button-list';
 import { Switch } from '~/components/ui/switch';
 import { styleClass } from '~/lib/styleClass';
 import { APP_VERSION } from '~/lib/version';
+import { logState } from '~/store/signals/log';
 import { useSettings } from './useSettings';
 
 export const SettingsPage = () => {
@@ -19,6 +20,7 @@ export const SettingsPage = () => {
     handleThemeChange,
     handleSearchProviderChange,
     handleAutomaticRadioReconnect,
+    handleEnableLoggingChange,
     handleMuteNoiseChange,
     handleGoogleCastSupportChange,
     handleExportOpml,
@@ -77,12 +79,30 @@ export const SettingsPage = () => {
             <Switch checked={hasNoiseMuted} onClick={handleMuteNoiseChange} label="Mute noise" />
           </>
         )}
+        {typeof window !== 'undefined' && window.location.search.includes('log') && (
+          <>
+            <p class="text-muted-foreground text-sm my-4">
+              Record a log of erros and actions in the app. This is useful for debugging issues.
+            </p>
+            <Switch checked={hasNoiseMuted} onClick={handleEnableLoggingChange} label="Enable logging" />
+            <div class="mt-4">
+              {logState.value?.map((entry) => (
+                <div class="border p-2 mb-2 rounded" key={entry.timestamp.toISOString()}>
+                  <p class="text-xs text-muted-foreground">
+                    {entry.timestamp.toLocaleString()} - <span class={`text-${entry.level}`}>{entry.level}</span>
+                  </p>
+                  <p class="text-sm">{entry.message}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </section>
       <section class="mb-8 relative">
         <h2 class="text-2xl font-semibold">Google Cast (Chromecast) support (experimental)</h2>
         <p class="text-muted-foreground text-sm mb-4">
           Enable this option to support playing to a Chromecast or Google Cast enabled device (this is behind a toggle
-          because it loads an extra external script from gstatic.com, and the functionalaity is still experimental).
+          because it loads an extra external script from gstatic.com, and the functionality is still experimental).
         </p>
         <Switch
           checked={hasGoogleCastsSupport}

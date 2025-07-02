@@ -7,7 +7,7 @@ import { opmlUtil } from '~/lib/opmlUtil';
 import { delay, getPodcastUrlID, normalizedUrlWithoutScheme } from '~/lib/utils';
 import { isDBLoaded } from '~/store/db/db';
 import { followedPodcasts, followPodcast } from '~/store/signals/podcast';
-import { settingsState } from '~/store/signals/settings';
+import { DEFAULT_MAX_RECONNECT_ATTEMPTS, settingsState } from '~/store/signals/settings';
 import { uiState } from '~/store/signals/ui';
 import { Podcast, PodcastSearchProvider } from '~/store/types';
 import { ThemeOption } from './types';
@@ -58,7 +58,7 @@ export const useSettings = () => {
   const handleAutomaticRadioReconnect = (e: MouseEvent) => {
     if (!settingsState.value) return;
     const input = e.currentTarget as HTMLInputElement;
-    settingsState.value.radioStreamMaxReconnects = input.checked ? 50 : 0;
+    settingsState.value.radioStreamMaxReconnects = input.checked ? DEFAULT_MAX_RECONNECT_ATTEMPTS : 0;
   };
 
   const handleGoogleCastSupportChange = (e: MouseEvent) => {
@@ -71,6 +71,12 @@ export const useSettings = () => {
     if (!settingsState.value) return;
     const input = e.currentTarget as HTMLInputElement;
     settingsState.value.disableReconnectNoise = input.checked;
+  };
+
+  const handleEnableLoggingChange = (e: MouseEvent) => {
+    if (!settingsState.value) return;
+    const input = e.currentTarget as HTMLInputElement;
+    settingsState.value.enableLogging = input.checked;
   };
 
   const handleExportOpml = useCallback(async () => {
@@ -220,6 +226,7 @@ export const useSettings = () => {
     handleThemeChange,
     handleGoogleCastSupportChange,
     handleMuteNoiseChange,
+    handleEnableLoggingChange,
     handleResetClick,
     handleExportOpml,
     handleImportOpml,

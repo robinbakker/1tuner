@@ -138,6 +138,7 @@ export interface SettingsState {
   podcastSearchProvider?: PodcastSearchProvider;
   enableChromecast?: boolean;
   disableReconnectNoise?: boolean;
+  enableLogging?: boolean;
 }
 
 export enum PlaylistRuleType {
@@ -150,4 +151,10 @@ export interface PlaylistRule {
   podcastID?: string;
   stationID?: string;
   playlistUrl?: string;
+}
+
+export interface LogState {
+  timestamp: Date;
+  level: 'info' | 'warn' | 'error';
+  message: string;
 }
