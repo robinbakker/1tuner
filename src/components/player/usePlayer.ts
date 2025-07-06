@@ -25,7 +25,7 @@ export const usePlayer = () => {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLInputElement>(null);
   const reconnectTimeout = useRef<NodeJS.Timeout>();
-  const reconnectAttempts = signal(0);
+  const reconnectAttempts = useRef(0);
   const { startNoise, stopNoise } = useNoise();
 
   const {
@@ -71,8 +71,8 @@ export const usePlayer = () => {
   }, []);
 
   const updateTimeUI = useCallback(() => {
+    if (!audioRef.current || !playerState.value?.streams || !isPodcast) return;
     const audio = audioRef.current;
-    if (!audio || !playerState.value?.streams) return;
     currentTime.value = audio.currentTime;
 
     requestAnimationFrame(() => {
@@ -87,7 +87,7 @@ export const usePlayer = () => {
         sliderRef.current.style.backgroundImage = `linear-gradient(to right, #ff6000 ${progressPercentage.value}%, #ccc ${progressPercentage.value}%)`;
       }
     });
-  }, [playerState.value?.streams, progressPercentage, formatTime]);
+  }, [playerState.value?.streams, isPodcast, progressPercentage, formatTime]);
 
   const handleSeek = useCallback(
     (seconds: number) => {
@@ -119,6 +119,7 @@ export const usePlayer = () => {
   );
 
   const setToPaused = useCallback(() => {
+    stopNoise();
     if (!audioRef.current || !audioRef.current.currentTime || !playerState.value) return;
     audioRef.current.pause();
     if (isPodcast) {
@@ -132,8 +133,9 @@ export const usePlayer = () => {
       saveStateToDB();
     } else {
       audioRef.current.currentTime = 0;
+      audioRef.current.load();
     }
-  }, [playerState.value, isPodcast]);
+  }, [playerState.value, stopNoise, isPodcast]);
 
   const handlePlayPause = useCallback(() => {
     if (!playerState.value) return;
@@ -174,12 +176,13 @@ export const usePlayer = () => {
   const handleClose = useCallback(() => {
     setToPaused();
     if (reconnectTimeout.current) {
+      console.log('handleClose: Cleaning up reconnect timeout');
       clearTimeout(reconnectTimeout.current);
     }
-    reconnectAttempts.value = 0;
+    reconnectAttempts.current = 0;
     playerState.value = null;
     isPlayerMaximized.value = false;
-  }, [reconnectAttempts, setToPaused]);
+  }, [setToPaused]);
 
   const handleSliderChange = useCallback(
     (e: Event) => {
@@ -237,9 +240,9 @@ export const usePlayer = () => {
   const retryConnection = useCallback(() => {
     const audio = audioRef.current;
     if (!audio || !playerState.value?.isPlaying || !playerState.value.streams?.[0]?.url) {
-      if (reconnectAttempts.value > 0) {
+      if (reconnectAttempts.current > 0) {
         console.log('Aborting reconnect sequence.');
-        reconnectAttempts.value = 0;
+        reconnectAttempts.current = 0;
         stopNoise();
         addLogEntry({
           level: 'info',
@@ -253,6 +256,7 @@ export const usePlayer = () => {
     const streamUrl = playerState.value.streams[0].url;
     const cacheBustingUrl = `${streamUrl}${streamUrl.includes('?') ? '&' : '?'}_=${new Date().getTime()}`;
     audio.src = cacheBustingUrl;
+    audio.currentTime = 0;
     audio.load();
     addLogEntry({
       level: 'info',
@@ -267,9 +271,9 @@ export const usePlayer = () => {
           stopNoise();
           addLogEntry({
             level: 'info',
-            message: `Reconnect (${reconnectAttempts.value}) successful to stream: ${cacheBustingUrl}`,
+            message: `Reconnect (${reconnectAttempts.current}) successful to stream: ${cacheBustingUrl}`,
           });
-          reconnectAttempts.value = 0;
+          reconnectAttempts.current = 0;
         })
         .catch((error) => {
           console.log('Reconnect attempt failed:', error);
@@ -282,13 +286,13 @@ export const usePlayer = () => {
           }
         });
     }
-  }, [audioRef, playerState, reconnectAttempts, stopNoise]);
+  }, [playerState.value, stopNoise]);
 
   const attemptReconnect = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    if (reconnectAttempts.value >= maxReconnectAttempts) {
+    if (reconnectAttempts.current >= maxReconnectAttempts) {
       stopNoise();
       console.log('Max reconnect attempts reached');
       addLogEntry({
@@ -300,7 +304,7 @@ export const usePlayer = () => {
         description: 'Failed to reconnect to the stream',
         variant: 'error',
       });
-      reconnectAttempts.value = 0;
+      reconnectAttempts.current = 0;
       playerState.value = playerState.value
         ? {
             ...playerState.value,
@@ -310,11 +314,11 @@ export const usePlayer = () => {
       return;
     }
 
-    reconnectAttempts.value += 1;
-    console.log(`Reconnect attempt ${reconnectAttempts.value}/${maxReconnectAttempts}`);
+    reconnectAttempts.current += 1;
+    console.log(`Reconnect attempt ${reconnectAttempts.current}/${maxReconnectAttempts}`);
     addLogEntry({
       level: 'info',
-      message: `Reconnect attempt ${reconnectAttempts.value}/${maxReconnectAttempts} for stream: ${playerState.value?.streams?.[0]?.url}`,
+      message: `Reconnect attempt ${reconnectAttempts.current}/${maxReconnectAttempts} for stream: ${playerState.value?.streams?.[0]?.url}`,
     });
     addToast({
       title: '🛜 Reconnecting...',
@@ -323,31 +327,22 @@ export const usePlayer = () => {
     });
 
     if (reconnectTimeout.current) {
+      console.log('attemptReconnect: Clearing previous reconnect timeout');
       clearTimeout(reconnectTimeout.current);
     }
 
-    const timeout = reconnectUtil.getReconnectTimeoutMs(reconnectAttempts.value, maxReconnectAttempts);
-    reconnectTimeout.current = setTimeout(retryConnection, timeout);
-  }, [
-    audioRef,
-    reconnectAttempts,
-    maxReconnectAttempts,
-    reconnectTimeout,
-    playerState.value,
-    retryConnection,
-    stopNoise,
-  ]);
+    const timeout = reconnectUtil.getReconnectTimeoutMs(reconnectAttempts.current, maxReconnectAttempts);
+    reconnectTimeout.current = setTimeout(() => retryConnection(), timeout);
+  }, [audioRef, playerState.value, maxReconnectAttempts, retryConnection, stopNoise]);
 
   reconnectFnRef.current = attemptReconnect;
 
   useEffect(() => {
     if (!audioRef.current) return;
-
     const audio = audioRef.current;
-    const isRadioStream = playerState.value?.playType !== 'podcast';
 
     const handleError = (e: Event) => {
-      if (isRadioStream && playerState.value?.isPlaying && reconnectAttempts.value === 0) {
+      if (!isPodcast && playerState.value?.isPlaying && reconnectAttempts.current === 0) {
         console.log(`Stream ${e.type} event, attempting reconnect...`, e);
         startNoise();
         attemptReconnect();
@@ -359,13 +354,13 @@ export const usePlayer = () => {
     };
 
     const handlePlaying = () => {
-      if (reconnectAttempts.value > 0) {
-        console.log('Stream is playing, resetting reconnect attempts.');
-        reconnectAttempts.value = 0;
+      if (reconnectAttempts.current > 0) {
+        console.log(`Stream is playing, resetting reconnect attempts (was ${reconnectAttempts.current}).`);
+        reconnectAttempts.current = 0;
         stopNoise();
         addLogEntry({
           level: 'info',
-          message: `Stream is playing, resetting reconnect attempts for stream: ${playerState.value?.streams?.[0]?.url}`,
+          message: `Stream is playing, resetting reconnect attempts for ${playerState.value?.title}`,
         });
       }
     };
@@ -379,6 +374,7 @@ export const usePlayer = () => {
       audio.removeEventListener('stalled', handleError);
       audio.removeEventListener('playing', handlePlaying);
       if (reconnectTimeout.current) {
+        console.log('useEffect cleanup: Cleaning up reconnect timeout');
         clearTimeout(reconnectTimeout.current);
       }
     };
@@ -386,13 +382,14 @@ export const usePlayer = () => {
 
   useEffect(() => {
     const forceRetry = (reason: string) => {
-      if (reconnectAttempts.value > 0) {
+      if (reconnectAttempts.current > 0) {
         console.log(`${reason} during reconnect. Forcing immediate retry.`);
         addLogEntry({
           level: 'info',
           message: `${reason} during reconnect. Forcing immediate retry.`,
         });
         if (reconnectTimeout.current) {
+          console.log('useEffect forceRetry: Cleaning up reconnect timeout');
           clearTimeout(reconnectTimeout.current);
         }
         // A short delay to allow the browser to stabilize
@@ -430,7 +427,7 @@ export const usePlayer = () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, [reconnectAttempts.value, retryConnection]);
+  }, [retryConnection]);
 
   const handleEnded = useCallback(() => {
     if (isPodcast) {
@@ -488,8 +485,9 @@ export const usePlayer = () => {
       !playerState.value ||
       typeof navigator.mediaSession === 'undefined' ||
       (isPodcast && durationSignal.value === 0)
-    )
+    ) {
       return;
+    }
 
     navigator.mediaSession.metadata = new MediaMetadata({
       title: playerState.value.title,

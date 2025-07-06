@@ -1,4 +1,5 @@
-import { ArrowRightFromLine, Download, LoaderCircle, TriangleAlert } from 'lucide-preact';
+import { For } from '@preact/signals/utils';
+import { ArrowRightFromLine, Copy, Download, LoaderCircle, TriangleAlert } from 'lucide-preact';
 import { Button } from '~/components/ui/button';
 import { RadioButtonList } from '~/components/ui/radio-button-list';
 import { Switch } from '~/components/ui/switch';
@@ -15,6 +16,7 @@ export const SettingsPage = () => {
     searchProviderValue,
     radioStreamMaxReconnectsValue,
     hasNoiseMuted,
+    isLoggingEnabled,
     hasGoogleCastsSupport,
     isImporting,
     handleThemeChange,
@@ -79,21 +81,32 @@ export const SettingsPage = () => {
             <Switch checked={hasNoiseMuted} onClick={handleMuteNoiseChange} label="Mute noise" />
           </>
         )}
-        {typeof window !== 'undefined' && window.location.search.includes('log') && (
+        {typeof window !== 'undefined' && (window.location.search.includes('log') || isLoggingEnabled) && (
           <>
             <p class="text-muted-foreground text-sm my-4">
               Record a log of erros and actions in the app. This is useful for debugging issues.
             </p>
-            <Switch checked={hasNoiseMuted} onClick={handleEnableLoggingChange} label="Enable logging" />
-            <div class="mt-4">
-              {logState.value?.map((entry) => (
-                <div class="border p-2 mb-2 rounded" key={entry.timestamp.toISOString()}>
-                  <p class="text-xs text-muted-foreground">
-                    {entry.timestamp.toLocaleString()} - <span class={`text-${entry.level}`}>{entry.level}</span>
-                  </p>
-                  <p class="text-sm">{entry.message}</p>
-                </div>
-              ))}
+            <Switch checked={isLoggingEnabled} onClick={handleEnableLoggingChange} label="Enable logging" />
+            <Copy
+              class="opacity-50 hover:opacity-100 cursor-pointer -mt-4 right-0 absolute active:text-primary"
+              onClick={() => navigator.clipboard.writeText(JSON.stringify(logState.value, null, 2))}
+            />
+            <div class="mt-4 p-2 border rounded scroll-auto max-h-36 overflow-y-auto">
+              <For
+                each={logState}
+                fallback={
+                  <p class="text-sm text-muted-foreground">No logs available. Enable logging to see logs here.</p>
+                }
+              >
+                {(entry) => (
+                  <div class="border p-2 mb-2 rounded">
+                    <p class="text-xs text-muted-foreground">
+                      {entry.timestamp.toLocaleString()} - <span class={`text-${entry.level}`}>{entry.level}</span>
+                    </p>
+                    <p class="text-sm">{entry.message}</p>
+                  </div>
+                )}
+              </For>
             </div>
           </>
         )}

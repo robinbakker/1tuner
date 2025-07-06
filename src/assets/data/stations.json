@@ -4420,6 +4420,21 @@
       ],
       "stationuuid": "115ad1e3-8ab6-4ce7-9d03-0126dcea8a8c",
       "related": ["funx", "npoblend"]
+    },
+    {
+      "id": "alltimehits",
+      "displayorder": 150,
+      "genres": ["nonstop", "pop"],
+      "language": "nl",
+      "logosource": "https://alltimehits.nl/alltimehits-512x512.png",
+      "name": "All Time Hits",
+      "streams": [
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://stream.alltimehits.eu/listen.mp3"
+        }
+      ],
+      "website": "https://alltimehits.nl"
     }
   ]
 }

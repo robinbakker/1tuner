@@ -238,5 +238,6 @@ export const useSettings = () => {
     radioStreamMaxReconnectsValue: settingsState.value.radioStreamMaxReconnects ?? 50,
     hasGoogleCastsSupport: !!settingsState.value.enableChromecast,
     hasNoiseMuted: !!settingsState.value.disableReconnectNoise,
+    isLoggingEnabled: !!settingsState.value.enableLogging,
   };
 };
