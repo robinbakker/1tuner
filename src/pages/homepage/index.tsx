@@ -1,4 +1,5 @@
 import { computed } from '@preact/signals';
+import { For } from '@preact/signals/utils';
 import { ContentSection } from '~/components/content-section';
 import { PodcastCard } from '~/components/podcast-card';
 import { RadioStationCard } from '~/components/radio-station-card';
@@ -35,21 +36,25 @@ export const Homepage = () => {
       </header>
       <ContentSection title="Radio stations" moreLink="/radio-stations" hasSearchButton isScrollable>
         <ul class="flex gap-6 md:gap-10 px-4 md:px-6">
-          {recentlyVisitedRadioStations.value.map((station) => (
-            <li class="shrink-0">
-              <RadioStationCard key={station.id} station={station} />
-            </li>
-          ))}
+          <For each={recentlyVisitedRadioStations}>
+            {(station) => (
+              <li class="shrink-0">
+                <RadioStationCard station={station} />
+              </li>
+            )}
+          </For>
           <li class="shrink-0 w-0.5"></li>
         </ul>
       </ContentSection>
       <ContentSection title="Podcasts" moreLink="/podcasts" hasSearchButton isScrollable>
         <ul class="flex gap-6 md:gap-10 px-4 md:px-6">
-          {homepagePodcasts.value.map((podcast) => (
-            <li class="shrink-0">
-              <PodcastCard key={podcast.id} podcast={podcast} />
-            </li>
-          ))}
+          <For each={homepagePodcasts}>
+            {(podcast) => (
+              <li class="shrink-0">
+                <PodcastCard podcast={podcast} />
+              </li>
+            )}
+          </For>
           <li class="shrink-0 w-0.5"></li>
         </ul>
       </ContentSection>

@@ -1,3 +1,4 @@
+import { For } from '@preact/signals/utils';
 import { cn } from '~/lib/utils';
 import { toasts } from '~/store/signals/ui';
 import { Toast } from './toast';
@@ -18,9 +19,7 @@ export function Toaster({ isPlayerOpen, isPlayerMaximized }: Props) {
         isPlayerMaximized && 'bottom-0',
       )}
     >
-      {toasts.value.map((toast) => (
-        <Toast key={toast.id} {...toast} />
-      ))}
+      <For each={toasts}>{(toast) => <Toast {...toast} />}</For>
     </div>
   );
 }
