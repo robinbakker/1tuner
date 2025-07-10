@@ -1251,7 +1251,7 @@
         }
       ],
       "website": "https://www.nporadio2.nl",
-      "related": ["xxlstenders", "40upradio", "radio1", "3fm", "radio4", "radio5"],
+      "related": ["radio1", "3fm", "radio4", "radio5"],
       "podcasts": [
         "https://podcast.npo.nl/feed/30-minuten-rauw.xml",
         "https://podcast.npo.nl/feed/barts-classic-track.xml",
@@ -2758,7 +2758,7 @@
     },
     {
       "displayorder": 104,
-      "genres": ["sports", "pop", "dance"],
+      "genres": ["sports", "pop"],
       "language": "nl",
       "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/grandprixradio",
       "name": "Grand Prix Radio",
@@ -3215,7 +3215,6 @@
         }
       ],
       "website": "https://allsportsradio.nl",
-      "related": ["radio1"],
       "social": [
         {
           "title": "@sportsradionl",

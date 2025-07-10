@@ -1,5 +1,5 @@
 import { useRoute } from 'preact-iso';
-import { useEffect, useMemo, useState } from 'preact/hooks';
+import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import { useRadioBrowser } from '~/hooks/useRadioBrowser';
 import { isDBLoaded } from '~/store/db/db';
@@ -11,6 +11,7 @@ import {
   getStationPodcasts,
   isFollowedRadioStation,
   RADIO_BROWSER_PARAM_PREFIX,
+  radioStations,
   unfollowRadioStation,
 } from '~/store/signals/radio';
 import { uiState } from '~/store/signals/ui';
@@ -115,6 +116,86 @@ export const useRadioStation = () => {
       });
   }, [isDBLoaded.value, isFetchingData, radioStation?.name]);
 
+  const getRelatedStations = useCallback(
+    (maxResults: number) => {
+      if (!radioStation || !radioStations.value?.length || maxResults <= 0) {
+        return [];
+      }
+      const genreSet = new Set(radioStation.genres ?? []);
+      const language = radioStation.language;
+      const stationId = radioStation.id;
+
+      // 1. Add explicitly related stations first (in order)
+      const result = radioStation.related
+        ? radioStation.related
+            .map((relId) => radioStations.value.find((s) => s.id === relId))
+            .filter((s): s is (typeof radioStations.value)[0] => !!s && s.id !== stationId)
+            .slice(0, maxResults)
+        : [];
+
+      // Helper to check if genres match exactly
+      const genresMatch = (a: string[], b: string[]) => a.length === b.length && a.every((g) => b.includes(g));
+
+      // 2. Exact match: same genres and same language
+      for (const s of radioStations.value) {
+        if (result.length >= maxResults) break;
+        if (
+          s.id !== stationId &&
+          s.language === language &&
+          genresMatch(s.genres, radioStation.genres) &&
+          !result.some((r) => r.id === s.id)
+        ) {
+          result.push(s);
+        }
+      }
+
+      const overlappingStations = radioStations.value
+        .filter(
+          (s) =>
+            s.id !== stationId && !genresMatch(s.genres, radioStation.genres) && !result.some((r) => r.id === s.id),
+        )
+        .map((s) => ({
+          station: s,
+          overlap: s.genres.filter((g) => genreSet.has(g)).length,
+        }))
+        .filter((item) => item.overlap > 0)
+        .sort((a, b) => b.overlap - a.overlap)
+        .map((item) => item.station);
+
+      // 3. Most overlapping genres, same language (not already included)
+      for (const s of overlappingStations.filter((s) => s.language === language)) {
+        if (result.length >= maxResults) break;
+        result.push(s);
+      }
+
+      // 4. Same genres, other languages
+      for (const s of radioStations.value) {
+        if (result.length >= maxResults) break;
+        if (
+          s.id !== stationId &&
+          s.language !== language &&
+          genresMatch(s.genres, radioStation.genres) &&
+          !result.some((r) => r.id === s.id)
+        ) {
+          result.push(s);
+        }
+      }
+
+      // 5. Most overlapping genres, other languages (not already included)
+      for (const s of overlappingStations.filter((s) => s.language !== language)) {
+        if (result.length >= maxResults) break;
+        result.push(s);
+      }
+
+      return result.slice(0, maxResults);
+    },
+    [radioStation, radioStations.value],
+  );
+
+  const relatedStations = useMemo(() => {
+    return getRelatedStations(8);
+  }, [getRelatedStations]);
+
   return {
     params,
     isPlaying,
@@ -123,6 +204,7 @@ export const useRadioStation = () => {
     radioStation,
     stationPodcasts,
     isFollowing,
+    relatedStations,
     toggleFollow,
   };
 };

@@ -8,7 +8,7 @@ import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { normalizedUrlWithoutScheme } from '~/lib/utils';
 import { playerState } from '~/store/signals/player';
-import { allRadioStations, getRadioStationLanguage } from '~/store/signals/radio';
+import { getRadioStationLanguage } from '~/store/signals/radio';
 import { SocialAccountType } from '~/store/types';
 import { useRadioStation } from './useRadioStation';
 
@@ -22,6 +22,7 @@ export const RadioStationPage = () => {
     isRadioBrowserStation,
     isFollowing,
     stationPodcasts,
+    relatedStations,
     toggleFollow,
   } = useRadioStation();
 
@@ -150,15 +151,13 @@ export const RadioStationPage = () => {
         </div>
       </header>
       <div class="container mx-auto px-8 py-6">
-        {!!radioStation.related?.length && (
+        {!!relatedStations.length && (
           <section class="@container">
             <h2 class="text-2xl font-semibold mb-4">Related</h2>
             <div class="grid grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3 gap-6">
-              {allRadioStations.value
-                .filter((rs) => radioStation.related?.includes(rs.id))
-                .map((s) => (
-                  <RadioStationCard key={`related-${s.id}`} station={s} size="large" />
-                ))}
+              {relatedStations.map((s) => (
+                <RadioStationCard key={`related-${s.id}`} station={s} size="large" />
+              ))}
             </div>
           </section>
         )}
