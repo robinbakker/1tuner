@@ -12,6 +12,7 @@ import { usePlayer } from './usePlayer';
 export const Player = () => {
   const {
     audioRef,
+    audioKey,
     currentTime,
     currentTimeDisplayRef,
     progressBarRef,
@@ -51,7 +52,7 @@ export const Player = () => {
         touchAction: isPlayerMaximized.value ? 'none' : undefined,
       }}
     >
-      <audio ref={audioRef} preload="metadata">
+      <audio key={audioKey.value} ref={audioRef} preload="metadata">
         {playerState.value?.streams.map((stream) => (
           <source key={stream.url} src={stream.url} type={stream.mimetype} />
         ))}

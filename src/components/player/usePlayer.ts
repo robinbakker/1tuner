@@ -18,6 +18,7 @@ export const playbackRateSignal = signal(1);
 export const durationSignal = signal(0);
 export const audioSourcesSignal = computed(() => playerState.value?.streams || []);
 export const currentTime = signal(0);
+export const audioKey = signal(0);
 
 export const usePlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -312,6 +313,13 @@ export const usePlayer = () => {
           }
         : null;
       return;
+    } else if (reconnectAttempts.current % 10 === 0) {
+      console.log('Incrementing audioKey to force re-render');
+      audioKey.value += 1;
+      addLogEntry({
+        level: 'info',
+        message: `Incrementing audioKey to force re-render after ${reconnectAttempts.current} attempts`,
+      });
     }
 
     reconnectAttempts.current += 1;
@@ -540,6 +548,11 @@ export const usePlayer = () => {
     };
   }, [playerState.value, durationSignal.value, isPodcast, handlePlayPause, handleSeek, updateTimeUI]);
 
+  // Expose a function to force remount
+  const forceAudioRemount = () => {
+    audioKey.value += 1;
+  };
+
   return {
     audioRef,
     currentTime,
@@ -563,5 +576,7 @@ export const usePlayer = () => {
     castSession,
     startCasting,
     stopCasting,
+    audioKey,
+    forceAudioRemount,
   };
 };
