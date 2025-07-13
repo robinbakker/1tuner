@@ -123,10 +123,3 @@ export async function saveStateToDB() {
     console.error('Error saving state to DB:', error);
   }
 }
-
-export function useDB() {
-  return {
-    loadStateFromDB,
-    saveStateToDB,
-  };
-}
