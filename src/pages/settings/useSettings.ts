@@ -1,4 +1,5 @@
 import { XMLParser } from 'fast-xml-parser';
+import { ChangeEvent } from 'preact/compat';
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { RadioButtonListOption } from '~/components/ui/radio-button-list';
 import { useHead } from '~/hooks/useHead';
@@ -6,6 +7,7 @@ import { usePodcastData } from '~/hooks/usePodcastData';
 import { opmlUtil } from '~/lib/opmlUtil';
 import { delay, getPodcastUrlID, normalizedUrlWithoutScheme } from '~/lib/utils';
 import { isDBLoaded } from '~/store/db/db';
+import { logDays, logState } from '~/store/signals/log';
 import { followedPodcasts, followPodcast } from '~/store/signals/podcast';
 import { DEFAULT_MAX_RECONNECT_ATTEMPTS, settingsState } from '~/store/signals/settings';
 import { uiState } from '~/store/signals/ui';
@@ -15,6 +17,7 @@ import { ThemeOption } from './types';
 export const useSettings = () => {
   const { fetchPodcastData } = usePodcastData();
   const [isImporting, setIsImporting] = useState(false);
+  const [selectedLogDay, setSelectedLogDay] = useState<string | null>(null);
   const themeOptions: RadioButtonListOption[] = [
     { label: 'System default', value: 'default' },
     { label: 'Light', value: 'light' },
@@ -213,6 +216,28 @@ export const useSettings = () => {
     }
   };
 
+  const handleLogDayChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const day = e.currentTarget.value || null;
+    if (!day || day === selectedLogDay) return;
+    setSelectedLogDay(day);
+  };
+
+  const handleCopyLogs = () => {
+    navigator.clipboard.writeText(
+      JSON.stringify(
+        logState.value.filter((entry) => entry.timestamp.toISOString().startsWith(selectedLogDay ?? '')),
+        null,
+        2,
+      ),
+    );
+  };
+
+  useEffect(() => {
+    if (logDays.value.length > 0) {
+      setSelectedLogDay(logDays.value[0]);
+    }
+  }, [logDays.value]);
+
   useEffect(() => {
     if (!isDBLoaded.value) return;
     const previousState = { ...uiState.value };
@@ -239,5 +264,8 @@ export const useSettings = () => {
     hasGoogleCastsSupport: !!settingsState.value.enableChromecast,
     hasNoiseMuted: !!settingsState.value.disableReconnectNoise,
     isLoggingEnabled: !!settingsState.value.enableLogging,
+    selectedLogDay,
+    handleLogDayChange,
+    handleCopyLogs,
   };
 };

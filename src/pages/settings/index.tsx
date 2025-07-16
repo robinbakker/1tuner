@@ -1,11 +1,11 @@
-import { For } from '@preact/signals/utils';
+import { For, Show } from '@preact/signals/utils';
 import { ArrowRightFromLine, Copy, Download, LoaderCircle, TriangleAlert } from 'lucide-preact';
 import { Button } from '~/components/ui/button';
 import { RadioButtonList } from '~/components/ui/radio-button-list';
 import { Switch } from '~/components/ui/switch';
 import { styleClass } from '~/lib/styleClass';
 import { APP_VERSION } from '~/lib/version';
-import { logState } from '~/store/signals/log';
+import { hasLog, logDays, logState } from '~/store/signals/log';
 import { useSettings } from './useSettings';
 
 export const SettingsPage = () => {
@@ -19,6 +19,9 @@ export const SettingsPage = () => {
     isLoggingEnabled,
     hasGoogleCastsSupport,
     isImporting,
+    selectedLogDay,
+    handleLogDayChange,
+    handleCopyLogs,
     handleThemeChange,
     handleSearchProviderChange,
     handleAutomaticRadioReconnect,
@@ -87,27 +90,56 @@ export const SettingsPage = () => {
               Record a log of erros and actions in the app. This is useful for debugging issues.
             </p>
             <Switch checked={isLoggingEnabled} onClick={handleEnableLoggingChange} label="Enable logging" />
-            <Copy
-              class="opacity-50 hover:opacity-100 cursor-pointer -mt-4 right-0 absolute active:text-primary"
-              onClick={() => navigator.clipboard.writeText(JSON.stringify(logState.value, null, 2))}
-            />
-            <div class="mt-4 p-2 border rounded scroll-auto max-h-36 overflow-y-auto">
-              <For
-                each={logState}
-                fallback={
-                  <p class="text-sm text-muted-foreground">No logs available. Enable logging to see logs here.</p>
-                }
-              >
-                {(entry) => (
-                  <div class="border p-2 mb-2 rounded">
-                    <p class="text-xs text-muted-foreground">
-                      {entry.timestamp.toLocaleString()} - <span class={`text-${entry.level}`}>{entry.level}</span>
-                    </p>
-                    <p class="text-sm">{entry.message}</p>
-                  </div>
-                )}
-              </For>
-            </div>
+            <Show
+              when={hasLog}
+              fallback={
+                <p class="text-sm text-muted-foreground">
+                  No logs available yet. Enable logging, and after reconnects, logs will appear here.
+                </p>
+              }
+            >
+              <>
+                <Copy
+                  class="opacity-50 hover:opacity-100 cursor-pointer mt-2 right-0 absolute active:text-primary"
+                  onClick={handleCopyLogs}
+                />
+                <select
+                  title="Log days"
+                  value={selectedLogDay ?? ''}
+                  onChange={handleLogDayChange}
+                  class={`${styleClass.selectSmall} inline-block mt-2`}
+                >
+                  <For each={logDays}>
+                    {(day) => (
+                      <option key={day} value={day}>
+                        {new Date(day).toLocaleDateString(undefined, {
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                          weekday: 'short',
+                        })}
+                        {' - '}
+                        {logState.value.filter((entry) => entry.timestamp.toISOString().startsWith(day)).length} logs
+                      </option>
+                    )}
+                  </For>
+                </select>
+                <div class="mt-2 p-2 border rounded scroll-auto max-h-36 overflow-y-auto">
+                  {logState.value.map((entry, index) =>
+                    entry.timestamp.toISOString().startsWith(selectedLogDay ?? '') ? (
+                      <div key={index} class="border p-2 mb-2 rounded">
+                        <p class="text-xs text-muted-foreground">
+                          {entry.timestamp.toLocaleString()} - <span class={`text-${entry.level}`}>{entry.level}</span>
+                        </p>
+                        <p class="text-sm">{entry.message}</p>
+                      </div>
+                    ) : (
+                      <div key={index} class="hidden"></div>
+                    ),
+                  )}
+                </div>
+              </>
+            </Show>
           </>
         )}
       </section>
