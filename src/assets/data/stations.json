@@ -2132,7 +2132,8 @@
         }
       ],
       "id": "arrow",
-      "stationuuid": "d58a82c3-b7f1-4c1c-83b1-9e45d42e1e19"
+      "stationuuid": "d58a82c3-b7f1-4c1c-83b1-9e45d42e1e19",
+      "related": ["arrowbluesbox"]
     },
     {
       "displayorder": 76,
@@ -4434,6 +4435,66 @@
         }
       ],
       "website": "https://alltimehits.nl"
+    },
+    {
+      "id": "arrowbluesbox",
+      "displayorder": 151,
+      "genres": ["blues", "rock"],
+      "language": "nl",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/arrowbluesbox",
+      "name": "Arrow Bluesbox",
+      "streams": [
+        {
+          "mimetype": "audio/aac",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/ARROWBLUESBOXAAC.aac"
+        }
+      ],
+      "website": "https://arrowbluesbox.nl",
+      "social": [
+        {
+          "title": "@arrowbluesbox",
+          "type": "facebook",
+          "account": "arrowbluesbox",
+          "url": "https://www.facebook.com/arrowbluesbox"
+        }
+      ],
+      "related": ["arrow"]
+    },
+    {
+      "id": "kissfmnl",
+      "displayorder": 152,
+      "genres": ["pop"],
+      "language": "nl",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/kissfmnederland",
+      "name": "KISS FM",
+      "streams": [
+        {
+          "mimetype": "audio/mpeg",
+          "url": "https://stream.kissfm.nl/kissfm"
+        }
+      ],
+      "website": "https://kissfm.nl",
+      "social": [
+        {
+          "title": "@kissfmnederland",
+          "type": "facebook",
+          "account": "kissfmnederland",
+          "url": "https://www.facebook.com/kissfmnederland"
+        },
+        {
+          "title": "@kissfmnederland",
+          "type": "instagram",
+          "account": "kissfmnederland",
+          "url": "https://www.instagram.com/kissfmnederland"
+        },
+        {
+          "title": "@kissfmnederland",
+          "type": "tiktok",
+          "account": "kissfmnederland",
+          "url": "https://www.tiktok.com/@kissfmnederland"
+        }
+      ],
+      "related": ["glxyradio"]
     }
   ]
 }
