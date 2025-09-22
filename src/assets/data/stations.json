@@ -4495,6 +4495,35 @@
         }
       ],
       "related": ["glxyradio"]
+    },
+    {
+      "id": "radio972",
+      "displayorder": 153,
+      "genres": ["dance", "electronic"],
+      "language": "nl",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/Radio972",
+      "name": "Radio 972",
+      "streams": [
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO972.mp3?dist=portal"
+        }
+      ],
+      "website": "https://www.radio972.com",
+      "social": [
+        {
+          "title": "@Radio972",
+          "type": "facebook",
+          "account": "Radio972",
+          "url": "https://www.facebook.com/Radio972"
+        },
+        {
+          "title": "@radio.972",
+          "type": "instagram",
+          "account": "radio.972",
+          "url": "https://www.instagram.com/radio.972"
+        }
+      ]
     }
   ]
 }
