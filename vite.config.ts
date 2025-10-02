@@ -11,7 +11,7 @@ export default defineConfig({
     preact({ prerender: { enabled: true, renderTarget: '#app' } }),
     tailwindcss(),
     VitePWA({
-      injectRegister: 'auto',
+      injectRegister: 'script-defer',
       registerType: 'autoUpdate',
       manifest: false,
       workbox: {
