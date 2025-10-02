@@ -234,6 +234,7 @@ export const Player = () => {
                 />
                 <button
                   onClick={handlePlayPause}
+                  aria-label={playerState.value?.isPlaying ? 'Pause' : 'Play'}
                   class="absolute inset-0 flex items-center cursor-pointer justify-center bg-black/40 rounded-md hover:bg-black/50 transition-colors"
                 >
                   {playerState.value?.isPlaying ? (
@@ -292,6 +293,7 @@ export const Player = () => {
                 )}
                 <button
                   onClick={handleClose}
+                  aria-label={'Close player'}
                   class="ml-2 mr-4 p-2 hover:bg-stone-200 dark:hover:bg-stone-600 cursor-pointer rounded-full transition-colors shrink-0"
                 >
                   <X class="h-6 w-6 text-stone-600 dark:text-stone-300" />

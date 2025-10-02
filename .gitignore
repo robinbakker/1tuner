@@ -24,7 +24,16 @@ dist-ssr
 *.sln
 *.sw?
 .aider*
+.gemini
+.playwright-mcp
 .env
 .firebase
 .firebaserc
 /firebase.json
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
