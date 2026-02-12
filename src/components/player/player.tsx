@@ -146,7 +146,9 @@ export const Player = () => {
                     </div>
                     <div class="w-full px-6 mb-6">
                       <div class="flex items-center space-x-2 text-sm text-stone-500">
-                        <span ref={currentTimeDisplayRef}>{formatTime(currentTime.value)}</span>
+                        <span class="tabular-nums" ref={currentTimeDisplayRef}>
+                          {formatTime(currentTime.value)}
+                        </span>
                         <input
                           ref={sliderRef}
                           type="range"
@@ -165,7 +167,7 @@ export const Player = () => {
                             backgroundImage: `linear-gradient(to right, #ff6000 ${progressPercentage.value}%, #ccc ${progressPercentage.value}%)`,
                           }}
                         />
-                        <span>{formatTime(duration.value)}</span>
+                        <span class="tabular-nums">{formatTime(duration.value)}</span>
                       </div>
                     </div>
                   </>
