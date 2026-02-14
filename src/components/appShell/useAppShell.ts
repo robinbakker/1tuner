@@ -40,7 +40,7 @@ export const useAppShell = () => {
   };
 
   const isMainRoute = useMemo(() => {
-    return ['/', '/radio-stations', '/podcasts', '/settings'].includes(path);
+    return ['/', '/radio-stations', '/podcasts', '/playlists', '/settings'].includes(path);
   }, [path]);
 
   return {

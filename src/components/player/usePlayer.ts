@@ -66,6 +66,7 @@ export const usePlayer = () => {
   });
 
   const formatTime = useCallback((time: number) => {
+    if (isNaN(time) || !isFinite(time) || time == null) return '';
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;

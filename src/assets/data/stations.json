@@ -1663,7 +1663,7 @@
       "displayorder": 46,
       "genres": ["hiphop", "pop", "rap", "rnb"],
       "language": "fr",
-      "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/SkyrockFM",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/SkyrockFM",
       "name": "Skyrock",
       "streams": [
         {
@@ -1678,6 +1678,12 @@
           "type": "twitter",
           "account": "SkyrockFM",
           "url": "https://twitter.com/SkyrockFM"
+        },
+        {
+          "title": "@SkyrockFM",
+          "type": "facebook",
+          "account": "SkyrockFM",
+          "url": "https://www.facebook.com/SkyrockFM"
         }
       ],
       "id": "skyrock",
@@ -2162,7 +2168,7 @@
       "displayorder": 77,
       "genres": ["alternative", "pop", "rock", "oldies"],
       "language": "nl",
-      "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/KINK80s",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/KINK80snl",
       "name": "KINK 80's",
       "streams": [
         {

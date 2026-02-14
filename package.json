@@ -1,7 +1,7 @@
 {
   "name": "1tuner",
   "private": true,
-  "version": "3.1.17",
+  "version": "3.1.18",
   "description": "1 web app to listen to radio and podcasts",
   "author": "Robin Bakker",
   "license": "MIT",
@@ -25,12 +25,12 @@
     ]
   },
   "dependencies": {
-    "@preact/signals": "^2.7.1",
+    "@preact/signals": "^2.8.0",
     "@tailwindcss/vite": "^4.1.18",
     "class-variance-authority": "^0.7.1",
     "fast-xml-parser": "^5.3.5",
     "idb": "^8.0.3",
-    "lucide-preact": "^0.563.0",
+    "lucide-preact": "^0.564.0",
     "preact": "^10.28.3",
     "preact-iso": "^2.11.1",
     "tailwindcss-animate": "^1.0.7"
@@ -44,7 +44,7 @@
     "@types/node": "^25.2.3",
     "clsx": "^2.1.1",
     "country-flag-emoji-polyfill": "^0.1.8",
-    "dotenv": "^17.3.0",
+    "dotenv": "^17.3.1",
     "eslint": "^9.39.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",

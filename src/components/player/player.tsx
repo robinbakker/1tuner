@@ -145,30 +145,32 @@ export const Player = () => {
                       </button>
                     </div>
                     <div class="w-full px-6 mb-6">
-                      <div class="flex items-center space-x-2 text-sm text-stone-500">
-                        <span class="tabular-nums" ref={currentTimeDisplayRef}>
-                          {formatTime(currentTime.value)}
-                        </span>
-                        <input
-                          ref={sliderRef}
-                          type="range"
-                          min="0"
-                          max={duration || 0}
-                          value={currentTime.value}
-                          onChange={handleSliderChange}
-                          class={cn(
-                            'flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-stone-300 dark:bg-stone-600',
-                            '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4',
-                            '[&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary',
-                            '[&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4',
-                            '[&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-0',
-                          )}
-                          style={{
-                            backgroundImage: `linear-gradient(to right, #ff6000 ${progressPercentage.value}%, #ccc ${progressPercentage.value}%)`,
-                          }}
-                        />
-                        <span class="tabular-nums">{formatTime(duration.value)}</span>
-                      </div>
+                      {!!duration.value && (
+                        <div class="flex items-center space-x-2 text-sm text-stone-500">
+                          <span class="tabular-nums" ref={currentTimeDisplayRef}>
+                            {formatTime(currentTime.value)}
+                          </span>
+                          <input
+                            ref={sliderRef}
+                            type="range"
+                            min="0"
+                            max={duration.value || 0}
+                            value={currentTime.value}
+                            onChange={handleSliderChange}
+                            class={cn(
+                              'flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-stone-300 dark:bg-stone-600',
+                              '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4',
+                              '[&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary',
+                              '[&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4',
+                              '[&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-0',
+                            )}
+                            style={{
+                              backgroundImage: `linear-gradient(to right, #ff6000 ${progressPercentage.value}%, #ccc ${progressPercentage.value}%)`,
+                            }}
+                          />
+                          <span class="tabular-nums">{formatTime(duration.value)}</span>
+                        </div>
+                      )}
                     </div>
                   </>
                 )}

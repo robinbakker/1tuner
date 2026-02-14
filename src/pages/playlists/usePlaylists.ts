@@ -1,9 +1,11 @@
 import { ChangeEvent } from 'preact/compat';
-import { useCallback, useMemo, useState } from 'preact/hooks';
+import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import { playlistUtil } from '~/lib/playlistUtil';
+import { isDBLoaded } from '~/store/db/db';
 import { playlistRules, playlists } from '~/store/signals/playlist';
 import { getRadioStation } from '~/store/signals/radio';
+import { uiState } from '~/store/signals/ui';
 import { PlaylistItem, PlaylistRuleType, RadioStation } from '~/store/types';
 import { PlaylistData, RuleDestination, StationPercentage } from './types';
 
@@ -147,6 +149,13 @@ export const usePlaylists = () => {
   const handleRulePlaylistChange = (value: string) => {
     playlistRules.value = [{ ruleType: PlaylistRuleType.podcastToPlaylist, playlistUrl: value }];
   };
+
+  useEffect(() => {
+    if (!isDBLoaded.value) return;
+    const previousState = { ...uiState.value };
+    uiState.value = { ...previousState, headerTitle: 'Playlists' };
+    return () => (uiState.value = { ...previousState, headerTitle: '' });
+  }, [isDBLoaded.value]);
 
   return {
     playlistsData,

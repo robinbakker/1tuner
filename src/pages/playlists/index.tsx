@@ -22,7 +22,7 @@ export const PlaylistsPage = () => {
   } = usePlaylists();
 
   return (
-    <div class="container mx-auto px-8 py-6">
+    <div class="container mx-auto px-8 pb-6">
       <h1 class="text-3xl font-bold mb-6">Playlists</h1>
       <section class="mb-8 relative">
         <h2 class="text-xl font-semibold">Rules</h2>
