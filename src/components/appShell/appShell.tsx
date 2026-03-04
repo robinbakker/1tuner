@@ -207,7 +207,7 @@ export const AppShell = ({ children }: AppShellProps) => {
                     onClick={handleBackClick}
                     class={cn(
                       'p-2 rounded-full transition-colors duration-200',
-                      isLightHeaderText ? 'hover:bg-stone-200/20' : 'hover:bg-stone-200 dark:hover:bg-stone-600',
+                      isLightHeaderText ? 'text-white hover:bg-stone-200/20' : 'hover:bg-stone-200 dark:hover:bg-stone-600',
                     )}
                     aria-label="Go back"
                   >
