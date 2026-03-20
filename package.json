@@ -1,7 +1,7 @@
 {
   "name": "1tuner",
   "private": true,
-  "version": "3.1.20",
+  "version": "3.1.21",
   "description": "1 web app to listen to radio and podcasts",
   "author": "Robin Bakker",
   "license": "MIT",
@@ -28,7 +28,7 @@
     "@preact/signals": "^2.8.2",
     "@tailwindcss/vite": "^4.2.2",
     "class-variance-authority": "^0.7.1",
-    "fast-xml-parser": "^5.5.6",
+    "fast-xml-parser": "^5.5.8",
     "idb": "^8.0.3",
     "lucide-preact": "^0.577.0",
     "preact": "^10.29.0",

@@ -118,6 +118,9 @@ export const usePodcastData = () => {
           const parser = new XMLParser({
             ignoreAttributes: false,
             attributeNamePrefix: '@_',
+            processEntities: {
+              enabled: false
+            },
           });
           const result = parser.parse(xmlData);
 

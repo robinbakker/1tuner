@@ -123,6 +123,9 @@ export const useSettings = () => {
         const parser = new XMLParser({
           ignoreAttributes: false,
           attributeNamePrefix: '@_',
+          processEntities: {
+            enabled: false
+          },
         });
 
         const result = parser.parse(text);
