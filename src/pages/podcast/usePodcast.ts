@@ -112,7 +112,7 @@ export const usePodcast = () => {
         title: episode.title,
         description: podcast.title,
         imageUrl: podcast.imageUrl,
-        streams: [{ mimetype: episode.mimeType || 'audio/mpeg', url: episode.audio }],
+        streams: [{ mimetype: episode.mimeType || 'audio/mpeg', url: episode.audio.replace(/&amp;/g, '&') }],
         pageLocation: `/podcast/${params.name}/${params.id}`,
         currentTime: episode.currentTime || 0,
         shareUrl: `/podcast/${params.name}/${params.id}${episode.guid ? `/${encodeURIComponent(episode.guid)}` : ''}`,

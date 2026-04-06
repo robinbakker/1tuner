@@ -119,7 +119,7 @@ export const usePodcastData = () => {
             ignoreAttributes: false,
             attributeNamePrefix: '@_',
             processEntities: {
-              enabled: false
+              enabled: false,
             },
           });
           const result = parser.parse(xmlData);
@@ -156,7 +156,7 @@ export const usePodcastData = () => {
                   description: item.description,
                   guid: item.guid?.['#text'],
                   pubDate: new Date(item.pubDate),
-                  audio: item.enclosure?.['@_url'],
+                  audio: item.enclosure?.['@_url'].replace(/&amp;/g, '&') || '',
                   mimeType: item.enclosure?.['@_type'],
                   duration: getDurationString(`${item['itunes:duration'] ?? item['duration']}`),
                   currentTime:
