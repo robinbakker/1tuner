@@ -25,6 +25,12 @@ const isValidPodcastFeed = (xmlData: string): boolean => {
   return hasRssTag && hasChannelTag && hasItemTag && hasEnclosureTag;
 };
 
+const decodeHtmlEntities = (text: string): string => {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+};
+
 export const usePodcastData = () => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -129,11 +135,11 @@ export const usePodcastData = () => {
           }
 
           const channel = result.rss.channel;
-
+          console.log('Parsed channel data:', channel);
           podcastData = {
             id,
-            title: channel.title,
-            description: channel.description,
+            title: decodeHtmlEntities(channel.title),
+            description: decodeHtmlEntities(channel.description),
             imageUrl: channel.image?.url || channel['itunes:image']?.['@_href'] || '',
             url: feedUrl,
             feedUrl: feedUrl,
@@ -152,11 +158,11 @@ export const usePodcastData = () => {
                   'itunes:duration'?: string;
                   duration?: string;
                 }) => ({
-                  title: item.title,
-                  description: item.description,
+                  title: decodeHtmlEntities(item.title),
+                  description: decodeHtmlEntities(item.description),
                   guid: item.guid?.['#text'],
                   pubDate: new Date(item.pubDate),
-                  audio: item.enclosure?.['@_url'].replace(/&amp;/g, '&') || '',
+                  audio: decodeHtmlEntities(item.enclosure?.['@_url'] || ''),
                   mimeType: item.enclosure?.['@_type'],
                   duration: getDurationString(`${item['itunes:duration'] ?? item['duration']}`),
                   currentTime:
