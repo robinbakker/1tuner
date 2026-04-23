@@ -28,7 +28,7 @@
     "@preact/signals": "^2.9.0",
     "@tailwindcss/vite": "^4.2.2",
     "class-variance-authority": "^0.7.1",
-    "fast-xml-parser": "^5.5.10",
+    "fast-xml-parser": "^5.7.0",
     "idb": "^8.0.3",
     "lucide-preact": "^0.577.0",
     "preact": "^10.29.1",
