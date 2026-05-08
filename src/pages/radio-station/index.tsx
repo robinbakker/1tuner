@@ -1,11 +1,12 @@
-import { Bookmark, Facebook, Globe, Instagram, Pause, Play, Twitter, Youtube } from 'lucide-preact';
+import { Bookmark, Globe, Pause, Play } from 'lucide-preact';
 import { useLocation } from 'preact-iso';
-import tiktokUrl from '~/assets/icons/tiktok.svg';
+import { siFacebook, siInstagram, siTiktok, siX, siYoutube } from 'simple-icons';
 import { Loader } from '~/components/loader';
 import { PodcastCard } from '~/components/podcast-card';
 import { RadioStationCard } from '~/components/radio-station-card';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
+import { SimpleIcon } from '~/components/ui/simple-icon';
 import { normalizedUrlWithoutScheme } from '~/lib/utils';
 import { playerState } from '~/store/signals/player';
 import { getRadioStationLanguage } from '~/store/signals/radio';
@@ -46,15 +47,15 @@ export const RadioStationPage = () => {
   const getSocialIcon = (type: SocialAccountType) => {
     switch (type) {
       case SocialAccountType.Facebook:
-        return <Facebook size={20} />;
+        return <SimpleIcon icon={siFacebook} size={20} />;
       case SocialAccountType.Instagram:
-        return <Instagram size={20} />;
+        return <SimpleIcon icon={siInstagram} size={20} />;
       case SocialAccountType.Twitter:
-        return <Twitter size={20} />;
+        return <SimpleIcon icon={siX} size={17} />;
       case SocialAccountType.Youtube:
-        return <Youtube size={20} />;
+        return <SimpleIcon icon={siYoutube} size={20} />;
       case SocialAccountType.TikTok:
-        return <img src={tiktokUrl} width={20} height={20} alt="TikTok" />;
+        return <SimpleIcon icon={siTiktok} size={20} />;
       default:
         return null;
     }
@@ -92,14 +93,14 @@ export const RadioStationPage = () => {
                 <div class={`flex items-center space-x-2 ${radioStation.social?.length ? 'mb-2' : ''}`}>
                   {getRadioFlag()}
                   {!!radioStation.social?.length && (
-                    <div class="flex opacity-60 space-x-2 my-2">
+                    <div class="flex opacity-60 space-x-2 my-2 justify-center">
                       {radioStation.social?.map((s) => {
                         return (
                           <a
                             href={s.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="text-white opacity-80 drop-shadow-sm hover:opacity-100 w-6 transition-opacity"
+                            class="text-white opacity-80 drop-shadow-sm hover:opacity-100 w-6 transition-opacity self-center"
                           >
                             {getSocialIcon(s.type)}
                           </a>
