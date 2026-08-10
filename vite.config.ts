@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
-import { APP_VERSION } from './src/lib/version';
+import { APP_VERSION } from './src/lib/version.ts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -45,7 +45,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, './src'),
+      '~': path.resolve(import.meta.dirname, './src'),
     },
   },
 });
