@@ -344,7 +344,7 @@
       "displayorder": 30,
       "genres": ["dance", "pop", "rock"],
       "language": "es",
-      "logosource": "https://res.cloudinary.com/onetuner/image/twitter_name/CADENA100",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/CADENA100",
       "name": "CADENA 100",
       "streams": [
         {
@@ -359,6 +359,18 @@
           "type": "twitter",
           "account": "CADENA100",
           "url": "https://twitter.com/CADENA100"
+        },
+        {
+          "title": "@cadena100",
+          "type": "instagram",
+          "account": "cadena100",
+          "url": "https://www.instagram.com/cadena100"
+        },
+        {
+          "title": "@CADENA100",
+          "type": "facebook",
+          "account": "CADENA100",
+          "url": "https://www.facebook.com/CADENA100"
         }
       ],
       "id": "cadena100",
