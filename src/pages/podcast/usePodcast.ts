@@ -71,10 +71,9 @@ export const usePodcast = () => {
       const podcastData = await fetchPodcastData(params.id, paramsFeedUrl, skipCache);
       if (!podcastData) return;
 
-      uiState.value = { ...uiState.value, headerTitle: podcastData.title };
-
-      addRecentlyVisitedPodcast(podcastData);
-      setPodcast(podcastData);
+      const updatedPodcast = addRecentlyVisitedPodcast(podcastData);
+      uiState.value = { ...uiState.value, headerTitle: updatedPodcast.title };
+      setPodcast(updatedPodcast);
 
       if (isFollowedPodcast(params.id)) {
         setIsFollowing(true);

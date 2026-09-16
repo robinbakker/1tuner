@@ -1,4 +1,4 @@
-import { computed, signal } from '@preact/signals';
+import { batch, computed, signal } from '@preact/signals';
 import { Podcast, PodcastSearchResult } from '../types';
 
 export const followedPodcasts = signal<Podcast[]>([]);
@@ -38,10 +38,28 @@ export const updatePodcastEpisodeCurrentTime = (podcastID: string, episodeAudioU
 };
 
 export const addRecentlyVisitedPodcast = (podcast: Podcast) => {
-  recentlyVisitedPodcasts.value = [podcast, ...recentlyVisitedPodcasts.value.filter((p) => p.id !== podcast.id)].slice(
-    0,
-    10,
-  );
+  // Read progress at commit time: playback may have advanced while the feed was fetched.
+  const saved = getPodcast(podcast.id);
+  // A cached read can finish after a refresh; keep the newer feed metadata.
+  const latest = saved && saved.lastFetched > podcast.lastFetched ? saved : podcast;
+  const progress = new Map(saved?.episodes?.map((episode) => [episode.audio, episode.currentTime]));
+  const updatedPodcast: Podcast = {
+    ...latest,
+    addedDate: saved?.addedDate ?? latest.addedDate,
+    episodes: latest.episodes?.map((episode) => ({
+      ...episode,
+      currentTime: progress.get(episode.audio) ?? episode.currentTime,
+    })),
+  };
+
+  batch(() => {
+    followedPodcasts.value = followedPodcasts.value.map((p) => (p.id === podcast.id ? updatedPodcast : p));
+    recentlyVisitedPodcasts.value = [
+      updatedPodcast,
+      ...recentlyVisitedPodcasts.value.filter((p) => p.id !== podcast.id),
+    ].slice(0, 10);
+  });
+  return updatedPodcast;
 };
 
 export const addFollowedPodcast = (podcast: Podcast): boolean => {
