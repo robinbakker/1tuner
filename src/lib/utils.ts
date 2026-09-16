@@ -32,11 +32,14 @@ export const slugify = (text: string): string => {
     .replace(/-+$/, ''); // Trim - from end of text
 };
 
-export const stripHtml = (html: string) => {
+export const stripHtml = (html: string): string => {
   if (typeof window === 'undefined') return html;
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html;
-  return tmp.textContent || tmp.innerText || '';
+
+  const template = document.createElement('template');
+  template.innerHTML = html;
+  template.content.querySelectorAll('script, style').forEach((node) => node.remove());
+
+  return template.content.textContent ?? '';
 };
 
 const getTime = (part1: number, part2: number) => {
