@@ -6,6 +6,7 @@ import { usePodcastData } from '~/hooks/usePodcastData';
 import { opmlUtil } from '~/lib/opmlUtil';
 import { delay, getPodcastUrlID } from '~/lib/utils';
 import { isDBLoaded } from '~/store/db/db';
+import { updateSettings } from '~/store/settings';
 import { logDays, logState } from '~/store/signals/log';
 import { addFollowedPodcast, followedPodcasts, isFollowedPodcast } from '~/store/signals/podcast';
 import { DEFAULT_MAX_RECONNECT_ATTEMPTS, settingsState } from '~/store/signals/settings';
@@ -41,7 +42,7 @@ export const useSettings = () => {
   ];
 
   const handleThemeChange = (value: string) => {
-    settingsState.value.theme = value as ThemeOption;
+    updateSettings({ theme: value as ThemeOption });
     if (value === 'default') {
       window?.localStorage.removeItem('theme');
       document.documentElement.classList.remove('dark', 'light');
@@ -54,31 +55,27 @@ export const useSettings = () => {
 
   const handleSearchProviderChange = (value: string) => {
     if (!value) return;
-    settingsState.value.podcastSearchProvider = value as PodcastSearchProvider;
+    updateSettings({ podcastSearchProvider: value as PodcastSearchProvider });
   };
 
   const handleAutomaticRadioReconnect = (e: MouseEvent) => {
-    if (!settingsState.value) return;
     const input = e.currentTarget as HTMLInputElement;
-    settingsState.value.radioStreamMaxReconnects = input.checked ? DEFAULT_MAX_RECONNECT_ATTEMPTS : 0;
+    updateSettings({ radioStreamMaxReconnects: input.checked ? DEFAULT_MAX_RECONNECT_ATTEMPTS : 0 });
   };
 
   const handleGoogleCastSupportChange = (e: MouseEvent) => {
-    if (!settingsState.value) return;
     const input = e.currentTarget as HTMLInputElement;
-    settingsState.value.enableChromecast = input.checked;
+    updateSettings({ enableChromecast: input.checked });
   };
 
   const handleMuteNoiseChange = (e: MouseEvent) => {
-    if (!settingsState.value) return;
     const input = e.currentTarget as HTMLInputElement;
-    settingsState.value.disableReconnectNoise = input.checked;
+    updateSettings({ disableReconnectNoise: input.checked });
   };
 
   const handleEnableLoggingChange = (e: MouseEvent) => {
-    if (!settingsState.value) return;
     const input = e.currentTarget as HTMLInputElement;
-    settingsState.value.enableLogging = input.checked;
+    updateSettings({ enableLogging: input.checked });
   };
 
   const handleExportOpml = useCallback(async () => {
