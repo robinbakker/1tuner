@@ -1160,7 +1160,7 @@
       "displayorder": 85,
       "genres": ["electro", "world", "beat"],
       "language": "en",
-      "logosource": "https://radio3s.org/Radio-Solar-Sound-System.png",
+      "logosource": "https://res.cloudinary.com/onetuner/image/facebook/solarsoundsystem",
       "name": "Radio 3S",
       "streams": [
         {
@@ -1169,6 +1169,20 @@
         }
       ],
       "website": "https://Radio3S.org",
+      "social": [
+        {
+          "title": "@solarsoundsystem",
+          "type": "instagram",
+          "account": "solarsoundsystem",
+          "url": "https://www.instagram.com/solarsoundsystem"
+        },
+        {
+          "title": "@solarsoundsystem",
+          "type": "facebook",
+          "account": "solarsoundsystem",
+          "url": "https://facebook.com/solarsoundsystem"
+        }
+      ],
       "id": "radio3s"
     },
     {
@@ -4578,7 +4592,35 @@
         }
       ],
       "stationuuid": "9a3911a6-14ea-449e-b760-77fe6b76fe7c",
-      "related": ["cream"]
+      "related": ["cream", "jolenecountryradio", "kink"]
+    },
+    {
+      "id": "jolenecountryradio",
+      "displayorder": 155,
+      "genres": ["country", "americana"],
+      "language": "nl",
+      "logosource": "https://jolenecountryradio.nl/web-app-manifest-512x512.png",
+      "name": "Jolene Country Radio",
+      "streams": [
+        {
+          "mimetype": "audio/aac",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SERVICE07AAC.aac"
+        },
+        {
+          "mimetype": "audio/mp3",
+          "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SERVICE07.mp3"
+        }
+      ],
+      "website": "https://jolenecountryradio.nl",
+      "social": [
+        {
+          "title": "@jolenecountryradio",
+          "type": "instagram",
+          "account": "jolenecountryradio",
+          "url": "https://www.instagram.com/jolenecountryradio"
+        }
+      ],
+      "related": ["cream", "alleenklassiek", "kink"]
     }
   ]
 }
