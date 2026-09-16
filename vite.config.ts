@@ -15,7 +15,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       manifest: false,
       workbox: {
-        globPatterns: ['assets/**/*.{js,css,html}', 'manifest.json'],
+        globPatterns: ['index.html', 'assets/**/*.{js,css,html}', 'manifest.json'],
+        navigateFallback: 'index.html',
         cacheId: `1tuner-${APP_VERSION}`,
         clientsClaim: true,
         skipWaiting: true,
