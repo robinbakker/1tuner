@@ -44,9 +44,15 @@ export const addRecentlyVisitedPodcast = (podcast: Podcast) => {
   );
 };
 
+export const addFollowedPodcast = (podcast: Podcast): boolean => {
+  if (followedPodcasts.value.some((p) => p.id === podcast.id)) return false;
+  followedPodcasts.value = [...followedPodcasts.value, podcast];
+  return true;
+};
+
 export const followPodcast = (podcast: Podcast) => {
   if (!followedPodcasts.value.some((p) => p.id === podcast.id)) {
-    followedPodcasts.value = [...followedPodcasts.value, podcast];
+    addFollowedPodcast(podcast);
   } else {
     unfollowPodcast(podcast.id);
   }

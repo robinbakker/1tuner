@@ -1,17 +1,16 @@
-import { XMLParser } from 'fast-xml-parser';
 import { ChangeEvent } from 'preact/compat';
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { RadioButtonListOption } from '~/components/ui/radio-button-list';
 import { useHead } from '~/hooks/useHead';
 import { usePodcastData } from '~/hooks/usePodcastData';
 import { opmlUtil } from '~/lib/opmlUtil';
-import { delay, getPodcastUrlID, normalizedUrlWithoutScheme } from '~/lib/utils';
+import { delay, getPodcastUrlID } from '~/lib/utils';
 import { isDBLoaded } from '~/store/db/db';
 import { logDays, logState } from '~/store/signals/log';
-import { followedPodcasts, followPodcast } from '~/store/signals/podcast';
+import { addFollowedPodcast, followedPodcasts, isFollowedPodcast } from '~/store/signals/podcast';
 import { DEFAULT_MAX_RECONNECT_ATTEMPTS, settingsState } from '~/store/signals/settings';
 import { uiState } from '~/store/signals/ui';
-import { Podcast, PodcastSearchProvider } from '~/store/types';
+import { PodcastSearchProvider } from '~/store/types';
 import { ThemeOption } from './types';
 
 export const useSettings = () => {
@@ -117,67 +116,40 @@ export const useSettings = () => {
       setIsImporting(true);
       try {
         const text = await file.text();
-        if (!text.includes('<?xml') || !text.includes('<opml')) {
-          throw new Error('Invalid OPML file format');
-        }
-        const parser = new XMLParser({
-          ignoreAttributes: false,
-          attributeNamePrefix: '@_',
-          processEntities: {
-            enabled: false
-          },
-        });
+        const feedUrls = opmlUtil.parsePodcastFeedUrls(text);
+        const seen = new Set<string>();
+        let imported = 0;
+        let skipped = 0;
+        let failed = 0;
 
-        const result = parser.parse(text);
-        if (!result.opml?.version) {
-          throw new Error('Invalid OPML structure');
-        }
-
-        const outlines = result.opml?.body?.outline;
-
-        if (!outlines) {
-          throw new Error('No valid outlines found in OPML file');
-        }
-
-        // Handle both single outline and array of outlines
-        interface OutlineItem {
-          '@_text'?: string;
-          '@_type'?: string;
-          '@_xmlUrl'?: string;
-          outline?: OutlineItem[]; // Recursive type for nested outlines
-        }
-
-        const podcasts: Podcast[] = [];
-        const podcastIDUrls: { id: string; feedUrl: string }[] = [];
-
-        const processOutlines = async (items: OutlineItem | OutlineItem[]) => {
-          // If it's a podcasts category
-          if (!Array.isArray(items) && Array.isArray(items.outline)) {
-            for (const outline of items.outline) {
-              if (outline['@_type'] === 'rss' && outline['@_xmlUrl']) {
-                const feedUrl = `https://${normalizedUrlWithoutScheme(outline['@_xmlUrl'])}`;
-                const id = getPodcastUrlID(outline['@_xmlUrl']);
-                podcastIDUrls.push({ id, feedUrl });
-              }
+        for (const feedUrl of feedUrls) {
+          try {
+            // Validate without rewriting the scheme, path, or query of the feed.
+            const url = new URL(feedUrl);
+            if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+              throw new Error('Unsupported feed URL');
             }
-          } else if (Array.isArray(items)) {
-            for (const item of items) {
-              await processOutlines(item);
+            const id = getPodcastUrlID(feedUrl);
+            if (seen.has(id) || isFollowedPodcast(id)) {
+              skipped++;
+              continue;
             }
-          }
-        };
-
-        await processOutlines(outlines);
-        for (const p of podcastIDUrls) {
-          const podcast = await fetchPodcastData(p.id, p.feedUrl);
-          await delay(500);
-          if (podcast) {
-            followPodcast({ ...podcast });
-            podcasts.push(podcast);
+            seen.add(id);
+            const podcast = await fetchPodcastData(id, feedUrl);
+            if (!podcast) {
+              failed++;
+            } else if (addFollowedPodcast(podcast)) {
+              imported++;
+            } else {
+              skipped++;
+            }
+            await delay(500);
+          } catch (error) {
+            console.error('Failed to import podcast:', error);
+            failed++;
           }
         }
-        // Save podcasts to local storage or state as needed
-        alert('Import completed successfully!');
+        alert(`Import completed: ${imported} imported, ${skipped} skipped, ${failed} failed.`);
       } catch (error) {
         console.error('Import failed:', error);
         alert('Failed to import OPML file. Please check the file format.');

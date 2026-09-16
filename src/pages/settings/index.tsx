@@ -165,6 +165,8 @@ export const SettingsPage = () => {
           <div class="relative">
             <input
               type="file"
+              aria-label="Import from OPML"
+              disabled={isImporting}
               accept=".opml,.xml"
               onChange={handleImportOpml}
               class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
