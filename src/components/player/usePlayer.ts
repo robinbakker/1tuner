@@ -1,4 +1,4 @@
-import { computed, signal, useComputed, useSignalEffect } from '@preact/signals';
+import { computed, signal, useComputed } from '@preact/signals';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'preact/hooks';
 import { useNoise } from '~/hooks/useNoise';
 import { playlistUtil } from '~/lib/playlistUtil';
@@ -56,24 +56,19 @@ export const usePlayer = () => {
     return trackPlaybackProgress(audioRef.current, owner, () => void saveStateToDB());
   }, [contentID, playType, streamUrl, elementKey, castSession]);
 
-  useSignalEffect(() => {
-    let playlistInterval: NodeJS.Timeout;
+  useEffect(() => {
+    if (!playlistUrl) return;
 
+    // Follow playlist identity, not the player-state writes made by each check.
     const checkPlaylistCurrentPlaying = () => {
-      playlistUtil.playPlaylistByUrl(playerState.value?.pageLocation);
+      playlistUtil.playPlaylistByUrl(playlistUrl);
     };
 
-    if (playlistUrl) {
-      checkPlaylistCurrentPlaying();
-      playlistInterval = setInterval(checkPlaylistCurrentPlaying, 30000); // Check every 30 secs
-    }
+    checkPlaylistCurrentPlaying();
+    const playlistInterval = setInterval(checkPlaylistCurrentPlaying, 30000); // Check every 30 secs
 
-    return () => {
-      if (playlistInterval) {
-        clearInterval(playlistInterval);
-      }
-    };
-  });
+    return () => clearInterval(playlistInterval);
+  }, [playlistUrl]);
 
   const formatTime = useCallback((time: number) => {
     if (isNaN(time) || !isFinite(time) || time == null) return '';
