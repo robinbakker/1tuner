@@ -24,10 +24,12 @@ export const updatePodcast = (updatedPodcast: Podcast) => {
 export const updatePodcastEpisodeCurrentTime = (podcastID: string, episodeAudioUrl: string, currentTime: number) => {
   const podcast = getPodcast(podcastID);
   if (!podcast || !episodeAudioUrl) return;
+  const target = podcast.episodes?.find((episode) => episode.audio.replace(/&amp;/g, '&') === episodeAudioUrl);
+  if (!target || target.currentTime === currentTime) return;
   updatePodcast({
     ...podcast,
     episodes: podcast.episodes?.map((episode) => {
-      if (episode.audio === episodeAudioUrl) {
+      if (episode.audio.replace(/&amp;/g, '&') === episodeAudioUrl && episode.currentTime !== currentTime) {
         return { ...episode, currentTime: currentTime };
       }
       return episode;

@@ -1,12 +1,12 @@
 import { computed, signal, useComputed, useSignalEffect } from '@preact/signals';
-import { useCallback, useEffect, useRef } from 'preact/hooks';
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'preact/hooks';
 import { useNoise } from '~/hooks/useNoise';
 import { playlistUtil } from '~/lib/playlistUtil';
 import { reconnectUtil } from '~/lib/reconnectUtil';
 import { saveStateToDB } from '~/store/db/db';
+import { trackPlaybackProgress } from '~/store/playbackProgress';
 import { addLogEntry } from '~/store/signals/log';
 import { playlistRules } from '~/store/signals/playlist';
-import { updatePodcastEpisodeCurrentTime } from '~/store/signals/podcast';
 import { playNextRadioStation, playRadioStationByID } from '~/store/signals/radio';
 import { DEFAULT_MAX_RECONNECT_ATTEMPTS, settingsState } from '~/store/signals/settings';
 import { addToast } from '~/store/signals/ui';
@@ -45,6 +45,16 @@ export const usePlayer = () => {
   const isRadio = playerState.value?.playType === 'radio';
   const playlistUrl = isPlaylist ? playerState.value?.pageLocation : undefined;
   const progressPercentage = useComputed(() => (currentTime.value / durationSignal.value) * 100);
+  const contentID = playerState.value?.contentID;
+  const playType = playerState.value?.playType;
+  const streamUrl = playerState.value?.streams[0]?.url;
+  const elementKey = audioKey.value;
+
+  useLayoutEffect(() => {
+    const owner = playerState.peek();
+    if (!audioRef.current || !owner || castSession) return;
+    return trackPlaybackProgress(audioRef.current, owner, () => void saveStateToDB());
+  }, [contentID, playType, streamUrl, elementKey, castSession]);
 
   useSignalEffect(() => {
     let playlistInterval: NodeJS.Timeout;
@@ -122,16 +132,10 @@ export const usePlayer = () => {
 
   const setToPaused = useCallback(() => {
     stopNoise();
-    if (!audioRef.current || !audioRef.current.currentTime || !playerState.value) return;
+    if (!audioRef.current || !playerState.value) return;
     audioRef.current.pause();
     if (isPodcast) {
-      updatePodcastEpisodeCurrentTime(
-        playerState.value.contentID,
-        playerState.value.streams?.[0]?.url || '',
-        audioRef.current.currentTime,
-      );
       currentTime.value = audioRef.current.currentTime;
-      playerState.value.currentTime = audioRef.current.currentTime;
       saveStateToDB();
     } else {
       audioRef.current.currentTime = 0;
@@ -184,6 +188,7 @@ export const usePlayer = () => {
     reconnectAttempts.current = 0;
     playerState.value = null;
     isPlayerMaximized.value = false;
+    void saveStateToDB();
   }, [setToPaused]);
 
   const handleSliderChange = useCallback(
@@ -440,6 +445,9 @@ export const usePlayer = () => {
 
   const handleEnded = useCallback(() => {
     if (isPodcast) {
+      // Store the final position before a rule replaces the current source.
+      if (playerState.value) playerState.value = { ...playerState.value, isPlaying: false };
+      void saveStateToDB();
       if (playlistRules.value[0]?.ruleType === PlaylistRuleType.podcastToStation) {
         playRadioStationByID(playlistRules.value[0].stationID);
       } else if (playlistRules.value[0]?.ruleType === PlaylistRuleType.podcastToPlaylist) {

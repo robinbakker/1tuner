@@ -5,7 +5,13 @@ import { usePodcastData } from '~/hooks/usePodcastData';
 import { getPodcastUrlID, normalizedUrlWithoutScheme, slugify, stripHtml } from '~/lib/utils';
 import { isDBLoaded } from '~/store/db/db';
 import { playerState } from '~/store/signals/player';
-import { addRecentlyVisitedPodcast, followPodcast, isFollowedPodcast, unfollowPodcast } from '~/store/signals/podcast';
+import {
+  addRecentlyVisitedPodcast,
+  followPodcast,
+  getPodcast,
+  isFollowedPodcast,
+  unfollowPodcast,
+} from '~/store/signals/podcast';
 import { uiState } from '~/store/signals/ui';
 import { Episode, Podcast } from '~/store/types';
 
@@ -114,7 +120,10 @@ export const usePodcast = () => {
         imageUrl: podcast.imageUrl,
         streams: [{ mimetype: episode.mimeType || 'audio/mpeg', url: episode.audio.replace(/&amp;/g, '&') }],
         pageLocation: `/podcast/${params.name}/${params.id}`,
-        currentTime: episode.currentTime || 0,
+        currentTime:
+          getPodcast(params.id)?.episodes?.find((saved) => saved.audio === episode.audio)?.currentTime ??
+          episode.currentTime ??
+          0,
         shareUrl: `/podcast/${params.name}/${params.id}${episode.guid ? `/${encodeURIComponent(episode.guid)}` : ''}`,
       };
     },

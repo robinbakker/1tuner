@@ -1,5 +1,6 @@
 import { signal } from '@preact/signals';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
+import { snapshotPlaybackProgress } from '../playbackProgress';
 import { logState } from '../signals/log';
 import { isPlayerMaximized, playerState } from '../signals/player';
 import { playlistRules, playlists } from '../signals/playlist';
@@ -98,7 +99,8 @@ export async function loadStateFromDB() {
 }
 
 export async function saveStateToDB() {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || !isDBLoaded.peek()) return;
+  snapshotPlaybackProgress();
   const db = await dbPromise;
   if (!db) return;
 
