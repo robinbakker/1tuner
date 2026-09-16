@@ -76,9 +76,7 @@ export const useRadioStation = () => {
     type: 'music.radio_station',
   });
 
-  const isPlaying = useMemo(() => {
-    return !!(playerState.value?.isPlaying && playerState.value.contentID === radioStation?.id);
-  }, [radioStation?.id]);
+  const isPlaying = !!(playerState.value?.isPlaying && playerState.value.contentID === radioStation?.id);
 
   const toggleFollow = () => {
     if (!radioStation) return;

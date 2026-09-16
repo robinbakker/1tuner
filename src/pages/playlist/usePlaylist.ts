@@ -5,7 +5,7 @@ import { getLocalTimeFromUrlKey, getValidTimeZone } from '~/lib/convertTime';
 import { playlistUtil } from '~/lib/playlistUtil';
 import { getTimeInMinutesFromTimeString, getTimeStringFromMinutes, roundTo15Minutes } from '~/lib/utils';
 import { isDBLoaded } from '~/store/db/db';
-import { playerState } from '~/store/signals/player';
+import { playerState, togglePlayPause } from '~/store/signals/player';
 import { playlists } from '~/store/signals/playlist';
 import { getRadioStation } from '~/store/signals/radio';
 import { addToast, uiState } from '~/store/signals/ui';
@@ -110,9 +110,9 @@ export const usePlaylist = () => {
       : undefined;
   }, [playlistName, playlistQueryString]);
 
-  const isPlaying = useMemo(() => {
-    return playerState.value?.isPlaying && playlistUtil.isSameUrl(playerState.value?.pageLocation, playlistUrl);
-  }, [playlistUrl]);
+  const isPlaying = !!(
+    playerState.value?.isPlaying && playlistUtil.isSameUrl(playerState.value.pageLocation, playlistUrl)
+  );
 
   useHead({
     url: playlistUrl,
@@ -373,8 +373,12 @@ export const usePlaylist = () => {
   }, [playlist, playlistName, setEditName, setIsEditMode]);
 
   const handlePlayClick = useCallback(() => {
-    playlistUtil.playPlaylistByUrl(playlistUrl, true);
-  }, [playlistUrl]);
+    if (isPlaying) {
+      togglePlayPause();
+    } else {
+      playlistUtil.playPlaylistByUrl(playlistUrl, true);
+    }
+  }, [isPlaying, playlistUrl]);
 
   return {
     playlistName: playlistName || 'Playlist',
