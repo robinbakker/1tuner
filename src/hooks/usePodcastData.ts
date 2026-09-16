@@ -136,6 +136,8 @@ export const usePodcastData = () => {
 
           const channel = result.rss.channel;
           console.log('Parsed channel data:', channel);
+          // Playback may have updated the saved record while the request was pending.
+          const savedPodcast = getPodcast(id);
           podcastData = {
             id,
             title: decodeHtmlEntities(channel.title),
@@ -144,7 +146,7 @@ export const usePodcastData = () => {
             url: feedUrl,
             feedUrl: feedUrl,
             categories: channel.categories,
-            addedDate: podcastData?.addedDate || Date.now(),
+            addedDate: savedPodcast?.addedDate ?? podcastData?.addedDate ?? Date.now(),
             lastFetched: Date.now(),
             episodes: (channel.item || [])
               .slice(0, 50)
@@ -157,17 +159,19 @@ export const usePodcastData = () => {
                   enclosure?: { '@_url': string; '@_type': string };
                   'itunes:duration'?: string;
                   duration?: string;
-                }) => ({
-                  title: decodeHtmlEntities(item.title),
-                  description: decodeHtmlEntities(item.description),
-                  guid: item.guid?.['#text'],
-                  pubDate: new Date(item.pubDate),
-                  audio: decodeHtmlEntities(item.enclosure?.['@_url'] || ''),
-                  mimeType: item.enclosure?.['@_type'],
-                  duration: getDurationString(`${item['itunes:duration'] ?? item['duration']}`),
-                  currentTime:
-                    podcastData?.episodes?.find((ep) => ep.audio === item.enclosure?.['@_url'])?.currentTime || 0,
-                }),
+                }) => {
+                  const audio = decodeHtmlEntities(item.enclosure?.['@_url'] || '');
+                  return {
+                    title: decodeHtmlEntities(item.title),
+                    description: decodeHtmlEntities(item.description),
+                    guid: item.guid?.['#text'],
+                    pubDate: new Date(item.pubDate),
+                    audio,
+                    mimeType: item.enclosure?.['@_type'],
+                    duration: getDurationString(`${item['itunes:duration'] ?? item['duration']}`),
+                    currentTime: savedPodcast?.episodes?.find((ep) => ep.audio === audio)?.currentTime ?? 0,
+                  };
+                },
               ),
           } as Podcast;
         }

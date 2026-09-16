@@ -10,7 +10,7 @@ const rss = `<rss version="2.0"><channel>
       (title, index) => `
     <item><title>${title}</title><description>${title}</description>
       <pubDate>Wed, 16 Sep 2026 08:00:00 GMT</pubDate><duration>600</duration>
-      <enclosure url="https://media.example/${index === 0 ? 'new' : 'existing'}.mp3" type="audio/mpeg" />
+      <enclosure url="https://media.example/${index === 0 ? 'new' : 'existing'}.mp3?x=1&amp;y=2&#38;z=3&#x26;w=4" type="audio/mpeg" />
     </item>`,
     )
     .join('')}
@@ -86,7 +86,7 @@ async function seed(page: Page, followed: boolean, expired = false) {
             description: '',
             pubDate: new Date(),
             duration: '10:00',
-            audio: 'https://media.example/existing.mp3',
+            audio: 'https://media.example/existing.mp3?x=1&y=2&z=3&w=4',
             mimeType: 'audio/mpeg',
             currentTime: 123,
           },
@@ -165,7 +165,10 @@ for (const followed of [true, false]) {
       await expect(page.getByRole('button', { name: followed ? 'Following' : 'Follow', exact: true })).toBeVisible();
 
       await page.getByRole('heading', { name: /^New episode/ }).click();
-      await expect(page.locator('audio source')).toHaveAttribute('src', 'https://media.example/new.mp3');
+      await expect(page.locator('audio source')).toHaveAttribute(
+        'src',
+        'https://media.example/new.mp3?x=1&y=2&z=3&w=4',
+      );
       await expect(page.getByRole('button', { name: 'Pause', exact: true })).toBeVisible();
       await seek(page, 45);
       await expect
@@ -235,3 +238,49 @@ test('refresh preserves a seek to zero made while the feed request is pending', 
   await expect(page.getByRole('heading', { name: 'Existing episode (00:10)', exact: true })).toBeVisible();
   expect(proxyRequests).toBe(0);
 });
+
+for (const refresh of ['manual', 'expired'] as const) {
+  for (const position of [123, 234, 0]) {
+    test(`feed hook preserves encoded URL progress at ${position} seconds on ${refresh} refresh`, async ({ page }) => {
+      await seed(page, true, refresh === 'expired');
+      const heldTime = new Date();
+      await page.clock.setFixedTime(heldTime);
+      await page.clock.pauseAt(heldTime);
+      await page.unroute(feedUrl);
+      let captureRoute!: (route: Route) => void;
+      const pending = new Promise<Route>((resolve) => {
+        captureRoute = resolve;
+      });
+      await page.route(feedUrl, captureRoute);
+      await page.evaluate(
+        async ({ podcastID, feedUrl, refresh }) => {
+          const path = '/tests/fixtures/podcast-data.tsx';
+          (await import(path)).startFetch(podcastID, feedUrl, refresh === 'manual');
+        },
+        { podcastID, feedUrl, refresh },
+      );
+      const heldRoute = await pending;
+      try {
+        await page.evaluate(
+          async ({ podcastID, position }) => {
+            const path = '/tests/fixtures/podcast-data.tsx';
+            (await import(path)).updatePodcastEpisodeCurrentTime(
+              podcastID,
+              'https://media.example/existing.mp3?x=1&y=2&z=3&w=4',
+              position,
+            );
+          },
+          { podcastID, position },
+        );
+      } finally {
+        await heldRoute.fulfill({ contentType: 'application/rss+xml', body: rss });
+      }
+      const fetched = await page.evaluate(async () => {
+        const path = '/tests/fixtures/podcast-data.tsx';
+        return (await import(path)).result;
+      });
+      expect(fetched).toEqual(expectedPodcast(position));
+      expect(fetched.episodes[1].audio).toBe('https://media.example/existing.mp3?x=1&y=2&z=3&w=4');
+    });
+  }
+}
