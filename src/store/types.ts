@@ -69,7 +69,7 @@ export interface Episode {
   title: string;
   description: string;
   guid?: string;
-  pubDate: Date;
+  pubDate?: Date;
   duration: string;
   audio: string;
   mimeType: string;

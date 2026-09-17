@@ -129,21 +129,25 @@ export const PodcastPage = () => {
                       <div class="cursor-pointer" onClick={() => handleEpisodeClick(ep)}>
                         <h3 class="text-xl font-medium group-hover:text-primary transition-colors">
                           {ep.title}{' '}
-                          <span class="text-muted-foreground font-normal text-sm">
-                            ({currentTime ? `${getTimeStringFromSeconds(currentTime)} / ` : ''}
-                            {ep.duration})
-                          </span>
+                          {ep.duration && (
+                            <span class="text-muted-foreground font-normal text-sm">
+                              ({currentTime ? `${getTimeStringFromSeconds(currentTime)} / ` : ''}
+                              {ep.duration})
+                            </span>
+                          )}
                         </h3>
-                        <p class="text-muted-foreground text-sm">
-                          <time dateTime={ep.pubDate.toJSON()}>
-                            {ep.pubDate.toLocaleDateString(navigator.language, {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric',
-                              weekday: 'long',
-                            })}
-                          </time>
-                        </p>
+                        {ep.pubDate && !Number.isNaN(ep.pubDate.getTime()) && (
+                          <p class="text-muted-foreground text-sm">
+                            <time dateTime={ep.pubDate.toJSON()}>
+                              {ep.pubDate.toLocaleDateString(navigator.language, {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                weekday: 'long',
+                              })}
+                            </time>
+                          </p>
+                        )}
                       </div>
                       <div>
                         <Button

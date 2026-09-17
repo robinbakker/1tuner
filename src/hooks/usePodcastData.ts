@@ -17,17 +17,25 @@ const VALID_CONTENT_TYPES = [
 ];
 
 const isValidPodcastFeed = (xmlData: string): boolean => {
-  const hasRssTag = /<rss[^>]*>/i.test(xmlData);
-  const hasChannelTag = /<channel[^>]*>/i.test(xmlData);
-  const hasItemTag = /<item[^>]*>/i.test(xmlData);
-  const hasEnclosureTag = /<enclosure[^>]*>/i.test(xmlData);
+  const hasRssTag = /<rss\b[^>]*>/i.test(xmlData);
+  const hasChannelTag = /<channel\b[^>]*>/i.test(xmlData);
+  const hasItemTag = /<item\b[^>]*>/i.test(xmlData);
+  const hasEnclosureTag = /<enclosure\b[^>]*>/i.test(xmlData);
 
-  return hasRssTag && hasChannelTag && hasItemTag && hasEnclosureTag;
+  return hasRssTag && hasChannelTag && (!hasItemTag || hasEnclosureTag);
 };
 
-const decodeHtmlEntities = (text: string): string => {
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+const getText = (value: unknown): string => {
+  const text = isRecord(value) ? value['#text'] : value;
+  return typeof text === 'string' ? text : '';
+};
+
+const decodeHtmlEntities = (value: unknown): string => {
   const textarea = document.createElement('textarea');
-  textarea.innerHTML = text;
+  textarea.innerHTML = getText(value);
   return textarea.value;
 };
 
@@ -35,6 +43,7 @@ export const usePodcastData = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const getDurationString = useCallback((duration: string) => {
+    if (!/^\d+(?:\.\d+)?$|^\d+:\d{2}(?::\d{2})?$/.test(duration)) return '';
     const durationParts = duration.split(':');
     if (durationParts.length >= 2) {
       return `${durationParts[0]}:${durationParts[1]}`;
@@ -124,17 +133,22 @@ export const usePodcastData = () => {
           const parser = new XMLParser({
             ignoreAttributes: false,
             attributeNamePrefix: '@_',
+            // IDs and other text must retain leading zeros and large numeric values.
+            parseTagValue: false,
             processEntities: {
               enabled: false,
             },
           });
-          const result = parser.parse(xmlData);
+          const result: unknown = parser.parse(xmlData);
 
-          if (!result.rss || !result.rss.channel) {
+          if (!isRecord(result) || !isRecord(result.rss) || !isRecord(result.rss.channel)) {
             throw new Error('Invalid podcast RSS feed structure');
           }
 
           const channel = result.rss.channel;
+          const items = channel.item === undefined ? [] : Array.isArray(channel.item) ? channel.item : [channel.item];
+          const image = isRecord(channel.image) ? channel.image : undefined;
+          const itunesImage = isRecord(channel['itunes:image']) ? channel['itunes:image'] : undefined;
           console.log('Parsed channel data:', channel);
           // Playback may have updated the saved record while the request was pending.
           const savedPodcast = getPodcast(id);
@@ -142,38 +156,33 @@ export const usePodcastData = () => {
             id,
             title: decodeHtmlEntities(channel.title),
             description: decodeHtmlEntities(channel.description),
-            imageUrl: channel.image?.url || channel['itunes:image']?.['@_href'] || '',
+            imageUrl: decodeHtmlEntities(image?.url) || decodeHtmlEntities(itunesImage?.['@_href']),
             url: feedUrl,
             feedUrl: feedUrl,
-            categories: channel.categories,
+            categories: Array.isArray(channel.categories)
+              ? channel.categories.map(decodeHtmlEntities).filter(Boolean)
+              : undefined,
             addedDate: savedPodcast?.addedDate ?? podcastData?.addedDate ?? Date.now(),
             lastFetched: Date.now(),
-            episodes: (channel.item || [])
+            episodes: items
+              .filter(isRecord)
               .slice(0, 50)
-              .map(
-                (item: {
-                  title: string;
-                  description: string;
-                  guid?: { '#text': string };
-                  pubDate: string;
-                  enclosure?: { '@_url': string; '@_type': string };
-                  'itunes:duration'?: string;
-                  duration?: string;
-                }) => {
-                  const audio = decodeHtmlEntities(item.enclosure?.['@_url'] || '');
-                  return {
-                    title: decodeHtmlEntities(item.title),
-                    description: decodeHtmlEntities(item.description),
-                    guid: item.guid?.['#text'],
-                    pubDate: new Date(item.pubDate),
-                    audio,
-                    mimeType: item.enclosure?.['@_type'],
-                    duration: getDurationString(`${item['itunes:duration'] ?? item['duration']}`),
-                    currentTime: savedPodcast?.episodes?.find((ep) => ep.audio === audio)?.currentTime ?? 0,
-                  };
-                },
-              ),
-          } as Podcast;
+              .map((item) => {
+                const enclosure = isRecord(item.enclosure) ? item.enclosure : undefined;
+                const audio = decodeHtmlEntities(enclosure?.['@_url']);
+                const pubDate = new Date(getText(item.pubDate));
+                return {
+                  title: decodeHtmlEntities(item.title),
+                  description: decodeHtmlEntities(item.description),
+                  guid: decodeHtmlEntities(item.guid) || undefined,
+                  pubDate: Number.isNaN(pubDate.getTime()) ? undefined : pubDate,
+                  audio,
+                  mimeType: getText(enclosure?.['@_type']),
+                  duration: getDurationString(getText(item['itunes:duration']) || getText(item.duration)),
+                  currentTime: savedPodcast?.episodes?.find((ep) => ep.audio === audio)?.currentTime ?? 0,
+                };
+              }),
+          } satisfies Podcast;
         }
         return podcastData;
       } catch (error) {

@@ -1,8 +1,7 @@
 import { expect, Page, test } from '@playwright/test';
 
 const rss = `<rss version="2.0"><channel><title>Imported podcast</title><description>Test feed</description>
-  <item><title>First</title><description>First</description><enclosure url="https://media.example/1.mp3" /></item>
-  <item><title>Second</title><description>Second</description><enclosure url="https://media.example/2.mp3" /></item>
+  <item><title>First</title><guid>first-episode</guid><enclosure url="https://media.example/1.mp3" /></item>
 </channel></rss>`;
 
 test.beforeEach(async ({ page }) => {
