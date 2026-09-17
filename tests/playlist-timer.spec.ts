@@ -108,9 +108,96 @@ test('starting a playlist after empty startup installs one timer and switches st
   await startPlaylist(page);
   await expectStation(page, 'a');
   await expectTimers(page, 1, 1);
-  await page.clock.runFor(130000);
+  await page.clock.runFor(60000);
   await expectStation(page, 'b');
   await expectTimers(page, 1, 1);
+});
+
+for (const schedule of [
+  {
+    name: 'midnight start',
+    times: ['00:00', '12:00'],
+    checks: [
+      ['00:00:00', 0],
+      ['00:00:59', 0],
+      ['00:01:00', 0],
+      ['11:59:59', 0],
+      ['12:00:00', 1],
+      ['12:00:59', 1],
+      ['12:01:00', 1],
+      ['23:59:59', 1],
+    ],
+  },
+  {
+    name: 'start later than midnight',
+    times: ['06:00', '12:00', '18:00'],
+    checks: [
+      ['00:00:00', 2],
+      ['05:59:59', 2],
+      ['06:00:00', 0],
+      ['11:59:59', 0],
+      ['12:00:00', 1],
+      ['17:59:59', 1],
+      ['18:00:00', 2],
+      ['23:59:59', 2],
+    ],
+  },
+  {
+    name: 'single entry',
+    times: ['06:00'],
+    checks: [
+      ['00:00:00', 0],
+      ['05:59:59', 0],
+      ['06:00:00', 0],
+      ['06:00:59', 0],
+      ['23:59:59', 0],
+    ],
+  },
+] as const) {
+  test(`playlist boundaries: ${schedule.name}`, async ({ page }) => {
+    for (const [time, expectedIndex] of schedule.checks) {
+      await page.clock.setSystemTime(new Date(`2026-09-17T${time}Z`));
+      const actual = await page.evaluate(
+        async (times) => {
+          const path = '/tests/fixtures/playlist-state.ts';
+          const { playlistUtil, playerState } = await import(path);
+          playerState.value = null;
+          playlistUtil.playPlaylist(
+            {
+              name: 'Boundaries',
+              url: '/playlist/Boundaries',
+              items: times.map((time, index) => ({ time, stationID: `rb-timer-${'abc'[index]}` })),
+            },
+            true,
+          );
+          return {
+            stream: playerState.value?.streams[0]?.url,
+            description: playerState.value?.description,
+          };
+        },
+        [...schedule.times],
+      );
+      const nextIndex = (expectedIndex + 1) % schedule.times.length;
+      expect(actual, `at ${time}`).toEqual({
+        stream: `https://media.example/${'abc'[expectedIndex]}.mp3`,
+        description: `${schedule.times[expectedIndex]} Station ${'abc'[expectedIndex]} - ${schedule.times[nextIndex]} Station ${'abc'[nextIndex]}`,
+      });
+    }
+  });
+}
+
+test('empty and missing playlists leave the current station unchanged', async ({ page }) => {
+  await startPlaylist(page);
+  expect(
+    await page.evaluate(async () => {
+      const path = '/tests/fixtures/playlist-state.ts';
+      const { playlistUtil, playerState } = await import(path);
+      const previous = playerState.value;
+      playlistUtil.playPlaylist({ name: 'Empty', url: '/playlist/Empty', items: [] }, true);
+      playlistUtil.playPlaylist(undefined, true);
+      return playerState.value === previous;
+    }),
+  ).toBe(true);
 });
 
 test('changing playlists replaces the timer and pause updates do not recreate it', async ({ page }) => {

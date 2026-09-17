@@ -31,14 +31,16 @@ const playPlaylistByUrl = (playlistUrl: string | undefined, shouldPlay?: boolean
 };
 
 const playPlaylist = (playlist: Playlist | undefined, shouldPlay?: boolean) => {
-  if (!playlist) return;
+  if (!playlist?.items.length) return;
   const now = new Date();
   const minutes = now.getHours() * 60 + now.getMinutes();
-  const currentItemIndex = playlist.items.findIndex(
+  let currentItemIndex = playlist.items.findIndex(
     (i, index) =>
-      getTimeInMinutesFromTimeString(i.time) < minutes &&
+      getTimeInMinutesFromTimeString(i.time) <= minutes &&
       (!playlist.items[index + 1] || getTimeInMinutesFromTimeString(playlist.items[index + 1].time) > minutes),
   );
+  // Before the first start, the previous day's final entry is still active.
+  if (currentItemIndex === -1) currentItemIndex = playlist.items.length - 1;
   const currentItem = playlist.items[currentItemIndex];
   const currentStation = getRadioStation(currentItem?.stationID ?? '');
   const nextItem =
