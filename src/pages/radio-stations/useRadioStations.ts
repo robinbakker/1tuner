@@ -1,6 +1,6 @@
 import { computed } from '@preact/signals';
 import { useLocation } from 'preact-iso';
-import { useCallback, useEffect, useMemo, useRef } from 'preact/hooks';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import { useRadioBrowser } from '~/hooks/useRadioBrowser';
 import { validationUtil } from '~/lib/validationUtil';
@@ -24,7 +24,19 @@ export const useRadioStations = () => {
   const { query, route } = useLocation();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isInitialized = useRef(false);
-  const { isLoading: isLoadingMore, searchStationsByQuery, searchStationsByCountry } = useRadioBrowser();
+  const { searchStationsByQuery, searchStationsByCountry } = useRadioBrowser();
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const searchController = useRef<AbortController | null>(null);
+  const cancelSearch = useCallback(() => {
+    searchController.current?.abort();
+    searchController.current = null;
+    setIsLoadingMore(false);
+  }, []);
+
+  useLayoutEffect(() => {
+    cancelSearch();
+    return () => searchController.current?.abort();
+  }, [lastRadioSearchResult.value?.query || '', radioSearchFilters.value, cancelSearch]);
 
   useHead({
     title: 'Radio stations',
@@ -82,40 +94,45 @@ export const useRadioStations = () => {
     [route],
   );
 
-  const searchMoreStations = useCallback(async () => {
-    if (!lastRadioSearchResult.value?.query) return;
+  const searchMore = useCallback(
+    async (country?: string) => {
+      const searchQuery = lastRadioSearchResult.value?.query || '';
+      if (country === undefined && !searchQuery) return;
+      const filters = radioSearchFilters.value;
+      cancelSearch();
+      const controller = new AbortController();
+      searchController.current = controller;
+      const isCurrent = () =>
+        !controller.signal.aborted &&
+        searchController.current === controller &&
+        (lastRadioSearchResult.value?.query || '') === searchQuery &&
+        radioSearchFilters.value === filters;
 
-    try {
-      const stations = await searchStationsByQuery(lastRadioSearchResult.value.query);
-
-      const existingIds = new Set(radioStations.value.map((s) => s.id));
-      const filteredStations = stations.filter((s) => !existingIds.has(s.id));
-      lastRadioSearchResult.value = {
-        query: lastRadioSearchResult.value.query,
-        radioBrowserSearchResult: filteredStations,
-      };
-    } catch (error) {
-      console.error('Error fetching stations:', error);
-    }
-  }, [lastRadioSearchResult.value?.query]);
-
-  const searchMoreStationsFromCountry = useCallback(
-    async (country: string) => {
+      setIsLoadingMore(true);
       try {
-        const stations = await searchStationsByCountry(country);
+        const stations =
+          country === undefined
+            ? await searchStationsByQuery(searchQuery, controller.signal)
+            : await searchStationsByCountry(country, controller.signal);
+        if (!isCurrent()) return;
 
         const existingIds = new Set(radioStations.value.map((s) => s.id));
         const filteredStations = stations.filter((s) => !existingIds.has(s.id));
         lastRadioSearchResult.value = {
-          query: lastRadioSearchResult.value?.query || '',
+          query: searchQuery,
           radioBrowserSearchResult: filteredStations,
         };
       } catch (error) {
-        console.error('Error fetching stations:', error);
+        if (isCurrent()) console.error('Error fetching stations:', error);
+      } finally {
+        if (isCurrent()) setIsLoadingMore(false);
       }
     },
-    [lastRadioSearchResult.value?.query],
+    [cancelSearch, searchStationsByQuery, searchStationsByCountry],
   );
+
+  const searchMoreStations = useCallback(() => searchMore(), [searchMore]);
+  const searchMoreStationsFromCountry = useCallback((country: string) => searchMore(country), [searchMore]);
 
   const activeLanguages = computed(() => {
     const filter = radioSearchFilters.value?.regions || [];
@@ -165,6 +182,7 @@ export const useRadioStations = () => {
   }, []);
 
   const handleLanguageChange = (countries: string[]) => {
+    cancelSearch();
     const newSearchFilters = { regions: countries, genres: radioSearchFilters.value?.genres || [] };
     radioSearchFilters.value = newSearchFilters;
     updateURLParams(lastRadioSearchResult.value?.query, newSearchFilters);
@@ -172,9 +190,11 @@ export const useRadioStations = () => {
   };
 
   const handleGenreChange = (genres: string[]) => {
+    cancelSearch();
     const newSearchFilters = { regions: radioSearchFilters.value?.regions || [], genres };
     radioSearchFilters.value = newSearchFilters;
     updateURLParams(lastRadioSearchResult.value?.query, newSearchFilters);
+    lastRadioSearchResult.value = { query: lastRadioSearchResult.value?.query || '', radioBrowserSearchResult: [] };
   };
 
   const handleFilterClick = () => {
@@ -183,6 +203,7 @@ export const useRadioStations = () => {
 
   const onSearchInput = useCallback(
     (event?: InputEvent) => {
+      cancelSearch();
       if (!event) {
         clearLastRadioSearchResult();
         updateURLParams('', radioSearchFilters.value);
@@ -197,7 +218,7 @@ export const useRadioStations = () => {
         updateURLParams('', radioSearchFilters.value);
       }
     },
-    [radioSearchFilters.value, setLastRadioSearchResultQuery, clearLastRadioSearchResult],
+    [cancelSearch, updateURLParams],
   );
 
   useEffect(() => {

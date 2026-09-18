@@ -95,51 +95,47 @@ export const useRadioBrowser = () => {
   );
 
   const searchStations = useCallback(
-    async (params: Record<string, string>) => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`${import.meta.env.VITE_RADIO_BROWSER_WORKER_URL}/stations`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams(params),
-        });
+    async (params: Record<string, string>, signal?: AbortSignal) => {
+      const response = await fetch(`${import.meta.env.VITE_RADIO_BROWSER_WORKER_URL}/stations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(params),
+        signal,
+      });
 
-        if (!response.ok) {
-          throw new Error('Search request failed');
-        }
-
-        const data = (await response.json()) as RadioBrowserStation[];
-
-        return data
-          .filter((s) => s.favicon && s.favicon !== 'null' && s.url_resolved)
-          .map((station, index): RadioStation => mapRadioBrowserStation(station, index));
-      } catch (error) {
-        console.error('Error fetching stations:', error);
-        return [];
-      } finally {
-        setIsLoading(false);
+      if (!response.ok) {
+        throw new Error('Search request failed');
       }
+
+      const data = (await response.json()) as RadioBrowserStation[];
+
+      return data
+        .filter((s) => s.favicon && s.favicon !== 'null' && s.url_resolved)
+        .map((station, index): RadioStation => mapRadioBrowserStation(station, index));
     },
     [mapRadioBrowserStation],
   );
 
   const searchStationsByQuery = useCallback(
-    async (query: string) => {
-      return searchStations({ name: query });
+    async (query: string, signal?: AbortSignal) => {
+      return searchStations({ name: query }, signal);
     },
     [searchStations],
   );
 
   const searchStationsByCountry = useCallback(
-    async (country: string) => {
-      return searchStations({
-        countrycode: country.toLowerCase() === 'uk' ? 'gb' : country,
-        reverse: 'true',
-        order: 'clickcount',
-        limit: '20',
-      });
+    async (country: string, signal?: AbortSignal) => {
+      return searchStations(
+        {
+          countrycode: country.toLowerCase() === 'uk' ? 'gb' : country,
+          reverse: 'true',
+          order: 'clickcount',
+          limit: '20',
+        },
+        signal,
+      );
     },
     [searchStations],
   );

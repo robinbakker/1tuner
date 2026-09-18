@@ -1,5 +1,5 @@
 import { useLocation } from 'preact-iso';
-import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import { validationUtil } from '~/lib/validationUtil';
 import { isDBLoaded } from '~/store/db/db';
@@ -16,7 +16,6 @@ export const usePodcasts = () => {
   const { query, route } = useLocation();
   const [searchTerm, setSearchTerm] = useState(lastPodcastSearchResult.value?.query || '');
   const [isLoading, setIsLoading] = useState(false);
-  const searchTimeout = useRef<NodeJS.Timeout | null>();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isInitialized = useRef(false);
 
@@ -54,27 +53,26 @@ export const usePodcasts = () => {
     [route],
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const searchQuery = validationUtil.getSanitizedSearchQuery(searchTerm);
+    const controller = new AbortController();
+    let searchTimeout: ReturnType<typeof setTimeout> | undefined;
+
+    if (isInitialized.current) updateURLParams(searchQuery);
 
     if (searchQuery && searchQuery !== lastPodcastSearchResult.value?.query) {
       setIsLoading(true);
-      updateURLParams(searchQuery);
-
-      // Clear existing timeout
-      if (searchTimeout.current) {
-        clearTimeout(searchTimeout.current);
-      }
-
-      // Set new timeout
-      searchTimeout.current = setTimeout(async () => {
+      searchTimeout = setTimeout(async () => {
         try {
           const isAppleSearch = settingsState.value?.podcastSearchProvider === PodcastSearchProvider.Apple;
           const response = isAppleSearch
-            ? await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(searchQuery)}&media=podcast`)
+            ? await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(searchQuery)}&media=podcast`, {
+                signal: controller.signal,
+              })
             : await fetch('https://podcastindex.tuner.workers.dev', {
                 method: 'POST',
                 body: searchQuery,
+                signal: controller.signal,
               });
 
           if (!response.ok) {
@@ -82,6 +80,7 @@ export const usePodcasts = () => {
           }
 
           const data = await response.json();
+          if (controller.signal.aborted) return;
           if (
             !data ||
             (isAppleSearch && (!data.results || !data.results.length)) ||
@@ -109,9 +108,9 @@ export const usePodcasts = () => {
           }
           setLastPodcastSearchResult(searchQuery, searchResults);
         } catch (error) {
-          console.error('Error fetching podcasts:', error);
+          if (!controller.signal.aborted) console.error('Error fetching podcasts:', error);
         } finally {
-          setIsLoading(false);
+          if (!controller.signal.aborted) setIsLoading(false);
         }
       }, 500); // 500ms delay
     } else {
@@ -121,13 +120,12 @@ export const usePodcasts = () => {
       setIsLoading(false);
     }
 
-    // Cleanup timeout on component unmount
+    // Invalidate in-flight responses as well as the debounce on changes and unmount.
     return () => {
-      if (searchTimeout.current) {
-        clearTimeout(searchTimeout.current);
-      }
+      controller.abort();
+      clearTimeout(searchTimeout);
     };
-  }, [searchTerm]);
+  }, [searchTerm, updateURLParams]);
 
   useEffect(() => {
     if (query['focus-search']) {
