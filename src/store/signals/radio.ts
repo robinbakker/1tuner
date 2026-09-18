@@ -1,6 +1,7 @@
 import { computed, signal } from '@preact/signals';
 import { Genre, Language, Podcast, RadioSearchFilters, RadioSearchResult, RadioStation } from '~/store/types';
 import { playerState } from './player';
+import { playlistRules, playlists } from './playlist';
 
 export const RADIO_BROWSER_PARAM_PREFIX = 'rb-';
 
@@ -65,10 +66,28 @@ export const addRecentlyVisitedRadioStation = (id: string | undefined) => {
 
 export const addRadioBrowserStation = (radioStation: RadioStation) => {
   if (!radioStation?.id.startsWith(RADIO_BROWSER_PARAM_PREFIX)) return;
+  const pinnedIDs = new Set(followedRadioStationIDs.value);
+  for (const playlist of playlists.value ?? []) {
+    for (const item of playlist.items) pinnedIDs.add(item.stationID);
+  }
+  for (const rule of playlistRules.value) {
+    if (rule.stationID) pinnedIDs.add(rule.stationID);
+  }
+  const player = playerState.value;
+  if (player?.playType === 'radio') pinnedIDs.add(player.contentID);
+  if (player?.playType === 'playlist') {
+    // Keep the playing schedule's stations even if its saved playlist is removed.
+    for (const id of new URLSearchParams(player.contentID.split('?')[1]).values()) {
+      if (id.startsWith(RADIO_BROWSER_PARAM_PREFIX)) pinnedIDs.add(id);
+    }
+  }
+
+  // References keep their metadata; only unreferenced entries share the 100-entry limit.
+  let unreferencedCount = 0;
   radioBrowserStations.value = [
     { ...radioStation },
     ...radioBrowserStations.value.filter((s) => s.id !== radioStation.id),
-  ].slice(0, 100);
+  ].filter((station) => pinnedIDs.has(station.id) || ++unreferencedCount <= 100);
 };
 
 export const deleteBrowserStation = (id: string) => {
