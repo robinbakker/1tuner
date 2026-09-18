@@ -1,7 +1,8 @@
 import { ErrorBoundary, LocationProvider, Route, Router } from 'preact-iso';
-import { useEffect } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import './app.css';
 import { AppShell } from './components/appShell/appShell';
+import { Button } from './components/ui/button';
 import { AboutPage } from './pages/about';
 import { Homepage } from './pages/homepage';
 import { NotFound } from './pages/not-found';
@@ -12,19 +13,34 @@ import { PodcastsPage } from './pages/podcasts';
 import { RadioStationPage } from './pages/radio-station';
 import { RadioStationsPage } from './pages/radio-stations';
 import { SettingsPage } from './pages/settings';
-import { loadStateFromDB, saveStateToDB } from './store/db/db';
+import { isDBLoaded, loadStateFromDB, saveStateToDB, startStatePersistence } from './store/db/db';
 import { migrateOldData } from './store/db/migration';
 import { isPlayerMaximized } from './store/signals/player';
 
 export function App() {
+  const [loadError, setLoadError] = useState(false);
+  const [loadAttempt, setLoadAttempt] = useState(0);
+
   useEffect(() => {
+    let disposed = false;
     async function initializeApp() {
-      await migrateOldData();
-      console.log('Loading state from DB...');
-      await loadStateFromDB();
+      try {
+        await migrateOldData();
+        await loadStateFromDB();
+      } catch (error) {
+        console.error('Error loading saved data:', error);
+        if (!disposed) setLoadError(true);
+      }
     }
 
-    initializeApp();
+    void initializeApp();
+    return () => {
+      disposed = true;
+    };
+  }, [loadAttempt]);
+
+  useEffect(() => {
+    const stopPersistence = startStatePersistence();
 
     const handleBeforeUnload = () => {
       console.log('Saving state to DB...');
@@ -43,6 +59,7 @@ export function App() {
     window.addEventListener('pagehide', handleBeforeUnload); // Add pagehide event for iOS
 
     return () => {
+      stopPersistence();
       window.removeEventListener('beforeunload', handleBeforeUnload);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('pagehide', handleBeforeUnload);
@@ -64,6 +81,29 @@ export function App() {
       document.body.style.overflow = '';
     };
   }, []);
+
+  if (typeof window !== 'undefined' && !isDBLoaded.value) {
+    return (
+      <main class="container mx-auto px-8 py-12">
+        {loadError ? (
+          <div role="alert">
+            <h1 class="text-2xl font-bold mb-4">Could not load your saved data</h1>
+            <p class="mb-4">Your saved data has not been changed. Retry to continue.</p>
+            <Button
+              onClick={() => {
+                setLoadError(false);
+                setLoadAttempt((attempt) => attempt + 1);
+              }}
+            >
+              Retry
+            </Button>
+          </div>
+        ) : (
+          <p role="status">Loading your saved data…</p>
+        )}
+      </main>
+    );
+  }
 
   return (
     <LocationProvider>

@@ -1,4 +1,4 @@
-import { signal } from '@preact/signals';
+import { batch, effect, signal } from '@preact/signals';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import { snapshotPlaybackProgress } from '../playbackProgress';
 import { logState } from '../signals/log';
@@ -63,50 +63,99 @@ interface TunerDB extends DBSchema {
   };
 }
 
-const dbPromise =
-  typeof window !== 'undefined'
-    ? openDB<TunerDB>(dbName, dbVersion, {
-        upgrade(db) {
-          if (!db.objectStoreNames.contains(storeName)) {
-            db.createObjectStore(storeName);
-          }
-        },
-      })
-    : null;
+let dbPromise: Promise<IDBPDatabase<TunerDB>> | undefined;
 
-const getFromDB = async <T>(db: IDBPDatabase<TunerDB> | null, key: AppStateKey): Promise<T | null> => {
-  if (!db) return null;
-  return (await db.get(storeName, key)) as T | null;
-};
+export function openStateDB() {
+  if (!dbPromise) {
+    dbPromise = openDB<TunerDB>(dbName, dbVersion, {
+      upgrade(db) {
+        if (!db.objectStoreNames.contains(storeName)) {
+          db.createObjectStore(storeName);
+        }
+      },
+    }).catch((error) => {
+      dbPromise = undefined;
+      throw error;
+    });
+  }
+  return dbPromise;
+}
 
 export async function loadStateFromDB() {
   if (typeof window === 'undefined') return;
-  const db = await dbPromise;
-  followedPodcasts.value = (await getFromDB<Podcast[]>(db, AppStateKey.FollowedPodcasts)) || [];
-  recentlyVisitedPodcasts.value = (await getFromDB<Podcast[]>(db, AppStateKey.RecentlyVisitedPodcasts)) || [];
-  radioBrowserStations.value = (await getFromDB<RadioStation[]>(db, AppStateKey.RadioBrowserStations)) || [];
-  followedRadioStationIDs.value = (await getFromDB<string[]>(db, AppStateKey.FollowedRadioStationIDs)) || [];
-  recentlyVisitedRadioStationIDs.value =
-    (await getFromDB<string[]>(db, AppStateKey.RecentlyVisitedRadioStationIDs)) || [];
-  radioSearchFilters.value = (await getFromDB<RadioSearchFilters>(db, AppStateKey.RadioSearchFilters)) || null;
-  playlists.value = (await getFromDB<Playlist[]>(db, AppStateKey.Playlists)) || [];
-  playlistRules.value = (await getFromDB<PlaylistRule[]>(db, AppStateKey.PlaylistRules)) || [];
-  playerState.value = (await getFromDB<PlayerState>(db, AppStateKey.PlayerState)) || null;
-  settingsState.value = (await getFromDB<SettingsState>(db, AppStateKey.SettingsState)) || ({} as SettingsState);
-  logState.value = (await getFromDB<LogState[]>(db, AppStateKey.LogState)) || [];
-  isPlayerMaximized.value = (await getFromDB<boolean>(db, AppStateKey.IsPlayerMaximized)) || false;
-  isDBLoaded.value = true;
+  const db = await openStateDB();
+  const tx = db.transaction(storeName, 'readonly');
+  // Read one consistent snapshot and leave signals untouched if any read fails.
+  const keys = Object.values(AppStateKey);
+  const [values] = await Promise.all([Promise.all(keys.map((key) => tx.store.get(key))), tx.done]);
+  const data = new Map(keys.map((key, index) => [key, values[index]]));
+  batch(() => {
+    followedPodcasts.value = (data.get(AppStateKey.FollowedPodcasts) as Podcast[]) || [];
+    recentlyVisitedPodcasts.value = (data.get(AppStateKey.RecentlyVisitedPodcasts) as Podcast[]) || [];
+    radioBrowserStations.value = (data.get(AppStateKey.RadioBrowserStations) as RadioStation[]) || [];
+    followedRadioStationIDs.value = (data.get(AppStateKey.FollowedRadioStationIDs) as string[]) || [];
+    recentlyVisitedRadioStationIDs.value = (data.get(AppStateKey.RecentlyVisitedRadioStationIDs) as string[]) || [];
+    radioSearchFilters.value = (data.get(AppStateKey.RadioSearchFilters) as RadioSearchFilters) || null;
+    playlists.value = (data.get(AppStateKey.Playlists) as Playlist[]) || [];
+    playlistRules.value = (data.get(AppStateKey.PlaylistRules) as PlaylistRule[]) || [];
+    playerState.value = (data.get(AppStateKey.PlayerState) as PlayerState) || null;
+    settingsState.value = (data.get(AppStateKey.SettingsState) as SettingsState) || ({} as SettingsState);
+    logState.value = (data.get(AppStateKey.LogState) as LogState[]) || [];
+    isPlayerMaximized.value = (data.get(AppStateKey.IsPlayerMaximized) as boolean) || false;
+    isDBLoaded.value = true;
+  });
+}
+
+let saveTimer: ReturnType<typeof setTimeout> | undefined;
+let isSnapshottingPlayback = false;
+
+function cancelScheduledSave() {
+  clearTimeout(saveTimer);
+  saveTimer = undefined;
+}
+
+export function startStatePersistence() {
+  let hasLoadedSnapshot = false;
+  const dispose = effect(() => {
+    if (!isDBLoaded.value) return;
+    // Playback and logs retain their existing checkpoint/lifecycle saves.
+    void followedPodcasts.value;
+    void recentlyVisitedPodcasts.value;
+    void radioBrowserStations.value;
+    void followedRadioStationIDs.value;
+    void recentlyVisitedRadioStationIDs.value;
+    void radioSearchFilters.value;
+    void playlists.value;
+    void playlistRules.value;
+    void settingsState.value;
+    void isPlayerMaximized.value;
+    if (hasLoadedSnapshot && !isSnapshottingPlayback && saveTimer === undefined) {
+      // Bound the delay even during continuous edits; group a burst into one transaction.
+      saveTimer = setTimeout(() => void saveStateToDB(), 100);
+    }
+    hasLoadedSnapshot = true;
+  });
+  return () => {
+    dispose();
+    cancelScheduledSave();
+  };
 }
 
 export async function saveStateToDB() {
   if (typeof window === 'undefined' || !isDBLoaded.peek()) return;
-  snapshotPlaybackProgress();
-  const db = await dbPromise;
-  if (!db) return;
-
+  cancelScheduledSave();
   try {
+    // Snapshot updates are included in this write; they must not schedule another save.
+    isSnapshottingPlayback = true;
+    try {
+      snapshotPlaybackProgress();
+    } finally {
+      isSnapshottingPlayback = false;
+    }
+    const db = await openStateDB();
     const tx = db.transaction(storeName, 'readwrite');
     await Promise.all([
+      tx.done,
       tx.store.put(followedPodcasts.value, AppStateKey.FollowedPodcasts),
       tx.store.put(recentlyVisitedPodcasts.value, AppStateKey.RecentlyVisitedPodcasts),
       tx.store.put(radioBrowserStations.value, AppStateKey.RadioBrowserStations),
@@ -120,7 +169,6 @@ export async function saveStateToDB() {
       tx.store.put(logState.value, AppStateKey.LogState),
       tx.store.put(isPlayerMaximized.value, AppStateKey.IsPlayerMaximized),
     ]);
-    await tx.done;
   } catch (error) {
     console.error('Error saving state to DB:', error);
   }

@@ -3,7 +3,7 @@ import { playlistUtil } from '~/lib/playlistUtil';
 import { getPodcastUrlID } from '~/lib/utils';
 import { hasAppUpdatedMessage } from '../signals/ui';
 import { Podcast } from '../types';
-import { AppStateKey, dbName, dbVersion, storeName } from './db';
+import { AppStateKey, openStateDB, storeName } from './db';
 
 interface OldKeyvalStore extends DBSchema {
   keyval: {
@@ -85,11 +85,7 @@ export async function migrateOldData() {
     }
 
     // Open new database (reuse existing configuration)
-    const newDb = await openDB(dbName, dbVersion, {
-      blocked() {
-        console.log('New database blocked');
-      },
-    });
+    const newDb = await openStateDB();
 
     // Migrate radio stations
     const lastStationList = (await oldDb.get('keyval', 'last-station-list')) as OldStation[];
@@ -138,7 +134,9 @@ export async function migrateOldData() {
     const oldPlaylists = (await oldDb.get('keyval', 'playlists')) as OldPlaylist[];
     if (oldPlaylists?.length > 0) {
       console.log('Migrating playlists...');
-      const migratedPlaylists = oldPlaylists.map((pl) => playlistUtil.getPlaylistDataByUrl(pl.href)).filter(Boolean);
+      const migratedPlaylists = oldPlaylists
+        .map((pl) => playlistUtil.getPlaylistDataByUrl(pl.href))
+        .filter((playlist) => playlist !== null);
       if (migratedPlaylists.length) {
         await newDb.put(storeName, migratedPlaylists, AppStateKey.Playlists);
       }
@@ -156,7 +154,6 @@ export async function migrateOldData() {
     );
 
     oldDb.close();
-    newDb.close();
 
     console.log('Migration completed successfully');
   } catch (error) {
