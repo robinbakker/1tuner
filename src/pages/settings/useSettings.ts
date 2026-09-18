@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'preact/compat';
-import { useCallback, useEffect, useState } from 'preact/hooks';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'preact/hooks';
 import { RadioButtonListOption } from '~/components/ui/radio-button-list';
 import { useHead } from '~/hooks/useHead';
 import { usePodcastData } from '~/hooks/usePodcastData';
@@ -16,6 +16,13 @@ import { ThemeOption } from './types';
 
 export const useSettings = () => {
   const { fetchPodcastData } = usePodcastData();
+  const disposedRef = useRef(false);
+  useLayoutEffect(() => {
+    disposedRef.current = false;
+    return () => {
+      disposedRef.current = true;
+    };
+  }, []);
   const [isImporting, setIsImporting] = useState(false);
   const [selectedLogDay, setSelectedLogDay] = useState<string | null>(null);
   const themeOptions: RadioButtonListOption[] = [
@@ -113,6 +120,7 @@ export const useSettings = () => {
       setIsImporting(true);
       try {
         const text = await file.text();
+        if (disposedRef.current) return;
         const feedUrls = opmlUtil.parsePodcastFeedUrls(text);
         const seen = new Set<string>();
         let imported = 0;
@@ -120,6 +128,7 @@ export const useSettings = () => {
         let failed = 0;
 
         for (const feedUrl of feedUrls) {
+          if (disposedRef.current) return;
           try {
             // Validate without rewriting the scheme, path, or query of the feed.
             const url = new URL(feedUrl);
@@ -133,6 +142,7 @@ export const useSettings = () => {
             }
             seen.add(id);
             const podcast = await fetchPodcastData(id, feedUrl);
+            if (disposedRef.current) return;
             if (!podcast) {
               failed++;
             } else if (addFollowedPodcast(podcast)) {
@@ -146,6 +156,7 @@ export const useSettings = () => {
             failed++;
           }
         }
+        if (disposedRef.current) return;
         alert(`Import completed: ${imported} imported, ${skipped} skipped, ${failed} failed.`);
       } catch (error) {
         console.error('Import failed:', error);
@@ -153,7 +164,7 @@ export const useSettings = () => {
       } finally {
         // Clear the input
         input.value = '';
-        setIsImporting(false);
+        if (!disposedRef.current) setIsImporting(false);
       }
     },
     [fetchPodcastData],

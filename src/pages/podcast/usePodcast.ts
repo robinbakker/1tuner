@@ -1,5 +1,5 @@
 import { useLocation, useRoute } from 'preact-iso';
-import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'preact/hooks';
 import { useHead } from '~/hooks/useHead';
 import { usePodcastData } from '~/hooks/usePodcastData';
 import { getPodcastUrlID, normalizedUrlWithoutScheme, slugify, stripHtml } from '~/lib/utils';
@@ -23,7 +23,7 @@ export const usePodcast = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any)?.__PRERENDER_PODCASTS__?.find((p: Podcast) => p.id === params.id),
   );
-  const { fetchPodcastData, isLoading } = usePodcastData();
+  const { fetchPodcastData, isLoading, error, cancelFetch } = usePodcastData();
 
   useHead({
     title: podcast ? podcast.title : 'Podcast',
@@ -82,19 +82,24 @@ export const usePodcast = () => {
     [params.id, fetchPodcastData, paramsFeedUrl, isDBLoaded.value],
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    setPodcast(getPodcast(params.id) ?? null);
+    setIsFollowing(isFollowedPodcast(params.id));
     getPodcastData();
 
     return () => {
+      cancelFetch();
       uiState.value = { ...uiState.value, headerTitle: '' };
     };
-  }, [getPodcastData]);
+  }, [getPodcastData, cancelFetch, params.id]);
 
   useEffect(() => {
     if (nowPlayingState) {
-      getPodcastData();
+      // Playback updates should not replace an in-flight episode refresh.
+      const savedPodcast = getPodcast(params.id);
+      if (savedPodcast) setPodcast(savedPodcast);
     }
-  }, [getPodcastData, nowPlayingState]);
+  }, [params.id, nowPlayingState]);
 
   const toggleFollow = () => {
     if (!podcast) return;
@@ -141,6 +146,7 @@ export const usePodcast = () => {
   return {
     params,
     isLoading,
+    error,
     podcast,
     lastPlayedEpisode,
     isFollowing,

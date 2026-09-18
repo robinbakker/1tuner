@@ -11,6 +11,7 @@ export const PodcastPage = () => {
   const {
     params,
     isLoading,
+    error,
     podcast,
     lastPlayedEpisode,
     isFollowing,
@@ -32,10 +33,17 @@ export const PodcastPage = () => {
   }
 
   if (!podcast) {
-    //return route('404-not-found', true);
     return (
       <div class="container @container mx-auto p-4 md:p-8">
-        <h1 class="text-2xl @5xl:text-3xl font-bold mb-4">Podcast not found...</h1>
+        <h1 class="text-2xl @5xl:text-3xl font-bold mb-4">
+          {error ? 'Unable to load podcast' : 'Podcast not found...'}
+        </h1>
+        {error && <p role="alert">{error}</p>}
+        {error && (
+          <Button onClick={handleFetchNewEpisodes} class="mt-4">
+            Try again
+          </Button>
+        )}
       </div>
     );
   }
@@ -115,6 +123,11 @@ export const PodcastPage = () => {
           </div>
         </header>
         <section>
+          {error && (
+            <p role="alert" class="mb-4">
+              {error}
+            </p>
+          )}
           <div class="space-y-6">
             {podcast.episodes
               ?.filter((ep) => !selectedEpisodeID || selectedEpisodeID === ep.guid)
