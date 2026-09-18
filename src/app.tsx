@@ -1,5 +1,5 @@
 import { ErrorBoundary, LocationProvider, Route, Router } from 'preact-iso';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useLayoutEffect, useState } from 'preact/hooks';
 import './app.css';
 import { AppShell } from './components/appShell/appShell';
 import { Button } from './components/ui/button';
@@ -18,8 +18,15 @@ import { migrateOldData } from './store/db/migration';
 import { isPlayerMaximized } from './store/signals/player';
 
 export function App() {
+  const [hasHydrated, setHasHydrated] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const [loadAttempt, setLoadAttempt] = useState(0);
+
+  // Match the prerendered app on the first browser render. Switching to the loading
+  // screen during hydration leaves orphaned server markup beside the live router.
+  useLayoutEffect(() => {
+    setHasHydrated(true);
+  }, []);
 
   useEffect(() => {
     let disposed = false;
@@ -82,7 +89,7 @@ export function App() {
     };
   }, []);
 
-  if (typeof window !== 'undefined' && !isDBLoaded.value) {
+  if (hasHydrated && !isDBLoaded.value) {
     return (
       <main class="container mx-auto px-8 py-12">
         {loadError ? (
