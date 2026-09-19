@@ -1,293 +1,297 @@
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { playerState } from '~/store/signals/player';
 import { settingsState } from '~/store/signals/settings';
+import { PlayerState } from '~/store/types';
 
-const loadCastSDK = () => {
-  return new Promise<void>((resolve, reject) => {
-    if (document.querySelector('script[src*="cast_sender.js"]')) {
-      resolve();
-      return;
-    }
-    const script = document.createElement('script');
-    script.src = 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1';
-    script.async = true;
-    script.onload = () => resolve();
-    script.onerror = (e) => reject(e);
-    document.head.appendChild(script);
-  });
+const sourceKey = (player: PlayerState | null) => {
+  const stream = player?.streams[0];
+  return stream?.url ? JSON.stringify([player?.playType, player?.contentID, stream.url, stream.mimetype]) : null;
 };
 
 export const useCastApi = () => {
+  const enabled = !!settingsState.value.enableChromecast;
+  const source = sourceKey(playerState.value);
+  const isPlaying = playerState.value?.isPlaying;
   const [castSession, setCastSession] = useState<chrome.cast.Session | null>(null);
+  const [castMedia, setCastMedia] = useState<chrome.cast.media.Media | null>(null);
+  const [initialized, setInitialized] = useState(false);
+  const sessionRef = useRef<chrome.cast.Session | null>(null);
   const castMediaRef = useRef<chrome.cast.media.Media | null>(null);
-  const castInitialized = useRef(false);
-  const APPLICATION_ID = '2CFD5B94';
+  const removeMediaListenerRef = useRef<() => void>();
+  const removeSessionListenersRef = useRef<() => void>();
+  const lifecycleRef = useRef(0);
+  const requestingSessionRef = useRef(false);
 
-  const setupMediaListeners = useCallback(
+  const detachMedia = useCallback(() => {
+    removeMediaListenerRef.current?.();
+    removeMediaListenerRef.current = undefined;
+    castMediaRef.current = null;
+    setCastMedia(null);
+  }, []);
+
+  const attachMedia = useCallback(
     (media: chrome.cast.media.Media) => {
+      if (castMediaRef.current === media) return;
+      detachMedia();
+      const owner = sourceKey(playerState.peek());
       castMediaRef.current = media;
-      media.addUpdateListener((isAlive: boolean) => {
-        if (!isAlive || !media || !playerState.value) return;
-
-        const isPlaying = media.playerState === chrome.cast.media.PlayerState.PLAYING;
-        if (playerState.value.isPlaying !== isPlaying) {
-          playerState.value = {
-            ...playerState.value,
-            isPlaying,
-          };
-        }
-      });
-    },
-    [playerState.value],
-  );
-
-  const updateCastMedia = useCallback(
-    (session: chrome.cast.Session) => {
-      try {
-        const media = session.media?.[0];
-        if (media) {
-          console.log('Found active media session:', media);
-          castMediaRef.current = media;
-          setupMediaListeners(media);
-        } else {
-          console.log('No active media session found');
-          castMediaRef.current = null;
-        }
-      } catch (error) {
-        console.error('Error updating cast media:', error);
-        castMediaRef.current = null;
-      }
-    },
-    [setupMediaListeners],
-  );
-
-  const initializeCastApi = useCallback(() => {
-    if (typeof window === 'undefined' || !window.chrome?.cast || castInitialized.current) return;
-
-    try {
-      // Ensure the cast API is actually available
-      if (!window.chrome.cast.isAvailable) {
-        console.log('Cast API not yet available, waiting...');
-        return;
-      }
-
-      const sessionRequest = new window.chrome.cast.SessionRequest(APPLICATION_ID);
-      if (!sessionRequest) {
-        console.error('Failed to create session request');
-        return;
-      }
-
-      const apiConfig = new window.chrome.cast.ApiConfig(
-        sessionRequest,
-        (session) => {
-          console.log('Cast session established:', session);
-          setCastSession(session);
-          updateCastMedia(session);
-        },
-        (availability) => {
-          console.log('Receiver availability:', availability);
-        },
-        chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
-      );
-
-      window.chrome.cast.initialize(
-        apiConfig,
-        () => {
-          console.log('Cast API initialized');
-          castInitialized.current = true;
-        },
-        (error) => console.error('Cast API initialization error:', error),
-      );
-    } catch (error) {
-      console.error('Error during Cast API initialization:', error);
-    }
-  }, [updateCastMedia]);
-
-  const createMediaInfo = useCallback(() => {
-    if (!playerState.value) return null;
-    const playerStateStream = playerState.value?.streams?.[0];
-    if (!playerStateStream) return null;
-
-    const mediaInfo = new chrome.cast.media.MediaInfo(playerStateStream.url, playerStateStream.mimetype);
-
-    mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
-    mediaInfo.metadata.title = playerState.value.title;
-    mediaInfo.metadata.subtitle = playerState.value.description;
-    mediaInfo.metadata.images = [{ url: playerState.value.imageUrl }];
-
-    return mediaInfo;
-  }, [playerState.value]);
-
-  const loadMedia = useCallback(
-    async (session: chrome.cast.Session) => {
-      return new Promise((resolve, reject) => {
-        const mediaInfo = createMediaInfo();
-        if (!mediaInfo) {
-          resolve(null);
+      setCastMedia(media);
+      const onUpdate = (isAlive: boolean) => {
+        if (castMediaRef.current !== media) return;
+        if (!isAlive) {
+          detachMedia();
           return;
         }
+        const player = playerState.peek();
+        if (!player || sourceKey(player) !== owner) return;
+        // Buffering is transitional; it must not turn a play request into a pause.
+        const state = media.playerState;
+        if (state !== chrome.cast.media.PlayerState.PLAYING && state !== chrome.cast.media.PlayerState.PAUSED) return;
+        const playing = state === chrome.cast.media.PlayerState.PLAYING;
+        if (player.isPlaying !== playing) playerState.value = { ...player, isPlaying: playing };
+      };
+      media.addUpdateListener(onUpdate);
+      removeMediaListenerRef.current = () => media.removeUpdateListener(onUpdate);
+    },
+    [detachMedia],
+  );
 
-        console.log('Loading media:', mediaInfo);
+  const releaseSession = useCallback(() => {
+    removeSessionListenersRef.current?.();
+    removeSessionListenersRef.current = undefined;
+    detachMedia();
+    sessionRef.current = null;
+    setCastSession(null);
+  }, [detachMedia]);
 
-        const request = new chrome.cast.media.LoadRequest(mediaInfo);
-        // Set initial playback state
-        request.autoplay = false; // Prevent auto-playing
+  const acceptSession = useCallback(
+    (session: chrome.cast.Session) => {
+      if (sessionRef.current === session) return;
+      releaseSession();
+      sessionRef.current = session;
+      const onUpdate = (isAlive: boolean) => {
+        if (sessionRef.current !== session) return;
+        if (
+          !isAlive ||
+          session.status === chrome.cast.SessionStatus.STOPPED ||
+          session.status === chrome.cast.SessionStatus.DISCONNECTED
+        )
+          releaseSession();
+      };
+      const onMedia = (media: chrome.cast.media.Media) => {
+        const stream = playerState.peek()?.streams[0];
+        if (
+          sessionRef.current === session &&
+          media.media?.contentId === stream?.url &&
+          media.media?.contentType === stream?.mimetype
+        )
+          attachMedia(media);
+      };
+      session.addUpdateListener(onUpdate);
+      session.addMediaListener(onMedia);
+      removeSessionListenersRef.current = () => {
+        session.removeUpdateListener(onUpdate);
+        session.removeMediaListener(onMedia);
+      };
+      setCastSession(session);
+    },
+    [attachMedia, releaseSession],
+  );
 
-        session.loadMedia(
-          request,
-          (media) => {
-            console.log('Media loaded:', media);
-
-            if (media) {
-              setupMediaListeners(media);
-              if (playerState.value?.isPlaying) {
-                media.play(
-                  new chrome.cast.media.PlayRequest(),
-                  () => console.log('Playback started'),
-                  (error) => {
-                    if (playerState.value) playerState.value.isPlaying = false;
-                    console.error('Error starting playback:', error);
-                  },
-                );
-              } else {
-                media.pause(
-                  new chrome.cast.media.PauseRequest(),
-                  () => console.log('Playback paused while loading media'),
-                  (error) => console.error('Error pausing playback while loading media:', error),
-                );
-              }
-            }
-            resolve(media);
+  // SDK lifetime follows the setting, never player state or media updates.
+  useEffect(() => {
+    if (!enabled) return;
+    const generation = ++lifecycleRef.current;
+    let disposed = false;
+    let initializing = false;
+    let ready = false;
+    const initialize = () => {
+      if (disposed || initializing || ready || !window.chrome?.cast?.isAvailable) return;
+      initializing = true;
+      try {
+        const config = new chrome.cast.ApiConfig(
+          new chrome.cast.SessionRequest('2CFD5B94'),
+          (session) => {
+            if (!disposed) acceptSession(session);
+          },
+          () => {},
+          chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
+        );
+        chrome.cast.initialize(
+          config,
+          () => {
+            if (disposed) return;
+            ready = true;
+            setInitialized(true);
           },
           (error) => {
-            console.error('Error loading media:', error);
-            reject(error);
+            initializing = false;
+            if (!disposed) console.error('Cast API initialization error:', error);
           },
         );
-      });
-    },
-    [createMediaInfo, setupMediaListeners, playerState.value],
-  );
-
-  const startCasting = useCallback(async () => {
-    console.log('Starting cast...');
-
-    if (!playerState.value?.streams?.[0]?.url) return;
-
-    try {
-      if (!castSession) {
-        await new Promise<void>((resolve, reject) => {
-          window.chrome.cast.requestSession(
-            async (session) => {
-              setCastSession(session);
-              await loadMedia(session);
-              resolve();
-            },
-            (error) => reject(error),
-          );
-        });
+      } catch (error) {
+        initializing = false;
+        console.error('Error during Cast API initialization:', error);
       }
-    } catch (error) {
-      console.error('Error starting cast:', error);
+    };
+    const previousCallback = window.__onGCastApiAvailable;
+    const onAvailable = (available: boolean) => {
+      if (available) initialize();
+    };
+    // Register before appending the script: the SDK can call back before onload.
+    window.__onGCastApiAvailable = onAvailable;
+    let script = document.querySelector<HTMLScriptElement>('script[src*="cast_sender.js"]');
+    const ownsScript = !script;
+    if (!script) {
+      script = document.createElement('script');
+      script.src = 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1';
+      script.async = true;
     }
-  }, [castSession, loadMedia, playerState.value]);
+    const onError = () => {
+      if (!disposed) console.error('Failed to load Cast SDK');
+    };
+    script.addEventListener('load', initialize);
+    script.addEventListener('error', onError);
+    if (ownsScript) document.head.appendChild(script);
+    initialize();
+
+    return () => {
+      disposed = true;
+      lifecycleRef.current = generation + 1;
+      requestingSessionRef.current = false;
+      script.removeEventListener('load', initialize);
+      script.removeEventListener('error', onError);
+      if (ownsScript) script.remove();
+      if (window.__onGCastApiAvailable === onAvailable) {
+        if (previousCallback) window.__onGCastApiAvailable = previousCallback;
+        else delete window.__onGCastApiAvailable;
+      }
+      releaseSession();
+      setInitialized(false);
+    };
+  }, [enabled, acceptSession, releaseSession]);
+
+  // A source change owns one load; playback, metadata and progress writes do not.
+  useEffect(() => {
+    if (!enabled || !castSession || sessionRef.current !== castSession || !source) return;
+    const player = playerState.peek()!;
+    const stream = player.streams[0];
+    let cancelled = false;
+    const isCurrent = () =>
+      !cancelled && sessionRef.current === castSession && sourceKey(playerState.peek()) === source;
+    detachMedia();
+    const existing = castSession.media?.[0];
+    if (existing?.media?.contentId === stream.url && existing.media.contentType === stream.mimetype) {
+      attachMedia(existing);
+    } else {
+      const info = new chrome.cast.media.MediaInfo(stream.url, stream.mimetype);
+      info.metadata = new chrome.cast.media.GenericMediaMetadata();
+      info.metadata.title = player.title;
+      info.metadata.subtitle = player.description;
+      info.metadata.images = player.imageUrl ? [{ url: player.imageUrl }] : [];
+      info.streamType =
+        player.playType === 'podcast' ? chrome.cast.media.StreamType.BUFFERED : chrome.cast.media.StreamType.LIVE;
+      const request = new chrome.cast.media.LoadRequest(info);
+      request.autoplay = player.isPlaying;
+      if (player.playType === 'podcast') request.currentTime = player.currentTime ?? 0;
+      castSession.loadMedia(
+        request,
+        (media) => {
+          if (isCurrent()) attachMedia(media);
+        },
+        (error) => {
+          if (isCurrent()) console.error('Error loading Cast media:', error);
+        },
+      );
+    }
+    return () => {
+      cancelled = true;
+      detachMedia();
+    };
+  }, [enabled, castSession, source, attachMedia, detachMedia]);
+
+  const startCasting = useCallback(() => {
+    if (
+      !settingsState.peek().enableChromecast ||
+      !initialized ||
+      !sourceKey(playerState.peek()) ||
+      sessionRef.current ||
+      requestingSessionRef.current
+    )
+      return;
+    const generation = lifecycleRef.current;
+    requestingSessionRef.current = true;
+    chrome.cast.requestSession(
+      (session) => {
+        if (lifecycleRef.current !== generation) return;
+        requestingSessionRef.current = false;
+        acceptSession(session);
+      },
+      (error) => {
+        if (lifecycleRef.current !== generation) return;
+        requestingSessionRef.current = false;
+        console.error('Error starting cast:', error);
+      },
+    );
+  }, [initialized, acceptSession]);
 
   const stopCasting = useCallback(() => {
-    if (castSession) {
-      if (castMediaRef.current) {
-        castMediaRef.current.removeUpdateListener(() => {});
-      }
-      castSession.stop(
-        () => console.log('Casting stopped'),
-        (error) => console.error('Error stopping playback:', error),
-      );
-      setCastSession(null);
-      castMediaRef.current = null;
-    }
-  }, [castSession]);
+    const session = sessionRef.current;
+    if (!session) return;
+    session.stop(
+      () => {
+        if (sessionRef.current === session) releaseSession();
+      },
+      (error) => console.error('Error stopping cast:', error),
+    );
+  }, [releaseSession]);
 
-  const handleCastPlayPause = useCallback((isPlaying: boolean) => {
-    if (!castMediaRef.current) return;
-    if (isPlaying) {
-      castMediaRef.current.play(
+  const handleCastPlayPause = useCallback((playing: boolean) => {
+    const media = castMediaRef.current;
+    if (!media) return;
+    if (playing)
+      media.play(
         new chrome.cast.media.PlayRequest(),
-        () => console.log('Playback started (play action)'),
-        (error) => console.error('Error starting playback (play):', error),
+        () => {},
+        (error) => console.error('Error playing cast:', error),
       );
-    } else {
-      castMediaRef.current.pause(
+    else
+      media.pause(
         new chrome.cast.media.PauseRequest(),
-        () => console.log('Playback paused (pause action)'),
-        (error) => console.error('Error pausing playback:', error),
+        () => {},
+        (error) => console.error('Error pausing cast:', error),
       );
-    }
   }, []);
 
-  const handleCastSeek = useCallback((seconds: number) => {
-    if (!castMediaRef.current) return;
+  useEffect(() => {
+    if (!castMedia || isPlaying === undefined) return;
+    if (
+      (isPlaying && castMedia.playerState === chrome.cast.media.PlayerState.PAUSED) ||
+      (!isPlaying && castMedia.playerState === chrome.cast.media.PlayerState.PLAYING)
+    )
+      handleCastPlayPause(isPlaying);
+  }, [castMedia, isPlaying, handleCastPlayPause]);
 
-    const newTime = castMediaRef.current.getEstimatedTime() + seconds;
+  const handleCastSeek = useCallback((seconds: number, absolute = false) => {
+    const media = castMediaRef.current;
+    if (!media || !Number.isFinite(seconds)) return;
+    const duration = media.media?.duration;
+    const position = absolute ? seconds : media.getEstimatedTime() + seconds;
     const request = new chrome.cast.media.SeekRequest();
-    request.currentTime = newTime;
-    castMediaRef.current.seek(
+    request.currentTime = Math.max(0, Math.min(position, duration && Number.isFinite(duration) ? duration : Infinity));
+    media.seek(
       request,
-      () => console.log('Seek (seek action)'),
-      (error) => console.error('Error seeking:', error),
+      () => {},
+      (error) => console.error('Error seeking cast:', error),
     );
   }, []);
-
-  const handleCastPlaybackRateChange = useCallback(
-    //(rate: number) => {
-    () => {
-      if (!castMediaRef.current) return;
-      // const request = new chrome.cast.media.SetPlaybackRateRequest(rate);
-      // castMediaRef.current.setPlaybackRate(request);
-    },
-    [],
-  );
-
-  // Initialize Chromecast only if enabled in settings
-  useEffect(() => {
-    if (settingsState.value.enableChromecast) {
-      let initializationTimer: number;
-
-      loadCastSDK()
-        .then(() => {
-          window.__onGCastApiAvailable = (isAvailable: boolean) => {
-            if (isAvailable) {
-              // Add a small delay to ensure the API is fully loaded
-              initializationTimer = window.setTimeout(() => {
-                initializeCastApi();
-              }, 100);
-            }
-          };
-        })
-        .catch((error) => {
-          console.error('Failed to load Cast SDK:', error);
-        });
-
-      return () => {
-        // Cleanup when Chromecast is disabled
-        clearTimeout(initializationTimer);
-        delete window.__onGCastApiAvailable;
-        const scriptTag = document.querySelector('script[src*="cast_sender.js"]');
-        if (scriptTag) {
-          scriptTag.remove();
-        }
-        setCastSession(null);
-        castMediaRef.current = null;
-        castInitialized.current = false;
-      };
-    }
-  }, [initializeCastApi, settingsState.value.enableChromecast]);
 
   return {
     startCasting,
     stopCasting,
     handleCastPlayPause,
     handleCastSeek,
-    handleCastPlaybackRateChange,
-    isCastingAvailable: settingsState.value.enableChromecast && !!castInitialized.current,
+    isCastingAvailable: enabled && initialized,
     castSession,
     castMediaRef,
   };

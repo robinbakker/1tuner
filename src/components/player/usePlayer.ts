@@ -79,26 +79,28 @@ export const usePlayer = () => {
 
   const updateTimeUI = useCallback(() => {
     if (!audioRef.current || !playerState.value?.streams || !isPodcast) return;
-    const audio = audioRef.current;
-    currentTime.value = audio.currentTime;
+    const position = castSession ? castMediaRef.current?.getEstimatedTime() : audioRef.current.currentTime;
+    if (position === undefined || !Number.isFinite(position)) return;
+    currentTime.value = position;
+    if (castSession) durationSignal.value = castMediaRef.current?.media?.duration ?? 0;
 
     requestAnimationFrame(() => {
       if (currentTimeDisplayRef.current) {
-        currentTimeDisplayRef.current.textContent = formatTime(audio.currentTime);
+        currentTimeDisplayRef.current.textContent = formatTime(position);
       }
       if (progressBarRef.current) {
         progressBarRef.current.style.width = `${progressPercentage.value}%`;
       }
       if (sliderRef.current) {
-        sliderRef.current.value = audio.currentTime.toString();
+        sliderRef.current.value = position.toString();
         sliderRef.current.style.backgroundImage = `linear-gradient(to right, #ff6000 ${progressPercentage.value}%, #ccc ${progressPercentage.value}%)`;
       }
     });
-  }, [playerState.value?.streams, isPodcast, progressPercentage, formatTime]);
+  }, [playerState.value?.streams, isPodcast, progressPercentage, formatTime, castSession, castMediaRef]);
 
   const handleSeek = useCallback(
     (seconds: number) => {
-      if (castSession && castMediaRef.current) {
+      if (castSession) {
         handleCastSeek(seconds);
         return;
       }
@@ -175,6 +177,7 @@ export const usePlayer = () => {
   }, [playerState.value, castSession, castMediaRef, handleCastPlayPause, stopNoise, setToPaused]);
 
   const handleClose = useCallback(() => {
+    if (castSession) stopCasting();
     setToPaused();
     if (reconnectTimeout.current) {
       console.log('handleClose: Cleaning up reconnect timeout');
@@ -184,23 +187,31 @@ export const usePlayer = () => {
     playerState.value = null;
     isPlayerMaximized.value = false;
     void saveStateToDB();
-  }, [setToPaused]);
+  }, [setToPaused, castSession, stopCasting]);
 
   const handleSliderChange = useCallback(
     (e: Event) => {
       const target = e.target as HTMLInputElement;
       if (!audioRef.current) return;
       const newTime = parseFloat(target.value);
+      if (castSession) {
+        handleCastSeek(newTime, true);
+        return;
+      }
       audioRef.current.currentTime = newTime;
       updateTimeUI();
     },
-    [updateTimeUI],
+    [updateTimeUI, castSession, handleCastSeek],
   );
 
   useEffect(() => {
     if (!audioRef.current || !playerState.value || !playerState.value.streams?.length) return;
 
     const audio = audioRef.current;
+    if (castSession) {
+      audio.pause();
+      return;
+    }
     const newSrc = playerState.value.streams[0].url;
 
     // If src was set programmatically for reconnect, we must remove it
@@ -351,7 +362,7 @@ export const usePlayer = () => {
     const audio = audioRef.current;
 
     const handleError = (e: Event) => {
-      if (!isPodcast && playerState.value?.isPlaying && reconnectAttempts.current === 0) {
+      if (!castSession && !isPodcast && playerState.value?.isPlaying && reconnectAttempts.current === 0) {
         console.log(`Stream ${e.type} event, attempting reconnect...`, e);
         startNoise();
         attemptReconnect();
@@ -387,7 +398,7 @@ export const usePlayer = () => {
         clearTimeout(reconnectTimeout.current);
       }
     };
-  }, [playerState.value?.playType, playerState.value?.isPlaying, attemptReconnect, startNoise, stopNoise]);
+  }, [playerState.value?.playType, playerState.value?.isPlaying, attemptReconnect, startNoise, stopNoise, castSession]);
 
   useEffect(() => {
     const forceRetry = (reason: string) => {
@@ -455,16 +466,15 @@ export const usePlayer = () => {
     if (!audioRef.current) return;
 
     const audio = audioRef.current;
+    if (castSession) {
+      updateTimeUI();
+      // The paused local audio element emits no remote timeupdate events.
+      const timer = window.setInterval(updateTimeUI, 500);
+      return () => window.clearInterval(timer);
+    }
     let lastTime = 0;
 
     const updateTime = () => {
-      // Use cast media time if casting
-      if (castSession && castMediaRef.current) {
-        lastTime = castMediaRef.current.getEstimatedTime() ?? 0;
-        updateTimeUI();
-        return;
-      }
-
       if (Math.abs(audio.currentTime - lastTime) >= 1) {
         lastTime = audio.currentTime;
         updateTimeUI();
@@ -530,14 +540,21 @@ export const usePlayer = () => {
 
     navigator.mediaSession.setActionHandler('seekto', (details) => {
       if (!isPodcast || !audioRef.current || details.seekTime === undefined) return;
+      if (castSession) {
+        handleCastSeek(details.seekTime, true);
+        return;
+      }
       audioRef.current.currentTime = details.seekTime;
       updateTimeUI();
     });
 
-    if (isPodcast) {
+    if (isPodcast && Number.isFinite(durationSignal.value) && durationSignal.value > 0) {
       navigator.mediaSession.setPositionState({
         duration: durationSignal.value,
-        position: audioRef.current.currentTime,
+        position: Math.min(
+          durationSignal.value,
+          Math.max(0, castSession ? (castMediaRef.current?.getEstimatedTime() ?? 0) : audioRef.current.currentTime),
+        ),
         playbackRate: playbackRateSignal.value,
       });
     }
@@ -550,7 +567,17 @@ export const usePlayer = () => {
       navigator.mediaSession.setActionHandler('nexttrack', null);
       navigator.mediaSession.setActionHandler('seekto', null);
     };
-  }, [playerState.value, durationSignal.value, isPodcast, handlePlayPause, handleSeek, updateTimeUI]);
+  }, [
+    playerState.value,
+    durationSignal.value,
+    isPodcast,
+    handlePlayPause,
+    handleSeek,
+    updateTimeUI,
+    castSession,
+    castMediaRef,
+    handleCastSeek,
+  ]);
 
   // Expose a function to force remount
   const forceAudioRemount = () => {
