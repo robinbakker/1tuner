@@ -6,23 +6,27 @@ export const Loader = () => {
   useEffect(() => {
     const needle = needleRef.current;
     if (!needle) return;
+    let timeout: ReturnType<typeof setTimeout>;
+    let disposed = false;
 
     const animate = () => {
+      if (disposed) return;
+
       const randomPosition = Math.random() * 100;
       needle.style.left = `${randomPosition}%`;
 
       const duration = 500 + Math.random() * 1000; // Random duration between 0.5s and 1.5s
       needle.style.transition = `left ${duration}ms ease-in-out`;
 
-      setTimeout(animate, duration);
+      timeout = setTimeout(animate, duration);
     };
 
     animate();
 
     return () => {
-      if (needle) {
-        needle.style.transition = 'none';
-      }
+      disposed = true;
+      clearTimeout(timeout);
+      needle.style.transition = 'none';
     };
   }, []);
 
