@@ -18,6 +18,7 @@ export const RadioStationPage = () => {
   const {
     params,
     radioStation,
+    radioStationDescription,
     isPlaying,
     isFetchingData,
     isRadioBrowserStation,
@@ -43,6 +44,21 @@ export const RadioStationPage = () => {
   if (!radioStation) {
     return <div>Radio station not found</div>;
   }
+
+  const setStationPlayback = (playing: boolean) => {
+    if (playing && isPlaying) return;
+
+    playerState.value = {
+      playType: 'radio',
+      isPlaying: playing,
+      contentID: radioStation.id,
+      title: radioStation.name,
+      description: '',
+      imageUrl: radioStation.logosource,
+      streams: radioStation.streams,
+      pageLocation: `/radio-station/${radioStation.id}`,
+    };
+  };
 
   const getSocialIcon = (type: SocialAccountType) => {
     switch (type) {
@@ -130,18 +146,7 @@ export const RadioStationPage = () => {
                 {isFollowing ? 'Following' : 'Follow'}
               </Button>
               <Button
-                onClick={() => {
-                  playerState.value = {
-                    playType: 'radio',
-                    isPlaying: !isPlaying,
-                    contentID: radioStation.id,
-                    title: radioStation.name,
-                    description: '',
-                    imageUrl: radioStation.logosource,
-                    streams: radioStation.streams,
-                    pageLocation: `/radio-station/${radioStation.id}`,
-                  };
-                }}
+                onClick={() => setStationPlayback(!isPlaying)}
                 styleSize="icon"
                 aria-label={isPlaying ? 'Pause' : 'Play'}
               >
@@ -152,6 +157,23 @@ export const RadioStationPage = () => {
         </div>
       </header>
       <div class="container mx-auto px-8 py-6">
+        {radioStationDescription && (
+          <p
+            class="mb-8 max-w-3xl text-muted-foreground leading-relaxed"
+            lang={radioStationDescription.language}
+            dir={radioStationDescription.direction}
+          >
+            {radioStationDescription.beforeAction}
+            <button
+              type="button"
+              class="text-primary underline underline-offset-4 hover:no-underline cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              onClick={() => setStationPlayback(true)}
+            >
+              {radioStationDescription.action}
+            </button>
+            {radioStationDescription.afterAction}
+          </p>
+        )}
         {!!relatedStations.length && (
           <section class="@container">
             <h2 class="text-2xl font-semibold mb-4">Related</h2>

@@ -30,11 +30,11 @@ export const useHead = (data: HeadData) => {
   useLayoutEffect(() => {
     if (typeof document === 'undefined') return;
 
-    const updateMetaTag = (property: string, content: string) => {
-      let element = document.querySelector(`meta[property="${property}"]`);
+    const updateMetaTag = (property: string, content: string, attribute = 'property') => {
+      let element = document.querySelector(`meta[${attribute}="${property}"]`);
       if (!element) {
         element = document.createElement('meta');
-        element.setAttribute('property', property);
+        element.setAttribute(attribute, property);
         document.head.appendChild(element);
       }
       element.setAttribute('content', content);
@@ -42,6 +42,7 @@ export const useHead = (data: HeadData) => {
 
     const updateHead = (newData: HeadData) => {
       document.title = newData.title ? `${newData.title} | 1tuner.com` : defaultHeadData.title;
+      updateMetaTag('description', newData.description || defaultHeadData.description, 'name');
       updateMetaTag('og:title', newData.title || defaultHeadData.title);
       updateMetaTag('og:description', newData.description || '');
       updateMetaTag('og:image', newData.image || defaultHeadData.image);

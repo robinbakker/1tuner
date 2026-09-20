@@ -46,6 +46,7 @@ export async function prerender() {
     head: {
       title: headData.title,
       elements: new Set([
+        { type: 'meta', props: { name: 'description', content: headData.description } },
         { type: 'meta', props: { property: 'og:title', content: headData.title } },
         { type: 'meta', props: { property: 'og:description', content: headData.description } },
         { type: 'meta', props: { property: 'og:image', content: headData.image } },
