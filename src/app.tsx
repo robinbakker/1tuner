@@ -1,21 +1,22 @@
-import { ErrorBoundary, LocationProvider, Route, Router } from 'preact-iso';
+import { ErrorBoundary, lazy, LocationProvider, Route, Router } from 'preact-iso';
 import { useEffect, useLayoutEffect, useState } from 'preact/hooks';
 import './app.css';
 import { AppShell } from './components/appShell/appShell';
 import { Button } from './components/ui/button';
-import { AboutPage } from './pages/about';
 import { Homepage } from './pages/homepage';
 import { NotFound } from './pages/not-found';
-import { PlaylistPage } from './pages/playlist';
-import { PlaylistsPage } from './pages/playlists';
-import { PodcastPage } from './pages/podcast';
-import { PodcastsPage } from './pages/podcasts';
-import { RadioStationPage } from './pages/radio-station';
-import { RadioStationsPage } from './pages/radio-stations';
-import { SettingsPage } from './pages/settings';
 import { isDBLoaded, loadStateFromDB, saveStateToDB, startStatePersistence } from './store/db/db';
 import { migrateOldData } from './store/db/migration';
 import { isPlayerMaximized } from './store/signals/player';
+
+const AboutPage = lazy(() => import('./pages/about').then((module) => module.AboutPage));
+const PlaylistPage = lazy(() => import('./pages/playlist').then((module) => module.PlaylistPage));
+const PlaylistsPage = lazy(() => import('./pages/playlists').then((module) => module.PlaylistsPage));
+const PodcastPage = lazy(() => import('./pages/podcast').then((module) => module.PodcastPage));
+const PodcastsPage = lazy(() => import('./pages/podcasts').then((module) => module.PodcastsPage));
+const RadioStationPage = lazy(() => import('./pages/radio-station').then((module) => module.RadioStationPage));
+const RadioStationsPage = lazy(() => import('./pages/radio-stations').then((module) => module.RadioStationsPage));
+const SettingsPage = lazy(() => import('./pages/settings').then((module) => module.SettingsPage));
 
 export function App() {
   const [hasHydrated, setHasHydrated] = useState(false);

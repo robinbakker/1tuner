@@ -233,11 +233,40 @@ for (const kind of ['podcast', 'apple', 'radio'] as const) {
     });
 
     if (kind !== 'radio') {
+      test('leaving for a delayed lazy route cannot rewrite its URL or accept late results', async ({ page }) => {
+        await search.ignoreCancellation();
+        await search.open();
+        let release!: () => void;
+        const destinationReady = new Promise<void>((resolve) => {
+          release = resolve;
+        });
+        let requested = false;
+        await page.route('**/src/pages/playlists/index.tsx*', async (route) => {
+          requested = true;
+          await destinationReady;
+          await route.continue();
+        });
+        try {
+          await page.getByRole('navigation').getByRole('link', { name: 'Playlists', exact: true }).click();
+          await expect.poll(() => requested).toBe(true);
+          // The search page is still mounted while the destination module is held.
+          await expect(search.input).toBeVisible();
+          await search.finishLateResponse(0, 'Alpha');
+          await expect(page).toHaveURL(/\/playlists$/);
+          await expect(search.result('Alpha')).toHaveCount(0);
+          expect(search.requests).toHaveLength(1);
+        } finally {
+          release();
+        }
+        await expect(page.getByRole('link', { name: 'Add playlist' })).toBeVisible();
+      });
+
       for (const action of ['clear', 'navigate'] as const) {
         test(`${action} cancels a search still waiting for the debounce`, async ({ page }) => {
           await search.open('');
           const time = new Date('2026-09-18T12:00:00Z');
           await page.clock.install({ time });
+          await page.clock.setFixedTime(time);
           await page.clock.pauseAt(time);
           await search.enter('alpha');
           await page.clock.runFor(50);

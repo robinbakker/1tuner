@@ -8,7 +8,7 @@ import { APP_VERSION } from './src/lib/version.ts';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    preact({ prerender: { enabled: true, renderTarget: '#app' } }),
+    preact({ prerender: { enabled: true, renderTarget: '#app', previewMiddlewareEnabled: true } }),
     tailwindcss(),
     VitePWA({
       injectRegister: 'script-defer',
@@ -16,6 +16,7 @@ export default defineConfig({
       manifest: false,
       workbox: {
         globPatterns: ['index.html', 'assets/**/*.{js,css,html}', 'manifest.json'],
+        globIgnores: ['**/build-only-*.js'],
         navigateFallback: 'index.html',
         cacheId: `1tuner-${APP_VERSION}`,
         clientsClaim: true,
@@ -44,6 +45,21 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    manifest: true,
+    rollupOptions: {
+      output: {
+        chunkFileNames(chunk) {
+          const id = chunk.facadeModuleId?.replaceAll('\\', '/');
+          const buildOnly =
+            id?.endsWith('/src/prerender.tsx') ||
+            id?.endsWith('/src/assets/data/podcasts.json') ||
+            id?.endsWith('/preact-iso/src/prerender.js');
+          return buildOnly ? 'assets/build-only-[name]-[hash].js' : 'assets/[name]-[hash].js';
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       '~': path.resolve(import.meta.dirname, './src'),

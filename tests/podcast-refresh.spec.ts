@@ -20,6 +20,7 @@ test.beforeEach(async ({ page }) => {
   await page.clock.install();
   await page.addInitScript(() => {
     const positions = new WeakMap<HTMLMediaElement, number>();
+    const sources = new WeakMap<HTMLMediaElement, string>();
     Object.defineProperties(HTMLMediaElement.prototype, {
       currentTime: {
         get() {
@@ -31,7 +32,7 @@ test.beforeEach(async ({ page }) => {
       },
       currentSrc: {
         get() {
-          return this.querySelector('source')?.src ?? '';
+          return sources.get(this) ?? '';
         },
       },
       duration: {
@@ -41,7 +42,9 @@ test.beforeEach(async ({ page }) => {
       },
       readyState: {
         get() {
-          return 4;
+          // A new element must stay unloaded until load() selects its source.
+          // Otherwise autosave can mistake its initial zero for resumed progress.
+          return sources.has(this) ? 4 : 0;
         },
       },
       play: { value: () => Promise.resolve() },
@@ -49,6 +52,7 @@ test.beforeEach(async ({ page }) => {
       load: {
         value() {
           positions.set(this, 0);
+          sources.set(this, this.querySelector('source')?.src ?? '');
         },
       },
     });

@@ -44,7 +44,7 @@ async function mockFeed(page: Page, mode: Mode, proxy = false, contentLength?: s
           });
         }
         const encoder = new TextEncoder();
-        const cap = 5 * 1024 * 1024;
+        const cap = 8 * 1024 * 1024;
         let offset = 0;
         let bytes: Uint8Array;
         if (state.mode === 'oversize' || state.mode === 'exact') {
@@ -176,9 +176,26 @@ for (const mode of ['headers', 'stall', 'fail'] as const) {
     await mockFeed(page, mode);
     await navigate(page, podcastPath);
     await expect.poll(async () => (await calls(page)).length).toBe(mode === 'fail' ? 2 : 1);
-    await navigate(page, '/settings');
+    let release!: () => void;
+    const destinationReady = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let requested = false;
+    await page.route('**/src/pages/settings/index.tsx*', async (route) => {
+      requested = true;
+      await destinationReady;
+      await route.continue();
+    });
+    try {
+      await navigate(page, '/settings');
+      await expect.poll(() => requested).toBe(true);
+      await expect.poll(async () => (await calls(page)).every((request) => request.aborted)).toBe(true);
+      await page.clock.runFor(20_000);
+    } finally {
+      release();
+    }
     await expect(page).toHaveURL(/\/settings$/);
-    await page.clock.runFor(20_000);
+    await expect(page.getByRole('heading', { name: 'Podcast search provider', exact: true })).toBeVisible();
     const requests = await calls(page);
     expect(requests).toHaveLength(mode === 'fail' ? 2 : 1);
     expect(requests.every((request) => request.aborted)).toBe(true);

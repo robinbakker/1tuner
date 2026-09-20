@@ -13,18 +13,19 @@ import { uiIsScrolled } from '~/store/signals/ui';
 import { Podcast, PodcastSearchProvider } from '~/store/types';
 
 export const usePodcasts = () => {
-  const { query, route } = useLocation();
+  const { path, query, route } = useLocation();
   const [searchTerm, setSearchTerm] = useState(lastPodcastSearchResult.value?.query || '');
   const [isLoading, setIsLoading] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const isInitialized = useRef(false);
+  const isInitializedRef = useRef(false);
+  const databaseLoaded = isDBLoaded.value;
 
   useHead({
     title: 'Podcasts',
   });
 
   useEffect(() => {
-    if (!isDBLoaded.value || isInitialized.current) return;
+    if (path !== '/podcasts' || !databaseLoaded || isInitializedRef.current) return;
 
     const initialSearchQuery = query['q'] ? decodeURIComponent(query['q']) || '' : '';
 
@@ -34,8 +35,8 @@ export const usePodcasts = () => {
     } else {
       setSearchTerm('');
     }
-    isInitialized.current = true;
-  }, [query, isDBLoaded.value]);
+    isInitializedRef.current = true;
+  }, [path, query, databaseLoaded]);
 
   const updateURLParams = useCallback(
     (search?: string) => {
@@ -54,11 +55,14 @@ export const usePodcasts = () => {
   );
 
   useLayoutEffect(() => {
+    // A lazy destination keeps this page mounted until its chunk arrives. Stop
+    // search work immediately and never copy this query into the destination URL.
+    if (path !== '/podcasts') return;
     const searchQuery = validationUtil.getSanitizedSearchQuery(searchTerm);
     const controller = new AbortController();
     let searchTimeout: ReturnType<typeof setTimeout> | undefined;
 
-    if (isInitialized.current) updateURLParams(searchQuery);
+    if (isInitializedRef.current) updateURLParams(searchQuery);
 
     if (searchQuery && searchQuery !== lastPodcastSearchResult.value?.query) {
       setIsLoading(true);
@@ -125,16 +129,16 @@ export const usePodcasts = () => {
       controller.abort();
       clearTimeout(searchTimeout);
     };
-  }, [searchTerm, updateURLParams]);
+  }, [path, searchTerm, updateURLParams]);
 
   useEffect(() => {
-    if (query['focus-search']) {
+    if (path === '/podcasts' && query['focus-search']) {
       const url = new URL(window.location.href);
       url.searchParams.delete('focus-search');
       route(url.pathname + url.search, true);
       searchInputRef.current?.focus();
     }
-  }, [query, route]);
+  }, [path, query, route]);
 
   return {
     searchTerm,

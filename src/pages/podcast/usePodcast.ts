@@ -16,8 +16,9 @@ import { uiState } from '~/store/signals/ui';
 import { Episode, Podcast } from '~/store/types';
 
 export const usePodcast = () => {
-  const { params } = useRoute();
-  const { route } = useLocation();
+  const { params, path: podcastPath } = useRoute();
+  const { path, route } = useLocation();
+  const isCurrentRoute = path === podcastPath;
   const [isFollowing, setIsFollowing] = useState(false);
   const [podcast, setPodcast] = useState<Podcast | null>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,14 +60,14 @@ export const usePodcast = () => {
   }, [params.episodeID, podcast?.episodes]);
 
   useEffect(() => {
-    if (isDBLoaded.value && params.episodeID && !selectedEpisodeID) {
+    if (isCurrentRoute && isDBLoaded.value && params.episodeID && !selectedEpisodeID) {
       route(`/podcast/${params.name}/${params.id}`, true);
     }
-  }, [isDBLoaded.value, params.episodeID, params.id, params.name, route, selectedEpisodeID]);
+  }, [isCurrentRoute, isDBLoaded.value, params.episodeID, params.id, params.name, route, selectedEpisodeID]);
 
   const getPodcastData = useCallback(
     async (skipCache = false) => {
-      if (!params.id || !isDBLoaded.value) return;
+      if (!isCurrentRoute || !params.id || !isDBLoaded.value) return;
 
       const podcastData = await fetchPodcastData(params.id, paramsFeedUrl, skipCache);
       if (!podcastData) return;
@@ -79,10 +80,13 @@ export const usePodcast = () => {
         setIsFollowing(true);
       }
     },
-    [params.id, fetchPodcastData, paramsFeedUrl, isDBLoaded.value],
+    [isCurrentRoute, params.id, fetchPodcastData, paramsFeedUrl, isDBLoaded.value],
   );
 
   useLayoutEffect(() => {
+    // Lazy navigation can retain the old page while loading its replacement.
+    // Changing route ownership runs the previous cleanup immediately.
+    if (!isCurrentRoute) return;
     setPodcast(getPodcast(params.id) ?? null);
     setIsFollowing(isFollowedPodcast(params.id));
     getPodcastData();
@@ -91,7 +95,7 @@ export const usePodcast = () => {
       cancelFetch();
       uiState.value = { ...uiState.value, headerTitle: '' };
     };
-  }, [getPodcastData, cancelFetch, params.id]);
+  }, [isCurrentRoute, getPodcastData, cancelFetch, params.id]);
 
   useEffect(() => {
     if (nowPlayingState) {

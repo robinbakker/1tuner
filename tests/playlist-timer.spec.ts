@@ -9,8 +9,10 @@ declare global {
 test.use({ timezoneId: 'UTC' });
 
 test.beforeEach(async ({ page }) => {
-  await page.clock.install({ time: new Date('2026-09-16T11:59:10Z') });
-  await page.clock.pauseAt(new Date('2026-09-16T11:59:10Z'));
+  const start = new Date('2026-09-16T11:59:10Z');
+  // Install before the pause target so transport latency cannot put it in the past.
+  await page.clock.install({ time: new Date(start.getTime() - 60_000) });
+  await page.clock.pauseAt(start);
   await page.addInitScript(() => {
     Object.defineProperties(HTMLMediaElement.prototype, {
       play: { value: () => Promise.resolve() },
