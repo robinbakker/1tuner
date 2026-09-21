@@ -1,4 +1,4 @@
-import { batch, effect, signal } from '@preact/signals';
+import { batch, effect, signal, Signal } from '@preact/signals';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import { snapshotPlaybackProgress } from '../playbackProgress';
 import { logState } from '../signals/log';
@@ -22,6 +22,7 @@ import {
   RadioStation,
   SettingsState,
 } from '../types';
+import { equalState, mergeState } from './merge';
 
 export const isDBLoaded = signal(false);
 
@@ -65,6 +66,87 @@ interface TunerDB extends DBSchema {
 
 let dbPromise: Promise<IDBPDatabase<TunerDB>> | undefined;
 
+const stateSignals: Record<AppStateKey, Signal<DBData>> = {
+  followedPodcasts,
+  recentlyVisitedPodcasts,
+  radioBrowserStations,
+  followedRadioStationIDs,
+  recentlyVisitedRadioStationIDs,
+  radioSearchFilters,
+  playlists,
+  playlistRules,
+  playerState,
+  settingsState,
+  logState,
+  isPlayerMaximized,
+};
+const keys = Object.values(AppStateKey);
+type Snapshot = Record<AppStateKey, DBData>;
+let baseline: Snapshot;
+let operation = Promise.resolve();
+let channel: BroadcastChannel | undefined;
+let isApplyingSnapshot = false;
+
+function snapshot(): Snapshot {
+  return structuredClone(Object.fromEntries(keys.map((key) => [key, stateSignals[key].peek()]))) as Snapshot;
+}
+
+function defaultValue(key: AppStateKey): DBData {
+  if (key === AppStateKey.PlayerState || key === AppStateKey.RadioSearchFilters) return null;
+  if (key === AppStateKey.SettingsState) return {};
+  if (key === AppStateKey.IsPlayerMaximized) return false;
+  return [];
+}
+
+function mergeValue(key: AppStateKey, base: DBData, local: DBData, remote: DBData): DBData {
+  // Playback is owned by each tab; never combine fields from different sources.
+  if (key === AppStateKey.PlayerState) return equalState(base, local) ? remote : local;
+  const merged = mergeState(base, local, remote) as DBData;
+  if (Array.isArray(merged)) {
+    if (key === AppStateKey.RecentlyVisitedPodcasts || key === AppStateKey.RecentlyVisitedRadioStationIDs) {
+      return merged.slice(0, 10) as DBData;
+    }
+    if (key === AppStateKey.LogState) return merged.slice(-200) as LogState[];
+  }
+  return merged;
+}
+
+function enqueue(action: () => Promise<void>) {
+  operation = operation.then(action).catch((error) => console.error('Error saving/syncing state to DB:', error));
+  return operation;
+}
+
+function applyCommittedState(previous: Snapshot, committed: Snapshot) {
+  const current = snapshot();
+  isApplyingSnapshot = true;
+  try {
+    batch(() => {
+      for (const key of keys) {
+        // A remote save must not start/stop audio or change this tab's player UI.
+        // Keep a local baseline for these values so an idle tab never writes them back.
+        if (key === AppStateKey.PlayerState || key === AppStateKey.IsPlayerMaximized) {
+          baseline[key] = previous[key];
+          continue;
+        }
+        const value = mergeValue(key, previous[key], current[key], committed[key]);
+        baseline[key] = structuredClone(committed[key]);
+        if (!equalState(current[key], value)) stateSignals[key].value = value;
+      }
+    });
+  } finally {
+    isApplyingSnapshot = false;
+  }
+}
+
+async function refreshStateFromDB() {
+  if (!isDBLoaded.peek()) return;
+  const db = await openStateDB();
+  const tx = db.transaction(storeName, 'readonly');
+  const [values] = await Promise.all([Promise.all(keys.map((key) => tx.store.get(key))), tx.done]);
+  const committed = Object.fromEntries(keys.map((key, i) => [key, values[i] ?? defaultValue(key)])) as Snapshot;
+  applyCommittedState(baseline, committed);
+}
+
 export function openStateDB() {
   if (!dbPromise) {
     dbPromise = openDB<TunerDB>(dbName, dbVersion, {
@@ -86,7 +168,6 @@ export async function loadStateFromDB() {
   const db = await openStateDB();
   const tx = db.transaction(storeName, 'readonly');
   // Read one consistent snapshot and leave signals untouched if any read fails.
-  const keys = Object.values(AppStateKey);
   const [values] = await Promise.all([Promise.all(keys.map((key) => tx.store.get(key))), tx.done]);
   const data = new Map(keys.map((key, index) => [key, values[index]]));
   batch(() => {
@@ -102,6 +183,7 @@ export async function loadStateFromDB() {
     settingsState.value = (data.get(AppStateKey.SettingsState) as SettingsState) || ({} as SettingsState);
     logState.value = (data.get(AppStateKey.LogState) as LogState[]) || [];
     isPlayerMaximized.value = (data.get(AppStateKey.IsPlayerMaximized) as boolean) || false;
+    baseline = snapshot();
     isDBLoaded.value = true;
   });
 }
@@ -115,6 +197,13 @@ function cancelScheduledSave() {
 }
 
 export function startStatePersistence() {
+  if (typeof BroadcastChannel !== 'undefined') {
+    channel = new BroadcastChannel('1tuner-state');
+    channel.onmessage = () => void enqueue(refreshStateFromDB);
+  }
+  const refresh = () => void enqueue(refreshStateFromDB);
+  window.addEventListener('focus', refresh);
+  window.addEventListener('pageshow', refresh);
   let hasLoadedSnapshot = false;
   const dispose = effect(() => {
     if (!isDBLoaded.value) return;
@@ -129,7 +218,7 @@ export function startStatePersistence() {
     void playlistRules.value;
     void settingsState.value;
     void isPlayerMaximized.value;
-    if (hasLoadedSnapshot && !isSnapshottingPlayback && saveTimer === undefined) {
+    if (hasLoadedSnapshot && !isSnapshottingPlayback && !isApplyingSnapshot && saveTimer === undefined) {
       // Bound the delay even during continuous edits; group a burst into one transaction.
       saveTimer = setTimeout(() => void saveStateToDB(), 100);
     }
@@ -138,6 +227,10 @@ export function startStatePersistence() {
   return () => {
     dispose();
     cancelScheduledSave();
+    channel?.close();
+    channel = undefined;
+    window.removeEventListener('focus', refresh);
+    window.removeEventListener('pageshow', refresh);
   };
 }
 
@@ -152,23 +245,32 @@ export async function saveStateToDB() {
     } finally {
       isSnapshottingPlayback = false;
     }
-    const db = await openStateDB();
-    const tx = db.transaction(storeName, 'readwrite');
-    await Promise.all([
-      tx.done,
-      tx.store.put(followedPodcasts.value, AppStateKey.FollowedPodcasts),
-      tx.store.put(recentlyVisitedPodcasts.value, AppStateKey.RecentlyVisitedPodcasts),
-      tx.store.put(radioBrowserStations.value, AppStateKey.RadioBrowserStations),
-      tx.store.put(followedRadioStationIDs.value, AppStateKey.FollowedRadioStationIDs),
-      tx.store.put(recentlyVisitedRadioStationIDs.value, AppStateKey.RecentlyVisitedRadioStationIDs),
-      tx.store.put(radioSearchFilters.value, AppStateKey.RadioSearchFilters),
-      tx.store.put(playlists.value, AppStateKey.Playlists),
-      tx.store.put(playlistRules.value, AppStateKey.PlaylistRules),
-      tx.store.put(playerState.value, AppStateKey.PlayerState),
-      tx.store.put(settingsState.value, AppStateKey.SettingsState),
-      tx.store.put(logState.value, AppStateKey.LogState),
-      tx.store.put(isPlayerMaximized.value, AppStateKey.IsPlayerMaximized),
-    ]);
+    await enqueue(async () => {
+      const db = await openStateDB();
+      const local = snapshot();
+      const dirtyKeys = keys.filter((key) => !equalState(baseline[key], local[key]));
+      if (!dirtyKeys.length) return;
+      const committed = structuredClone(baseline);
+      // Read and merge under the same exclusive write transaction. Notifications
+      // only refresh the UI; correctness does not depend on their delivery.
+      const tx = db.transaction(storeName, 'readwrite');
+      let wrote = false;
+      await Promise.all([
+        tx.done,
+        ...dirtyKeys.map(async (key) => {
+          const remote = (await tx.store.get(key)) ?? defaultValue(key);
+          const merged = mergeValue(key, baseline[key], local[key], remote);
+          committed[key] = merged;
+          if (!equalState(remote, merged)) {
+            await tx.store.put(merged, key);
+            wrote = true;
+          }
+        }),
+      ]);
+      // Preserve edits made while this transaction was awaiting completion.
+      applyCommittedState(local, committed);
+      if (wrote) channel?.postMessage('saved');
+    });
   } catch (error) {
     console.error('Error saving state to DB:', error);
   }

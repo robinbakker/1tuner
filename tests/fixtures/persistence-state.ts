@@ -3,6 +3,7 @@ export { playerState } from '../../src/store/signals/player';
 export { playlistRules, playlists } from '../../src/store/signals/playlist';
 export { followPodcast, followedPodcasts, unfollowPodcast } from '../../src/store/signals/podcast';
 export { followRadioStation, followedRadioStationIDs, unfollowRadioStation } from '../../src/store/signals/radio';
+export { settingsState } from '../../src/store/signals/settings';
 export { addRadioBrowserStation, station } from './station-cache-state';
 
 export let writeCount = 0;

@@ -30,6 +30,213 @@ async function saved(page: Page, key: string) {
   }, key);
 }
 
+test('stale tabs merge independent follows and settings even without notifications', async ({ page, context }) => {
+  await context.addInitScript(() => {
+    Object.defineProperty(window, 'BroadcastChannel', { value: undefined });
+  });
+  const older = await context.newPage();
+  await Promise.all([page.goto('/settings'), older.goto('/settings')]);
+  await Promise.all([ready(page), ready(older)]);
+  await Promise.all(
+    [page, older].map((tab, i) =>
+      tab.evaluate(async (i) => {
+        const path = '/tests/fixtures/persistence-state.ts';
+        const s = await import(path);
+        s.followRadioStation(`rb-${i}`);
+        s.followPodcast({
+          id: `podcast-${i}`,
+          title: `Podcast ${i}`,
+          feedUrl: `https://feeds.example/${i}`,
+          url: `https://feeds.example/${i}`,
+          description: '',
+          imageUrl: '',
+          addedDate: 1,
+          lastFetched: 1,
+        });
+        s.settingsState.value = i === 0 ? { theme: 'dark' } : { enableChromecast: true };
+        await s.saveStateToDB();
+      }, i),
+    ),
+  );
+  expect(((await saved(page, 'followedRadioStationIDs')) as string[]).sort()).toEqual(['rb-0', 'rb-1']);
+  expect(((await saved(page, 'followedPodcasts')) as { id: string }[]).map((p) => p.id).sort()).toEqual([
+    'podcast-0',
+    'podcast-1',
+  ]);
+  expect(await saved(page, 'settingsState')).toEqual({ theme: 'dark', enableChromecast: true });
+  // An unchanged, older snapshot cannot roll back a newer save during pagehide or close.
+  await older.evaluate(async () => {
+    window.dispatchEvent(new Event('pagehide'));
+    const path = '/tests/fixtures/persistence-state.ts';
+    await (await import(path)).saveStateToDB();
+  });
+  await older.close();
+  await page.reload();
+  await ready(page);
+  expect(((await saved(page, 'followedRadioStationIDs')) as string[]).sort()).toEqual(['rb-0', 'rb-1']);
+  expect(await saved(page, 'settingsState')).toEqual({ theme: 'dark', enableChromecast: true });
+});
+
+test('stale playlist edits preserve other edits and deletions', async ({ page, context }) => {
+  await context.addInitScript(() => {
+    Object.defineProperty(window, 'BroadcastChannel', { value: undefined });
+  });
+  await page.goto('/settings');
+  await ready(page);
+  await page.evaluate(async () => {
+    const path = '/tests/fixtures/persistence-state.ts';
+    const s = await import(path);
+    s.playlists.value = ['a', 'b', 'c'].map((id) => ({
+      name: id,
+      url: `https://1tuner.com/playlist/${id}`,
+      items: [],
+    }));
+    s.followRadioStation('rb-remove');
+    await s.saveStateToDB();
+  });
+  const older = await context.newPage();
+  await older.goto('/settings');
+  await ready(older);
+  await page.evaluate(async () => {
+    const path = '/tests/fixtures/persistence-state.ts';
+    const s = await import(path);
+    s.playlists.value = s.playlists.value
+      .filter((p: { name: string }) => p.name !== 'c')
+      .map((p: { name: string }) => (p.name === 'a' ? { ...p, name: 'Edited A' } : p));
+    s.unfollowRadioStation('rb-remove');
+    await s.saveStateToDB();
+  });
+  await older.evaluate(async () => {
+    const path = '/tests/fixtures/persistence-state.ts';
+    const s = await import(path);
+    s.playlists.value = s.playlists.value.map((p: { name: string }) =>
+      p.name === 'b' ? { ...p, name: 'Edited B' } : p,
+    );
+    s.followRadioStation('rb-keep');
+    await s.saveStateToDB();
+    window.dispatchEvent(new Event('pagehide'));
+    await s.saveStateToDB();
+  });
+  expect(await saved(page, 'playlists')).toMatchObject([{ name: 'Edited A' }, { name: 'Edited B' }]);
+  expect(await saved(page, 'followedRadioStationIDs')).toEqual(['rb-keep']);
+  await older.close();
+});
+
+test('notifications update other tabs without echo writes or changing their player', async ({ page, context }) => {
+  const other = await context.newPage();
+  await Promise.all([page.goto('/settings'), other.goto('/settings')]);
+  await Promise.all([ready(page), ready(other)]);
+  await other.evaluate(async () => {
+    const path = '/tests/fixtures/persistence-state.ts';
+    (await import(path)).countWrites();
+  });
+  await page.evaluate(async () => {
+    const path = '/tests/fixtures/persistence-state.ts';
+    const s = await import(path);
+    s.followRadioStation('rb-shared');
+    s.playerState.value = {
+      playType: 'radio',
+      isPlaying: false,
+      contentID: 'rb-shared',
+      title: 'Shared',
+      imageUrl: '',
+      streams: [],
+      pageLocation: '/radio-station/rb-shared',
+    };
+    await s.saveStateToDB();
+  });
+  await expect
+    .poll(() =>
+      other.evaluate(async () => {
+        const path = '/tests/fixtures/persistence-state.ts';
+        const s = await import(path);
+        return s.followedRadioStationIDs.value;
+      }),
+    )
+    .toEqual(['rb-shared']);
+  expect(
+    await other.evaluate(async () => {
+      const path = '/tests/fixtures/persistence-state.ts';
+      const s = await import(path);
+      await s.saveStateToDB();
+      return { writes: s.writeCount, player: s.playerState.value };
+    }),
+  ).toEqual({ writes: 0, player: null });
+  expect(await saved(page, 'playerState')).toMatchObject({ contentID: 'rb-shared' });
+});
+
+test('an unrelated save and closing an idle stale tab never rewrite its old collections', async ({ page, context }) => {
+  await context.addInitScript(() => {
+    Object.defineProperty(window, 'BroadcastChannel', { value: undefined });
+  });
+  const older = await context.newPage();
+  await Promise.all([page.goto('/settings'), older.goto('/settings')]);
+  await Promise.all([ready(page), ready(older)]);
+  await page.evaluate(async () => {
+    const path = '/tests/fixtures/persistence-state.ts';
+    const s = await import(path);
+    s.followRadioStation('bbcradio2');
+    await s.saveStateToDB();
+  });
+  expect(
+    await older.evaluate(async () => {
+      const path = '/tests/fixtures/persistence-state.ts';
+      const s = await import(path);
+      const stale = s.followedRadioStationIDs.value;
+      const writes: IDBValidKey[] = [];
+      const original = IDBObjectStore.prototype.put;
+      IDBObjectStore.prototype.put = function (value, key) {
+        if (this.name === 'appState' && key !== undefined) writes.push(key);
+        return original.call(this, value, key);
+      };
+      s.settingsState.value = { theme: 'dark' };
+      await s.saveStateToDB();
+      window.dispatchEvent(new Event('pagehide'));
+      await s.saveStateToDB();
+      return { stale, writes };
+    }),
+  ).toEqual({ stale: [], writes: ['settingsState'] });
+  await older.close();
+  expect(await saved(page, 'followedRadioStationIDs')).toEqual(['bbcradio2']);
+});
+
+test('edits during a save and failed transactions remain pending for the next save', async ({ page }) => {
+  await page.goto('/settings');
+  await ready(page);
+  expect(
+    await page.evaluate(async () => {
+      const path = '/tests/fixtures/persistence-state.ts';
+      const s = await import(path);
+      const original = IDBObjectStore.prototype.get;
+      IDBObjectStore.prototype.get = function (key) {
+        const request = original.call(this, key);
+        if (this.name === 'appState' && key === 'followedRadioStationIDs' && this.transaction.mode === 'readwrite') {
+          IDBObjectStore.prototype.get = original;
+          s.followRadioStation('rb-during');
+        }
+        return request;
+      };
+      s.followRadioStation('rb-before');
+      await s.saveStateToDB();
+      const afterFirst = s.followedRadioStationIDs.value;
+      await s.saveStateToDB();
+      IDBObjectStore.prototype.get = function (key) {
+        const request = original.call(this, key);
+        if (this.name === 'appState' && key === 'followedRadioStationIDs' && this.transaction.mode === 'readwrite') {
+          IDBObjectStore.prototype.get = original;
+          this.transaction.abort();
+        }
+        return request;
+      };
+      s.followRadioStation('rb-retry');
+      await s.saveStateToDB();
+      await s.saveStateToDB();
+      return afterFirst;
+    }),
+  ).toEqual(['rb-before', 'rb-during']);
+  expect(await saved(page, 'followedRadioStationIDs')).toEqual(['rb-before', 'rb-during', 'rb-retry']);
+});
+
 test('radio and podcast follows and unfollows persist without playback or lifecycle events', async ({ page }) => {
   await page.goto('/');
   await ready(page);
