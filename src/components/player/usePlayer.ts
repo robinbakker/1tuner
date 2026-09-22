@@ -37,6 +37,7 @@ export const usePlayer = () => {
     handleCastSeek,
     castSession,
     castMediaRef,
+    castStatus,
   } = useCastApi();
   const maxReconnectAttempts = settingsState.value.radioStreamMaxReconnects ?? DEFAULT_MAX_RECONNECT_ATTEMPTS;
   const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
@@ -49,10 +50,20 @@ export const usePlayer = () => {
   const playType = playerState.value?.playType;
   const streamUrl = playerState.value?.streams[0]?.url;
   const elementKey = audioKey.value;
+  const wasCastingRef = useRef(false);
+  const localPlaybackGenerationRef = useRef(0);
 
   useLayoutEffect(() => {
+    localPlaybackGenerationRef.current++;
     const owner = playerState.peek();
+    const returningFromCast = wasCastingRef.current && !castSession;
+    wasCastingRef.current = !!castSession;
     if (!audioRef.current || !owner || castSession) return;
+    // Restore before registering local snapshots, including a seek back to zero.
+    if (returningFromCast && owner.playType === 'podcast') {
+      audioRef.current.currentTime = owner.currentTime ?? 0;
+      currentTime.value = owner.currentTime ?? 0;
+    }
     return trackPlaybackProgress(audioRef.current, owner, () => void saveStateToDB());
   }, [contentID, playType, streamUrl, elementKey, castSession]);
 
@@ -145,7 +156,7 @@ export const usePlayer = () => {
     const newIsPlaying = !playerState.value.isPlaying;
 
     // Handle cast media if casting
-    if (castSession && castMediaRef.current) {
+    if (castSession) {
       handleCastPlayPause(newIsPlaying);
       return;
     }
@@ -159,7 +170,9 @@ export const usePlayer = () => {
 
       if (newIsPlaying) {
         stopNoise();
+        const generation = localPlaybackGenerationRef.current;
         audioRef.current.play().catch((error) => {
+          if (generation !== localPlaybackGenerationRef.current) return;
           console.error('Error playing audio:', error);
           addLogEntry({
             level: 'error',
@@ -232,9 +245,12 @@ export const usePlayer = () => {
     }
 
     if (playerState.value.isPlaying && !castSession) {
+      const generation = localPlaybackGenerationRef.current;
       const promise = audio.play();
       if (promise) {
         promise.catch((error) => {
+          // Pausing local audio for Cast may reject its outstanding play request.
+          if (generation !== localPlaybackGenerationRef.current) return;
           if (playerState.value) playerState.value = { ...playerState.value, isPlaying: false };
           console.error('Error playing audio:', error);
           addLogEntry({
@@ -604,6 +620,7 @@ export const usePlayer = () => {
     handleSliderChange,
     formatTime,
     isCastingAvailable,
+    castStatus,
     castSession,
     startCasting,
     stopCasting,

@@ -24,6 +24,7 @@ export const Player = () => {
     isPodcast,
     isRadio,
     isCastingAvailable,
+    castStatus,
     castSession,
     audioSources,
     startCasting,
@@ -113,6 +114,11 @@ export const Player = () => {
                     <a href={playerState.value?.pageLocation}>{playerState.value?.title}</a>
                   </h2>
                   <p class="text-sm text-stone-500 mt-2">{playerState.value?.description}</p>
+                  {castStatus && (
+                    <p role="status" class="text-sm text-stone-500 mt-2">
+                      {castStatus}
+                    </p>
+                  )}
                 </div>
                 {isPodcast && (
                   <>
@@ -127,6 +133,7 @@ export const Player = () => {
                       </button>
                       <button
                         onClick={handlePlayPause}
+                        aria-label={playerState.value?.isPlaying ? 'Pause' : 'Play'}
                         class="p-4 bg-primary rounded-full hover:bg-primary/90 transition-colors"
                       >
                         {playerState.value?.isPlaying ? (
@@ -177,6 +184,7 @@ export const Player = () => {
                 {!isPodcast && (
                   <button
                     onClick={handlePlayPause}
+                    aria-label={playerState.value?.isPlaying ? 'Pause' : 'Play'}
                     class="p-4 bg-primary rounded-full hover:bg-primary/90 transition-colors"
                   >
                     {playerState.value?.isPlaying ? (
@@ -257,6 +265,11 @@ export const Player = () => {
                     </a>
                   </h3>
                   <p class="text-xs text-stone-500 truncate max-w-full">{playerState.value?.description}</p>
+                  {castStatus && (
+                    <p role="status" class="text-xs text-stone-500 truncate max-w-full">
+                      {castStatus}
+                    </p>
+                  )}
                 </div>
                 {isPodcast && (
                   <div class="shrink-0 flex items-center">

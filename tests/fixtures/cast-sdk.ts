@@ -46,12 +46,14 @@ export function installCastMock() {
   class Session {
     sessionId = 'mock-session';
     status = 'connected';
+    namespaces = [{ name: 'urn:x-cast:com.google.cast.media' }];
     media: Media[] = [];
     listeners = new Set<Listener>();
     mediaListeners = new Set<(media: Media) => void>();
     loads: Load[] = [];
     loadedMedia: Media[] = [];
     pending: (() => void)[] = [];
+    failures: (() => void)[] = [];
     defer = false;
     stops = 0;
     failStop = false;
@@ -70,12 +72,13 @@ export function installCastMock() {
     emit(alive = true) {
       for (const fn of this.listeners) fn(alive);
     }
-    loadMedia(request: Load, done: (media: Media) => void) {
+    loadMedia(request: Load, done: (media: Media) => void, fail: (error: { code: string }) => void) {
       this.loads.push(request);
       const media = new Media({ ...request.media, duration: 600 });
       media.position = request.currentTime ?? 0;
       media.playerState = request.autoplay ? 'PLAYING' : 'PAUSED';
       this.loadedMedia.push(media);
+      this.failures.push(() => fail({ code: 'timeout' }));
       const complete = () => {
         this.media = [media];
         done(media);
@@ -90,19 +93,27 @@ export function installCastMock() {
         return;
       }
       this.status = 'stopped';
+      for (const media of this.media) {
+        media.playerState = 'IDLE';
+        media.position = 0;
+      }
       done();
       this.emit(false);
     }
   }
   const mock = {
+    deferLocalPlay: false,
+    localPlayRejections: [] as ((error: Error) => void)[],
     mediaActions: new Map<MediaSessionAction, MediaSessionActionHandler | null>(),
     session: new Session(),
     initializeCalls: 0,
     requestCalls: 0,
+    requestTimeout: 0,
     deferInitialize: false,
     deferRequest: false,
     initializeDone: () => {},
     requestDone: () => {},
+    requestCompletions: [] as (() => void)[],
     onSession: (session: Session) => {
       void session;
     },
@@ -113,7 +124,11 @@ export function installCastMock() {
   };
   const cast = {
     isAvailable: false,
-    SessionRequest: class {},
+    SessionRequest: class {
+      constructor(_appId: string, _capabilities?: string[], timeout = 10000) {
+        mock.requestTimeout = timeout;
+      }
+    },
     ApiConfig: class {
       constructor(_request: unknown, onSession: typeof mock.onSession) {
         mock.onSession = onSession;
@@ -129,9 +144,11 @@ export function installCastMock() {
     requestSession(done: (session: Session) => void) {
       mock.requestCalls++;
       mock.requestDone = () => {
+        mock.session.status = 'connected';
         mock.onSession(mock.session);
         done(mock.session);
       };
+      mock.requestCompletions.push(mock.requestDone);
       if (!mock.deferRequest) mock.requestDone();
     },
     media: {
@@ -148,7 +165,7 @@ export function installCastMock() {
       PlayRequest: class {},
       PauseRequest: class {},
       SeekRequest: class {},
-      PlayerState: { PLAYING: 'PLAYING', PAUSED: 'PAUSED', BUFFERING: 'BUFFERING' },
+      PlayerState: { PLAYING: 'PLAYING', PAUSED: 'PAUSED', BUFFERING: 'BUFFERING', IDLE: 'IDLE' },
       StreamType: { LIVE: 'LIVE', BUFFERED: 'BUFFERED' },
     },
   };
@@ -189,6 +206,7 @@ export function installCastMock() {
     play: {
       configurable: true,
       value() {
+        if (mock.deferLocalPlay) return new Promise<void>((_resolve, reject) => mock.localPlayRejections.push(reject));
         return Promise.resolve();
       },
     },
