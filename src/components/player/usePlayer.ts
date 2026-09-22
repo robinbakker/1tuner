@@ -48,6 +48,7 @@ export const usePlayer = () => {
   const progressPercentage = useComputed(() => (currentTime.value / durationSignal.value) * 100);
   const contentID = playerState.value?.contentID;
   const playType = playerState.value?.playType;
+  const isPlaying = playerState.value?.isPlaying;
   const streamUrl = playerState.value?.streams[0]?.url;
   const elementKey = audioKey.value;
   const wasCastingRef = useRef(false);
@@ -225,6 +226,9 @@ export const usePlayer = () => {
       audio.pause();
       return;
     }
+    audio.playbackRate = playbackRateSignal.peek();
+    // A reconnect remount is initialized by its scheduled cache-busted retry.
+    if (reconnectAttempts.current > 0) return;
     const newSrc = playerState.value.streams[0].url;
 
     // If src was set programmatically for reconnect, we must remove it
@@ -262,7 +266,7 @@ export const usePlayer = () => {
     } else {
       setToPaused();
     }
-  }, [playerState.value, castSession, setToPaused]);
+  }, [playerState.value, castSession, setToPaused, elementKey]);
 
   const reconnectFnRef = useRef<() => void>();
 
@@ -373,7 +377,18 @@ export const usePlayer = () => {
 
   reconnectFnRef.current = attemptReconnect;
 
-  useEffect(() => {
+  // A retry belongs to the current playback session, not an individual element.
+  // Rebinding listeners after a remount must leave its scheduled retry intact.
+  useLayoutEffect(() => {
+    return () => {
+      if (reconnectTimeout.current) clearTimeout(reconnectTimeout.current);
+      reconnectTimeout.current = undefined;
+      reconnectAttempts.current = 0;
+      stopNoise();
+    };
+  }, [contentID, playType, streamUrl, isPlaying, castSession, stopNoise]);
+
+  useLayoutEffect(() => {
     if (!audioRef.current) return;
     const audio = audioRef.current;
 
@@ -392,6 +407,8 @@ export const usePlayer = () => {
     const handlePlaying = () => {
       if (reconnectAttempts.current > 0) {
         console.log(`Stream is playing, resetting reconnect attempts (was ${reconnectAttempts.current}).`);
+        if (reconnectTimeout.current) clearTimeout(reconnectTimeout.current);
+        reconnectTimeout.current = undefined;
         reconnectAttempts.current = 0;
         stopNoise();
         addLogEntry({
@@ -409,12 +426,8 @@ export const usePlayer = () => {
       audio.removeEventListener('error', handleError);
       audio.removeEventListener('stalled', handleError);
       audio.removeEventListener('playing', handlePlaying);
-      if (reconnectTimeout.current) {
-        console.log('useEffect cleanup: Cleaning up reconnect timeout');
-        clearTimeout(reconnectTimeout.current);
-      }
     };
-  }, [playerState.value?.playType, playerState.value?.isPlaying, attemptReconnect, startNoise, stopNoise, castSession]);
+  }, [isPodcast, isPlaying, attemptReconnect, startNoise, stopNoise, castSession, elementKey]);
 
   useEffect(() => {
     const forceRetry = (reason: string) => {
@@ -429,7 +442,7 @@ export const usePlayer = () => {
           clearTimeout(reconnectTimeout.current);
         }
         // A short delay to allow the browser to stabilize
-        setTimeout(retryConnection, 250);
+        reconnectTimeout.current = setTimeout(retryConnection, 250);
       }
     };
 
@@ -509,13 +522,13 @@ export const usePlayer = () => {
       audio.removeEventListener('durationchange', updateDuration);
       audio.removeEventListener('ended', handleEnded);
     };
-  }, [castMediaRef, castSession, updateTimeUI, handleEnded]);
+  }, [castMediaRef, castSession, updateTimeUI, handleEnded, elementKey]);
 
   useEffect(() => {
     if (castSession && audioRef.current) {
       audioRef.current.pause();
     }
-  }, [castSession]);
+  }, [castSession, elementKey]);
 
   useEffect(() => {
     if (
