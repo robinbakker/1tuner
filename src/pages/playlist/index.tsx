@@ -36,7 +36,7 @@ export const PlaylistPage = () => {
       <div class="flex justify-between">
         <h1 class="text-3xl font-bold md:w-full mb-6">{`${isEditMode ? 'Edit' : ''} ${playlistName}`}</h1>
         {isEditMode ? (
-          <div>
+          <div class="flex items-center -mt-8 space-x-4 w-full justify-end">
             <Button class="mr-2" variant="outline" onClick={handleCancelClick}>
               Cancel
             </Button>{' '}

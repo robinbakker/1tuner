@@ -23,7 +23,11 @@ export const PlaylistsPage = () => {
 
   return (
     <div class="container mx-auto px-8 pb-6">
-      <h1 class="text-3xl font-bold mb-6">Playlists</h1>
+      <h1 class="text-3xl font-bold mb-4">Playlists</h1>
+      <p class="text-muted-foreground text-sm mb-4">
+        Create and manage your own radio playlists. Let this app switch between your favorite stations automatically. Or play radio when a podcast episode finishes.
+      </p>
+      <hr class="mb-4" />
       <section class="mb-8 relative">
         <h2 class="text-xl font-semibold">Rules</h2>
         <div>
@@ -89,7 +93,7 @@ export const PlaylistsPage = () => {
           )}
         </div>
       </section>
-      <hr class="mb-8" />
+      <hr class="mb-4" />
       <div class="mb-6">
         <Button asChild>
           <a href="/playlist">
@@ -97,7 +101,7 @@ export const PlaylistsPage = () => {
           </a>
         </Button>
       </div>
-      <section class="mb-8 relative">
+      <section class="mb-4 relative">
         {playlistsData.map((playlist) => (
           <div
             key={playlist.url}

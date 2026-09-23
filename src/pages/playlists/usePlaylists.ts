@@ -19,6 +19,7 @@ export const usePlaylists = () => {
   useHead({
     title: 'Playlists',
     url: `${import.meta.env.VITE_BASE_URL}/podcasts`,
+    description: 'Create and manage your own radio playlists. Let this app switch between your favorite stations automatically. Or play radio right after a podcast.',
   });
 
   const currentTimePercentage = useMemo(() => {

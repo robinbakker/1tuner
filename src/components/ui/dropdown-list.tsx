@@ -123,6 +123,7 @@ export function DropdownList({
           }}
           placeholder="Type to search..."
           class="w-full px-3 py-2 border rounded-md focus:outline-hidden focus:ring-2"
+          autofocus
         />
       </div>
       <ul role="listbox" class="max-h-60 overflow-auto py-1" aria-activedescendant={`option-${highlightedIndex}`}>

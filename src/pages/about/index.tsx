@@ -31,7 +31,7 @@ export const AboutPage = () => {
     <div class="container mx-auto px-8 py-6">
       <h1 class="text-3xl font-bold mb-6">About</h1>
       <p class="pb-4">
-        Welcome to 1tuner.com — your personal mix of online radio and podcasts!
+        Welcome to 1tuner.com: your personal mix of online radio and podcasts!
         <br />
         Create your perfect listening day by building a playlist that automatically switches between your favorite radio
         streams.
@@ -69,7 +69,7 @@ export const AboutPage = () => {
           <a href="https://podcastindex.org" target="_blank" rel="noopener" class={styleClass.textLink}>
             podcastindex.org
           </a>{' '}
-          or the Apple iTunes Search API — you can change this on the{' '}
+          or the Apple iTunes Search API. You can change this on the{' '}
           <a href="/settings" class={styleClass.textLink}>
             Settings
           </a>{' '}

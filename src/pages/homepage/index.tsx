@@ -34,6 +34,38 @@ export const Homepage = () => {
           </div>
         </div>
       </header>
+      <ContentSection title="Listen to online radio & podcasts">
+        <>
+          {hasAppUpdatedMessage.value && (
+            <p class="pb-4 text-sm text-gray-500">
+              ℹ️ 1tuner has been updated! You can now "follow" radio stations and podcasts, and lots of other
+              improvements where made. I hope you like it!
+            </p>
+          )}
+          <p class="pb-4">
+            With this free app you can listen to online{' '}
+            <a href="/radio-stations" class={styleClass.textLink}>
+              radio stations
+            </a>
+            ,{' '}
+            <a href="/podcasts" class={styleClass.textLink}>
+              podcasts
+            </a>{' '}
+            and create{' '}
+            <a href="/playlists" class={styleClass.textLink}>
+              playlists
+            </a>
+            . 
+            Just add this site to your homescreen and you're good to go!
+          <br />
+            All information is stored locally in your browser to save your preferences and Cloudflare Web Analytics is used
+            for basic analytics.{' '}
+            <a href="/about" class={styleClass.textLink}>
+              Read more
+            </a>
+          </p>
+        </>
+      </ContentSection>
       <ContentSection title="Radio stations" moreLink="/radio-stations" hasSearchButton isScrollable>
         <ul class="flex gap-6 md:gap-10 px-4 md:px-6">
           <For each={recentlyVisitedRadioStations}>
@@ -57,39 +89,6 @@ export const Homepage = () => {
           </For>
           <li class="shrink-0 w-0.5"></li>
         </ul>
-      </ContentSection>
-      <ContentSection title="About 1tuner.com">
-        <>
-          {hasAppUpdatedMessage.value && (
-            <p class="pb-4 text-sm text-gray-500">
-              ℹ️ 1tuner has been updated! You can now "follow" radio stations and podcasts, and lots of other
-              improvements where made. I hope you like it!
-            </p>
-          )}
-          <p class="pb-4">
-            With this free app you can listen to online{' '}
-            <a href="/radio-stations" class={styleClass.textLink}>
-              radio stations
-            </a>
-            ,{' '}
-            <a href="/podcasts" class={styleClass.textLink}>
-              podcasts
-            </a>{' '}
-            and create{' '}
-            <a href="/playlists" class={styleClass.textLink}>
-              playlists
-            </a>
-            .<br />
-            Just add this site to your homescreen and you're good to go!
-          </p>
-          <p class="pb-4">
-            This app stores information in your browser to save your preferences and Cloudflare Web Analytics is used
-            for basic analytics.{' '}
-            <a href="/about" class={styleClass.textLink}>
-              Read more
-            </a>
-          </p>
-        </>
       </ContentSection>
     </>
   );
