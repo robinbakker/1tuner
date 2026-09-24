@@ -226,7 +226,7 @@ export const usePlayer = () => {
       audio.pause();
       return;
     }
-    audio.playbackRate = playbackRateSignal.peek();
+    audio.playbackRate = isPodcast ? playbackRateSignal.peek() : 1;
     // A reconnect remount is initialized by its scheduled cache-busted retry.
     if (reconnectAttempts.current > 0) return;
     const newSrc = playerState.value.streams[0].url;
