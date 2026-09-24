@@ -23,7 +23,7 @@ export const PlaylistsPage = () => {
 
   return (
     <div class="container mx-auto px-8 pb-6">
-      <h1 class="text-3xl font-bold mb-4">Playlists</h1>
+      <h1 class="text-3xl font-bold mb-2">Playlists</h1>
       <p class="text-muted-foreground text-sm mb-4">
         Create and manage your own radio playlists. Let this app switch between your favorite stations automatically. Or play radio when a podcast episode finishes.
       </p>

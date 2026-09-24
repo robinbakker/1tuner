@@ -176,7 +176,7 @@ export const SettingsPage = () => {
             </Button>
           </div>
           <Button disabled={isImporting} variant="outline" onClick={handleExportOpml}>
-            <ArrowRightFromLine class="mr-2 w-4" /> Export to OPML
+            <ArrowRightFromLine class="mr-2 w-4" /> Export
           </Button>
           <LoaderCircle class={`w-5 h-5 ${isImporting ? 'animate-spin' : 'hidden'}`} />
         </div>
