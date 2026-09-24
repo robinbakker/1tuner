@@ -62,7 +62,7 @@ for (const count of [0, 1, 3]) {
       return followedPodcasts.value.map((podcast: { feedUrl: string }) => podcast.feedUrl);
     }, count);
     const downloadEvent = page.waitForEvent('download');
-    await page.getByRole('button', { name: 'Export to OPML' }).click();
+    await page.getByRole('button', { name: 'Export' }).click();
     const stream = await (await downloadEvent).createReadStream();
     const chunks: Buffer[] = [];
     for await (const chunk of stream) chunks.push(Buffer.from(chunk));
