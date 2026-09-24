@@ -2,6 +2,34 @@
 
 Historical updates to [1tuner.com](https://1tuner.com), newest first. 🚀
 
+## Sep 24, 2026: 3.2.0
+
+Lots of changes & fixes! 🚀
+
+📻 Radio
+- Improved custom station handling and added station descriptions.
+
+🎙️ Podcasts
+- Improved playback reliability and preserved listening progress across sessions and feed refreshes.
+- Fixed RSS feed loading and OPML imports.
+
+🔀 Playlists
+- Improved playback reliability and entry selection.
+
+⚙️ Settings and saved data
+- Improved settings saving and state persistence.
+- Added cross-tab state synchronization.
+
+📺 Google Cast
+- Improved casting performance and reliability.
+
+📈 Performance and rendering
+- Optimized page loading and search.
+- Fixed prerendered page rendering and HTML cleanup.
+
+🎭 Testing
+- Expanded automated regression coverage.
+
 ## Sep 16, 2026: 3.1.28
 
 - 🤠 Added Jolene Country Radio
