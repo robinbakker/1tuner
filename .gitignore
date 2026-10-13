@@ -23,6 +23,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.tsbuildinfo
 .aider*
 .gemini
 .playwright-mcp
