@@ -50,6 +50,11 @@ export const usePlayer = () => {
   const playType = playerState.value?.playType;
   const isPlaying = playerState.value?.isPlaying;
   const streamUrl = playerState.value?.streams[0]?.url;
+  const hasPlayer = !!playerState.value;
+  const title = playerState.value?.title;
+  const description = playerState.value?.description;
+  const imageUrl = playerState.value?.imageUrl;
+  const savedPosition = playerState.value?.currentTime;
   const elementKey = audioKey.value;
   const wasCastingRef = useRef(false);
   const localPlaybackGenerationRef = useRef(0);
@@ -530,82 +535,99 @@ export const usePlayer = () => {
     }
   }, [castSession, elementKey]);
 
+  // Media Session effects follow primitive values: playerState is replaced on every
+  // progress checkpoint, and resetting metadata makes the OS redraw its media controls.
+  const duration = durationSignal.value;
+  const playbackRate = playbackRateSignal.value;
+  const hasDuration = duration > 0;
+  const hasMediaSession = typeof navigator !== 'undefined' && 'mediaSession' in navigator;
+
   useEffect(() => {
-    if (
-      !audioRef.current ||
-      !playerState.value ||
-      typeof navigator.mediaSession === 'undefined' ||
-      (isPodcast && durationSignal.value === 0)
-    ) {
-      return;
-    }
+    if (!hasMediaSession || !hasPlayer || (isPodcast && !hasDuration)) return;
 
     navigator.mediaSession.metadata = new MediaMetadata({
-      title: playerState.value.title,
-      artist: playerState.value.description,
-      artwork: [{ src: playerState.value.imageUrl, sizes: '512x512', type: 'image/jpeg' }],
+      title,
+      artist: description,
+      artwork: imageUrl ? [{ src: imageUrl, sizes: '512x512', type: 'image/jpeg' }] : [],
     });
 
-    navigator.mediaSession.playbackState = playerState.value.isPlaying ? 'playing' : 'paused';
+    return () => {
+      navigator.mediaSession.metadata = null;
+    };
+  }, [hasMediaSession, hasPlayer, isPodcast, hasDuration, title, description, imageUrl]);
+
+  useEffect(() => {
+    if (!hasMediaSession || !hasPlayer) return;
+    navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
+  }, [hasMediaSession, hasPlayer, isPlaying]);
+
+  // Handlers are registered once per session and read the latest callbacks from this ref.
+  const mediaSessionHandlersRef = useRef({ handlePlayPause, handleSeek, handleCastSeek, updateTimeUI, castSession });
+  useLayoutEffect(() => {
+    mediaSessionHandlersRef.current = { handlePlayPause, handleSeek, handleCastSeek, updateTimeUI, castSession };
+  });
+
+  useEffect(() => {
+    if (!hasMediaSession || !hasPlayer) return;
+    const handlers = mediaSessionHandlersRef;
 
     navigator.mediaSession.setActionHandler('play', () => {
-      handlePlayPause();
+      handlers.current.handlePlayPause();
     });
 
     navigator.mediaSession.setActionHandler('pause', () => {
       console.log('mediasession: Pause');
-      handlePlayPause();
+      handlers.current.handlePlayPause();
     });
 
     navigator.mediaSession.setActionHandler('previoustrack', () => {
-      if (isPodcast) handleSeek(-10);
+      if (isPodcast) handlers.current.handleSeek(-10);
       else playNextRadioStation(true);
     });
 
     navigator.mediaSession.setActionHandler('nexttrack', () => {
-      if (isPodcast) handleSeek(30);
+      if (isPodcast) handlers.current.handleSeek(30);
       else playNextRadioStation();
     });
 
     navigator.mediaSession.setActionHandler('seekto', (details) => {
       if (!isPodcast || !audioRef.current || details.seekTime === undefined) return;
-      if (castSession) {
-        handleCastSeek(details.seekTime, true);
+      if (handlers.current.castSession) {
+        handlers.current.handleCastSeek(details.seekTime, true);
         return;
       }
       audioRef.current.currentTime = details.seekTime;
-      updateTimeUI();
+      handlers.current.updateTimeUI();
     });
 
-    if (isPodcast && Number.isFinite(durationSignal.value) && durationSignal.value > 0) {
-      navigator.mediaSession.setPositionState({
-        duration: durationSignal.value,
-        position: Math.min(
-          durationSignal.value,
-          Math.max(0, castSession ? (castMediaRef.current?.getEstimatedTime() ?? 0) : audioRef.current.currentTime),
-        ),
-        playbackRate: playbackRateSignal.value,
-      });
-    }
-
     return () => {
-      navigator.mediaSession.metadata = null;
       navigator.mediaSession.setActionHandler('play', null);
       navigator.mediaSession.setActionHandler('pause', null);
       navigator.mediaSession.setActionHandler('previoustrack', null);
       navigator.mediaSession.setActionHandler('nexttrack', null);
       navigator.mediaSession.setActionHandler('seekto', null);
     };
+  }, [hasMediaSession, hasPlayer, isPodcast]);
+
+  useEffect(() => {
+    if (!hasMediaSession || !audioRef.current || !isPodcast || !Number.isFinite(duration) || duration <= 0) return;
+    navigator.mediaSession.setPositionState({
+      duration,
+      position: Math.min(
+        duration,
+        Math.max(0, castSession ? (castMediaRef.current?.getEstimatedTime() ?? 0) : audioRef.current.currentTime),
+      ),
+      playbackRate,
+    });
   }, [
-    playerState.value,
-    durationSignal.value,
+    hasMediaSession,
     isPodcast,
-    handlePlayPause,
-    handleSeek,
-    updateTimeUI,
+    duration,
+    playbackRate,
+    isPlaying,
     castSession,
     castMediaRef,
-    handleCastSeek,
+    savedPosition,
   ]);
 
   // Expose a function to force remount

@@ -202,6 +202,10 @@ test('switching to radio preserves the outgoing episode', async ({ page }) => {
 });
 
 test('closing the player saves progress and the closed state', async ({ page }) => {
+  // Persist the open player first, so closing must overwrite it rather than
+  // depend on whether an incidental save stored the player key at all.
+  await advance(page, 100, 'seeked');
+  await expect.poll(async () => (await saved(page)).player).toMatchObject({ title: 'a' });
   await advance(page, 123);
   await page.getByRole('button', { name: 'Close player', exact: true }).click();
   await expect.poll(() => saved(page)).toMatchObject({ ...expectedProgress(123), player: null });

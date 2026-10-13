@@ -42,7 +42,12 @@ test.beforeEach(async ({ page }) => {
       play: {
         value() {
           this.dataset.plays = String(Number(this.dataset.plays ?? 0) + 1);
-          if (this.dataset.failPlay === 'true') return Promise.reject(new Error('Stream unavailable'));
+          // A page-wide budget of failures survives the element being replaced.
+          const failPlays = Number(document.documentElement.dataset.failPlays ?? 0);
+          if (failPlays > 0) {
+            document.documentElement.dataset.failPlays = String(failPlays - 1);
+            return Promise.reject(new Error('Stream unavailable'));
+          }
           this.dispatchEvent(new Event('playing'));
           return Promise.resolve();
         },
@@ -116,15 +121,16 @@ for (const event of ['stalled', 'error']) {
 
 test('a failed retry keeps retrying on the replacement element', async ({ page }) => {
   await startPlayer(page);
+  // Fail exactly the first retry; retries run every 500ms, so polling for the
+  // intermediate count of a still-failing element can skip past it.
+  await page.evaluate(() => {
+    document.documentElement.dataset.failPlays = '1';
+  });
   await page.locator('audio').dispatchEvent('stalled');
-  await expect(page.locator('audio')).not.toHaveAttribute('data-plays');
-  await page.locator('audio').evaluate((audio) => {
-    audio.dataset.failPlay = 'true';
-  });
-  await expect(page.locator('audio')).toHaveAttribute('data-plays', '1');
-  await page.locator('audio').evaluate((audio) => {
-    delete audio.dataset.failPlay;
-  });
+  // The failed retry and the successful one both play on the replacement element.
+  await expect(page.locator('audio')).toHaveAttribute('data-plays', '2');
+  // A successful retry ends the reconnect sequence.
+  await page.waitForTimeout(600);
   await expect(page.locator('audio')).toHaveAttribute('data-plays', '2');
   await page.locator('audio').dispatchEvent('stalled');
   await expect(page.locator('audio')).toHaveAttribute('data-plays', '1');

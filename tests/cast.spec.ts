@@ -668,6 +668,8 @@ test('late load callbacks cannot replace the current media or revive a disabled 
 });
 
 test('remote progress and relative, slider and media-session seeks use receiver time', async ({ page }) => {
+  // The local position is restored by a passive effect; casting first would skip it.
+  await expect.poll(() => page.locator('audio').evaluate((a: HTMLAudioElement) => a.currentTime)).toBe(42);
   await start(page);
   await page.evaluate(() => {
     window.castMock.session.media[0].position = 123;

@@ -2,6 +2,12 @@
 
 Historical updates to [1tuner.com](https://1tuner.com), newest first. 🚀
 
+## Oct 13, 2026: 3.2.1
+
+- Fix player (too many media session updates)
+- Fix tests
+- Update packages
+
 ## Sep 24, 2026: 3.2.0
 
 Lots of changes & fixes! 🚀
