@@ -8,7 +8,8 @@ test.beforeEach(async ({ page }) => {
       document.addEventListener(
         event,
         (e) => {
-          if (e.isTrusted && e.target instanceof HTMLMediaElement) e.stopImmediatePropagation();
+          const isMedia = e.target instanceof HTMLMediaElement || e.target instanceof HTMLSourceElement;
+          if (e.isTrusted && isMedia) e.stopImmediatePropagation();
         },
         true,
       );
@@ -37,6 +38,17 @@ test.beforeEach(async ({ page }) => {
       readyState: {
         get() {
           return 4;
+        },
+      },
+      // The real element never loads the aborted media; the mock reports it as loaded.
+      networkState: {
+        get() {
+          return HTMLMediaElement.NETWORK_IDLE;
+        },
+      },
+      error: {
+        get() {
+          return null;
         },
       },
       play: {

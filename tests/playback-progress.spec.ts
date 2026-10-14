@@ -3,6 +3,14 @@ import { expect, Page, test } from '@playwright/test';
 // Exercise the real app, lifecycle handlers and IndexedDB with deterministic media.
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
+    // Aborted media fails its <source>; the mocked element plays regardless.
+    document.addEventListener(
+      'error',
+      (e) => {
+        if (e.isTrusted && e.target instanceof HTMLSourceElement) e.stopImmediatePropagation();
+      },
+      true,
+    );
     const positions = new WeakMap<HTMLMediaElement, number>();
     const sources = new WeakMap<HTMLMediaElement, string>();
     Object.defineProperties(HTMLMediaElement.prototype, {
@@ -27,6 +35,17 @@ test.beforeEach(async ({ page }) => {
       readyState: {
         get() {
           return 4;
+        },
+      },
+      // The real element never loads the aborted media; the mock reports it as loaded.
+      networkState: {
+        get() {
+          return HTMLMediaElement.NETWORK_IDLE;
+        },
+      },
+      error: {
+        get() {
+          return null;
         },
       },
       play: {

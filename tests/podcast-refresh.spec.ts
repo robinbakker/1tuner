@@ -19,6 +19,14 @@ const rss = `<rss version="2.0"><channel>
 test.beforeEach(async ({ page }) => {
   await page.clock.install();
   await page.addInitScript(() => {
+    // Aborted media fails its <source>; the mocked element plays regardless.
+    document.addEventListener(
+      'error',
+      (e) => {
+        if (e.isTrusted && e.target instanceof HTMLSourceElement) e.stopImmediatePropagation();
+      },
+      true,
+    );
     const positions = new WeakMap<HTMLMediaElement, number>();
     const sources = new WeakMap<HTMLMediaElement, string>();
     Object.defineProperties(HTMLMediaElement.prototype, {
@@ -45,6 +53,17 @@ test.beforeEach(async ({ page }) => {
           // A new element must stay unloaded until load() selects its source.
           // Otherwise autosave can mistake its initial zero for resumed progress.
           return sources.has(this) ? 4 : 0;
+        },
+      },
+      // The real element never loads the aborted media; the mock reports it as loaded.
+      networkState: {
+        get() {
+          return HTMLMediaElement.NETWORK_IDLE;
+        },
+      },
+      error: {
+        get() {
+          return null;
         },
       },
       play: { value: () => Promise.resolve() },

@@ -35,12 +35,6 @@ export default defineConfig({
               },
             },
           },
-          {
-            urlPattern: ({ request }) => {
-              return request.destination === 'audio' || request.destination === 'video';
-            },
-            handler: 'NetworkOnly',
-          },
         ],
       },
     }),

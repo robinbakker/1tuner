@@ -174,6 +174,14 @@ export function installCastMock() {
   navigator.mediaSession.setActionHandler = (action, handler) => {
     mock.mediaActions.set(action, handler);
   };
+  // Aborted media fails its <source>; the mocked element plays regardless.
+  document.addEventListener(
+    'error',
+    (e) => {
+      if (e.isTrusted && e.target instanceof HTMLSourceElement) e.stopImmediatePropagation();
+    },
+    true,
+  );
   const positions = new WeakMap<HTMLMediaElement, number>();
   Object.defineProperties(HTMLMediaElement.prototype, {
     currentTime: {
@@ -201,6 +209,19 @@ export function installCastMock() {
       configurable: true,
       get() {
         return 4;
+      },
+    },
+    // The real element never loads the aborted media; the mock reports it as loaded.
+    networkState: {
+      configurable: true,
+      get() {
+        return HTMLMediaElement.NETWORK_IDLE;
+      },
+    },
+    error: {
+      configurable: true,
+      get() {
+        return null;
       },
     },
     play: {

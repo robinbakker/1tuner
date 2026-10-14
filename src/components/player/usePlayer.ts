@@ -20,6 +20,9 @@ export const audioSourcesSignal = computed(() => playerState.value?.streams || [
 export const currentTime = signal(0);
 export const audioKey = signal(0);
 
+const MAX_PODCAST_RECOVERY_ATTEMPTS = 2;
+const PODCAST_STALL_TIMEOUT_MS = 15000;
+
 export const usePlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const currentTimeDisplayRef = useRef<HTMLSpanElement>(null);
@@ -58,6 +61,7 @@ export const usePlayer = () => {
   const elementKey = audioKey.value;
   const wasCastingRef = useRef(false);
   const localPlaybackGenerationRef = useRef(0);
+  const podcastRecoveryAttemptsRef = useRef(0);
 
   useLayoutEffect(() => {
     localPlaybackGenerationRef.current++;
@@ -157,6 +161,54 @@ export const usePlayer = () => {
     }
   }, [playerState.value, stopNoise, isPodcast]);
 
+  // Reload the episode with a fresh request at the same position. Podcast hosts often redirect to
+  // signed CDN URLs that expire, and a failed or dropped media connection never recovers by itself.
+  const recoverPodcast = useCallback(
+    (reason: string) => {
+      const audio = audioRef.current;
+      const state = playerState.peek();
+      const streamUrl = state?.streams[0]?.url;
+      if (!audio || !state?.isPlaying || state.playType !== 'podcast' || !streamUrl || castSession) return;
+
+      if (podcastRecoveryAttemptsRef.current >= MAX_PODCAST_RECOVERY_ATTEMPTS) {
+        podcastRecoveryAttemptsRef.current = 0;
+        addLogEntry({
+          level: 'error',
+          message: `${reason}, podcast playback failed after ${MAX_PODCAST_RECOVERY_ATTEMPTS} reloads: ${streamUrl}`,
+        });
+        addToast({
+          title: '😢 Playback failed',
+          description: 'The episode could not be loaded. Press play to try again.',
+          variant: 'error',
+        });
+        playerState.value = { ...state, isPlaying: false };
+        return;
+      }
+
+      podcastRecoveryAttemptsRef.current += 1;
+      const position =
+        Number.isFinite(audio.currentTime) && audio.currentTime > 0 ? audio.currentTime : (state.currentTime ?? 0);
+      addLogEntry({
+        level: 'warn',
+        message: `${reason}, reloading podcast (${podcastRecoveryAttemptsRef.current}/${MAX_PODCAST_RECOVERY_ATTEMPTS}) at ${Math.round(position)}s: ${streamUrl}`,
+      });
+      // Reloading rejects the pending play request, which must not mark the player as paused.
+      const generation = ++localPlaybackGenerationRef.current;
+      audio.src = reconnectUtil.withCacheBuster(streamUrl);
+      audio.load();
+      audio.currentTime = position;
+      audio.play().catch((error) => {
+        if (generation !== localPlaybackGenerationRef.current) return;
+        addLogEntry({
+          level: 'error',
+          message: `Error playing reloaded podcast (${streamUrl}): ${error.message}`,
+        });
+        if (playerState.value) playerState.value = { ...playerState.value, isPlaying: false };
+      });
+    },
+    [castSession],
+  );
+
   const handlePlayPause = useCallback(() => {
     if (!playerState.value) return;
     const newIsPlaying = !playerState.value.isPlaying;
@@ -236,17 +288,24 @@ export const usePlayer = () => {
     if (reconnectAttempts.current > 0) return;
     const newSrc = playerState.value.streams[0].url;
 
+    // A podcast reload keeps its fresh URL; reverting it could reuse an expired redirect.
+    const isReloadedPodcast = isPodcast && !!audio.getAttribute('src')?.startsWith(newSrc);
+    // Read before any load() below, which briefly reports no source while it selects one.
+    const hasFailedSource = !!audio.error || audio.networkState === HTMLMediaElement.NETWORK_NO_SOURCE;
+
     // If src was set programmatically for reconnect, we must remove it
     // to allow the audio element to use its <source> children again.
-    if (audio.hasAttribute('src')) {
+    if (audio.hasAttribute('src') && !isReloadedPodcast) {
       audio.removeAttribute('src');
       // After removing src, we must call load() to apply the <source> elements.
       audio.load();
-    } else {
+    } else if (!isReloadedPodcast && (!audio.currentSrc || !audio.currentSrc.includes(newSrc))) {
       // If src was not set, check if the source is different and load if needed.
-      if (!audio.currentSrc || !audio.currentSrc.includes(newSrc)) {
-        audio.load();
-      }
+      audio.load();
+    } else if (playerState.value.isPlaying && isPodcast && hasFailedSource) {
+      // play() on a failed element neither plays nor rejects, so it would look stuck while playing.
+      recoverPodcast('Podcast audio failed to load');
+      return;
     }
 
     if (!audio.currentTime && playerState.value.currentTime) {
@@ -271,7 +330,7 @@ export const usePlayer = () => {
     } else {
       setToPaused();
     }
-  }, [playerState.value, castSession, setToPaused, elementKey]);
+  }, [playerState.value, castSession, setToPaused, recoverPodcast, elementKey]);
 
   const reconnectFnRef = useRef<() => void>();
 
@@ -292,7 +351,7 @@ export const usePlayer = () => {
 
     console.log('Attempting to play stream...');
     const streamUrl = playerState.value.streams[0].url;
-    const cacheBustingUrl = `${streamUrl}${streamUrl.includes('?') ? '&' : '?'}_=${new Date().getTime()}`;
+    const cacheBustingUrl = reconnectUtil.withCacheBuster(streamUrl);
     audio.src = cacheBustingUrl;
     audio.currentTime = 0;
     audio.load();
@@ -389,6 +448,7 @@ export const usePlayer = () => {
       if (reconnectTimeout.current) clearTimeout(reconnectTimeout.current);
       reconnectTimeout.current = undefined;
       reconnectAttempts.current = 0;
+      podcastRecoveryAttemptsRef.current = 0;
       stopNoise();
     };
   }, [contentID, playType, streamUrl, isPlaying, castSession, stopNoise]);
@@ -398,7 +458,14 @@ export const usePlayer = () => {
     const audio = audioRef.current;
 
     const handleError = (e: Event) => {
-      if (!castSession && !isPodcast && playerState.value?.isPlaying && reconnectAttempts.current === 0) {
+      if (isPodcast) {
+        // Stalls while buffering are left to the progress watchdog.
+        if (e.type === 'error' && !castSession && playerState.value?.isPlaying) {
+          recoverPodcast(`Podcast ${e.type} event (${audio.error?.message || audio.error?.code})`);
+        }
+        return;
+      }
+      if (!castSession && playerState.value?.isPlaying && reconnectAttempts.current === 0) {
         console.log(`Stream ${e.type} event, attempting reconnect...`, e);
         startNoise();
         attemptReconnect();
@@ -407,6 +474,13 @@ export const usePlayer = () => {
           message: `Stream ${e.type} event, attempting reconnect for stream: ${playerState.value?.streams?.[0]?.url}`,
         });
       }
+    };
+
+    // A failed <source> fires its error on that child, leaving the element without a source and
+    // without an error. Only the last source is final; the browser tries the next one otherwise.
+    const handleSourceError = (e: Event) => {
+      if (!isPodcast || e.target !== audio.querySelector('source:last-of-type')) return;
+      if (!castSession && playerState.value?.isPlaying) recoverPodcast('Podcast source failed to load');
     };
 
     const handlePlaying = () => {
@@ -424,15 +498,37 @@ export const usePlayer = () => {
     };
 
     audio.addEventListener('error', handleError);
+    // Source errors do not bubble, but reach the element during capture.
+    audio.addEventListener('error', handleSourceError, true);
     audio.addEventListener('stalled', handleError);
     audio.addEventListener('playing', handlePlaying);
 
     return () => {
       audio.removeEventListener('error', handleError);
+      audio.removeEventListener('error', handleSourceError, true);
       audio.removeEventListener('stalled', handleError);
       audio.removeEventListener('playing', handlePlaying);
     };
-  }, [isPodcast, isPlaying, attemptReconnect, startNoise, stopNoise, castSession, elementKey]);
+  }, [isPodcast, isPlaying, attemptReconnect, recoverPodcast, startNoise, stopNoise, castSession, elementKey]);
+
+  // A podcast can stop progressing without any media event, e.g. after its connection dropped while paused.
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !isPodcast || !isPlaying || castSession) return;
+    let lastPosition = audio.currentTime;
+    let lastProgressAt = Date.now();
+    const timer = window.setInterval(() => {
+      if (audio.currentTime !== lastPosition) {
+        lastPosition = audio.currentTime;
+        lastProgressAt = Date.now();
+        podcastRecoveryAttemptsRef.current = 0;
+      } else if (!audio.paused && Date.now() - lastProgressAt >= PODCAST_STALL_TIMEOUT_MS) {
+        lastProgressAt = Date.now();
+        recoverPodcast('Podcast playback made no progress');
+      }
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [isPodcast, isPlaying, castSession, elementKey, recoverPodcast]);
 
   useEffect(() => {
     const forceRetry = (reason: string) => {
@@ -619,16 +715,7 @@ export const usePlayer = () => {
       ),
       playbackRate,
     });
-  }, [
-    hasMediaSession,
-    isPodcast,
-    duration,
-    playbackRate,
-    isPlaying,
-    castSession,
-    castMediaRef,
-    savedPosition,
-  ]);
+  }, [hasMediaSession, isPodcast, duration, playbackRate, isPlaying, castSession, castMediaRef, savedPosition]);
 
   // Expose a function to force remount
   const forceAudioRemount = () => {
