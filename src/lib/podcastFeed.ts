@@ -1,5 +1,9 @@
-const FETCH_TIMEOUT = 10_000;
-const MAX_FEED_BYTES = 8 * 1024 * 1024;
+// Large feeds may download slowly, so only fail quickly when no data arrives.
+const IDLE_TIMEOUT = 10_000;
+const TOTAL_TIMEOUT = 60_000;
+// Long-running daily shows exceed 20 MB (e.g. The Daily), so leave headroom for growth.
+const MAX_FEED_MB = 30;
+const MAX_FEED_BYTES = MAX_FEED_MB * 1000 * 1000;
 const MAX_RETRIES = 2;
 const VALID_CONTENT_TYPES = [
   'application/rss+xml',
@@ -12,7 +16,7 @@ const VALID_CONTENT_TYPES = [
 
 class FeedTooLargeError extends Error {
   constructor() {
-    super('Podcast feed is too large (maximum 8 MiB).');
+    super(`Podcast feed is too large (maximum ${MAX_FEED_MB} MB).`);
   }
 }
 
@@ -31,7 +35,12 @@ function waitForRetry(ms: number, signal: AbortSignal): Promise<void> {
   });
 }
 
-async function readFeed(url: string, signal: AbortSignal, options: RequestInit = {}): Promise<string> {
+async function readFeed(
+  url: string,
+  signal: AbortSignal,
+  onData: () => void,
+  options: RequestInit = {},
+): Promise<string> {
   const response = await fetch(url, { ...options, signal });
   const reader = response.body?.getReader();
   // Cancelling the reader also settles a pending read when the body stalls.
@@ -57,6 +66,7 @@ async function readFeed(url: string, signal: AbortSignal, options: RequestInit =
       const { done, value } = await reader.read();
       signal.throwIfAborted();
       if (done) break;
+      onData();
       bytes += value.byteLength;
       if (bytes > MAX_FEED_BYTES) throw new FeedTooLargeError();
       chunks.push(decoder.decode(value, { stream: true }));
@@ -84,22 +94,31 @@ export async function fetchPodcastFeed(feedUrl: string, callerSignal: AbortSigna
   const controller = new AbortController();
   const cancel = () => controller.abort(callerSignal.reason);
   callerSignal.addEventListener('abort', cancel, { once: true });
-  // One deadline includes headers, body consumption, proxy fallback, and retry delays.
-  const timeout = setTimeout(
-    () => controller.abort(new Error('Podcast feed timed out after 10 seconds.')),
-    FETCH_TIMEOUT,
+  const abortAfter = (ms: number, message: string) => setTimeout(() => controller.abort(new Error(message)), ms);
+  // Both deadlines include headers, body consumption, proxy fallback, and retry delays;
+  // only received body data postpones the idle deadline.
+  const startIdleTimeout = () =>
+    abortAfter(IDLE_TIMEOUT, `Podcast feed did not respond for ${IDLE_TIMEOUT / 1000} seconds.`);
+  let idleTimeout = startIdleTimeout();
+  const onData = () => {
+    clearTimeout(idleTimeout);
+    idleTimeout = startIdleTimeout();
+  };
+  const totalTimeout = abortAfter(
+    TOTAL_TIMEOUT,
+    `Podcast feed took longer than ${TOTAL_TIMEOUT / 1000} seconds to load.`,
   );
   const { signal } = controller;
   try {
     for (let attempt = 0; ; attempt++) {
       try {
-        return await readFeed(feedUrl, signal);
+        return await readFeed(feedUrl, signal, onData);
       } catch (error) {
         signal.throwIfAborted();
         if (error instanceof FeedTooLargeError) throw error;
       }
       try {
-        return await readFeed('https://request.tuner.workers.dev', signal, { method: 'POST', body: feedUrl });
+        return await readFeed('https://request.tuner.workers.dev', signal, onData, { method: 'POST', body: feedUrl });
       } catch (error) {
         signal.throwIfAborted();
         if (error instanceof FeedTooLargeError || attempt === MAX_RETRIES) throw error;
@@ -107,7 +126,8 @@ export async function fetchPodcastFeed(feedUrl: string, callerSignal: AbortSigna
       }
     }
   } finally {
-    clearTimeout(timeout);
+    clearTimeout(idleTimeout);
+    clearTimeout(totalTimeout);
     callerSignal.removeEventListener('abort', cancel);
   }
 }

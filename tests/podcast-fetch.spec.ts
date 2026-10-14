@@ -4,7 +4,7 @@ const feedUrl = 'https://feeds.example/limits';
 const podcastID = Buffer.from('feeds.example/limits').toString('base64');
 const podcastPath = `/podcast/limits/${podcastID}`;
 const rss = '<rss><channel><title>Stream podcast</title><description>Test</description></channel></rss>';
-type Mode = 'stall' | 'headers' | 'oversize' | 'exact' | 'unicode' | 'fail' | 'success';
+type Mode = 'stall' | 'headers' | 'oversize' | 'exact' | 'unicode' | 'slow' | 'trickle' | 'fail' | 'success';
 
 async function navigate(page: Page, url: string) {
   await page.evaluate((url) => {
@@ -44,21 +44,28 @@ async function mockFeed(page: Page, mode: Mode, proxy = false, contentLength?: s
           });
         }
         const encoder = new TextEncoder();
-        const cap = 8 * 1024 * 1024;
+        const cap = 30 * 1000 * 1000;
         let offset = 0;
         let bytes: Uint8Array;
         if (state.mode === 'oversize' || state.mode === 'exact') {
           const size = cap + (state.mode === 'oversize' ? 1 : 0);
-          bytes = encoder.encode(rss.replace('Test', 'x'.repeat(size - encoder.encode(rss).length + 4)));
+          // Pad inside a comment so the feed's rendered description stays small.
+          const padding = 'x'.repeat(size - encoder.encode(rss).length - '<!---->'.length);
+          bytes = encoder.encode(rss.replace('</channel>', `<!--${padding}--></channel>`));
         } else {
           bytes = encoder.encode(state.mode === 'unicode' ? rss.replace('Stream podcast', 'Café 🎵') : rss);
         }
         const stream = new ReadableStream<Uint8Array>({
-          pull(controller) {
+          async pull(controller) {
+            // Slow feeds deliver a small chunk every 5 seconds; trickling feeds never finish.
+            const slow = state.mode === 'slow' || state.mode === 'trickle';
+            if (slow && offset > 0) await new Promise((resolve) => setTimeout(resolve, 5_000));
             if (offset < bytes.length) {
-              const length = state.mode === 'unicode' ? 1 : 64 * 1024;
+              const length = state.mode === 'unicode' ? 1 : slow ? 24 : 64 * 1024;
               controller.enqueue(bytes.slice(offset, offset + length));
               offset += length;
+            } else if (state.mode === 'trickle') {
+              controller.enqueue(encoder.encode(' '));
             } else if (state.mode !== 'stall' && state.mode !== 'oversize') {
               controller.close();
             }
@@ -122,7 +129,7 @@ for (const proxy of [false, true]) {
     await navigate(page, podcastPath);
     await expect.poll(async () => (await calls(page)).length).toBe(proxy ? 2 : 1);
     await page.clock.runFor(10_100);
-    await expect(page.getByRole('alert')).toHaveText('Podcast feed timed out after 10 seconds.');
+    await expect(page.getByRole('alert')).toHaveText('Podcast feed did not respond for 10 seconds.');
     expect((await calls(page)).at(-1)).toMatchObject({ aborted: true, cancelled: true });
     expect(await saved(page)).toBeNull();
     await setMode(page, 'success');
@@ -144,7 +151,7 @@ for (const proxy of [false, true]) {
     }) => {
       await mockFeed(page, 'oversize', proxy, contentLength);
       await navigate(page, podcastPath);
-      await expect(page.getByRole('alert')).toHaveText('Podcast feed is too large (maximum 8 MiB).');
+      await expect(page.getByRole('alert')).toHaveText('Podcast feed is too large (maximum 30 MB).');
       const requests = await calls(page);
       expect(requests).toHaveLength(proxy ? 2 : 1);
       expect(requests.at(-1)?.cancelled).toBe(true);
@@ -170,6 +177,31 @@ for (const mode of ['exact', 'unicode'] as const) {
     expect(await calls(page)).toEqual([{ url: feedUrl, aborted: false, cancelled: false }]);
   });
 }
+
+test('slow feeds keep loading past the idle timeout while data arrives', async ({ page }) => {
+  await mockFeed(page, 'slow');
+  await navigate(page, podcastPath);
+  await expect.poll(async () => (await calls(page)).length).toBe(1);
+  for (let elapsed = 0; elapsed < 20_000; elapsed += 5_000) await page.clock.runFor(5_000);
+  await expect(
+    page
+      .locator('header')
+      .filter({ has: page.getByTitle('Refresh episodes', { exact: true }) })
+      .getByRole('heading', { name: 'Stream podcast', exact: true }),
+  ).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  expect(await calls(page)).toEqual([{ url: feedUrl, aborted: false, cancelled: false }]);
+});
+
+test('feeds that keep trickling in stop at the total timeout', async ({ page }) => {
+  await mockFeed(page, 'trickle');
+  await navigate(page, podcastPath);
+  await expect.poll(async () => (await calls(page)).length).toBe(1);
+  for (let elapsed = 0; elapsed <= 60_000; elapsed += 5_000) await page.clock.runFor(5_000);
+  await expect(page.getByRole('alert')).toHaveText('Podcast feed took longer than 60 seconds to load.');
+  expect(await calls(page)).toEqual([{ url: feedUrl, aborted: true, cancelled: true }]);
+  expect(await saved(page)).toBeNull();
+});
 
 for (const mode of ['headers', 'stall', 'fail'] as const) {
   test(`navigation cancels work during ${mode} without retries or cache writes`, async ({ page }) => {
@@ -237,7 +269,7 @@ test('refresh errors retain cached episodes and clear after successful refresh',
   ).toBeVisible();
   await setMode(page, 'oversize');
   await page.getByTitle('Refresh episodes', { exact: true }).click();
-  await expect(page.getByRole('alert')).toHaveText('Podcast feed is too large (maximum 8 MiB).');
+  await expect(page.getByRole('alert')).toHaveText('Podcast feed is too large (maximum 30 MB).');
   await expect(
     page
       .locator('header')

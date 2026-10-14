@@ -110,9 +110,9 @@ export const useSettings = () => {
       if (!file) return;
 
       const maxFileSizeMB = 2;
-      const maxInputSize = maxFileSizeMB * 1024 * 1024;
+      const maxInputSize = maxFileSizeMB * 1000 * 1000;
       if (file.size > maxInputSize) {
-        alert(`File is too large. Maximum size is ${maxFileSizeMB}MB.`);
+        alert(`File is too large. Maximum size is ${maxFileSizeMB} MB.`);
         input.value = '';
         return;
       }

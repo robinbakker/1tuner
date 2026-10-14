@@ -2,6 +2,11 @@
 
 Historical updates to [1tuner.com](https://1tuner.com), newest first. 🚀
 
+## Oct 14, 2026: 3.2.2
+
+- 🎧 Fix podcasts getting stuck after pausing or seeking
+- 🫈 Allow bigger podcast feeds
+
 ## Oct 13, 2026: 3.2.1
 
 - Fix player (too many media session updates)
