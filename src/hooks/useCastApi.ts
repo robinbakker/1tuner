@@ -27,19 +27,19 @@ export const useCastApi = () => {
   const [receiverReady, setReceiverReady] = useState(false);
   const sessionRef = useRef<chrome.cast.Session | null>(null);
   const castMediaRef = useRef<chrome.cast.media.Media | null>(null);
-  const removeMediaListenerRef = useRef<() => void>();
-  const removeSessionListenersRef = useRef<() => void>();
+  const removeMediaListenerRef = useRef<() => void>(undefined);
+  const removeSessionListenersRef = useRef<() => void>(undefined);
   const lifecycleRef = useRef(0);
   const requestingSessionRef = useRef(false);
   const requestAttemptRef = useRef(0);
-  const connectionTimerRef = useRef<number>();
-  const connectionDeadlineRef = useRef<number>();
+  const connectionTimerRef = useRef<number>(undefined);
+  const connectionDeadlineRef = useRef<number>(undefined);
   const ignoreSessionRef = useRef(false);
-  const progressRef = useRef<ReturnType<typeof trackRemotePlaybackProgress>>();
+  const progressRef = useRef<ReturnType<typeof trackRemotePlaybackProgress>>(undefined);
   const mediaOwnerRef = useRef<string | null>(null);
-  const pendingPlaybackRef = useRef<{ owner: string; playing: boolean }>();
-  const retryLoadRef = useRef<() => boolean>();
-  const receiverPlaybackRef = useRef<boolean>();
+  const pendingPlaybackRef = useRef<{ owner: string; playing: boolean }>(undefined);
+  const retryLoadRef = useRef<() => boolean>(undefined);
+  const receiverPlaybackRef = useRef<boolean>(undefined);
 
   const handleCastPlayPause = useCallback((playing: boolean) => {
     const player = playerState.peek();

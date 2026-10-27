@@ -1,7 +1,9 @@
 import type { ComponentProps } from 'preact';
 import { cn } from '~/lib/utils';
 
-type Props = ComponentProps<'input'> & {
+type CheckboxProps = Extract<ComponentProps<'input'>, { type: 'checkbox' }>;
+
+type Props = Omit<CheckboxProps, 'type'> & {
   label?: string;
 };
 

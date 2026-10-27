@@ -31,7 +31,7 @@
     "fast-xml-parser": "^5.11.2",
     "idb": "^8.0.4",
     "lucide-preact": "^1.57.0",
-    "preact": "^10.29.8",
+    "preact": "^11.0.2",
     "preact-iso": "^2.12.2",
     "simple-icons": "^16.35.0",
     "tailwindcss-animate": "^1.0.7"

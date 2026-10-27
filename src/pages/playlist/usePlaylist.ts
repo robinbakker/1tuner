@@ -262,7 +262,7 @@ export const usePlaylist = () => {
     [containerRef],
   );
 
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number>(undefined);
 
   const handleDrag = useCallback(
     (e: MouseEvent | TouchEvent) => {

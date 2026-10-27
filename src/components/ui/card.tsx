@@ -1,3 +1,4 @@
+import type { HeadingHTMLAttributes } from 'preact';
 import { forwardRef, HTMLAttributes } from 'preact/compat';
 import { cn } from '~/lib/utils';
 
@@ -11,7 +12,7 @@ const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({
 ));
 CardHeader.displayName = 'CardHeader';
 
-const CardTitle = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLHeadingElement>>(({ ...props }, ref) => (
+const CardTitle = forwardRef<HTMLParagraphElement, HeadingHTMLAttributes<HTMLHeadingElement>>(({ ...props }, ref) => (
   <h3 ref={ref} class={cn('font-semibold leading-none tracking-tight', props.class)} {...props} />
 ));
 CardTitle.displayName = 'CardTitle';

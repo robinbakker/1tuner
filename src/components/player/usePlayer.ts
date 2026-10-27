@@ -28,7 +28,7 @@ export const usePlayer = () => {
   const currentTimeDisplayRef = useRef<HTMLSpanElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLInputElement>(null);
-  const reconnectTimeout = useRef<NodeJS.Timeout>();
+  const reconnectTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
   const reconnectAttempts = useRef(0);
   const { startNoise, stopNoise } = useNoise();
 
@@ -332,7 +332,7 @@ export const usePlayer = () => {
     }
   }, [playerState.value, castSession, setToPaused, recoverPodcast, elementKey]);
 
-  const reconnectFnRef = useRef<() => void>();
+  const reconnectFnRef = useRef<() => void>(undefined);
 
   const retryConnection = useCallback(() => {
     const audio = audioRef.current;
