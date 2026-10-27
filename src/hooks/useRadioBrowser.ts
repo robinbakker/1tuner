@@ -143,7 +143,7 @@ export const useRadioBrowser = () => {
   const setStationClick = useCallback(async (uuid: string) => {
     if (!uuid) return;
     try {
-      fetch(`${import.meta.env.VITE_RADIO_BROWSER_WORKER_URL}/station-click`, {
+      await fetch(`${import.meta.env.VITE_RADIO_BROWSER_WORKER_URL}/station-click`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

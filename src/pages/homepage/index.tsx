@@ -121,7 +121,7 @@ export const Homepage = () => {
       </div>
       <ContentSection title="Radio stations" moreLink="/radio-stations" hasSearchButton isScrollable>
         <ul class="flex gap-6 md:gap-10 px-4 md:px-6">
-          <For each={recentlyVisitedRadioStations}>
+          <For each={recentlyVisitedRadioStations} getKey={(station) => station.id}>
             {(station) => (
               <li class="shrink-0">
                 <RadioStationCard station={station} />
@@ -133,7 +133,7 @@ export const Homepage = () => {
       </ContentSection>
       <ContentSection title="Podcasts" moreLink="/podcasts" hasSearchButton isScrollable>
         <ul class="flex gap-6 md:gap-10 px-4 md:px-6">
-          <For each={homepagePodcasts}>
+          <For each={homepagePodcasts} getKey={(podcast) => podcast.id}>
             {(podcast) => (
               <li class="shrink-0">
                 <PodcastCard podcast={podcast} />
