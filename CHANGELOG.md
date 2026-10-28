@@ -2,6 +2,21 @@
 
 Historical updates to [1tuner.com](https://1tuner.com), newest first. 🚀
 
+## Oct 28, 2026: 3.3.0
+
+🔀 Playlists
+- Added "Last played station" as a destination for the podcast rule, so a finished podcast switches back to the radio station you last listened to.
+- Choosing a destination for the podcast rule now preselects the last played station, or your playlist if you only have one.
+
+🎙️ Podcasts
+- Playing a finished episode again now starts it from the beginning, instead of ending right away and triggering the podcast rule.
+- Refreshed podcast data.
+
+🛠️ Under the hood
+- ⚛️ Updated to Preact 11!
+- Fixed homepage list keys and station click reporting.
+- Updated packages.
+
 ## Oct 14, 2026: 3.2.2
 
 - 🎧 Fix podcasts getting stuck after pausing or seeking
