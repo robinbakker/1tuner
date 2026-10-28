@@ -22,6 +22,7 @@ export const audioKey = signal(0);
 
 const MAX_PODCAST_RECOVERY_ATTEMPTS = 2;
 const PODCAST_STALL_TIMEOUT_MS = 15000;
+const PODCAST_FINISHED_REMAINING_SECONDS = 10;
 
 export const usePlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -310,6 +311,13 @@ export const usePlayer = () => {
 
     if (!audio.currentTime && playerState.value.currentTime) {
       audio.currentTime = playerState.value.currentTime;
+      // Resuming a finished episode would end it at once and trigger the playlist rule, so it starts over.
+      // A newly loaded source only knows its duration once its metadata has loaded.
+      const restartFinishedEpisode = () => {
+        if (audio.duration - audio.currentTime <= PODCAST_FINISHED_REMAINING_SECONDS) audio.currentTime = 0;
+      };
+      if (audio.readyState >= HTMLMediaElement.HAVE_METADATA) restartFinishedEpisode();
+      else audio.addEventListener('loadedmetadata', restartFinishedEpisode, { once: true });
     }
 
     if (playerState.value.isPlaying && !castSession) {

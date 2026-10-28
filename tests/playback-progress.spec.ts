@@ -249,6 +249,32 @@ test('ending saves the final position and stops playback', async ({ page }) => {
     });
 });
 
+test('resuming a finished episode starts it over', async ({ page }) => {
+  const position = () => page.locator('audio').evaluate((audio: HTMLAudioElement) => audio.currentTime);
+  await advance(page, 589, 'seeked');
+  await selectEpisode(page, 'b');
+  await selectEpisode(page, 'a');
+  expect(await position()).toBe(589);
+  await advance(page, 590, 'seeked');
+  await selectEpisode(page, 'b');
+  await selectEpisode(page, 'a');
+  expect(await position()).toBe(0);
+});
+
+test('a finished episode starts over once its loaded duration is known', async ({ page }) => {
+  const audio = page.locator('audio');
+  await advance(page, 595, 'seeked');
+  await selectEpisode(page, 'b');
+  await audio.evaluate((audio) => Object.defineProperty(audio, 'readyState', { configurable: true, value: 0 }));
+  await selectEpisode(page, 'a');
+  expect(await audio.evaluate((audio: HTMLAudioElement) => audio.currentTime)).toBe(595);
+  await audio.evaluate((audio) => {
+    delete (audio as { readyState?: number }).readyState;
+    audio.dispatchEvent(new Event('loadedmetadata'));
+  });
+  expect(await audio.evaluate((audio: HTMLAudioElement) => audio.currentTime)).toBe(0);
+});
+
 test('pausing captures the latest position immediately', async ({ page }) => {
   await advance(page, 123);
   await page.getByRole('button', { name: 'Pause', exact: true }).click();
