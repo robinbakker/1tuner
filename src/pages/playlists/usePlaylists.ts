@@ -4,7 +4,7 @@ import { useHead } from '~/hooks/useHead';
 import { playlistUtil } from '~/lib/playlistUtil';
 import { isDBLoaded } from '~/store/db/db';
 import { playlistRules, playlists } from '~/store/signals/playlist';
-import { getRadioStation } from '~/store/signals/radio';
+import { getLastPlayedRadioStationID, getRadioStation } from '~/store/signals/radio';
 import { uiState } from '~/store/signals/ui';
 import { PlaylistItem, PlaylistRuleType, RadioStation } from '~/store/types';
 import { PlaylistData, RuleDestination, StationPercentage } from './types';
@@ -138,13 +138,20 @@ export const usePlaylists = () => {
   const handleRuleDestinationChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const newValue = e.currentTarget.value as unknown as RuleDestination;
     setRuleDestinationValue(newValue);
-    if (+newValue === +RuleDestination.Nothing) {
+    // Default to the last played station or the only playlist; otherwise wait until something is selected.
+    if (+newValue === +RuleDestination.RadioStation && getLastPlayedRadioStationID()) {
+      playlistRules.value = [{ ruleType: PlaylistRuleType.podcastToLastStation }];
+    } else if (+newValue === +RuleDestination.Playlist && playlistsData.length === 1) {
+      playlistRules.value = [{ ruleType: PlaylistRuleType.podcastToPlaylist, playlistUrl: playlistsData[0].url }];
+    } else {
       playlistRules.value = [];
     }
   };
 
   const handleRuleStationChange = (value: string) => {
-    playlistRules.value = [{ ruleType: PlaylistRuleType.podcastToStation, stationID: value }];
+    playlistRules.value = value
+      ? [{ ruleType: PlaylistRuleType.podcastToStation, stationID: value }]
+      : [{ ruleType: PlaylistRuleType.podcastToLastStation }];
   };
 
   const handleRulePlaylistChange = (value: string) => {

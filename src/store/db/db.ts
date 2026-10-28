@@ -7,6 +7,7 @@ import { playlistRules, playlists } from '../signals/playlist';
 import { followedPodcasts, recentlyVisitedPodcasts } from '../signals/podcast';
 import {
   followedRadioStationIDs,
+  lastPlayedRadioStationID,
   radioBrowserStations,
   radioSearchFilters,
   recentlyVisitedRadioStationIDs,
@@ -36,6 +37,7 @@ export enum AppStateKey {
   RadioBrowserStations = 'radioBrowserStations',
   FollowedRadioStationIDs = 'followedRadioStationIDs',
   RecentlyVisitedRadioStationIDs = 'recentlyVisitedRadioStationIDs',
+  LastPlayedRadioStationID = 'lastPlayedRadioStationID',
   RadioSearchFilters = 'radioSearchFilters',
   Playlists = 'playlists',
   PlaylistRules = 'playlistRules',
@@ -51,6 +53,7 @@ type DBData =
   | Playlist[]
   | PlaylistRule[]
   | string[]
+  | string
   | LogState[]
   | RadioSearchFilters
   | PlayerState
@@ -72,6 +75,7 @@ const stateSignals: Record<AppStateKey, Signal<DBData>> = {
   radioBrowserStations,
   followedRadioStationIDs,
   recentlyVisitedRadioStationIDs,
+  lastPlayedRadioStationID,
   radioSearchFilters,
   playlists,
   playlistRules,
@@ -92,7 +96,13 @@ function snapshot(): Snapshot {
 }
 
 function defaultValue(key: AppStateKey): DBData {
-  if (key === AppStateKey.PlayerState || key === AppStateKey.RadioSearchFilters) return null;
+  if (
+    key === AppStateKey.PlayerState ||
+    key === AppStateKey.RadioSearchFilters ||
+    key === AppStateKey.LastPlayedRadioStationID
+  ) {
+    return null;
+  }
   if (key === AppStateKey.SettingsState) return {};
   if (key === AppStateKey.IsPlayerMaximized) return false;
   return [];
@@ -176,6 +186,7 @@ export async function loadStateFromDB() {
     radioBrowserStations.value = (data.get(AppStateKey.RadioBrowserStations) as RadioStation[]) || [];
     followedRadioStationIDs.value = (data.get(AppStateKey.FollowedRadioStationIDs) as string[]) || [];
     recentlyVisitedRadioStationIDs.value = (data.get(AppStateKey.RecentlyVisitedRadioStationIDs) as string[]) || [];
+    lastPlayedRadioStationID.value = (data.get(AppStateKey.LastPlayedRadioStationID) as string) || null;
     radioSearchFilters.value = (data.get(AppStateKey.RadioSearchFilters) as RadioSearchFilters) || null;
     playlists.value = (data.get(AppStateKey.Playlists) as Playlist[]) || [];
     playlistRules.value = (data.get(AppStateKey.PlaylistRules) as PlaylistRule[]) || [];
@@ -213,6 +224,7 @@ export function startStatePersistence() {
     void radioBrowserStations.value;
     void followedRadioStationIDs.value;
     void recentlyVisitedRadioStationIDs.value;
+    void lastPlayedRadioStationID.value;
     void radioSearchFilters.value;
     void playlists.value;
     void playlistRules.value;

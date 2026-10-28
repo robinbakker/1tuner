@@ -113,8 +113,9 @@ test('rules and paused radio playback pin metadata until their references are re
     await page.evaluate(async () => {
       const path = '/tests/fixtures/station-cache-state.ts';
       const s = await import(path);
-      for (const id of ['rule', 'playing', 'followed', 'scheduled']) s.addRadioBrowserStation(s.station(id));
+      for (const id of ['rule', 'playing', 'followed', 'scheduled', 'last']) s.addRadioBrowserStation(s.station(id));
       s.playlistRules.value = [{ ruleType: s.PlaylistRuleType.podcastToStation, stationID: 'rb-rule' }];
+      s.lastPlayedRadioStationID.value = 'rb-last';
       s.playRadioStationByID('rb-playing');
       s.playerState.value = { ...s.playerState.value, isPlaying: false };
       s.followRadioStation('rb-followed');
@@ -122,9 +123,10 @@ test('rules and paused radio playback pin metadata until their references are re
         { name: 'Saved', url: '/playlist/Saved', items: [{ time: '00:00', stationID: 'rb-scheduled' }] },
       ];
       s.churn();
-      const ids = ['rb-rule', 'rb-playing', 'rb-followed', 'rb-scheduled'];
+      const ids = ['rb-rule', 'rb-playing', 'rb-followed', 'rb-scheduled', 'rb-last'];
       const retained = ids.every((id) => !!s.getRadioStation(id));
       s.playlistRules.value = [];
+      s.lastPlayedRadioStationID.value = null;
       s.playerState.value = null;
       s.unfollowRadioStation('rb-followed');
       s.playlists.value = [];

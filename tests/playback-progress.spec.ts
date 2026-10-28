@@ -310,3 +310,44 @@ test('completion is saved before an automatic transition to radio', async ({ pag
       player: expect.objectContaining({ playType: 'radio', contentID: 'test-radio' }),
     });
 });
+
+for (const { name, lastPlayed, recent } of [
+  { name: 'the tracked station', lastPlayed: 'test-radio', recent: [] },
+  { name: 'the most recent station before any was tracked', lastPlayed: null, recent: ['test-radio'] },
+]) {
+  test(`the last played station rule plays ${name}`, async ({ page }) => {
+    await page.evaluate(
+      async ({ lastPlayed, recent }) => {
+        const path = '/tests/fixtures/playback-state.ts';
+        const s = await import(path);
+        s.radioBrowserStations.value = [
+          {
+            id: 'test-radio',
+            name: 'Test radio',
+            logosource: '',
+            language: '',
+            genres: [],
+            streams: [{ url: 'https://media.example/radio.mp3', mimetype: 'audio/mpeg' }],
+          },
+        ];
+        s.lastPlayedRadioStationID.value = lastPlayed;
+        s.recentlyVisitedRadioStationIDs.value = recent;
+        s.playlistRules.value = [{ ruleType: 'podcastToLastStation' }];
+      },
+      { lastPlayed, recent },
+    );
+    await advance(page, 600, 'ended');
+    await expect
+      .poll(() => saved(page))
+      .toMatchObject({ player: expect.objectContaining({ playType: 'radio', contentID: 'test-radio' }) });
+    // Playing the station records it for the next time the rule applies.
+    await expect
+      .poll(() =>
+        page.evaluate(async () => {
+          const path = '/tests/fixtures/playback-state.ts';
+          return (await import(path)).lastPlayedRadioStationID.value;
+        }),
+      )
+      .toBe('test-radio');
+  });
+}

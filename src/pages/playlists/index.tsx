@@ -5,7 +5,13 @@ import { DropdownList } from '~/components/ui/dropdown-list';
 import { styleClass } from '~/lib/styleClass';
 import { getColorString } from '~/lib/utils';
 import { playlistRules } from '~/store/signals/playlist';
-import { allRadioStations, followedRadioStationIDs, getRadioStation } from '~/store/signals/radio';
+import {
+  allRadioStations,
+  followedRadioStationIDs,
+  getLastPlayedRadioStationID,
+  getRadioStation,
+} from '~/store/signals/radio';
+import { PlaylistRuleType } from '~/store/types';
 import { RuleDestination } from './types';
 import { usePlaylists } from './usePlaylists';
 
@@ -20,6 +26,7 @@ export const PlaylistsPage = () => {
     handleRuleStationChange,
     handleRulePlaylistChange,
   } = usePlaylists();
+  const lastPlayedStationName = getRadioStation(getLastPlayedRadioStationID())?.name;
 
   return (
     <div class="container mx-auto px-8 pb-6">
@@ -48,13 +55,16 @@ export const PlaylistsPage = () => {
             <DropdownList
               id={`button-station`}
               class="ml-2 inline-block"
-              options={[...allRadioStations.value]
-                .sort(
-                  (a, b) =>
-                    +followedRadioStationIDs.value.includes(b.id) - +followedRadioStationIDs.value.includes(a.id),
-                )
-                .map((s) => ({ label: s.name, value: s.id }))}
-              value={playlistRules.value?.[0]?.stationID}
+              options={[
+                ...(lastPlayedStationName ? [{ label: 'Last played station', value: '' }] : []),
+                ...[...allRadioStations.value]
+                  .sort(
+                    (a, b) =>
+                      +followedRadioStationIDs.value.includes(b.id) - +followedRadioStationIDs.value.includes(a.id),
+                  )
+                  .map((s) => ({ label: s.name, value: s.id })),
+              ]}
+              value={playlistRules.value?.[0]?.stationID ?? ''}
               onChangeOption={(value) => handleRuleStationChange(value)}
               useNativePopover={true}
               trigger={
@@ -63,6 +73,9 @@ export const PlaylistsPage = () => {
                     <span class="text-sm text-stone-600 underline">
                       {getRadioStation(playlistRules.value?.[0]?.stationID)?.name}
                     </span>
+                  ) : playlistRules.value?.[0]?.ruleType === PlaylistRuleType.podcastToLastStation &&
+                    lastPlayedStationName ? (
+                    <span class="text-sm text-stone-600 underline">last played station ({lastPlayedStationName})</span>
                   ) : (
                     <span class="text-sm text-stone-600 underline">Select station...</span>
                   )}

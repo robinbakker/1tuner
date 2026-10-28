@@ -91,6 +91,7 @@ const getPlaylistDataByUrl = (url: string) => {
 const ruleTypeToDestination = (ruleType: PlaylistRuleType): RuleDestination => {
   switch (ruleType) {
     case PlaylistRuleType.podcastToStation:
+    case PlaylistRuleType.podcastToLastStation:
       return RuleDestination.RadioStation;
     case PlaylistRuleType.podcastToPlaylist:
       return RuleDestination.Playlist;

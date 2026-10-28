@@ -26,6 +26,7 @@ dist-ssr
 *.tsbuildinfo
 .aider*
 .gemini
+.impeccable
 .playwright-mcp
 .env
 .firebase

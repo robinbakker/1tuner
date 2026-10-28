@@ -7,7 +7,12 @@ import { saveStateToDB } from '~/store/db/db';
 import { trackPlaybackProgress } from '~/store/playbackProgress';
 import { addLogEntry } from '~/store/signals/log';
 import { playlistRules } from '~/store/signals/playlist';
-import { playNextRadioStation, playRadioStationByID } from '~/store/signals/radio';
+import {
+  getLastPlayedRadioStationID,
+  lastPlayedRadioStationID,
+  playNextRadioStation,
+  playRadioStationByID,
+} from '~/store/signals/radio';
 import { DEFAULT_MAX_RECONNECT_ATTEMPTS, settingsState } from '~/store/signals/settings';
 import { addToast } from '~/store/signals/ui';
 import { PlaylistRuleType } from '~/store/types';
@@ -91,6 +96,11 @@ export const usePlayer = () => {
 
     return () => clearInterval(playlistInterval);
   }, [playlistUrl]);
+
+  useEffect(() => {
+    // Remember the station for the "last played station" rule, however playback was started.
+    if (isRadio && isPlaying && contentID) lastPlayedRadioStationID.value = contentID;
+  }, [isRadio, isPlaying, contentID]);
 
   const formatTime = useCallback((time: number) => {
     if (isNaN(time) || !isFinite(time) || time == null) return '';
@@ -594,6 +604,8 @@ export const usePlayer = () => {
       void saveStateToDB();
       if (playlistRules.value[0]?.ruleType === PlaylistRuleType.podcastToStation) {
         playRadioStationByID(playlistRules.value[0].stationID);
+      } else if (playlistRules.value[0]?.ruleType === PlaylistRuleType.podcastToLastStation) {
+        playRadioStationByID(getLastPlayedRadioStationID());
       } else if (playlistRules.value[0]?.ruleType === PlaylistRuleType.podcastToPlaylist) {
         playlistUtil.playPlaylistByUrl(playlistRules.value[0].playlistUrl, true);
       }

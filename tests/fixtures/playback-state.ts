@@ -5,4 +5,8 @@ export { isDBLoaded } from '../../src/store/db/db';
 export { playerState } from '../../src/store/signals/player';
 export { playlistRules } from '../../src/store/signals/playlist';
 export { followedPodcasts, getPodcast, recentlyVisitedPodcasts } from '../../src/store/signals/podcast';
-export { radioBrowserStations } from '../../src/store/signals/radio';
+export {
+  lastPlayedRadioStationID,
+  radioBrowserStations,
+  recentlyVisitedRadioStationIDs,
+} from '../../src/store/signals/radio';

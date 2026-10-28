@@ -12,6 +12,7 @@ export const radioLanguages = signal<Language[]>([]);
 export const radioGenres = signal<Genre[]>([]);
 export const followedRadioStationIDs = signal<string[]>([]);
 export const recentlyVisitedRadioStationIDs = signal<string[]>([]);
+export const lastPlayedRadioStationID = signal<string | null>(null);
 export const lastRadioSearchResult = signal<RadioSearchResult | null>(null);
 export const stationPodcasts = signal<Record<string, Podcast[]>>({});
 
@@ -51,6 +52,13 @@ export const getRadioStation = (id: string | undefined): RadioStation | undefine
   return allRadioStations.value.find((r) => r.id === id);
 };
 
+// Fall back to the recent list for history saved before the last played station was tracked,
+// or when the tracked station no longer exists.
+export const getLastPlayedRadioStationID = (): string | undefined =>
+  [lastPlayedRadioStationID.value ?? undefined, ...recentlyVisitedRadioStationIDs.value].find(
+    (id) => !!getRadioStation(id),
+  );
+
 export const getRadioStationLanguage = (radioStation: RadioStation): Language | undefined => {
   if (!radioStation) return undefined;
   return radioLanguages.value.find((l) => l.id === radioStation.language);
@@ -73,6 +81,7 @@ export const addRadioBrowserStation = (radioStation: RadioStation) => {
   for (const rule of playlistRules.value) {
     if (rule.stationID) pinnedIDs.add(rule.stationID);
   }
+  if (lastPlayedRadioStationID.value) pinnedIDs.add(lastPlayedRadioStationID.value);
   const player = playerState.value;
   if (player?.playType === 'radio') pinnedIDs.add(player.contentID);
   if (player?.playType === 'playlist') {
@@ -94,6 +103,7 @@ export const deleteBrowserStation = (id: string) => {
   radioBrowserStations.value = radioBrowserStations.value.filter((s) => s.id !== id);
   recentlyVisitedRadioStationIDs.value = recentlyVisitedRadioStationIDs.value.filter((s) => s !== id);
   followedRadioStationIDs.value = followedRadioStationIDs.value.filter((s) => s !== id);
+  if (lastPlayedRadioStationID.value === id) lastPlayedRadioStationID.value = null;
 };
 
 export const getRadioGenres = (): Genre[] =>

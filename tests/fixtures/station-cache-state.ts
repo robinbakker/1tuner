@@ -10,6 +10,7 @@ export {
   followedRadioStationIDs,
   followRadioStation,
   getRadioStation,
+  lastPlayedRadioStationID,
   playRadioStationByID,
   radioBrowserStations,
   unfollowRadioStation,

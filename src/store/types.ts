@@ -143,6 +143,7 @@ export interface SettingsState {
 
 export enum PlaylistRuleType {
   podcastToStation = 'podcastToStation',
+  podcastToLastStation = 'podcastToLastStation',
   podcastToPlaylist = 'podcastToPlaylist',
 }
 
